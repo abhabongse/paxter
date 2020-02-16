@@ -20,7 +20,8 @@ class Node:
 @dataclass
 class Fragments(Node):
     """
-    Fragments type which is the concatenation of other nodes.
+    Fragments type is the concatenation of all other nodes
+    at the same level.
     """
     nodes: List[Node]
     """List of nodes."""
@@ -29,24 +30,37 @@ class Fragments(Node):
 @dataclass
 class RawString(Node):
     """
-    RawString type which stores the actual string from the main content.
+    RawString type stores the actual text extracted
+    from main content.
     """
-    raw_string: str
+    text: str
     """Actual string."""
 
 
 @dataclass
 class Identifier(Node):
     """
-    Identifier which appears right after the @-symbol of the @-expression.
+    Identifier type stores identifier name
+    which appears right after @-symbol of the @-expression.
     """
-    identifier: str
+    name: str
 
 
 @dataclass
-class AtFragments(Node):
+class AtMacroExpr(Node):
     """
-    Standard @-expression with recursive fragments.
+    AtMacroExpr type stores the identifier
+    as well as the raw string within the @-expression.
+    """
+    identifier: Identifier
+    raw_string: RawString
+
+
+@dataclass
+class AtNormalExpr(Node):
+    """
+    AtNormalExpr type stores the identifier
+    as well as the recursive fragments within the @-expression.
     """
     identifier: Identifier
     fragments: Fragments
