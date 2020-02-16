@@ -1,66 +1,72 @@
 """
 Collection of classes represents data node in parsed tree.
 """
-from dataclasses import dataclass
-from typing import List
+from dataclasses import dataclass, field
+from typing import Dict, List, Optional, Union
+
+Atom = Union[str, int, float, bool]
 
 
 @dataclass
-class Node:
+class BaseNode:
     """
-    Base class for all types of nodes in parsed tree.
+    Base class for all types of nodes which would appear in parsed tree.
     """
     start: int
-    """The starting position inside content (inclusive)."""
+    """Starting index of the node definition inside input string (inclusive)."""
 
     end: int
-    """The ending position inside content (exclusive)."""
+    """Ending index of the node definition inside input string (exclusive)."""
 
 
 @dataclass
-class Fragments(Node):
+class Fragments(BaseNode):
     """
-    Fragments type is the concatenation of all other nodes
-    at the same level.
+    Represents the concatenation of children nodes in the parsed tree.
     """
-    nodes: List[Node]
-    """List of nodes."""
+    children: List[BaseNode]
+    """List of children nodes."""
 
 
 @dataclass
-class RawString(Node):
+class EscapedRawString(BaseNode):
     """
-    RawString type stores the actual text extracted
-    from main content.
+    Represent the text wrapped inside the @-expression
+    pattern in the form of @"backslash-escaped string"
     """
-    text: str
+    escaped_string: str
+    """String with backslash being escaped."""
+
+
+@dataclass
+class RawString(BaseNode):
+    """
+    Represents the actual text lifted from the input string
+    without any modifications.
+    """
+    string: str
     """Actual string."""
 
 
 @dataclass
-class Identifier(Node):
+class Identifier(BaseNode):
     """
-    Identifier type stores identifier name
-    which appears right after @-symbol of the @-expression.
+    Represents the identifier name token right after @-symbol.
     """
     name: str
-
-
-@dataclass
-class AtMacroExpr(Node):
-    """
-    AtMacroExpr type stores the identifier
-    as well as the raw string within the @-expression.
-    """
-    identifier: Identifier
-    raw_string: RawString
-
+    """Identifier name."""
 
 @dataclass
-class AtNormalExpr(Node):
+class AtExpression(BaseNode):
     """
-    AtNormalExpr type stores the identifier
-    as well as the recursive fragments within the @-expression.
+    Represents the @-expression consisting of
+    the identifier, option dict, and optional recursive fragments.
     """
     identifier: Identifier
-    fragments: Fragments
+    """Identifier part."""
+
+    options: Dict[str, Atom] = field(default_factory=dict)
+    """Options which acts like keyword dictionary."""
+
+    fragments: Optional[Fragments] = None
+    """Recursive fragments of the @-expression."""
