@@ -32,7 +32,7 @@ class Fragments(BaseNode):
 class EscapedRawString(BaseNode):
     """
     Represent the text wrapped inside the @-expression
-    pattern in the form of @"backslash-escaped string"
+    pattern in the form of `@"backslash-escaped string"`.
     """
     escaped_string: str
     """String with backslash being escaped."""

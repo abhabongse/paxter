@@ -47,7 +47,7 @@ OPENING_TO_CLOSING_TRANS = str.maketrans("#<{", "#>}")
 def opening_to_closing(opening_pattern: str) -> str:
     """
     Converts scope opening pattern into closing pattern
-    (such as '<##<{' into '}>##>').
+    (such as `'<##<{'` into `'}>##>'`).
     """
     return opening_pattern.translate(OPENING_TO_CLOSING_TRANS)[::-1]
 
@@ -80,11 +80,11 @@ class Paxter:
         self.parsed_tree = self.parse_global_fragments()
 
     @classmethod
-    def parse(cls, content: str) -> Fragments:
+    def parse(cls, input_string: str) -> Fragments:
         """
         Use this class method to perform parsing on input string.
         """
-        parsed_obj = cls(content)
+        parsed_obj = cls(input_string)
         return parsed_obj.parsed_tree
 
     def parse_global_fragments(self) -> Fragments:
@@ -164,7 +164,7 @@ class Paxter:
     def parse_delimited_lone_identifier(self) -> Optional[AtExpression]:
         """
         Parse the delimited lone identifier from the @-expression
-        which has the form of @|identifier|.
+        which has the form of `@|identifier|`.
         """
         prefix_matchobj = DELIMITED_LONE_ID_RE.match(self.input_string, self.curr_pos)
         if prefix_matchobj is None:
@@ -206,7 +206,7 @@ class Paxter:
     def extract_raw_node(matchobj: Match) -> RawString:
         """
         Construct RawString node based on the given match object
-        with group named 'raw'.
+        with group named **raw**.
         """
         text = matchobj.group('raw')
         start, end = matchobj.span('raw')
@@ -216,7 +216,7 @@ class Paxter:
     def extract_id_node(matchobj: Match) -> Identifier:
         """
         Construct Identifier node based on the given match object
-        with group named 'identifier'
+        with group named **identifier**.
         """
         name = matchobj.group('identifier')
         start, end = matchobj.span('identifier')
