@@ -1,29 +1,5 @@
 """
 Recursive descent parser for Paxter experimental language.
-
-```
-start: fragments
-fragments: fragment*
-fragment:
-    | NON_GREEDY_STRING
-    | "@\"" ESCAPED_STRING "\""
-    | "@|" IDENTIFIER "|"
-    | "@" IDENTIFIER? options? wrapped_fragments  // options currently not implemented
-    | "@" IDENTIFIER  // greedy
-options: "[" ( option ( "," option )* ","? )? "]"  // ignore whitespaces
-option: IDENTIFIER "=" ATOMIC_VALUE
-wrapped_fragments:
-    | "#" wrapped_fragments "#"
-    | "<" wrapped_fragments ">"
-    | "{" fragments "}"
-
-IDENTIFIER: /[A-Za-z_][A-Za-z0-9_]*/
-NON_GREEDY_STRING: /.*?/
-ESCAPED_STRING:
-NUMBER: ...  // to be determined
-CONSTANTS: "true" | "false" | "null"
-ATOMIC_VALUE: ESCAPED_STRING | NUMBER | CONSTANTS
-```
 """
 import functools
 import re
