@@ -25,11 +25,12 @@ $ python -m paxter --help
 start ::= fragments
 fragments ::= fragment*
 fragment ::=
-    | "@" MACRO_IDENTIFIER delimited_macro_at_expr
-    | "@" NORMAL_IDENTIFIER options delimited_normal_at_expr
-    | "@" NORMAL_IDENTIFIER delimited_normal_at_expr
-    | "@" NORMAL_IDENTIFIER
-    | "@" delimited_string_literal
+    | "@" IDENTIFIER "!" delimited_macro_at_expr
+    | "@" "!" delimited_macro_at_expr  /* typically for python stmt */
+    | "@" IDENTIFIER options delimited_normal_at_expr
+    | "@" IDENTIFIER delimited_normal_at_expr
+    | "@" delimited_normal_at_expr  /* typically for python expr */
+    | "@" IDENTIFIER
     | NON_GREEDY_RAW_TEXT
 delimited_macro_at_expr ::=
     | "#" delimited_macro_at_expr "#"
@@ -43,17 +44,12 @@ delimited_normal_at_expr ::=
     | "#" delimited_normal_at_expr "#"
     | "<" delimited_normal_at_expr ">"
     | "{" fragments "}"
-delimited_string_literal ::=
-    | "#" delimited_string_literal "#"
-    | "<" delimited_string_literal ">"
-    | "\\"" NON_GREEDY_RAW_TEXT "\\""
 
 RAW_TEXT ::= /.*?/
-NORMAL_IDENTIFIER ::= /[A-Za-z_][A-Za-z0-9_]]*/
-MACRO_IDENTIFIER ::= NORMAL_IDENTIFIER? "!"
+IDENTIFIER ::= /[A-Za-z_][A-Za-z0-9_]*/
 ATOMIC_VALUE ::=
     | NUMBER
     | ESCAPED_STRING
-    | NORMAL_IDENTIFIER     // includes interpretation of boolean and null value
+    | NORMAL_IDENTIFIER     /* includes bool and null tokens */
 ```
 """
