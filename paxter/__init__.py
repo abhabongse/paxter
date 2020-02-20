@@ -26,10 +26,10 @@ start ::= fragments
 fragments ::= fragment*
 fragment ::=
     | "@" IDENTIFIER "!" delimited_macro_at_expr
-    | "@" "!" delimited_macro_at_expr  /* typically for python stmt */
+    | "@" "!" delimited_macro_at_expr   /* typically for python stmt */
     | "@" IDENTIFIER options delimited_normal_at_expr
     | "@" IDENTIFIER delimited_normal_at_expr
-    | "@" delimited_normal_at_expr  /* typically for python expr */
+    | "@" delimited_normal_at_expr      /* typically for python expr */
     | "@" IDENTIFIER
     | NON_GREEDY_RAW_TEXT
 delimited_macro_at_expr ::=
@@ -50,6 +50,6 @@ IDENTIFIER ::= /[A-Za-z_][A-Za-z0-9_]*/
 ATOMIC_VALUE ::=
     | NUMBER
     | ESCAPED_STRING
-    | NORMAL_IDENTIFIER     /* includes bool and null tokens */
+    | NORMAL_IDENTIFIER                 /* includes bool and null tokens */
 ```
 """
