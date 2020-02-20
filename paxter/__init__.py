@@ -30,7 +30,7 @@ fragment ::=
     | "@" IDENTIFIER options delimited_normal_at_expr
     | "@" IDENTIFIER delimited_normal_at_expr
     | "@" delimited_normal_at_expr      /* typically for python expr */
-    | "@" IDENTIFIER
+    | "@" IDENTIFIER                    /* shorthand for @{IDENTIFIER} */
     | NON_GREEDY_RAW_TEXT
 delimited_macro_at_expr ::=
     | "#" delimited_macro_at_expr "#"
