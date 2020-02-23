@@ -5,7 +5,7 @@ from paxter.parser import Paxter
 
 
 @pytest.mark.parametrize(
-    ("content", "expected"),
+    ("input_text", "expected"),
     [
         pytest.param(
             " @hello{ @hi{x} }>",
@@ -125,7 +125,7 @@ from paxter.parser import Paxter
         ),
     ],
 )
-def test_parser(content, expected):
-    assert Paxter.parse(content) == expected
+def test_parser(input_text, expected):
+    assert Paxter.parse(input_text) == expected
 
 # TODO: add more unit tests for syntax errors
