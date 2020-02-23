@@ -175,6 +175,7 @@ class Paxter:
         elif AT_EXPR_FUNC_PREFIX_RE.match(self.input_text, start_pos):
             return self.parse_at_expr_others(start_pos)
         else:
+            # TODO: implement wrapped raw text literals
             raise SyntaxError(
                 f"expecting identifier after @-symbol at position {start_pos}",
             )
