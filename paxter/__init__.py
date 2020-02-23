@@ -25,12 +25,11 @@ $ python -m paxter --help
 start ::= fragments
 fragments ::= fragment*
 fragment ::=
+    | "@" "!" delimited_macro_at_expr
     | "@" IDENTIFIER "!" delimited_macro_at_expr
-    | "@" "!" delimited_macro_at_expr   /* typically for python stmt */
     | "@" IDENTIFIER options delimited_normal_at_expr
     | "@" IDENTIFIER delimited_normal_at_expr
-    | "@" delimited_normal_at_expr      /* typically for python expr */
-    | "@" IDENTIFIER                    /* shorthand for @{IDENTIFIER} */
+    | "@" IDENTIFIER                    /* shorthand for @!{IDENTIFIER} */
     | NON_GREEDY_RAW_TEXT
 delimited_macro_at_expr ::=
     | "#" delimited_macro_at_expr "#"

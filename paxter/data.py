@@ -4,7 +4,7 @@ Collection of classes represents data node in parsed tree.
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Union
 
-Atom = Union[str, int, float, bool]
+Atom = Union[str, int, float, bool, None]
 
 
 @dataclass
@@ -22,51 +22,59 @@ class BaseNode:
 @dataclass
 class Fragments(BaseNode):
     """
-    Represents the concatenation of children nodes in the parsed tree.
+    Concatenation of children nodes in the parsed tree.
     """
     children: List[BaseNode]
     """List of children nodes."""
 
 
 @dataclass
-class EscapedRawString(BaseNode):
+class RawText(BaseNode):
     """
-    Represent the text wrapped inside the @-expression
-    pattern in the form of `@"backslash-escaped string"`.
-    """
-    escaped_string: str
-    """String with backslash being escaped."""
-
-
-@dataclass
-class RawString(BaseNode):
-    """
-    Represents the actual text lifted from the input string
-    without any modifications.
+    Raw text which is presented inside a list of fragments,
+    inside the @-expression macro, or embedded in `@"raw string"`.
     """
     string: str
-    """Actual string."""
+    """String content."""
 
 
 @dataclass
 class Identifier(BaseNode):
     """
-    Represents the identifier name token right after @-symbol.
+    Identifier name token succeeding the @-symbol.
     """
     name: str
     """Identifier name."""
 
+
 @dataclass
-class AtExpression(BaseNode):
+class AtExprMacro(BaseNode):
     """
-    Represents the @-expression consisting of
-    the identifier, option dict, and optional recursive fragments.
+    An @-expression macro consisting of (possibly empty) identifier
+    plus the wrapped raw text (as in `@id!{raw text}`).
+
+    Note that lone `@id` that is part of a larger @-expression
+    will be expanded to `@!{id}`.
     """
     identifier: Identifier
     """Identifier part."""
 
-    options: Dict[str, Atom] = field(default_factory=dict)
-    """Options which acts like keyword dictionary."""
+    raw_text: RawText
+    """Raw text under the macro @-expression."""
 
-    fragments: Optional[Fragments] = None
-    """Recursive fragments of the @-expression."""
+
+@dataclass
+class AtExprFunc(BaseNode):
+    """
+    An @-expression function call consisting of the identifier,
+    the recursive fragments, and the option dictionary
+    (as in `@id[options]{fragments...}`).
+    """
+    identifier: Identifier
+    """Identifier part."""
+
+    fragments: Fragments
+    """Recursively nested fragments."""
+
+    options: Dict[str, Atom] = field(default_factory=dict)
+    """Options which acts like keyword argument dictionary."""

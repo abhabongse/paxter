@@ -1,6 +1,6 @@
 import pytest
 
-from paxter.data import AtExpression, Fragments, Identifier, RawString
+from paxter.data import AtExprFunc, AtExprMacro, Fragments, Identifier, RawText
 from paxter.parser import Paxter
 
 
@@ -12,31 +12,31 @@ from paxter.parser import Paxter
             Fragments(
                 start=0, end=18,
                 children=[
-                    RawString(start=0, end=1, string=' '),
-                    AtExpression(
+                    RawText(start=0, end=1, string=" "),
+                    AtExprFunc(
                         start=1, end=17,
-                        identifier=Identifier(start=2, end=7, name='hello'),
+                        identifier=Identifier(start=2, end=7, name="hello"),
                         fragments=Fragments(
                             start=8, end=16,
                             children=[
-                                RawString(start=8, end=9, string=' '),
-                                AtExpression(
+                                RawText(start=8, end=9, string=" "),
+                                AtExprFunc(
                                     start=9, end=15,
-                                    identifier=Identifier(start=10, end=12,
-                                                          name='hi'),
+                                    identifier=Identifier(start=10, end=12, name="hi"),
                                     fragments=Fragments(
                                         start=13, end=14,
                                         children=[
-                                            RawString(start=13, end=14,
-                                                      string='x'),
+                                            RawText(start=13, end=14, string="x")
                                         ],
                                     ),
+                                    options={},
                                 ),
-                                RawString(start=15, end=16, string=' '),
+                                RawText(start=15, end=16, string=" "),
                             ],
                         ),
+                        options={},
                     ),
-                    RawString(start=17, end=18, string='>')
+                    RawText(start=17, end=18, string=">"),
                 ],
             ),
         ),
@@ -45,40 +45,81 @@ from paxter.parser import Paxter
             Fragments(
                 start=0, end=13,
                 children=[
-                    RawString(start=0, end=1, string=' '),
-                    AtExpression(
+                    RawText(start=0, end=1, string=" "),
+                    AtExprFunc(
                         start=1, end=13,
-                        identifier=Identifier(start=2, end=7, name='hello'),
+                        identifier=Identifier(start=2, end=7, name="hello"),
                         fragments=Fragments(
                             start=9, end=11,
-                            children=[
-                                RawString(start=9, end=11, string='{}'),
-                            ],
+                            children=[RawText(start=9, end=11, string="{}")]
                         ),
+                        options={},
                     ),
                 ],
             ),
         ),
         pytest.param(
-            " @|he|llo @hello{} ",
+            " @hey!{@>@} ",
             Fragments(
-                start=0, end=19,
+                start=0, end=12,
                 children=[
-                    RawString(start=0, end=1, string=" "),
-                    AtExpression(
-                        start=1, end=6,
-                        identifier=Identifier(start=3, end=5, name="he"),
-                        options={},
-                        fragments=None,
+                    RawText(start=0, end=1, string=" "),
+                    AtExprMacro(
+                        start=1, end=11,
+                        identifier=Identifier(start=2, end=5, name="hey"),
+                        raw_text=RawText(start=7, end=10, string="@>@"),
                     ),
-                    RawString(start=6, end=10, string="llo "),
-                    AtExpression(
-                        start=10, end=18,
-                        identifier=Identifier(start=11, end=16, name="hello"),
-                        options={},
-                        fragments=Fragments(start=17, end=17, children=[]),
+                    RawText(start=11, end=12, string=" "),
+                ],
+            ),
+        ),
+        pytest.param(
+            "@!{@hello{}}",
+            Fragments(
+                start=0, end=12,
+                children=[
+                    AtExprMacro(
+                        start=0, end=11,
+                        identifier=Identifier(start=1, end=1, name=""),
+                        raw_text=RawText(start=3, end=10, string="@hello{"),
                     ),
-                    RawString(start=18, end=19, string=" "),
+                    RawText(start=11, end=12, string="}"),
+                ],
+            ),
+        ),
+        pytest.param(
+            "@!#{@hello{}}#",
+            Fragments(
+                start=0, end=14,
+                children=[
+                    AtExprMacro(
+                        start=0, end=14,
+                        identifier=Identifier(start=1, end=1, name=""),
+                        raw_text=RawText(start=4, end=12, string="@hello{}"),
+                    )
+                ],
+            ),
+        ),
+        pytest.param(
+            "@hello{@hi}",
+            Fragments(
+                start=0, end=11,
+                children=[
+                    AtExprFunc(
+                        start=0, end=11,
+                        identifier=Identifier(start=1, end=6, name="hello"),
+                        fragments=Fragments(
+                            start=7, end=10,
+                            children=[
+                                AtExprMacro(
+                                    start=7, end=10,
+                                    identifier=Identifier(start=8, end=8, name=""),
+                                    raw_text=RawText(start=8, end=10, string="hi"),
+                                )
+                            ],
+                        ),
+                        options={},
+                    )
                 ],
             ),
         ),
