@@ -41,7 +41,7 @@ def left_to_right(left_pattern: str) -> str:
 #
 
 AT_EXPR_MACRO_PREFIX_RE = (
-    re.compile(r'@(?P<identifier>(?:[A-Za-z_][A-Za-z0-9_]*)?)!', flags=re.DOTALL)
+    re.compile(r'@(?P<identifier>(?:[A-Za-z_][A-Za-z0-9_]*)?!)', flags=re.DOTALL)
 )
 AT_EXPR_FUNC_PREFIX_RE = (
     re.compile(r'@(?P<identifier>[A-Za-z_][A-Za-z0-9_]*)', flags=re.DOTALL)
@@ -231,13 +231,15 @@ class Paxter:
         id_node = self.extract_id_node(prefix_mobj)
         next_pos = prefix_mobj.end()
 
+        # TODO: implement options
+
         # Parse left (opening) pattern
         left_pattern_mobj = LEFT_RE.match(self.input_text, next_pos)
         if left_pattern_mobj is None:
 
             # Assume @id -> @!{id}
             raw_node = RawText(id_node.start, id_node.end, id_node.name)
-            id_node = Identifier(id_node.start, id_node.start, "")
+            id_node = Identifier(id_node.start, id_node.start, "!")
             return ParseResult(
                 end_pos=next_pos,
                 node=AtExprMacro(start_pos,next_pos,id_node,raw_node),

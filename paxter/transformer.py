@@ -1,21 +1,13 @@
 """
 Base parsed tree transformer.
 """
-from paxter.data import (
-    AtExprFunc, AtExprMacro, BaseNode, Fragments, Identifier, RawText,
-)
+from paxter.data import AtExprFunc, AtExprMacro, BaseNode, Fragments, RawText
 
 
 class Transformer:
     """
     Paxter parsed tree transformer.
     """
-
-    @classmethod
-    def transform(cls, env: dict, node: BaseNode) -> str:
-        transformed_obj = cls()
-        return transformed_obj.visit(env, node)
-
     def visit(self, env: dict, node: BaseNode) -> str:
         """
         Generic node visitor method; dispatch to a more specific method.
@@ -39,13 +31,9 @@ class Transformer:
         return node.string
 
     def visit_at_expr_macro(self, env: dict, node: AtExprMacro) -> str:
-        if node.identifier.name:
-            func = env[node.identifier.name]
-            arg = node.raw_text.string
-            return func(arg)
-        else:
-            expr = node.raw_text.string
-            return eval(expr, env)
+        func = env[node.identifier.name]
+        arg = node.raw_text.string
+        return func(env, arg)
 
     def visit_at_expr_func(self, env: dict, node: AtExprFunc) -> str:
         func = env[node.identifier.name]

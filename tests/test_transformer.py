@@ -1,5 +1,7 @@
 from paxter.parser import Paxter
-from paxter.transformers.base import Transformer
+from paxter.transformer import Transformer
+
+transformer = Transformer()
 
 INPUT_TEXT = """
     @bold{Tom @italic{and} Jerry}!
@@ -16,8 +18,10 @@ EXPECTED_TEXT = """
 """
 
 ENV = {
-    'bold': lambda s: f"<b>{s}</b>",
-    'italic': lambda s: f"<i>{s}</i>",
+    '__builtins__': {},
+    'bold': lambda token: f"<b>{token}</b>",
+    'italic': lambda token: f"<i>{token}</i>",
+    '!': lambda env, token: eval(token, env),
     'name': "John",
     'age': 25,
 }
@@ -25,5 +29,5 @@ ENV = {
 
 def test_base_transformer():
     parsed_tree = Paxter.parse(INPUT_TEXT)
-    output_text = Transformer.transform(ENV, parsed_tree)
+    output_text = transformer.visit(ENV, parsed_tree)
     assert output_text == EXPECTED_TEXT

@@ -66,7 +66,7 @@ from paxter.parser import Paxter
                     RawText(start=0, end=1, string=" "),
                     AtExprMacro(
                         start=1, end=11,
-                        identifier=Identifier(start=2, end=5, name="hey"),
+                        identifier=Identifier(start=2, end=6, name="hey!"),
                         raw_text=RawText(start=7, end=10, string="@>@"),
                     ),
                     RawText(start=11, end=12, string=" "),
@@ -80,7 +80,7 @@ from paxter.parser import Paxter
                 children=[
                     AtExprMacro(
                         start=0, end=11,
-                        identifier=Identifier(start=1, end=1, name=""),
+                        identifier=Identifier(start=1, end=2, name="!"),
                         raw_text=RawText(start=3, end=10, string="@hello{"),
                     ),
                     RawText(start=11, end=12, string="}"),
@@ -94,7 +94,7 @@ from paxter.parser import Paxter
                 children=[
                     AtExprMacro(
                         start=0, end=14,
-                        identifier=Identifier(start=1, end=1, name=""),
+                        identifier=Identifier(start=1, end=2, name="!"),
                         raw_text=RawText(start=4, end=12, string="@hello{}"),
                     )
                 ],
@@ -113,7 +113,7 @@ from paxter.parser import Paxter
                             children=[
                                 AtExprMacro(
                                     start=7, end=10,
-                                    identifier=Identifier(start=8, end=8, name=""),
+                                    identifier=Identifier(start=8, end=8, name="!"),
                                     raw_text=RawText(start=8, end=10, string="hi"),
                                 )
                             ],
