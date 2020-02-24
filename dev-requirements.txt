@@ -6,7 +6,7 @@
 #
 attrs==19.3.0             # via flake8-bugbear, jsonschema, pytest
 backcall==0.1.0           # via ipython
-bleach==3.1.0             # via nbconvert
+bleach==3.1.1             # via nbconvert
 coverage==5.0.3           # via pytest-cov
 decorator==4.4.1          # via ipython, traitlets
 defusedxml==0.6.0         # via nbconvert
