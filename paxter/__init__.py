@@ -25,32 +25,40 @@ $ python -m paxter --help
 start ::= fragments
 fragments ::= fragment*
 fragment ::=
-    | "@" "!" delimited_macro_at_expr
-    | "@" IDENTIFIER "!" delimited_macro_at_expr
-    | "@" IDENTIFIER options delimited_normal_at_expr
-    | "@" IDENTIFIER delimited_normal_at_expr
-    | "@" IDENTIFIER                    /* shorthand for @!{IDENTIFIER} */
-    | NON_GREEDY_RAW_TEXT
-delimited_macro_at_expr ::=
-    | "#" delimited_macro_at_expr "#"
-    | "<" delimited_macro_at_expr ">"
-    | "{" NON_GREEDY_RAW_TEXT "}"
-options ::= ( option ( "," option )* )?
-option ::=
-    | /\\s*/ IDENTIFIER /\\s*/ "=" /\\s*/ ATOMIC_VALUE /\\s*/
-    | /\\s*/ ATOMIC_VALUE /\\s*/
-delimited_normal_at_expr ::=
-    | "#" delimited_normal_at_expr "#"
-    | "<" delimited_normal_at_expr ">"
+    | "@" IDENTIFIER? "!" wrapped_macro_text    /* PaxterMacro */
+    | "@" IDENTIFIER opts? wrapped_fragments /* PaxterFunc */
+    | "@" IDENTIFIER                            /* PaxterPhrase (special case) */
+    | "@" wrapped_phrase                        /* PaxterPhrase */
+    | "@" wrapped_string_literal                /* Text (special case) */
+    | NON_GREEDY_TEXT                           /* Text */
+wrapped_macro_text ::=
+    | "#" wrapped_macro_text "#"
+    | "<" wrapped_macro_text ">"
+    | "{" NON_GREEDY_TEXT "}"
+wrapped_fragments ::=
+    | "#" wrapped_fragments "#"
+    | "<" wrapped_fragments ">"
     | "{" fragments "}"
+wrapped_phrase ::=
+    | "#" wrapped_phrase "#"
+    | "<" wrapped_phrase ">"
+    | "{" NON_GREEDY_TEXT "}"
+wrapped_string_literal ::=
+    | "#" wrapped_string_literal "#"
+    | "<" wrapped_string_literal ">"
+    | "\"" NON_GREEDY_TEXT "\""
+opts ::= "[" ( opt ( "," opt )* ","? )? "]"    /* space delimited */
+opt ::=
+    | IDENTIFIER "=" ATOMIC_VALUE
+    | ATOMIC_VALUE
 
-RAW_TEXT ::= /.*?/
+NON_GREEDY_TEXT ::= /.*?/
 IDENTIFIER ::= /[A-Za-z_][A-Za-z0-9_]*/
-ATOMIC_VALUE ::=
-    | NUMBER
-    | ESCAPED_STRING
-    | NORMAL_IDENTIFIER                 /* includes bool and null tokens */
+ATOMIC_VALUE ::= NUMBER | STRING | IDENTIFIER
 ```
+
+**Note:** Parsing `NUMBER` and `STRING` tokens will follow
+the [JSON specification](https://www.json.org/json-en.html).
 """
 from paxter.data import (
     AtExprFunc, AtExprMacro, BaseNode, Fragments, Identifier, RawText,
