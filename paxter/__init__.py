@@ -26,7 +26,7 @@ start ::= fragments
 fragments ::= fragment*
 fragment ::=
     | "@" IDENTIFIER? "!" wrapped_macro_text    /* PaxterMacro */
-    | "@" IDENTIFIER opts? wrapped_fragments /* PaxterFunc */
+    | "@" IDENTIFIER opts? wrapped_fragments    /* PaxterFunc */
     | "@" IDENTIFIER                            /* PaxterPhrase (special case) */
     | "@" wrapped_phrase                        /* PaxterPhrase */
     | "@" wrapped_string_literal                /* Text (special case) */
@@ -46,7 +46,7 @@ wrapped_phrase ::=
 wrapped_string_literal ::=
     | "#" wrapped_string_literal "#"
     | "<" wrapped_string_literal ">"
-    | "\"" NON_GREEDY_TEXT "\""
+    | "\\"" NON_GREEDY_TEXT "\\""
 opts ::= "[" ( opt ( "," opt )* ","? )? "]"    /* space delimited */
 opt ::=
     | IDENTIFIER "=" ATOMIC_VALUE
