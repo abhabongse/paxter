@@ -9,12 +9,15 @@ from typing import List, Optional, Tuple, Union
 class Node:
     """
     Base class for all types of nodes appearing in parsed tree.
+
+    Attributes:
+        start_index: Starting index of the node definition
+            inside input string (inclusive)
+        end_index: Ending index of the node definition
+            inside input string (exclusive)
     """
     start_index: int
-    """Starting index of the node definition inside input string (inclusive)."""
-
     end_index: int
-    """Ending index of the node definition inside input string (exclusive)."""
 
 
 #  ____                    _   _
@@ -35,11 +38,13 @@ class BaseAtom(Node):
 @dataclass
 class Identifier(BaseAtom):
     """
-    Identifier name which immediately follows the @-symbol (except for phrases)
-    or which is part of the key-value option list.
+    Identifier name which either immediately follows the non-phrasal @-symbol,
+    or is part of the key-value option list.
+
+    Attributes:
+        name: Identifier name
     """
     name: str
-    """Identifier name."""
 
 
 @dataclass
@@ -47,9 +52,11 @@ class Literal(BaseAtom):
     """
     Literal value part of the key-value option list.
     It can either be JSON-compatible number or string literal.
+
+    Attributes:
+        value: Python value of the JSON number/string literal
     """
     value: Union[str, int, float]
-    """Python value of the JSON number of string literal."""
 
 
 KeyValue = Tuple[Identifier, Optional[BaseAtom]]
@@ -75,9 +82,11 @@ class Text(BaseFragment):
     """
     Text which may be presented inside a list of fragments,
     inside an @-expression macro, or embedded within the `@"raw string"`.
+
+    Attributes:
+        string: String content
     """
     string: str
-    """String content."""
 
 
 @dataclass
@@ -85,13 +94,14 @@ class PaxterMacro(BaseFragment):
     """
     An @-expression macro following the `@id!{raw text}` pattern,
     consisting of an identifier (whose names ends with `!`)
-    and the wrapped text which cannot contain nested @-expressions.
+    and the wrapped text which _cannot_ contain nested @-expressions.
+
+    Attributes:
+        id: Identifier part (always ending with an exclamation mark)
+        text: Text under the @-expression macro
     """
     id: Identifier
-    """Identifier part (always ending with an exclamation mark)."""
-
     text: Text
-    """Text under the @-expression macro."""
 
 
 @dataclass
@@ -107,21 +117,27 @@ class PaxterFunc(BaseFragment):
     but the value part may still be absent from the key-value pair.
     Should the value part be present, there must be a `=` sign separating
     the key part and the value part within the key-value pair.
+
+    For example, the option `[key1,key2="value2",key3=value3]` translates to
+    ```
+    options = [(Identifier("key1"), None),
+               (Identifier("key2"), Literal("value2")),
+               (Identifier("key3"), Identifier("value3"))]
+    ```
+
+    Attributes:
+        id: Identifier part
+        fragments: List of recursively nested fragments
+        options: Optional list of key-value pairs presented within the square brackets.
+
+            - This value will be `None` when square brackets pair is _not_ present.
+            - If the value part is _not_ present within each key-value pair,
+              the value part will be represented with `None`.
+
     """
     id: Identifier
-    """Identifier part."""
-
     fragments: List[BaseFragment]
-    """Recursively nested fragments."""
-
     options: Optional[List[KeyValue]]
-    """
-    Optional list of key-value pairs presented within the square brackets.
-    
-    - This value will be `None` when square brackets are not present.
-    - If the value part is not present within each key-value pair,
-      the value part will be represented with `None`.
-    """
 
 
 @dataclass
@@ -131,6 +147,8 @@ class PaxterPhrase(BaseFragment):
     Normally it follows the `@{phrase}` pattern,
     but it may also follow the simpler `@phrase` pattern
     if it is unambiguously definitely _not_ the @-expression function call.
+
+    Attributes:
+        phrase: Any text phrase
     """
     phrase: Text
-    """Any text phrase."""
