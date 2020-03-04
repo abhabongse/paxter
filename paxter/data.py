@@ -1,5 +1,5 @@
 """
-Collection of classes represents data node in parsed tree.
+Collection of classes representing data node in parsed tree.
 """
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Union

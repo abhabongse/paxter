@@ -74,7 +74,7 @@ class Lexer:
             )
         return self.compiled_fragment_breaks[right_pattern]
 
-    def macro_break_re(self, right_pattern: str) -> Pattern[str]:
+    def text_break_re(self, right_pattern: str) -> Pattern[str]:
         """
         Compiles a regular expression lexer to non-greedily match some text,
         then followed by the given right (i.e. closing) pattern.

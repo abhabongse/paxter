@@ -1,5 +1,5 @@
 """
-Main package of the project.
+Paxter document pre-processing language.
 
 ## Dependencies
 
