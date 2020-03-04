@@ -11,13 +11,13 @@ class Node:
     Base class for all types of nodes appearing in parsed tree.
 
     Attributes:
-        start_index: Starting index of the node definition
+        start_pos: Starting index of the node definition
             inside input string (inclusive)
-        end_index: Ending index of the node definition
+        end_pos: Ending index of the node definition
             inside input string (exclusive)
     """
-    start_index: int
-    end_index: int
+    start_pos: int
+    end_pos: int
 
 
 #  ____                    _   _
@@ -75,6 +75,18 @@ class BaseFragment(Node):
     Node types which are allowed to be part of the list of fragments.
     """
     pass
+
+
+@dataclass
+class FragmentList(Node):
+    """
+    A list of fragment nodes.
+
+    Attributes:
+        children: List of children fragment nodes
+    """
+    children: List[BaseFragment]
+
 
 
 @dataclass
@@ -136,7 +148,7 @@ class PaxterFunc(BaseFragment):
 
     """
     id: Identifier
-    fragments: List[BaseFragment]
+    fragments: FragmentList
     options: Optional[List[KeyValue]]
 
 

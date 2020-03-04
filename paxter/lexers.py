@@ -1,62 +1,118 @@
 """
-A collection of regexp-based lexers for Paxter experimental language.
+Regular expression-based lexers for Paxter language.
 """
 import functools
 import re
-from typing import Pattern
+from typing import Dict, Match, Pattern
 
-#  _____ _ _
-# |  ___| (_)_ __  _ __   ___ _ __ ___
-# | |_  | | | '_ \| '_ \ / _ \ '__/ __|
-# |  _| | | | |_) | |_) |  __/ |  \__ \
-# |_|   |_|_| .__/| .__/ \___|_|  |___/
-#           |_|   |_|
+from paxter.data import Identifier, Text
+from paxter.exceptions import PaxterBaseException, PaxterConfigError
 
-LEFT_CHARS = r'#<{"'
-RIGHT_CHARS = r'#>}"'
-LEFT_TO_RIGHT_TRANS = str.maketrans(LEFT_CHARS, RIGHT_CHARS)
+ALLOWED_SWITCH_RE = re.compile(r'[^\s\w#<>{}]')
+ALLOWED_LEFT_PATTERN_RE = re.compile(r'[#<]*[{"]')
+LEFT_TO_RIGHT_TRANS = str.maketrans(r'#<{"', r'#>}"')
 
 
-def flip_pattern(lft_pattern: str) -> str:
+class Lexer:
     """
-    Flips the given left (i.e. opening) pattern into its corresponding
-    right (i.e. closing) pattern (such as `"<##<{"` into `"}>##>"`).
+    Lexer helper class for Paxter experimental language.
+
+    Attributes:
+        switch: A single symbol character which enables
+            Paxter macro, Paxter function, or Paxter phrase
+        compiled_fragment_breaks: A dictionary mapping of each left pattern
+            to its compiled fragment break regular expression
+        compiled_macro_breaks: A dictionary mapping of each left pattern
+            to its compiled macro break regular expressions
     """
-    assert all(c in LEFT_CHARS for c in lft_pattern)
-    return lft_pattern.translate(LEFT_TO_RIGHT_TRANS)[::-1]
+    switch: str
+    compiled_fragment_breaks: Dict[str, Pattern[str]]
+    compiled_macro_breaks: Dict[str, Pattern[str]]
 
+    def __init__(self, switch: str = '@'):
+        if not ALLOWED_SWITCH_RE.fullmatch(switch):
+            raise PaxterConfigError(f"switch character not allowed: {switch}")
+        self.switch = re.escape(switch)
+        self.compiled_fragment_breaks = {}
+        self.compiled_macro_breaks = {}
 
-#  _
-# | |    _____  _____ _ __ ___
-# | |   / _ \ \/ / _ \ '__/ __|
-# | |__|  __/>  <  __/ |  \__ \
-# |_____\___/_/\_\___|_|  |___/
-#
+    @functools.cached_property
+    def paxter_macro_prefix_re(self) -> Pattern[str]:
+        return re.compile(rf'{self.switch}(?P<id>\w*!)', flags=re.DOTALL)
 
-PAXTER_MACRO_PREFIX_RE = re.compile(r'@(?P<id>\w*!)', flags=re.DOTALL)
-PAXTER_FUNC_PREFIX_RE = re.compile(r'@(?P<id>\w+)', flags=re.DOTALL)
-PAXTER_PHRASE_PREFIX_RE = re.compile(r'@[#<]*{', flags=re.DOTALL)
-GLOBAL_BREAK_RE = re.compile(r'(?P<text>.*?)(?P<break>@|\Z)', flags=re.DOTALL)
-LEFT_RE = re.compile(r'[#<]*{', flags=re.DOTALL)
+    @functools.cached_property
+    def paxter_func_prefix_re(self) -> Pattern[str]:
+        return re.compile(rf'{self.switch}(?P<id>\w+)', flags=re.DOTALL)
 
+    @functools.cached_property
+    def paxter_phrase_prefix_re(self) -> Pattern[str]:
+        return re.compile(rf'{self.switch}(?P<left>[#<]*{{)', flags=re.DOTALL)
 
-@functools.lru_cache(maxsize=None)
-def fragment_break_re(rgt_pattern: str) -> Pattern[str]:
-    """
-    Compiles a regular expression lexer to match some raw text non-greedily
-    followed by either the @-symbol or the given right (i.e. closing) pattern.
-    """
-    escaped_pattern = re.escape(rgt_pattern)
-    return re.compile(rf'(?P<text>.*?)(?P<break>@|{escaped_pattern})', flags=re.DOTALL)
+    @functools.cached_property
+    def paxter_string_prefix_re(self) -> Pattern[str]:
+        return re.compile(rf'{self.switch}(?P<left>[#<]*")', flags=re.DOTALL)
 
+    @functools.cached_property
+    def left_brace_re(self) -> Pattern[str]:
+        return re.compile(r'(?P<left>[#<]*{)', flags=re.DOTALL)
 
-@functools.lru_cache(maxsize=None)
-def macro_break_re(rgt_pattern: str) -> Pattern[str]:
-    """
-    Compiles a regular expression lexer to match some raw text non-greedily
-    followed by the given right (i.e. closing) pattern.
-    """
-    escaped_pattern = re.escape(rgt_pattern)
-    return re.compile(rf'(?P<text>.*?)(?P<break>{escaped_pattern})', flags=re.DOTALL)
+    @functools.cached_property
+    def global_break_re(self) -> Pattern[str]:
+        return re.compile(rf'(?P<text>.*?)(?P<break>{self.switch}|\Z)', flags=re.DOTALL)
 
-# TODO: add helper class consisting of (lexer, matchobj)
+    def fragment_break_re(self, right_pattern: str) -> Pattern[str]:
+        """
+        Compiles a regular expression lexer to non-greedily match some text,
+        then followed by either a switch symbol character
+        or the given right (i.e. closing) pattern.
+        """
+        right_pattern = re.escape(right_pattern)
+        if right_pattern not in self.compiled_fragment_breaks:
+            self.compiled_fragment_breaks[right_pattern] = re.compile(
+                rf'(?P<text>.*?)(?P<break>{self.switch}|{right_pattern})',
+                flags=re.DOTALL,
+            )
+        return self.compiled_fragment_breaks[right_pattern]
+
+    def macro_break_re(self, right_pattern: str) -> Pattern[str]:
+        """
+        Compiles a regular expression lexer to non-greedily match some text,
+        then followed by the given right (i.e. closing) pattern.
+        """
+        right_pattern = re.escape(right_pattern)
+        if right_pattern not in self.compiled_macro_breaks:
+            self.compiled_macro_breaks[right_pattern] = re.compile(
+                rf'(?P<text>.*?)(?P<break>{right_pattern})',
+                flags=re.DOTALL,
+            )
+        return self.compiled_macro_breaks[right_pattern]
+
+    @staticmethod
+    def flip_pattern(left_pattern: str) -> str:
+        """
+        Flips the given left (i.e. opening) pattern into its corresponding
+        right (i.e. closing) pattern (such as `"<##<{"` into `"}>##>"`).
+        """
+        if not ALLOWED_LEFT_PATTERN_RE.fullmatch(left_pattern):
+            raise RuntimeError("something went horribly wrong")
+        return left_pattern.translate(LEFT_TO_RIGHT_TRANS)[::-1]
+
+    @staticmethod
+    def extract_text_node(matchobj: Match[str]) -> Text:
+        """
+        Extracts Text node from the given match object
+        returned from regular expression with `"text"` group.
+        """
+        string = matchobj.group('text')
+        start_pos, end_pos = matchobj.span('text')
+        return Text(start_pos, end_pos, string)
+
+    @staticmethod
+    def extract_id_node(matchobj: Match[str]) -> Identifier:
+        """
+        Extracts Identifier node from the given match object
+        returned from regular expression with `"id"` group.
+        """
+        name = matchobj.group('id')
+        start_pos, end_pos = matchobj.span('id')
+        return Identifier(start_pos, end_pos, name)
