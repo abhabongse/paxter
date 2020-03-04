@@ -3,7 +3,8 @@ Recursive descent parser for Paxter experimental language.
 """
 from typing import List, Match, NamedTuple, Pattern
 
-from paxter.data import BaseFragment, FragmentList, Node, PaxterMacro, PaxterPhrase
+from paxter.data import BaseFragment, FragmentList, Node, PaxterMacro, PaxterPhrase, \
+    Text
 from paxter.exceptions import PaxterSyntaxError
 from paxter.lexers import Lexer
 
@@ -185,8 +186,12 @@ class Parser:
             raise RuntimeError("something went horribly wrong")
 
         # Extract text node based on the found left (i.e. opening) pattern
-        # and return the result immediately
-        return self.parse_text_inner(left_quote_matchobj)
+        # and fix the starting and ending positions before returning.
+        end_pos, text_node = self.parse_text_inner(left_quote_matchobj)
+        return ParseResult(
+            next_pos=end_pos,
+            node=Text(start_pos, end_pos, text_node.string),
+        )
 
     def parse_text_inner(self, left_matchobj: Match[str]) -> ParseResult:
         """
