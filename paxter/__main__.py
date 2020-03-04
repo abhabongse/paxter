@@ -1,6 +1,6 @@
 import click
 
-from paxter.parser import Paxter
+from paxter.parser import Parser
 
 
 @click.command()
@@ -12,7 +12,7 @@ def program(input_file, output_file):
     """
     Runs Paxter parser on input from INPUT_FILE and write to OUTPUT_FILE.
     """
-    parsed_tree = Paxter.parse(input_file.read())
+    parsed_tree = Parser.parse(input_file.read())
     output_file.write(repr(parsed_tree))
     output_file.write("\n")
 

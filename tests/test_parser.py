@@ -1,7 +1,7 @@
 import pytest
 
 from paxter.data import AtExprFunc, AtExprMacro, Fragments, Identifier, RawText
-from paxter.parser import Paxter
+from paxter.parser import Parser
 
 
 @pytest.mark.parametrize(
@@ -126,6 +126,6 @@ from paxter.parser import Paxter
     ],
 )
 def test_parser(input_text, expected):
-    assert Paxter.parse(input_text) == expected
+    assert Parser.parse(input_text) == expected
 
 # TODO: add more unit tests for syntax errors

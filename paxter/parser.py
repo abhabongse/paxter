@@ -1,85 +1,17 @@
 """
 Recursive descent parser for Paxter experimental language.
 """
-import functools
-import re
 from typing import List, Match, NamedTuple, Pattern
 
-from paxter.data import (
-    AtExprFunc, AtExprMacro, BaseNode, Fragments, Identifier, RawText,
-)
+from paxter.data import Node
 
 
 class ParseResult(NamedTuple):
-    end_pos: int
-    node: BaseNode
+    next_pos: int
+    node: Node
 
 
-#  _____ _ _
-# |  ___| (_)_ __  _ __   ___ _ __ ___
-# | |_  | | | '_ \| '_ \ / _ \ '__/ __|
-# |  _| | | | |_) | |_) |  __/ |  \__ \
-# |_|   |_|_| .__/| .__/ \___|_|  |___/
-#           |_|   |_|
-
-LEFT_TO_RIGHT_TRANS = str.maketrans("#<{", "#>}")
-
-
-def left_to_right(left_pattern: str) -> str:
-    """
-    Converts the left (opening) pattern into right (closing) pattern
-    (such as `"<##<{"` into `"}>##>"`).
-    """
-    return left_pattern.translate(LEFT_TO_RIGHT_TRANS)[::-1]
-
-
-#  _____     _              _
-# |_   _|__ | | _____ _ __ (_)_______ _ __ ___
-#   | |/ _ \| |/ / _ \ '_ \| |_  / _ \ '__/ __|
-#   | | (_) |   <  __/ | | | |/ /  __/ |  \__ \
-#   |_|\___/|_|\_\___|_| |_|_/___\___|_|  |___/
-#
-
-AT_EXPR_MACRO_PREFIX_RE = (
-    re.compile(r'@(?P<identifier>(?:[A-Za-z_][A-Za-z0-9_]*)?!)', flags=re.DOTALL)
-)
-AT_EXPR_FUNC_PREFIX_RE = (
-    re.compile(r'@(?P<identifier>[A-Za-z_][A-Za-z0-9_]*)', flags=re.DOTALL)
-)
-GLOBAL_BREAK_RE = re.compile(rf'(?P<raw>.*?)(?P<break>@|\Z)', flags=re.DOTALL)
-LEFT_RE = re.compile(r'[#<]*{', flags=re.DOTALL)
-
-
-@functools.lru_cache(maxsize=None)
-def compile_fragment_break_re(right_pattern: str) -> Pattern[str]:
-    """
-    Compiles regular expression to match some raw strings
-    followed by @-symbol or the given right (closing) pattern.
-    """
-    escaped_right_pattern = re.escape(right_pattern)
-    return re.compile(rf'(?P<raw>.*?)(?P<break>@|{escaped_right_pattern})',
-                      flags=re.DOTALL)
-
-
-@functools.lru_cache(maxsize=None)
-def compile_raw_text_break_re(right_pattern: str) -> Pattern[str]:
-    """
-    Compiles regular expression to match some raw strings
-    followed by the given right (closing) pattern.
-    """
-    escaped_right_pattern = re.escape(right_pattern)
-    return re.compile(rf'(?P<raw>.*?)(?P<break>{escaped_right_pattern})',
-                      flags=re.DOTALL)
-
-
-#  ____
-# |  _ \ __ _ _ __ ___  ___ _ __
-# | |_) / _` | '__/ __|/ _ \ '__|
-# |  __/ (_| | |  \__ \  __/ |
-# |_|   \__,_|_|  |___/\___|_|
-#
-
-class Paxter:
+class Parser:
     """
     Recursive descent parser for Paxter experimental language.
 
@@ -237,13 +169,12 @@ class Paxter:
         # Parse left (opening) pattern
         left_pattern_mobj = LEFT_RE.match(self.input_text, next_pos)
         if left_pattern_mobj is None:
-
             # Assume @id -> @!{id}
             raw_node = RawText(id_node.start, id_node.end, id_node.name)
             id_node = Identifier(id_node.start, id_node.start, "!")
             return ParseResult(
                 end_pos=next_pos,
-                node=AtExprMacro(start_pos,next_pos,id_node,raw_node),
+                node=AtExprMacro(start_pos, next_pos, id_node, raw_node),
             )
 
         # Extract left (opening) pattern
