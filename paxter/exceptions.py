@@ -3,6 +3,8 @@ Collection of exceptions for Paxter language utilities.
 """
 from typing import Dict, Optional
 
+__all__ = ['PaxterBaseException', 'PaxterSyntaxError', 'PaxterConfigError']
+
 
 class PaxterBaseException(Exception):
     """

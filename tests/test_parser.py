@@ -1,124 +1,167 @@
 import pytest
 
-from paxter.data import AtExprFunc, AtExprMacro, Fragments, Identifier, RawText
+from paxter.data import (FragmentList, Identifier, PaxterFunc, PaxterMacro,
+                         PaxterPhrase, Text)
 from paxter.parser import Parser
 
+
+# TODO: add more unit tests for syntax errors
 
 @pytest.mark.parametrize(
     ("input_text", "expected"),
     [
         pytest.param(
             " @hello{ @hi{x} }>",
-            Fragments(
-                start=0, end=18,
+            FragmentList(
+                start_pos=0, end_pos=18,
                 children=[
-                    RawText(start=0, end=1, string=" "),
-                    AtExprFunc(
-                        start=1, end=17,
-                        identifier=Identifier(start=2, end=7, name="hello"),
-                        fragments=Fragments(
-                            start=8, end=16,
+                    Text(start_pos=0, end_pos=1, string=" "),
+                    PaxterFunc(
+                        start_pos=1, end_pos=17,
+                        id=Identifier(start_pos=2, end_pos=7, name="hello"),
+                        fragments=FragmentList(
+                            start_pos=8, end_pos=16,
                             children=[
-                                RawText(start=8, end=9, string=" "),
-                                AtExprFunc(
-                                    start=9, end=15,
-                                    identifier=Identifier(start=10, end=12, name="hi"),
-                                    fragments=Fragments(
-                                        start=13, end=14,
+                                Text(start_pos=8, end_pos=9, string=" "),
+                                PaxterFunc(
+                                    start_pos=9, end_pos=15,
+                                    id=Identifier(start_pos=10, end_pos=12, name="hi"),
+                                    fragments=FragmentList(
+                                        start_pos=13, end_pos=14,
                                         children=[
-                                            RawText(start=13, end=14, string="x")
+                                            Text(start_pos=13, end_pos=14, string="x"),
                                         ],
                                     ),
-                                    options={},
+                                    options=None,
                                 ),
-                                RawText(start=15, end=16, string=" "),
+                                Text(start_pos=15, end_pos=16, string=" "),
                             ],
                         ),
-                        options={},
+                        options=None,
                     ),
-                    RawText(start=17, end=18, string=">"),
+                    Text(start_pos=17, end_pos=18, string=">"),
+                ],
+            ),
+        ),
+        pytest.param(
+            "@yes{!@{x}_@y^@z{1}_}",
+            FragmentList(
+                start_pos=0, end_pos=21,
+                children=[
+                    PaxterFunc(
+                        start_pos=0, end_pos=21,
+                        id=Identifier(start_pos=1, end_pos=4, name="yes"),
+                        fragments=FragmentList(
+                            start_pos=5, end_pos=20,
+                            children=[
+                                Text(start_pos=5, end_pos=6, string="!"),
+                                PaxterPhrase(
+                                    start_pos=6, end_pos=10,
+                                    phrase=Text(start_pos=8, end_pos=9, string="x"),
+                                ),
+                                Text(start_pos=10, end_pos=11, string="_"),
+                                PaxterPhrase(
+                                    start_pos=11, end_pos=13,
+                                    phrase=Text(start_pos=12, end_pos=13, string="y"),
+                                ),
+                                Text(start_pos=13, end_pos=14, string="^"),
+                                PaxterFunc(
+                                    start_pos=14, end_pos=19,
+                                    id=Identifier(start_pos=15, end_pos=16, name="z"),
+                                    fragments=FragmentList(
+                                        start_pos=17, end_pos=18,
+                                        children=[
+                                            Text(start_pos=17, end_pos=18, string="1"),
+                                        ],
+                                    ),
+                                    options=None,
+                                ),
+                                Text(start_pos=19, end_pos=20, string="_"),
+                            ],
+                        ),
+                        options=None,
+                    )
                 ],
             ),
         ),
         pytest.param(
             " @hello<{{}}>",
-            Fragments(
-                start=0, end=13,
+            FragmentList(
+                start_pos=0, end_pos=13,
                 children=[
-                    RawText(start=0, end=1, string=" "),
-                    AtExprFunc(
-                        start=1, end=13,
-                        identifier=Identifier(start=2, end=7, name="hello"),
-                        fragments=Fragments(
-                            start=9, end=11,
-                            children=[RawText(start=9, end=11, string="{}")]
+                    Text(start_pos=0, end_pos=1, string=" "),
+                    PaxterFunc(
+                        start_pos=1, end_pos=13,
+                        id=Identifier(start_pos=2, end_pos=7, name="hello"),
+                        fragments=FragmentList(
+                            start_pos=9, end_pos=11,
+                            children=[Text(start_pos=9, end_pos=11, string="{}")],
                         ),
-                        options={},
+                        options=None,
                     ),
                 ],
             ),
         ),
         pytest.param(
             " @hey!{@>@} ",
-            Fragments(
-                start=0, end=12,
+            FragmentList(
+                start_pos=0, end_pos=12,
                 children=[
-                    RawText(start=0, end=1, string=" "),
-                    AtExprMacro(
-                        start=1, end=11,
-                        identifier=Identifier(start=2, end=6, name="hey!"),
-                        raw_text=RawText(start=7, end=10, string="@>@"),
+                    Text(start_pos=0, end_pos=1, string=" "),
+                    PaxterMacro(
+                        start_pos=1, end_pos=11,
+                        id=Identifier(start_pos=2, end_pos=6, name="hey!"),
+                        text=Text(start_pos=7, end_pos=10, string="@>@"),
                     ),
-                    RawText(start=11, end=12, string=" "),
+                    Text(start_pos=11, end_pos=12, string=" "),
                 ],
             ),
         ),
         pytest.param(
             "@!{@hello{}}",
-            Fragments(
-                start=0, end=12,
+            FragmentList(
+                start_pos=0, end_pos=12,
                 children=[
-                    AtExprMacro(
-                        start=0, end=11,
-                        identifier=Identifier(start=1, end=2, name="!"),
-                        raw_text=RawText(start=3, end=10, string="@hello{"),
+                    PaxterMacro(
+                        start_pos=0, end_pos=11,
+                        id=Identifier(start_pos=1, end_pos=2, name="!"),
+                        text=Text(start_pos=3, end_pos=10, string="@hello{"),
                     ),
-                    RawText(start=11, end=12, string="}"),
+                    Text(start_pos=11, end_pos=12, string="}"),
                 ],
             ),
         ),
         pytest.param(
             "@!#{@hello{}}#",
-            Fragments(
-                start=0, end=14,
+            FragmentList(
+                start_pos=0, end_pos=14,
                 children=[
-                    AtExprMacro(
-                        start=0, end=14,
-                        identifier=Identifier(start=1, end=2, name="!"),
-                        raw_text=RawText(start=4, end=12, string="@hello{}"),
+                    PaxterMacro(
+                        start_pos=0, end_pos=14,
+                        id=Identifier(start_pos=1, end_pos=2, name="!"),
+                        text=Text(start_pos=4, end_pos=12, string="@hello{}"),
                     )
                 ],
             ),
         ),
         pytest.param(
             "@hello{@hi}",
-            Fragments(
-                start=0, end=11,
+            FragmentList(
+                start_pos=0, end_pos=11,
                 children=[
-                    AtExprFunc(
-                        start=0, end=11,
-                        identifier=Identifier(start=1, end=6, name="hello"),
-                        fragments=Fragments(
-                            start=7, end=10,
+                    PaxterFunc(
+                        start_pos=0, end_pos=11,
+                        id=Identifier(start_pos=1, end_pos=6, name="hello"),
+                        fragments=FragmentList(
+                            start_pos=7, end_pos=10,
                             children=[
-                                AtExprMacro(
-                                    start=7, end=10,
-                                    identifier=Identifier(start=8, end=8, name="!"),
-                                    raw_text=RawText(start=8, end=10, string="hi"),
+                                PaxterPhrase(
+                                    start_pos=7, end_pos=10,
+                                    phrase=Text(start_pos=8, end_pos=10, string="hi"),
                                 )
                             ],
                         ),
-                        options={},
+                        options=None,
                     )
                 ],
             ),
@@ -126,6 +169,4 @@ from paxter.parser import Parser
     ],
 )
 def test_parser(input_text, expected):
-    assert Parser.parse(input_text) == expected
-
-# TODO: add more unit tests for syntax errors
+    assert Parser.run(input_text) == expected

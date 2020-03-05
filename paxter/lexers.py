@@ -6,7 +6,9 @@ import re
 from typing import Dict, Match, Pattern
 
 from paxter.data import Identifier, Text
-from paxter.exceptions import PaxterBaseException, PaxterConfigError
+from paxter.exceptions import PaxterConfigError
+
+__all__ = ['Lexer']
 
 ALLOWED_SWITCH_RE = re.compile(r'[^\s\w#<>{}]')
 ALLOWED_LEFT_PATTERN_RE = re.compile(r'[#<]*[{"]')
@@ -55,6 +57,10 @@ class Lexer:
     @functools.cached_property
     def left_brace_re(self) -> Pattern[str]:
         return re.compile(r'(?P<left>[#<]*{)', flags=re.DOTALL)
+
+    @functools.cached_property
+    def left_square_bracket_re(self) -> Pattern[str]:
+        return re.compile(r'\[', flags=re.DOTALL)
 
     @functools.cached_property
     def global_break_re(self) -> Pattern[str]:

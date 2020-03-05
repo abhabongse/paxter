@@ -2,7 +2,7 @@ from paxter.parser import Parser
 from paxter.transformer import Transformer
 
 
-def test_base_transformer():
+def test_bottom_up_transformer():
     transformer = Transformer()
 
     input_text = """
@@ -30,6 +30,6 @@ def test_base_transformer():
         'age': 25,
     }
 
-    parsed_tree = Parser.parse(input_text)
+    parsed_tree = Parser.run(input_text)
     output_text = transformer.visit(environ, parsed_tree)
     assert output_text == expected_text

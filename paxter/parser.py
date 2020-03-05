@@ -3,10 +3,12 @@ Recursive descent parser for Paxter experimental language.
 """
 from typing import List, Match, NamedTuple, Pattern
 
-from paxter.data import BaseFragment, FragmentList, Node, PaxterMacro, PaxterPhrase, \
-    Text
+from paxter.data import (BaseFragment, FragmentList, Node, PaxterFunc, PaxterMacro,
+                         PaxterPhrase, Text)
 from paxter.exceptions import PaxterSyntaxError
 from paxter.lexers import Lexer
+
+__all__ = ['Parser']
 
 
 class ParseResult(NamedTuple):
@@ -47,7 +49,7 @@ class Parser:
         """
         Parse global fragments until the end of input text body.
         """
-        end_pos, node = self.parse_fragments_inner(
+        end_pos, node = self.parse_inner_fragments(
             0, r'\A', r'\Z', self.lexer.global_break_re,
         )
         if end_pos != len(self.body):
@@ -61,11 +63,11 @@ class Parser:
         """
         right_pattern = self.lexer.flip_pattern(left_pattern)
         break_re = self.lexer.fragment_break_re(right_pattern)
-        return self.parse_fragments_inner(
+        return self.parse_inner_fragments(
             next_pos, left_pattern, right_pattern, break_re,
         )
 
-    def parse_fragments_inner(
+    def parse_inner_fragments(
             self, next_pos: int, left_pattern: str, right_pattern: str,
             break_re: Pattern[str],
     ) -> ParseResult:
@@ -145,7 +147,7 @@ class Parser:
 
         # Extract text node based on the found left (i.e. opening) pattern
         # and use it to create a PaxterMacro node
-        end_pos, text_node = self.parse_text_inner(left_brace_matchobj)
+        end_pos, text_node = self.parse_inner_text(left_brace_matchobj)
         return ParseResult(
             next_pos=end_pos,
             node=PaxterMacro(start_pos, end_pos, id_node, text_node),
@@ -166,7 +168,7 @@ class Parser:
 
         # Extract text node based on the found left (i.e. opening) pattern
         # and use it to create a PaxterPhrase node
-        end_pos, text_node = self.parse_text_inner(left_brace_matchobj)
+        end_pos, text_node = self.parse_inner_text(left_brace_matchobj)
         return ParseResult(
             next_pos=end_pos,
             node=PaxterPhrase(start_pos, end_pos, text_node),
@@ -187,15 +189,15 @@ class Parser:
 
         # Extract text node based on the found left (i.e. opening) pattern
         # and fix the starting and ending positions before returning.
-        end_pos, text_node = self.parse_text_inner(left_quote_matchobj)
+        end_pos, text_node = self.parse_inner_text(left_quote_matchobj)
         return ParseResult(
             next_pos=end_pos,
             node=Text(start_pos, end_pos, text_node.string),
         )
 
-    def parse_text_inner(self, left_matchobj: Match[str]) -> ParseResult:
+    def parse_inner_text(self, left_matchobj: Match[str]) -> ParseResult:
         """
-        Parse input text body for the scope of text node.
+        Parses input text body for the scope of text node.
 
         It extracts the left (i.e. opening) pattern from the given match object
         and use it to compute the break pattern of the text node.
@@ -216,40 +218,42 @@ class Parser:
         return ParseResult(next_pos=end_pos, node=text_node)
 
     def parse_paxter_func_pattern(self, next_pos: int) -> ParseResult:
-        raise NotImplementedError
+        """
+        Parses for either a Paxter function call or the special Paxter phrase
+        when argument to the function call does not exist.
+        """
+        start_pos = next_pos
 
-        # # Parse @-symbol and identifier
-        # prefix_mobj = AT_EXPR_FUNC_PREFIX_RE.match(self.input_text, start_pos)
-        # if prefix_mobj is None:
-        #     raise RuntimeError("something went wrong")
-        #
-        # id_node = self.extract_id_node(prefix_mobj)
-        # next_pos = prefix_mobj.end()
-        #
-        # # TODO: implement options
-        #
-        # # Parse left (opening) pattern
-        # left_pattern_mobj = LEFT_RE.match(self.input_text, next_pos)
-        # if left_pattern_mobj is None:
-        #     # Assume @id -> @!{id}
-        #     raw_node = RawText(id_node.start, id_node.end, id_node.name)
-        #     id_node = Identifier(id_node.start, id_node.start, "!")
-        #     return ParseResult(
-        #         end_pos=next_pos,
-        #         node=AtExprMacro(start_pos, next_pos, id_node, raw_node),
-        #     )
-        #
-        # # Extract left (opening) pattern
-        # left_pattern = left_pattern_mobj.group()
-        # next_pos = left_pattern_mobj.end()
-        #
-        # # Construct @-expression function node
-        # id_node = self.extract_id_node(prefix_mobj)
-        # end_pos, fragments_node = self.parse_nested_fragments(next_pos, left_pattern)
-        # return ParseResult(
-        #     end_pos=end_pos,
-        #     node=AtExprFunc(start_pos, end_pos, id_node, fragments_node, {}),
-        # )
+        # Parse switch symbol character and identifier
+        prefix_matchobj = self.lexer.paxter_func_prefix_re.match(self.body, next_pos)
+        if prefix_matchobj is None:
+            raise RuntimeError("something went horribly wrong")
+        id_node = self.lexer.extract_id_node(prefix_matchobj)
+        next_pos = prefix_matchobj.end()
+
+        # First attempt: parse for left square bracket
+        if self.lexer.left_square_bracket_re.match(self.body, next_pos):
+            # TODO: implement this
+            raise NotImplementedError
+
+        # Second attempt: parse for left (i.e. opening) brace
+        elif left_brace_matchobj := self.lexer.left_brace_re.match(self.body, next_pos):
+            end_pos, fragments_node = self.parse_nested_fragments(
+                next_pos=left_brace_matchobj.end(),
+                left_pattern=left_brace_matchobj.group(),
+            )
+            return ParseResult(
+                next_pos=end_pos,
+                node=PaxterFunc(start_pos, end_pos, id_node, fragments_node, None),
+            )
+
+        # Fallback: special case for PaxterPhrase
+        else:
+            text_node = Text(id_node.start_pos, id_node.end_pos, id_node.name)
+            return ParseResult(
+                next_pos=next_pos,
+                node=PaxterPhrase(start_pos, next_pos, text_node),
+            )
 
     @staticmethod
     def _cannot_match_right_pattern(
