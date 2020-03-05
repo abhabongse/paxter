@@ -1,5 +1,5 @@
 """
-Paxter document pre-processing language.
+Document-first text pre-processing mini-language.
 
 ## Dependencies
 

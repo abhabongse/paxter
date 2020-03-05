@@ -55,5 +55,5 @@ __all__ = ['BaseAtom', 'BaseFragment', 'FragmentList', 'Identifier', 'Literal',
            'PaxterBaseException', 'PaxterConfigError', 'PaxterSyntaxError',
            'Lexer', 'Parser', 'Transformer']
 
-# Disable all for classes and functions at this level
+# Disable all docstrings for classes and functions at this level
 __pdoc__ = {item: None for item in __all__}
