@@ -1,7 +1,6 @@
 """
 Lexers based on regular expression for Paxter language
 """
-import functools
 import re
 from typing import Dict, Match, Pattern
 
@@ -32,40 +31,37 @@ class Lexer:
     compiled_fragment_breaks: Dict[str, Pattern[str]]
     compiled_macro_breaks: Dict[str, Pattern[str]]
 
+    left_brace_re = re.compile(r'(?P<left>[#<]*{)')
+    left_square_bracket_re = re.compile(r'\[')
+    option_re = re.compile(
+        # At most one of str_value, num_value, id_value will be populated
+        r'\s*(?P<key>\w+)(?:\s*=\s*(?:'
+        r'(?P<str_value>"(?:[^\\]*|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*")'
+        r'|(?P<num_value>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)'
+        r'|(?P<id_value>\w+)'
+        r')|(?!\s*=))',
+    )
+    comma_or_option_break_re = re.compile(r'\s*(?P<break>[,\]])')
+    option_break_re = re.compile(r'\s*(?P<break>\])')
+
     def __init__(self, switch: str = '@'):
         if not ALLOWED_SWITCH_RE.fullmatch(switch):
             raise PaxterConfigError(f"switch character not allowed: {switch}")
-        self.switch = re.escape(switch)
+        switch = re.escape(switch)
+
+        self.switch = switch
         self.compiled_fragment_breaks = {}
         self.compiled_macro_breaks = {}
 
-    @functools.cached_property
-    def paxter_macro_prefix_re(self) -> Pattern[str]:
-        return re.compile(rf'{self.switch}(?P<id>\w*!)', flags=re.DOTALL)
-
-    @functools.cached_property
-    def paxter_func_prefix_re(self) -> Pattern[str]:
-        return re.compile(rf'{self.switch}(?P<id>\w+)', flags=re.DOTALL)
-
-    @functools.cached_property
-    def paxter_phrase_prefix_re(self) -> Pattern[str]:
-        return re.compile(rf'{self.switch}(?P<left>[#<]*{{)', flags=re.DOTALL)
-
-    @functools.cached_property
-    def paxter_string_prefix_re(self) -> Pattern[str]:
-        return re.compile(rf'{self.switch}(?P<left>[#<]*")', flags=re.DOTALL)
-
-    @functools.cached_property
-    def left_brace_re(self) -> Pattern[str]:
-        return re.compile(r'(?P<left>[#<]*{)', flags=re.DOTALL)
-
-    @functools.cached_property
-    def left_square_bracket_re(self) -> Pattern[str]:
-        return re.compile(r'\[', flags=re.DOTALL)
-
-    @functools.cached_property
-    def global_break_re(self) -> Pattern[str]:
-        return re.compile(rf'(?P<text>.*?)(?P<break>{self.switch}|\Z)', flags=re.DOTALL)
+        # Compile common regular expression based on variable switch
+        self.paxter_macro_prefix_re = re.compile(rf'{switch}(?P<id>\w*!)')
+        self.paxter_func_prefix_re = re.compile(rf'{switch}(?P<id>\w+)')
+        self.paxter_phrase_prefix_re = re.compile(rf'{switch}(?P<left>[#<]*{{)')
+        self.paxter_string_prefix_re = re.compile(rf'{switch}(?P<left>[#<]*")')
+        self.global_break_re = re.compile(
+            rf'(?P<text>.*?)(?P<break>{self.switch}|\Z)',
+            flags=re.DOTALL,
+        )
 
     def fragment_break_re(self, right_pattern: str) -> Pattern[str]:
         """
