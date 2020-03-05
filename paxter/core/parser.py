@@ -1,12 +1,12 @@
 """
-Recursive descent parser for Paxter experimental language.
+Recursive descent parser for Paxter language
 """
 from typing import List, Match, NamedTuple, Pattern
 
-from paxter.data import (BaseFragment, FragmentList, Node, PaxterFunc, PaxterMacro,
-                         PaxterPhrase, Text)
-from paxter.exceptions import PaxterSyntaxError
-from paxter.lexers import Lexer
+from paxter.core.data import (BaseFragment, FragmentList, Node, PaxterFunc, PaxterMacro,
+                              PaxterPhrase, Text)
+from paxter.core.exceptions import PaxterSyntaxError
+from paxter.core.lexers import Lexer
 
 __all__ = ['Parser']
 

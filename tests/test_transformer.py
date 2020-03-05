@@ -1,5 +1,4 @@
-from paxter.parser import Parser
-from paxter.transformer import Transformer
+from paxter.core import Parser, Transformer
 
 
 def test_bottom_up_transformer():

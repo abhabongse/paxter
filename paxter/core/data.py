@@ -1,5 +1,5 @@
 """
-Collection of classes representing data node in parsed tree.
+Data definitions for node types presented in parsed tree
 """
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Union

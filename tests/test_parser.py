@@ -1,8 +1,7 @@
 import pytest
 
-from paxter.data import (FragmentList, Identifier, PaxterFunc, PaxterMacro,
+from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMacro,
                          PaxterPhrase, Text)
-from paxter.parser import Parser
 
 
 # TODO: add more unit tests for syntax errors

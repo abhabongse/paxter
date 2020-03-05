@@ -1,5 +1,5 @@
 """
-Collection of exceptions for Paxter language utilities.
+Exceptions specific to Paxter language utilities
 """
 from typing import Dict, Optional
 

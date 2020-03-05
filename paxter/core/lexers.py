@@ -1,12 +1,12 @@
 """
-Regular expression-based lexers for Paxter language.
+Lexers based on regular expression for Paxter language
 """
 import functools
 import re
 from typing import Dict, Match, Pattern
 
-from paxter.data import Identifier, Text
-from paxter.exceptions import PaxterConfigError
+from paxter.core.data import Identifier, Text
+from paxter.core.exceptions import PaxterConfigError
 
 __all__ = ['Lexer']
 
@@ -18,6 +18,7 @@ LEFT_TO_RIGHT_TRANS = str.maketrans(r'#<{"', r'#>}"')
 class Lexer:
     """
     Lexer helper class for Paxter experimental language.
+    A switch can be swapped from the default @-symbol to others.
 
     Attributes:
         switch: A single symbol character which enables

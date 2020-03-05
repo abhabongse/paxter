@@ -1,11 +1,15 @@
 """
-Collection of command-line commands
+Collection of command-line commands.
 """
 
 
 def get_parse_command():
     """
-    Obtain click program that would parse input.
+    Obtain `click` program that would parse input text through files.
+    Here is how to start the command:
+
+        parse = get_parse_command()
+        parse()
     """
     import click
 
@@ -18,7 +22,7 @@ def get_parse_command():
         """
         Runs Paxter parser on input from INPUT_FILE and write to OUTPUT_FILE.
         """
-        from paxter.parser import Parser
+        from paxter.core import Parser
         parsed_tree = Parser.run(input_file.read())
         output_file.write(repr(parsed_tree))
         output_file.write("\n")

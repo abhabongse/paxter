@@ -1,10 +1,10 @@
 """
-Base parsed tree transformer.
+Transformer utility class to transform parsed tree into other formats
 """
 from typing import Any
 
-from paxter.data import (FragmentList, Identifier, Literal,
-                         Node, PaxterFunc, PaxterMacro, PaxterPhrase, Text)
+from paxter.core.data import (FragmentList, Identifier, Literal,
+                              Node, PaxterFunc, PaxterMacro, PaxterPhrase, Text)
 
 
 class Transformer:
