@@ -1,34 +1,30 @@
 #!/usr/bin/env python
 import io
+import json
 from glob import glob
-from os.path import basename
-from os.path import dirname
-from os.path import join
-from os.path import splitext
+from os.path import basename, dirname, join, splitext
 
 from setuptools import find_packages
 from setuptools import setup
 
 
 def read(*names, **kwargs):
-    with io.open(
-        join(dirname(__file__), *names),
-        encoding=kwargs.get('encoding', 'utf8'),
-    ) as fh:
+    with io.open(join(dirname(__file__), *names),
+                 encoding=kwargs.get('encoding', 'utf8')) as fh:
         return fh.read()
 
 
-# TODO: put some data into src/paxter/metadata.json
+metadata = json.loads(read(join('src', 'paxter', 'metadata.json')))
+
 setup(
     name='paxter',
-    version='0.1.0',
-    license='Apache-2.0',
-    description='Document-first text pre-processing mini-language '
-                'loosely inspired by at-expressions in Racket',
+    version=metadata['version'],
+    license=metadata['license'],
+    description=metadata['description'],
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
-    author='Abhabongse Janthong',
-    author_email='6845502+abhabongse@users.noreply.github.com',
+    author=metadata['author'],
+    author_email=metadata['email'],
     url='https://github.com/abhabongse/paxter',
     packages=find_packages('src'),
     package_dir={'': 'src'},
