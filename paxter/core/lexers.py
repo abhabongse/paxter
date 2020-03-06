@@ -1,6 +1,7 @@
 """
 Lexers based on regular expression for Paxter language
 """
+import functools
 import re
 from typing import Dict, Match, Pattern
 
@@ -14,10 +15,10 @@ ALLOWED_LEFT_PATTERN_RE = re.compile(r'[#<]*[{"]')
 LEFT_TO_RIGHT_TRANS = str.maketrans(r'#<{"', r'#>}"')
 
 
+@functools.lru_cache(maxsize=None)
 class Lexer:
     """
     Lexer helper class for Paxter experimental language.
-    A switch can be swapped from the default @-symbol to others.
 
     Attributes:
         switch: A single symbol character which enables
@@ -44,7 +45,7 @@ class Lexer:
     comma_or_option_break_re = re.compile(r'\s*(?P<break>[,\]])')
     option_break_re = re.compile(r'\s*(?P<break>\])')
 
-    def __init__(self, switch: str = '@'):
+    def __init__(self, switch: str):
         if not ALLOWED_SWITCH_RE.fullmatch(switch):
             raise PaxterConfigError(f"switch character not allowed: {switch}")
         switch = re.escape(switch)

@@ -5,6 +5,8 @@ from typing import Dict, Optional
 
 __all__ = ['PaxterBaseException', 'PaxterSyntaxError', 'PaxterConfigError']
 
+PositionMap = Dict[str, int]
+
 
 class PaxterBaseException(Exception):
     """
@@ -23,11 +25,16 @@ class PaxterSyntaxError(PaxterBaseException):
     to its indexing inside the input text.
     """
     message: str
-    index_params: Dict[str, int]
+    body: str
+    positions: PositionMap
 
-    def __init__(self, message: str, index_params: Optional[Dict[str, int]] = None):
+    def __init__(
+            self, message: str,
+            body: str, positions: Optional[PositionMap] = None,
+    ):
         self.message = message
-        self.index_params = index_params or {}
+        self.body = body
+        self.positions = positions or {}
 
 
 class PaxterConfigError(PaxterBaseException):
