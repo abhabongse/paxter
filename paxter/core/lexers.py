@@ -8,10 +8,11 @@ from typing import Dict, Match, Pattern
 
 from paxter.core.data import Identifier, KeyValue, Literal, Text
 from paxter.core.exceptions import PaxterConfigError
+from paxter.core.unicode import ID_CONT_CHARS, ID_PATTERN
 
 __all__ = ['Lexer']
 
-ALLOWED_SWITCH_RE = re.compile(r'[^\s\w#<>{}]')
+ALLOWED_SWITCH_RE = re.compile(rf'[^\s{ID_CONT_CHARS}#<>{{}}]')
 ALLOWED_LEFT_PATTERN_RE = re.compile(r'[#<]*[{"]')
 LEFT_TO_RIGHT_TRANS = str.maketrans(r'#<{"', r'#>}"')
 
@@ -37,10 +38,10 @@ class Lexer:
     left_sq_bracket_re = re.compile(r'\[')
     option_re = re.compile(
         # At most one of str_value, num_value, id_value will be populated
-        r'\s*(?P<id_key>\w+)(?:\s*=\s*(?:'
+        rf'\s*(?P<id_key>{ID_PATTERN})(?:\s*=\s*(?:'
         r'(?P<str_value>"(?:[^\\]*|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*")'
         r'|(?P<num_value>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)'
-        r'|(?P<id_value>\w+)'
+        rf'|(?P<id_value>{ID_PATTERN})'
         r')|(?!\s*=))',
     )
     comma_or_option_break_re = re.compile(r'\s*(?P<break>[,\]])')
@@ -56,8 +57,8 @@ class Lexer:
         self.compiled_macro_breaks = {}
 
         # Compile common regular expression based on variable switch
-        self.paxter_macro_prefix_re = re.compile(rf'{switch}(?P<id>\w*!)')
-        self.paxter_func_prefix_re = re.compile(rf'{switch}(?P<id>\w+)')
+        self.paxter_macro_prefix_re = re.compile(rf'{switch}(?P<id>(?:{ID_PATTERN})?!)')
+        self.paxter_func_prefix_re = re.compile(rf'{switch}(?P<id>{ID_PATTERN})')
         self.paxter_phrase_prefix_re = re.compile(rf'{switch}(?P<left>[#<]*{{)')
         self.paxter_string_prefix_re = re.compile(rf'{switch}(?P<left>[#<]*")')
         self.global_break_re = re.compile(
