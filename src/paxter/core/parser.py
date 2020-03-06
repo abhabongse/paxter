@@ -37,8 +37,8 @@ class Parser:
         return node
 
     def parse_nested_fragments(
-            self, body: str, next_pos: int,
-            left_pattern: str,
+        self, body: str, next_pos: int,
+        left_pattern: str,
     ) -> Tuple[int, FragmentList]:
         """
         Parse fragments inside Paxter expression function until reaching the right
@@ -52,8 +52,8 @@ class Parser:
         )
 
     def parse_inner_fragments(
-            self, body: str, next_pos: int,
-            left_pattern: str, right_pattern: str, break_re: Pattern[str],
+        self, body: str, next_pos: int,
+        left_pattern: str, right_pattern: str, break_re: Pattern[str],
     ) -> Tuple[int, FragmentList]:
         """
         Parse input text body for the scope of fragment nodes.
@@ -95,7 +95,7 @@ class Parser:
                 return end_pos, FragmentList(start_pos, text_node.end_pos, children)
 
     def parse_switch_symbol(
-            self, body: str, next_pos: int,
+        self, body: str, next_pos: int,
     ) -> Tuple[int, BaseFragment]:
         """
         Attempts to parse all kinds of Paxter expressions.
@@ -114,7 +114,7 @@ class Parser:
         )
 
     def parse_paxter_macro_pattern(
-            self, body: str, next_pos: int,
+        self, body: str, next_pos: int,
     ) -> Tuple[int, PaxterMacro]:
         """
         Parses Paxter macro.
@@ -139,7 +139,7 @@ class Parser:
         return end_pos, PaxterMacro(start_pos, end_pos, id_node, text_node)
 
     def parse_paxter_phrase_pattern(
-            self, body: str, next_pos: int,
+        self, body: str, next_pos: int,
     ) -> Tuple[int, PaxterPhrase]:
         """
         Parses Paxter phrase.
@@ -157,7 +157,7 @@ class Parser:
         return end_pos, PaxterPhrase(start_pos, end_pos, text_node)
 
     def parse_paxter_string_pattern(
-            self, body: str, next_pos: int,
+        self, body: str, next_pos: int,
     ) -> Tuple[int, Text]:
         """
         Parses Paxter string literal.
@@ -175,7 +175,7 @@ class Parser:
         return end_pos, Text(start_pos, end_pos, text_node.string)
 
     def parse_inner_text(
-            self, body: str, left_matchobj: Match[str],
+        self, body: str, left_matchobj: Match[str],
     ) -> Tuple[int, Text]:
         """
         Parses input text body for the scope of text node.
@@ -202,7 +202,7 @@ class Parser:
         return end_pos, text_node
 
     def parse_paxter_func_pattern(
-            self, body: str, next_pos: int,
+        self, body: str, next_pos: int,
     ) -> Tuple[int, BaseFragment]:
         """
         Parses for either a Paxter function call or the special Paxter phrase
@@ -218,7 +218,10 @@ class Parser:
         next_pos = prefix_matchobj.end()
 
         # First attempt: parse for left square bracket
-        if left_bracket_matchobj := self.lexer.left_sq_bracket_re.match(body, next_pos):
+        if self.lexer.left_sq_bracket_re.match(body, next_pos):
+
+            # TODO: reintroduce walrus operator usage
+            left_bracket_matchobj = self.lexer.left_sq_bracket_re.match(body, next_pos)
             next_pos = left_bracket_matchobj.end()
 
             # Parse options until the right (i.e. closing) square bracket
@@ -230,7 +233,9 @@ class Parser:
                 self._expected_opening_brace(body, next_pos)
 
         # Second attempt: parse for left (i.e. opening) brace
-        elif left_brace_matchobj := self.lexer.left_brace_re.match(body, next_pos):
+        elif self.lexer.left_brace_re.match(body, next_pos):
+            # TODO: reintroduce walrus operator usage
+            left_brace_matchobj = self.lexer.left_brace_re.match(body, next_pos)
             opts = None
 
         # Fallback: special case for PaxterPhrase
@@ -246,7 +251,7 @@ class Parser:
         return end_pos, PaxterFunc(start_pos, end_pos, id_node, fragments_node, opts)
 
     def parse_inner_options(
-            self, body: str, next_pos: int,
+        self, body: str, next_pos: int,
     ) -> Tuple[int, List[KeyValue]]:
         """
         Parses the list of options.
@@ -255,7 +260,11 @@ class Parser:
 
         # Keep on parsing the next option key-value pair
         # when the next token is not the right (i.e. closing) square bracket
-        while not (break_matchobj := self.lexer.option_break_re.match(body, next_pos)):
+        # TODO: reintroduce walrus operator usage
+        while True:
+            break_matchobj = self.lexer.option_break_re.match(body, next_pos)
+            if break_matchobj:
+                break
 
             # Parse the next option key-value pair
             option_matchobj = self.lexer.option_re.match(body, next_pos)
@@ -280,8 +289,8 @@ class Parser:
 
     @staticmethod
     def _cannot_match_right_pattern(
-            body: str, next_pos: int,
-            left_pattern: str, right_pattern: str,
+        body: str, next_pos: int,
+        left_pattern: str, right_pattern: str,
     ):
         raise PaxterSyntaxError(
             f"cannot match closing pattern {right_pattern!r}"

@@ -79,7 +79,7 @@ from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMac
                             ],
                         ),
                         options=None,
-                    )
+                    ),
                 ],
             ),
         ),
@@ -139,7 +139,7 @@ from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMac
                         start_pos=0, end_pos=14,
                         id=Identifier(start_pos=1, end_pos=2, name="!"),
                         text=Text(start_pos=4, end_pos=12, string="@hello{}"),
-                    )
+                    ),
                 ],
             ),
         ),
@@ -157,11 +157,11 @@ from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMac
                                 PaxterPhrase(
                                     start_pos=7, end_pos=10,
                                     phrase=Text(start_pos=8, end_pos=10, string="hi"),
-                                )
+                                ),
                             ],
                         ),
                         options=None,
-                    )
+                    ),
                 ],
             ),
         ),

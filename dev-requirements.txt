@@ -6,26 +6,34 @@
 #
 attrs==19.3.0             # via flake8-bugbear, jsonschema, pytest
 backcall==0.1.0           # via ipython
-bleach==3.1.1             # via nbconvert
+bleach==3.1.1             # via nbconvert, readme-renderer
+certifi==2019.11.28       # via requests
+cffi==1.14.0              # via cryptography
+chardet==3.0.4            # via requests
 coverage==5.0.3           # via pytest-cov
+cryptography==2.8         # via secretstorage
 decorator==4.4.2          # via ipython, traitlets
 defusedxml==0.6.0         # via nbconvert
+docutils==0.16            # via readme-renderer
 entrypoints==0.3          # via flake8, nbconvert
 flake8-bugbear==20.1.4    # via -r dev-requirements.in
 flake8-commas==2.0.0      # via -r dev-requirements.in
 flake8-import-order==0.18.1  # via -r dev-requirements.in
 flake8==3.7.9             # via -r dev-requirements.in, flake8-bugbear, flake8-commas
+idna==2.9                 # via requests
 ipykernel==5.1.4          # via ipywidgets, jupyter, jupyter-console, notebook, qtconsole
 ipython-genutils==0.2.0   # via nbformat, notebook, qtconsole, traitlets
 ipython==7.13.0           # via ipykernel, ipywidgets, jupyter-console
 ipywidgets==7.5.1         # via jupyter
 jedi==0.16.0              # via ipython
+jeepney==0.4.3            # via keyring, secretstorage
 jinja2==2.11.1            # via nbconvert, notebook
 jsonschema==3.2.0         # via nbformat
 jupyter-client==6.0.0     # via ipykernel, jupyter-console, notebook, qtconsole
 jupyter-console==6.1.0    # via jupyter
 jupyter-core==4.6.3       # via jupyter-client, nbconvert, nbformat, notebook, qtconsole
 jupyter==1.0.0            # via -r dev-requirements.in
+keyring==21.1.1           # via twine
 mako==1.1.2               # via pdoc3
 markdown==3.2.1           # via pdoc3
 markupsafe==1.1.1         # via jinja2, mako
@@ -35,34 +43,43 @@ more-itertools==8.2.0     # via pytest
 nbconvert==5.6.1          # via jupyter, notebook
 nbformat==5.0.4           # via ipywidgets, nbconvert, notebook
 notebook==6.0.3           # via jupyter, widgetsnbextension
-packaging==20.1           # via pytest
+packaging==20.3           # via pytest
 pandocfilters==1.4.2      # via nbconvert
 parso==0.6.2              # via jedi
 pdoc3==0.7.5              # via -r dev-requirements.in
 pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
+pkginfo==1.5.0.1          # via twine
 pluggy==0.13.1            # via pytest
 prometheus-client==0.7.1  # via notebook
 prompt-toolkit==3.0.3     # via ipython, jupyter-console
 ptyprocess==0.6.0         # via pexpect, terminado
 py==1.8.1                 # via pytest
 pycodestyle==2.5.0        # via flake8, flake8-import-order
+pycparser==2.20           # via cffi
 pyflakes==2.1.1           # via flake8
-pygments==2.5.2           # via ipython, jupyter-console, nbconvert, qtconsole
+pygments==2.5.2           # via ipython, jupyter-console, nbconvert, qtconsole, readme-renderer
 pyparsing==2.4.6          # via packaging
 pyrsistent==0.15.7        # via jsonschema
 pytest-cov==2.8.1         # via -r dev-requirements.in
 pytest==5.3.5             # via -r dev-requirements.in, pytest-cov
 python-dateutil==2.8.1    # via jupyter-client
 pyzmq==19.0.0             # via jupyter-client, notebook
-qtconsole==4.7.0          # via jupyter
+qtconsole==4.7.1          # via jupyter
 qtpy==1.9.0               # via qtconsole
+readme-renderer==24.0     # via twine
+requests-toolbelt==0.9.1  # via twine
+requests==2.23.0          # via requests-toolbelt, twine
+secretstorage==3.1.2      # via keyring
 send2trash==1.5.0         # via notebook
-six==1.14.0               # via bleach, jsonschema, packaging, python-dateutil, traitlets
+six==1.14.0               # via bleach, cryptography, jsonschema, packaging, pyrsistent, python-dateutil, readme-renderer, traitlets
 terminado==0.8.3          # via notebook
 testpath==0.4.4           # via nbconvert
-tornado==6.0.3            # via ipykernel, jupyter-client, notebook, terminado
+tornado==6.0.4            # via ipykernel, jupyter-client, notebook, terminado
+tqdm==4.43.0              # via twine
 traitlets==4.3.3          # via ipykernel, ipython, ipywidgets, jupyter-client, jupyter-core, nbconvert, nbformat, notebook, qtconsole
+twine==3.1.1              # via -r dev-requirements.in
+urllib3==1.25.8           # via requests
 wcwidth==0.1.8            # via prompt-toolkit, pytest
 webencodings==0.5.1       # via bleach
 widgetsnbextension==3.5.1  # via ipywidgets

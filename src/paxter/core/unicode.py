@@ -2,7 +2,6 @@
 Unicode helper module.
 """
 import sys
-
 import unicodedata
 
 __all__ = ['ID_START_CHARS', 'ID_CONT_CHARS', 'ID_PATTERN']

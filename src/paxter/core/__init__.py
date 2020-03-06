@@ -56,4 +56,4 @@ __all__ = ['BaseAtom', 'BaseFragment', 'FragmentList', 'Identifier', 'Literal',
            'Lexer', 'Parser', 'Transformer']
 
 # Disable all docstrings for classes and functions at this level
-__pdoc__ = {item: None for item in __all__}
+__pdoc__ = {item: False for item in __all__}

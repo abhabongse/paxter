@@ -147,23 +147,24 @@ class Lexer:
 
         # Extract value based on at most one group from
         # str_value, num_value, or id_value groups
-        if extracted := matchobj.group('str_value'):
+        # TODO: reintroduce walrus operator usage
+        if matchobj.group('str_value'):
             value = Literal(
                 start_pos=matchobj.start('str_value'),
                 end_pos=matchobj.end('str_value'),
-                value=json.loads(extracted),
+                value=json.loads(matchobj.group('str_value')),
             )
-        elif extracted := matchobj.group('num_value'):
+        elif matchobj.group('num_value'):
             value = Literal(
                 start_pos=matchobj.start('num_value'),
                 end_pos=matchobj.end('num_value'),
-                value=json.loads(extracted),
+                value=json.loads(matchobj.group('num_value')),
             )
-        elif extracted := matchobj.group('id_value'):
+        elif matchobj.group('id_value'):
             value = Identifier(
                 start_pos=matchobj.start('id_value'),
                 end_pos=matchobj.end('id_value'),
-                name=extracted,
+                name=matchobj.group('id_value'),
             )
         else:
             value = None

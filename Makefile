@@ -12,7 +12,7 @@
 PYTHON_PROJECT_PACKAGES := paxter
 
 # Locations to all requirement files that requires pinning down
-REQUIREMENTS_FILES := $(patsubst ./%.in,%.txt,$(shell find . -type f -name '*.in'))
+REQUIREMENTS_FILES := $(patsubst ./%.in,%.txt,$(shell find . -type f -name '*requirements.in'))
 
 # Location to HTML documentation build
 HTML_DOC_OUTPUT = build/html
@@ -140,6 +140,14 @@ doc_clean:
 #####################
 ##@ Program Shortcuts
 #####################
+
+.PHONY: tox_bootstrap
+tox_bootstrap:
+	@# Regenerate .travis.yml or .appveyor.yml
+ifndef VIRTUAL_ENV
+	$(error must run target inside python virtualenv)
+endif
+	python ./ci/bootstrap.py --no-env
 
 .PHONY: git_show_tree
 git_show_tree:
