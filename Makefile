@@ -126,6 +126,32 @@ endif
 	find . -name '.*_cache' -type d | xargs rm -rf
 	coverage erase
 
+########################
+##@ Package Distribution
+########################
+
+.PHONY: pkg_build
+pkg_build:
+	@# Compile package into distributable files such as wheels
+ifndef VIRTUAL_ENV
+	$(error must run target inside python virtualenv)
+endif
+	python setup.py sdist bdist_wheel
+
+.PHONY: pkg_upload
+pkg_upload:
+	@# Upload compiled packages to PyPI
+ifndef VIRTUAL_ENV
+	$(error must run target inside python virtualenv)
+endif
+	twine upload dist/*
+
+.PHONY: pkg_clean
+pkg_clean:
+	@# Clean compiled packages
+	rm -rf build/bdist.* build/lib dist/
+	-rmdir build
+
 #############################
 ##@ Documentation Generations
 #############################
