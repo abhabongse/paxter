@@ -4,6 +4,7 @@ Lexers based on regular expression for Paxter language
 import functools
 import json
 import re
+import unicodedata
 from typing import Dict, Match, Pattern
 
 from paxter.core.data import Identifier, KeyValue, Literal, Text
@@ -48,8 +49,12 @@ class Lexer:
     option_break_re = re.compile(r'\s*(?P<break>\])')
 
     def __init__(self, switch: str):
+        if len(switch) != 1:
+            raise PaxterConfigError(f"switch character must be single: {switch!r}")
         if not ALLOWED_SWITCH_RE.fullmatch(switch):
-            raise PaxterConfigError(f"switch character not allowed: {switch}")
+            char_name = unicodedata.name(switch)
+            raise PaxterConfigError(f"switch character not allowed: "
+                                    f"{switch!r} ({char_name})")
         switch = re.escape(switch)
 
         self.switch = switch
