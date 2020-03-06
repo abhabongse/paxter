@@ -165,6 +165,16 @@ from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMac
                 ],
             ),
         ),
+        pytest.param(
+            r'\@"\@"',
+            FragmentList(
+                start_pos=0, end_pos=6,
+                children=[
+                    Text(start_pos=0, end_pos=1, string="\\"),
+                    Text(start_pos=1, end_pos=6, string="\\@"),
+                ],
+            ),
+        ),
     ],
 )
 def test_parser(input_text, expected):

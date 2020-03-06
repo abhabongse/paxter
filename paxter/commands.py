@@ -23,7 +23,9 @@ def get_parse_command():
         Runs Paxter parser on input from INPUT_FILE and write to OUTPUT_FILE.
         """
         from paxter.core import Parser
-        parsed_tree = Parser.run(input_file.read())
+        parser = Parser()
+
+        parsed_tree = parser.parse(input_file.read())
         output_file.write(repr(parsed_tree))
         output_file.write("\n")
 

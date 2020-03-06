@@ -2,10 +2,11 @@
 Lexers based on regular expression for Paxter language
 """
 import functools
+import json
 import re
 from typing import Dict, Match, Pattern
 
-from paxter.core.data import Identifier, Text
+from paxter.core.data import Identifier, KeyValue, Literal, Text
 from paxter.core.exceptions import PaxterConfigError
 
 __all__ = ['Lexer']
@@ -33,10 +34,10 @@ class Lexer:
     compiled_macro_breaks: Dict[str, Pattern[str]]
 
     left_brace_re = re.compile(r'(?P<left>[#<]*{)')
-    left_square_bracket_re = re.compile(r'\[')
+    left_sq_bracket_re = re.compile(r'\[')
     option_re = re.compile(
         # At most one of str_value, num_value, id_value will be populated
-        r'\s*(?P<key>\w+)(?:\s*=\s*(?:'
+        r'\s*(?P<id_key>\w+)(?:\s*=\s*(?:'
         r'(?P<str_value>"(?:[^\\]*|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*")'
         r'|(?P<num_value>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)'
         r'|(?P<id_value>\w+)'
@@ -107,9 +108,11 @@ class Lexer:
         Extracts Text node from the given match object
         returned from regular expression with `"text"` group.
         """
-        string = matchobj.group('text')
-        start_pos, end_pos = matchobj.span('text')
-        return Text(start_pos, end_pos, string)
+        return Text(
+            start_pos=matchobj.start('text'),
+            end_pos=matchobj.end('text'),
+            string=matchobj.group('text'),
+        )
 
     @staticmethod
     def extract_id_node(matchobj: Match[str]) -> Identifier:
@@ -117,6 +120,46 @@ class Lexer:
         Extracts Identifier node from the given match object
         returned from regular expression with `"id"` group.
         """
-        name = matchobj.group('id')
-        start_pos, end_pos = matchobj.span('id')
-        return Identifier(start_pos, end_pos, name)
+        return Identifier(
+            start_pos=matchobj.start('id'),
+            end_pos=matchobj.end('id'),
+            name=matchobj.group('id'),
+        )
+
+    @staticmethod
+    def extract_kv_pair(matchobj: Match[str]) -> KeyValue:
+        """
+        Extracts KeyValue node from the given match object
+        returned from `option_re` regular expression.
+        """
+        # Extract key based on id_key group
+        key = Identifier(
+            start_pos=matchobj.start('id_key'),
+            end_pos=matchobj.end('id_key'),
+            name=matchobj.group('id_key'),
+        )
+
+        # Extract value based on at most one group from
+        # str_value, num_value, or id_value groups
+        if extracted := matchobj.group('str_value'):
+            value = Literal(
+                start_pos=matchobj.start('str_value'),
+                end_pos=matchobj.end('str_value'),
+                value=json.loads(extracted),
+            )
+        elif extracted := matchobj.group('num_value'):
+            value = Literal(
+                start_pos=matchobj.start('num_value'),
+                end_pos=matchobj.end('num_value'),
+                value=json.loads(extracted),
+            )
+        elif extracted := matchobj.group('id_value'):
+            value = Identifier(
+                start_pos=matchobj.start('id_value'),
+                end_pos=matchobj.end('id_value'),
+                name=extracted,
+            )
+        else:
+            value = None
+
+        return key, value

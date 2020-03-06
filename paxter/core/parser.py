@@ -3,8 +3,8 @@ Recursive descent parser for Paxter language
 """
 from typing import List, Match, Optional, Pattern, Tuple
 
-from paxter.core.data import (BaseFragment, FragmentList, Node,
-                              PaxterFunc, PaxterMacro, PaxterPhrase, Text)
+from paxter.core.data import (BaseFragment, FragmentList, KeyValue, PaxterFunc,
+                              PaxterMacro, PaxterPhrase, Text)
 from paxter.core.exceptions import PaxterSyntaxError
 from paxter.core.lexers import Lexer
 
@@ -110,7 +110,7 @@ class Parser:
             return self.parse_paxter_string_pattern(body, next_pos)
         raise PaxterSyntaxError(
             f"invalid expression after symbol {self.lexer.switch!r} at {{next_pos}}",
-            positions={'next_pos': next_pos},
+            body=body, positions={'next_pos': next_pos},
         )
 
     def parse_paxter_macro_pattern(
@@ -218,23 +218,65 @@ class Parser:
         next_pos = prefix_matchobj.end()
 
         # First attempt: parse for left square bracket
-        if self.lexer.left_square_bracket_re.match(body, next_pos):
-            # TODO: implement this
-            raise NotImplementedError
+        if left_bracket_matchobj := self.lexer.left_sq_bracket_re.match(body, next_pos):
+            next_pos = left_bracket_matchobj.end()
+
+            # Parse options until the right (i.e. closing) square bracket
+            next_pos, opts = self.parse_inner_options(body, next_pos)
+
+            # Parse for left (i.e. opening) brace
+            left_brace_matchobj = self.lexer.left_brace_re.match(body, next_pos)
+            if left_brace_matchobj is None:
+                self._expected_opening_brace(body, next_pos)
 
         # Second attempt: parse for left (i.e. opening) brace
         elif left_brace_matchobj := self.lexer.left_brace_re.match(body, next_pos):
-            end_pos, fragments_node = self.parse_nested_fragments(
-                body=body, next_pos=left_brace_matchobj.end(),
-                left_pattern=left_brace_matchobj.group(),
-            )
-            result_node = PaxterFunc(start_pos, end_pos, id_node, fragments_node, None)
-            return end_pos, result_node
+            opts = None
 
         # Fallback: special case for PaxterPhrase
         else:
             text_node = Text(id_node.start_pos, id_node.end_pos, id_node.name)
             return next_pos, PaxterPhrase(start_pos, next_pos, text_node)
+
+        # Continue extracting FragmentList node from the left brace match object
+        end_pos, fragments_node = self.parse_nested_fragments(
+            body=body, next_pos=left_brace_matchobj.end(),
+            left_pattern=left_brace_matchobj.group(),
+        )
+        return end_pos, PaxterFunc(start_pos, end_pos, id_node, fragments_node, opts)
+
+    def parse_inner_options(
+            self, body: str, next_pos: int,
+    ) -> Tuple[int, List[KeyValue]]:
+        """
+        Parses the list of options.
+        """
+        options = []
+
+        # Keep on parsing the next option key-value pair
+        # when the next token is not the right (i.e. closing) square bracket
+        while not (break_matchobj := self.lexer.option_break_re.match(body, next_pos)):
+
+            # Parse the next option key-value pair
+            option_matchobj = self.lexer.option_re.match(body, next_pos)
+            if option_matchobj is None:
+                self._expected_next_option_or_closing_bracket(body, next_pos)
+
+            # Extract the key-value pair from match object
+            kv_pair = self.lexer.extract_kv_pair(option_matchobj)
+            options.append(kv_pair)
+            next_pos = option_matchobj.end()
+
+            # Parse for a comma or the abrupt right (i.e. closing) square bracket
+            break_matchobj = self.lexer.comma_or_option_break_re.match(body, next_pos)
+            if break_matchobj is None:
+                self._expected_comma_or_closing_bracket(body, next_pos)
+            if break_matchobj.group('break') == ']':
+                break
+            next_pos = break_matchobj.end()
+
+        end_pos = break_matchobj.end()
+        return end_pos, options
 
     @staticmethod
     def _cannot_match_right_pattern(
@@ -242,7 +284,7 @@ class Parser:
             left_pattern: str, right_pattern: str,
     ):
         raise PaxterSyntaxError(
-            f"cannot find matched closing pattern {right_pattern!r}"
+            f"cannot match closing pattern {right_pattern!r}"
             f"to the opening pattern {left_pattern!r} at {{next_pos}}",
             body=body, positions={'next_pos': next_pos},
         )
@@ -251,5 +293,26 @@ class Parser:
     def _improper_left_pattern(body: str, next_pos: int):
         raise PaxterSyntaxError(
             "improper opening pattern at {next_pos}",
+            body=body, positions={'next_pos': next_pos},
+        )
+
+    @staticmethod
+    def _expected_opening_brace(body: str, next_pos: int):
+        raise PaxterSyntaxError(
+            "expected opening brace after options at {next_pos}",
+            body=body, positions={'next_pos': next_pos},
+        )
+
+    @staticmethod
+    def _expected_next_option_or_closing_bracket(body: str, next_pos: int):
+        raise PaxterSyntaxError(
+            "expected next option or closing bracket at {next_pos}",
+            body=body, positions={'next_pos': next_pos},
+        )
+
+    @staticmethod
+    def _expected_comma_or_closing_bracket(body: str, next_pos: int):
+        raise PaxterSyntaxError(
+            "expected a comma or a closing bracket at {next_pos}",
             body=body, positions={'next_pos': next_pos},
         )

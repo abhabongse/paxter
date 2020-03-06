@@ -4,8 +4,8 @@ Data definitions for node types presented in parsed tree
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Union
 
-__all__ = ['Node', 'BaseAtom', 'Identifier', 'Literal', 'BaseFragment', 'FragmentList',
-           'Text', 'PaxterMacro', 'PaxterFunc', 'PaxterPhrase']
+__all__ = ['Node', 'BaseAtom', 'Identifier', 'Literal', 'KeyValue', 'BaseFragment',
+           'FragmentList', 'Text', 'PaxterMacro', 'PaxterFunc', 'PaxterPhrase']
 
 
 @dataclass
