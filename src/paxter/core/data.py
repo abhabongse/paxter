@@ -35,7 +35,6 @@ class BaseAtom(Node):
     """
     Node types which are acceptable as the value part of the key-value option list.
     """
-    pass
 
 
 @dataclass
@@ -77,7 +76,6 @@ class BaseFragment(Node):
     """
     Node types which are allowed to be part of the list of fragments.
     """
-    pass
 
 
 @dataclass

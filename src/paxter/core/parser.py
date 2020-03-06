@@ -75,7 +75,10 @@ class Parser:
             # Tries to match the break pattern
             break_matchobj = break_re.match(body, next_pos)
             if break_matchobj is None:
-                self._cannot_match_right_pattern(next_pos, left_pattern, right_pattern)
+                self._cannot_match_right_pattern(
+                    body, next_pos,
+                    left_pattern, right_pattern,
+                )
 
             # Append non-empty text node to children list
             text_node = self.lexer.extract_text_node(break_matchobj)

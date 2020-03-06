@@ -37,19 +37,18 @@ Document-first text pre-processing mini-language, _loosely_ inspired by [at-expr
 
 This is still a **work in progress** and a lot stuff are **subjected to change**.
 
-
 ## Installation
 
-    pip install paxter
+Simply install this package with the following command:
 
-You can also install the in-development version with:
-
-    pip install https://github.com/abhabongse/paxter/archive/master.zip
+```shell script
+$ pip install paxter
+```
 
 ## Documentation
 
-- [See rough description of grammar here.](paxter/core/__init__.py)
-- <https://paxter.readthedocs.io/>
+-   [See rough description of grammar here.](src/paxter/core/__init__.py)
+-   [ReadTheDocs documentation](https://paxter.readthedocs.io/) (under construction)
 
 ## Development
 

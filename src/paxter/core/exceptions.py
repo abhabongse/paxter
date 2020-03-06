@@ -41,4 +41,3 @@ class PaxterConfigError(PaxterBaseException):
     """
     Exception for configuration error.
     """
-    pass
