@@ -11,10 +11,10 @@ coverage==5.0.3           # via pytest-cov
 decorator==4.4.2          # via ipython, traitlets
 defusedxml==0.6.0         # via nbconvert
 entrypoints==0.3          # via flake8, nbconvert
-flake8-bugbear==20.1.4
-flake8-commas==2.0.0
-flake8-import-order==0.18.1
-flake8==3.7.9
+flake8-bugbear==20.1.4    # via -r dev-requirements.in
+flake8-commas==2.0.0      # via -r dev-requirements.in
+flake8-import-order==0.18.1  # via -r dev-requirements.in
+flake8==3.7.9             # via -r dev-requirements.in, flake8-bugbear, flake8-commas
 ipykernel==5.1.4          # via ipywidgets, jupyter, jupyter-console, notebook, qtconsole
 ipython-genutils==0.2.0   # via nbformat, notebook, qtconsole, traitlets
 ipython==7.13.0           # via ipykernel, ipywidgets, jupyter-console
@@ -25,7 +25,7 @@ jsonschema==3.2.0         # via nbformat
 jupyter-client==6.0.0     # via ipykernel, jupyter-console, notebook, qtconsole
 jupyter-console==6.1.0    # via jupyter
 jupyter-core==4.6.3       # via jupyter-client, nbconvert, nbformat, notebook, qtconsole
-jupyter==1.0.0
+jupyter==1.0.0            # via -r dev-requirements.in
 mako==1.1.2               # via pdoc3
 markdown==3.2.1           # via pdoc3
 markupsafe==1.1.1         # via jinja2, mako
@@ -38,7 +38,7 @@ notebook==6.0.3           # via jupyter, widgetsnbextension
 packaging==20.1           # via pytest
 pandocfilters==1.4.2      # via nbconvert
 parso==0.6.2              # via jedi
-pdoc3==0.7.5
+pdoc3==0.7.5              # via -r dev-requirements.in
 pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
 pluggy==0.13.1            # via pytest
@@ -51,14 +51,14 @@ pyflakes==2.1.1           # via flake8
 pygments==2.5.2           # via ipython, jupyter-console, nbconvert, qtconsole
 pyparsing==2.4.6          # via packaging
 pyrsistent==0.15.7        # via jsonschema
-pytest-cov==2.8.1
-pytest==5.3.5
+pytest-cov==2.8.1         # via -r dev-requirements.in
+pytest==5.3.5             # via -r dev-requirements.in, pytest-cov
 python-dateutil==2.8.1    # via jupyter-client
 pyzmq==19.0.0             # via jupyter-client, notebook
 qtconsole==4.7.0          # via jupyter
 qtpy==1.9.0               # via qtconsole
 send2trash==1.5.0         # via notebook
-six==1.14.0               # via bleach, jsonschema, packaging, pyrsistent, python-dateutil, traitlets
+six==1.14.0               # via -c requirements.txt, bleach, jsonschema, packaging, python-dateutil, traitlets
 terminado==0.8.3          # via notebook
 testpath==0.4.4           # via nbconvert
 tornado==6.0.3            # via ipykernel, jupyter-client, notebook, terminado

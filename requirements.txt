@@ -4,4 +4,6 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-click==7.0
+click==7.0                # via -r requirements.in
+parsimonious==0.8.1       # via -r requirements.in
+six==1.14.0               # via parsimonious
