@@ -33,12 +33,11 @@ metadata_file = os.path.join(this_dir, 'metadata.json')
 try:
     with open(metadata_file) as fobj:
         metadata = json.load(fobj)
-
-    __author__ = metadata['author']
-    __version__ = metadata['version']
-    __status__ = metadata['beta']
-    __license__ = metadata['license']
-    __maintainers__ = metadata['maintainers']
-
 except Exception:
-    pass
+    metadata = {}
+
+__author__ = metadata.get('author')
+__version__ = metadata.get('version')
+__status__ = metadata.get('status')
+__license__ = metadata.get('license')
+__maintainers__ = metadata.get('maintainers')
