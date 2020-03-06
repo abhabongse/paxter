@@ -24,17 +24,29 @@ class PaxterSyntaxError(PaxterBaseException):
     Positional index parameters indicates a mapping from position name
     to its indexing inside the input text.
     """
-    message: str
+    template: str
     body: str
     positions: PositionMap
 
     def __init__(
-            self, message: str,
+            self, template: str,
             body: str, positions: Optional[PositionMap] = None,
     ):
-        self.message = message
+        self.template = template
         self.body = body
         self.positions = positions or {}
+        self.args = (self.render(),)
+
+    def render(self):
+        formatted_pos = {}
+        for key, pos in self.positions.items():
+            line = self.body.count('\n', 0, pos) + 1
+            try:
+                col = pos - self.body.rindex('\n', 0, pos)
+            except ValueError:
+                col = pos + 1
+            formatted_pos[key] = f"line {line} col {col}"
+        return self.template.format(**formatted_pos)
 
 
 class PaxterConfigError(PaxterBaseException):
