@@ -15,7 +15,7 @@ PYTHON_PROJECT_PACKAGES := paxter
 REQUIREMENTS_FILES := $(patsubst ./%.in,%.txt,$(shell find . -type f -name '*requirements.in'))
 
 # Location to HTML documentation build
-HTML_DOC_OUTPUT = build/html
+HTML_DOC_OUTPUT = build/docs
 
 ##########
 ## RECIPES
@@ -48,6 +48,7 @@ ifndef VIRTUAL_ENV
 endif
 	@which pip-sync >/dev/null 2>&1 || pip install pip-tools
 	pip-sync $(REQUIREMENTS_FILES)
+	pip install -e .
 
 .PHONY: lock_python_requirements
 lock_python_requirements: $(REQUIREMENTS_FILES)
@@ -67,16 +68,8 @@ endif
 ######################
 
 .PHONY: test
-test: flake8 pytest mypy
+test: flake8 pytest tox_python tox_sanity
 	@# Run all code quality tools
-
-.PHONY: flake8
-flake8:
-	@# Run flake8 python code linter tool
-ifndef VIRTUAL_ENV
-	$(error must run target inside python virtualenv)
-endif
-	flake8
 
 .PHONY: pytest
 pytest:
@@ -95,6 +88,27 @@ endif
 	python -m pytest $(foreach pkg,$(PYTHON_PROJECT_PACKAGES),"--cov=$(pkg)") \
 		--cov-report=term-missing -v $(ARGS)
 
+.PHONY: tox_python
+tox_python:
+	@# Run pytest on various python versions
+ifndef VIRTUAL_ENV
+	$(error must run target inside python virtualenv)
+endif
+	tox -e py37 -e py38
+
+.PHONY: tox_sanity
+tox_sanity:
+	@# Perform other package sanity checks
+	tox -e check
+
+.PHONY: flake8
+flake8:
+	@# Run flake8 python code linter tool
+ifndef VIRTUAL_ENV
+	$(error must run target inside python virtualenv)
+endif
+	flake8 src tests setup.py
+
 .PHONY: mypy
 mypy:
 	@# Run python type checker tool
@@ -106,8 +120,11 @@ endif
 .PHONY: test_clean
 test_clean:
 	@# Clear all cached data resulted from testing
+ifndef VIRTUAL_ENV
+	$(error must run target inside python virtualenv)
+endif
 	find . -name '.*_cache' -type d | xargs rm -rf
-	rm -rf .coverage
+	coverage erase
 
 #############################
 ##@ Documentation Generations
@@ -119,7 +136,7 @@ doc_preview:
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
-	pdoc --template-dir pdoc_templates --http : $(PYTHON_PROJECT_PACKAGES)
+	pdoc --template-dir docs/templates --http : $(PYTHON_PROJECT_PACKAGES)
 
 .PHONY: doc_build
 doc_build:
@@ -127,7 +144,7 @@ doc_build:
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
-	pdoc --template-dir pdoc_templates --html --output-dir "$(HTML_DOC_OUTPUT)" \
+	pdoc --template-dir docs/templates --html --output-dir "$(HTML_DOC_OUTPUT)" \
 		$(PYTHON_PROJECT_PACKAGES)
 	@echo "HTML files are generated inside build/html directory."
 
@@ -140,14 +157,6 @@ doc_clean:
 #####################
 ##@ Program Shortcuts
 #####################
-
-.PHONY: tox_bootstrap
-tox_bootstrap:
-	@# Regenerate .travis.yml or .appveyor.yml
-ifndef VIRTUAL_ENV
-	$(error must run target inside python virtualenv)
-endif
-	python ./ci/bootstrap.py --no-env
 
 .PHONY: git_show_tree
 git_show_tree:
