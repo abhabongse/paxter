@@ -37,8 +37,8 @@ class Parser:
         return node
 
     def parse_nested_fragments(
-        self, body: str, next_pos: int,
-        left_pattern: str,
+            self, body: str, next_pos: int,
+            left_pattern: str,
     ) -> Tuple[int, FragmentList]:
         """
         Parse fragments inside Paxter expression function until reaching the right
@@ -52,8 +52,8 @@ class Parser:
         )
 
     def parse_inner_fragments(
-        self, body: str, next_pos: int,
-        left_pattern: str, right_pattern: str, break_re: Pattern[str],
+            self, body: str, next_pos: int,
+            left_pattern: str, right_pattern: str, break_re: Pattern[str],
     ) -> Tuple[int, FragmentList]:
         """
         Parse input text body for the scope of fragment nodes.
@@ -98,7 +98,7 @@ class Parser:
                 return end_pos, FragmentList(start_pos, text_node.end_pos, children)
 
     def parse_switch_symbol(
-        self, body: str, next_pos: int,
+            self, body: str, next_pos: int,
     ) -> Tuple[int, BaseFragment]:
         """
         Attempts to parse all kinds of Paxter expressions.
@@ -117,7 +117,7 @@ class Parser:
         )
 
     def parse_paxter_macro_pattern(
-        self, body: str, next_pos: int,
+            self, body: str, next_pos: int,
     ) -> Tuple[int, PaxterMacro]:
         """
         Parses Paxter macro.
@@ -142,7 +142,7 @@ class Parser:
         return end_pos, PaxterMacro(start_pos, end_pos, id_node, text_node)
 
     def parse_paxter_phrase_pattern(
-        self, body: str, next_pos: int,
+            self, body: str, next_pos: int,
     ) -> Tuple[int, PaxterPhrase]:
         """
         Parses Paxter phrase.
@@ -160,7 +160,7 @@ class Parser:
         return end_pos, PaxterPhrase(start_pos, end_pos, text_node)
 
     def parse_paxter_string_pattern(
-        self, body: str, next_pos: int,
+            self, body: str, next_pos: int,
     ) -> Tuple[int, Text]:
         """
         Parses Paxter string literal.
@@ -178,7 +178,7 @@ class Parser:
         return end_pos, Text(start_pos, end_pos, text_node.string)
 
     def parse_inner_text(
-        self, body: str, left_matchobj: Match[str],
+            self, body: str, left_matchobj: Match[str],
     ) -> Tuple[int, Text]:
         """
         Parses input text body for the scope of text node.
@@ -205,7 +205,7 @@ class Parser:
         return end_pos, text_node
 
     def parse_paxter_func_pattern(
-        self, body: str, next_pos: int,
+            self, body: str, next_pos: int,
     ) -> Tuple[int, BaseFragment]:
         """
         Parses for either a Paxter function call or the special Paxter phrase
@@ -254,7 +254,7 @@ class Parser:
         return end_pos, PaxterFunc(start_pos, end_pos, id_node, fragments_node, opts)
 
     def parse_inner_options(
-        self, body: str, next_pos: int,
+            self, body: str, next_pos: int,
     ) -> Tuple[int, List[KeyValue]]:
         """
         Parses the list of options.
@@ -292,8 +292,8 @@ class Parser:
 
     @staticmethod
     def _cannot_match_right_pattern(
-        body: str, next_pos: int,
-        left_pattern: str, right_pattern: str,
+            body: str, next_pos: int,
+            left_pattern: str, right_pattern: str,
     ):
         raise PaxterSyntaxError(
             f"cannot match closing pattern {right_pattern!r}"

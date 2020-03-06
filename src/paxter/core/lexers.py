@@ -7,6 +7,7 @@ import re
 import unicodedata
 from typing import Dict, Match, Pattern
 
+
 from paxter.core.data import Identifier, KeyValue, Literal, Text
 from paxter.core.exceptions import PaxterConfigError
 from paxter.core.unicode import ID_CONT_CHARS, ID_PATTERN
@@ -40,7 +41,7 @@ class Lexer:
     option_re = re.compile(
         # At most one of str_value, num_value, id_value will be populated
         rf'\s*(?P<id_key>{ID_PATTERN})(?:\s*=\s*(?:'
-        r'(?P<str_value>"(?:[^\\]*|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*")'
+        r'(?P<str_value>"(?:[^"\\]*|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*")'
         r'|(?P<num_value>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)'
         rf'|(?P<id_value>{ID_PATTERN})'
         r')|(?!\s*=))',
