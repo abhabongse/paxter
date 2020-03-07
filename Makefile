@@ -124,6 +124,7 @@ ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
 	find . -name '.*_cache' -type d | xargs rm -rf
+	find . -name '*.egg-info' -type d | xargs rm -rf
 	coverage erase
 
 ########################
@@ -150,6 +151,7 @@ endif
 pkg_clean:
 	@# Clean compiled packages
 	rm -rf build/bdist.* build/lib dist/
+	find . -name '*.egg-info' -type d | xargs rm -rf
 	-rmdir build
 
 #############################
