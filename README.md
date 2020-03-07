@@ -35,24 +35,97 @@
 
 Document-first text pre-processing mini-language, _loosely_ inspired by [at-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).
 
-This is still a **work in progress** and a lot stuff are **subjected to change**.
+**Warning:** This is still a _work in progress_ and a lot stuff are _subjected to change_.
 
 ## Installation
 
-Simply install this package with the following command:
+This package can be installed from PyPI via `pip` command
+(or any other methods of your choice):
 
 ```shell script
 $ pip install paxter
 ```
 
+## Programmatic Usage
+
+The package is intended to be used as a library.
+Standard transformers are available to be utilized right away
+without having to write custom parsed tree transformers.
+
+Here is one way to use this library.
+
+```python
+from paxter.core import Parser, SimplePythonTransformer
+
+parser = Parser()
+transformer = SimplePythonTransformer()
+
+env = {
+    'name': "John Smith",
+    'age_last_year': 47,
+    'strip': lambda token: token.strip(),
+    'tag': lambda token, label: f"<{label}>{token}</{label}>",
+}
+
+tree = parser.parse('''\
+@!##{
+def add_one(num):
+    return num + 1
+}##
+
+Hello, my @strip{  full name   } is @name.
+@tag[label="b"]{@name is @{age_last_year + 1} years old.}
+@!{age_this_year = age_last_year + 1}
+
+Do you know that 1 + 1 = @{1 + 1}?
+''')
+
+updated_env, output_text = transformer.transform(env, tree)
+print(f"Age this year: {updated_env['age_this_year']}")
+print(output_text)
+```
+
+The above script will print the following text:
+
+```text
+Age this year: 48
+
+
+Hello, my full name is John Smith.
+<b>John Smith is 48 years old.</b>
+
+
+Do you know that 1 + 1 = 2?
+```
+
+Library users could also write their own custom transformers
+by extending the `paxter.core.BaseTransformer` class
+and use it in any way they want. Stay tuned for the tutorial.
+
+## CLI Usage
+
+While this feature is not ready,
+users can try make a call to the following command:
+
+```shell script
+$ python -m paxter  # provide --help for help messages
+```
+
 ## Documentation
 
--   [See rough description of grammar here.](src/paxter/core/__init__.py)
+-   [Rough description of Paxter grammar](src/paxter/core/__init__.py)
 -   [ReadTheDocs documentation](https://paxter.readthedocs.io/) (under construction)
+
+## Future Plans
+
+-   Experiment with different kinds of transformers and use it in real life
+-   Richer experience with environments and stores 
+    (adding standard string functions, etc.)
+-   Re-implementing lexers and parsers in Rust for better performance
+    and portability to other environments (such as WASM). 
+-   And more!
 
 ## Development
 
-To run the all tests run:
-```shell script
-$ tox
-```
+`Makefile` contains a lot of utility scripts.  
+See help command by simply running `make` or `make help`.
