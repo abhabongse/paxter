@@ -82,9 +82,7 @@ class SimplePythonTransformer(BaseTransformer):
             'false': False,
             **env,
         }
-        print("before", id(cloned_env))
         result = self.visit(cloned_env, node)
-        print("after", id(cloned_env))
         return cloned_env, result
 
     def visit_identifier(self, env: dict, node: Identifier) -> Any:
