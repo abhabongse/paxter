@@ -1,6 +1,6 @@
 {
   "description": "Document-first text pre-processing mini-language loosely inspired by at-expressions in Racket",
-  "version": "0.1.2",
+  "version": "0.1.2.post1",
   "license": "Apache-2.0",
   "status": "Beta",
   "author": "Abhabongse Janthong",
