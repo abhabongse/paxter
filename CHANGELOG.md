@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 (7 March 2020)
+
+-   Remove debugging print statement from transformer
+
 ## 0.1.2 (7 March 2020)
 
 -   Fixed missing quotation mark rule in JSON string literal lexer
