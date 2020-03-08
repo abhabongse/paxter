@@ -148,7 +148,6 @@ class Lexer:
 
         # Extract value based on at most one group from
         # str_value, num_value, or id_value groups
-        # TODO: reintroduce walrus operator usage
         if matchobj.group('str_value'):
             value = Literal(
                 start_pos=matchobj.start('str_value'),

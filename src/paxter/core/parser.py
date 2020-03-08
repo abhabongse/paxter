@@ -251,7 +251,7 @@ class Parser:
             self, body: str, next_pos: int,
     ) -> Tuple[int, List[KeyValue]]:
         """
-        Parses the list of options.
+        Parses for the list of options.
         """
         options = []
 

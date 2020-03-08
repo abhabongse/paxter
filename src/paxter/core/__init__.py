@@ -27,8 +27,8 @@ wrapped_fragments ::=
     | "#" wrapped_fragments "#"
     | "<" wrapped_fragments ">"
     | "{" fragments "}"
-options ::= "[" ( opt ( "," opt )* ","? )? "]"
-opt ::= NORMAL_ID ( "=" ATOMIC_VALUE )?
+options ::= "[" ( kv_pair ( "," kv_pair )* ","? )? "]"
+kv_pair ::= NORMAL_ID ( "=" ATOMIC_VALUE )?
 
 NON_GREEDY_TEXT ::= /.*?/
 NORMAL_ID ::= ID_START ID_CONT*
@@ -38,6 +38,7 @@ ATOMIC_VALUE ::= JSON_NUMBER | JSON_STRING | IDENTIFIER
 
 ### Notes
 
+- Please consult `paxter.core.data` module for definitions of all node types.
 - `ID_START` represents a subset of characters (for regular expression)
   that is allowed to be the first character of an identifier,
   consisting of an underscore (`_`) plus Unicode character classes

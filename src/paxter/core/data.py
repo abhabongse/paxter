@@ -1,5 +1,8 @@
 """
 Data definitions for node types presented in parsed tree
+
+Docstrings in this module assumes the switch symbol character `@`
+for simplicity, though the concept is also applied to other switch symbols.
 """
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Union
@@ -33,15 +36,17 @@ class Node:
 @dataclass
 class BaseAtom(Node):
     """
-    Node types which are acceptable as the value part of the key-value option list.
+    Node types which are acceptable as the value part
+    of the key-value option list.
     """
 
 
 @dataclass
 class Identifier(BaseAtom):
     """
-    Identifier name which either immediately follows the non-phrasal @-symbol,
-    or is part of the key-value option list.
+    Identifier name which either immediately follows
+    the switch symbol character (such as `@` symbol)
+    or is a part of the key-value options list.
 
     Attributes:
         name: Identifier name
@@ -52,11 +57,11 @@ class Identifier(BaseAtom):
 @dataclass
 class Literal(BaseAtom):
     """
-    Literal value part of the key-value option list.
-    It can either be JSON-compatible number or string literal.
+    Literal value part of the key-value option list
+    which can either be JSON-compatible number or string literals.
 
     Attributes:
-        value: Python value of the JSON number/string literal
+        value: The value of literal being transformed by `json.loads` function
     """
     value: Union[str, int, float]
 
@@ -74,7 +79,8 @@ KeyValue = Tuple[Identifier, Optional[BaseAtom]]
 @dataclass
 class BaseFragment(Node):
     """
-    Node types which are allowed to be part of the list of fragments.
+    Node types which are allowed to be part
+    of the list of fragments.
     """
 
 
@@ -92,8 +98,9 @@ class FragmentList(Node):
 @dataclass
 class Text(BaseFragment):
     """
-    Text which may be presented inside a list of fragments,
-    inside an @-expression macro, or embedded within the `@"raw string"`.
+    Text which may be presented inside the main body text of
+    `FragmentList`, `PaxterMacro`, and `PaxterPhrase`,
+    or may be embedded within the raw text following the pattern `@"text"`.
 
     Attributes:
         string: String content
@@ -105,12 +112,12 @@ class Text(BaseFragment):
 class PaxterMacro(BaseFragment):
     """
     An @-expression macro following the `@id!{raw text}` pattern,
-    consisting of an identifier (whose names ends with `!`)
+    consisting of an identifier (whose names always ends with `!`)
     and the wrapped text which _cannot_ contain nested @-expressions.
 
     Attributes:
         id: Identifier part (always ending with an exclamation mark)
-        text: Text under the @-expression macro
+        text: Main text under the @-expression macro
     """
     id: Identifier
     text: Text
@@ -130,11 +137,13 @@ class PaxterFunc(BaseFragment):
     Should the value part be present, there must be a `=` sign separating
     the key part and the value part within the key-value pair.
 
-    For example, the option `[key1,key2="value2",key3=value3]` translates to
+    For example, the option `[key1,key2="value2",key3=value3,key4=4]`
+    translates to (unimportant fields omitted):
     ```
     options = [(Identifier("key1"), None),
                (Identifier("key2"), Literal("value2")),
-               (Identifier("key3"), Identifier("value3"))]
+               (Identifier("key3"), Identifier("value3")),
+               (Identifier("key4"), Literal(4)]
     ```
 
     Attributes:
@@ -143,7 +152,8 @@ class PaxterFunc(BaseFragment):
         options: Optional list of key-value pairs presented within the square brackets.
 
             - This value will be `None` when square brackets pair is _not_ present.
-            - If the value part is _not_ present within each key-value pair,
+            - When the square brackets pair is present,
+              if the value part is omitted from the key-value pair,
               the value part will be represented with `None`.
 
     """
