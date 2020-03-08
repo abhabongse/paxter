@@ -48,12 +48,13 @@ from paxter.core.exceptions import (PaxterBaseException, PaxterConfigError,
                                     PaxterSyntaxError)
 from paxter.core.lexers import Lexer
 from paxter.core.parser import Parser
-from paxter.core.transformer import BaseTransformer, SimplePythonTransformer
+from paxter.core.transformer import BaseTransformer
+from paxter.standard.simple_python import SimplePythonTransformer
 
 __all__ = ['BaseAtom', 'BaseFragment', 'FragmentList', 'Identifier', 'Literal',
            'Node', 'PaxterMacro', 'PaxterFunc', 'PaxterPhrase', 'Text',
            'PaxterBaseException', 'PaxterConfigError', 'PaxterSyntaxError',
-           'Lexer', 'Parser', 'BaseTransformer', 'SimplePythonTransformer']
+           'Lexer', 'Parser', 'BaseTransformer']
 
 # Disable all docstrings for classes and functions at this level
 __pdoc__ = {item: False for item in __all__}

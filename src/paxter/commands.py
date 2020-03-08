@@ -41,7 +41,8 @@ def render_simple_python(input_file, output_file, switch):
     Runs Paxter parser and simple python transformer
     on input from INPUT_FILE and write to OUTPUT_FILE.
     """
-    from paxter.core import Parser, Lexer, SimplePythonTransformer
+    from paxter.core import Parser, Lexer
+    from paxter.standard.simple_python import SimplePythonTransformer
     lexer = Lexer(switch=switch)
     parser = Parser(lexer=lexer)
     transformer = SimplePythonTransformer()

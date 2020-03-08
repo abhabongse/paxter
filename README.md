@@ -55,7 +55,8 @@ without having to write custom parsed tree transformers.
 Here is one way to use this library.
 
 ```python
-from paxter.core import Parser, SimplePythonTransformer
+from paxter.core import Parser
+from paxter.standard.simple_python import SimplePythonTransformer
 
 parser = Parser()
 transformer = SimplePythonTransformer()
