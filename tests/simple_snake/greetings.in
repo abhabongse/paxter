@@ -1,0 +1,19 @@
+@!##{
+def add_one(num):
+    return num + 1
+}##\
+\
+@strip{   Hello, my full name is @tag[label="b"]{John Smith}   }.
+I am currently @age years old, and by this time next year I will be @{age + 1} years old.
+My email is @"john@example.com".
+@!{age_next_year = add_one(age)}\
+
+Do you know that 1 + 1 = @{1 + 1}?
+
+@!##{
+import itertools
+
+counter = itertools.count(start=1)
+}##\
+\
+Let's count: @{next(counter)}, @{next(counter)}, @{next(counter)}.

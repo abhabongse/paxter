@@ -33,9 +33,15 @@
     </tbody>
 </table>
 
-Document-first text pre-processing mini-language, _loosely_ inspired by [at-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).
+Paxter is a document-first text pre-processing mini-language, _loosely_ inspired by
+[at-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).  
 
-**Warning:** This is still a _work in progress_ and a lot stuff are _subjected to change_.
+-   The language mainly provides a way to parse an input text into a document tree
+([similarly to a DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)).
+-   The language itself **does not specify** how the parsed tree will be transformed
+into the final rendered output text.
+-   Users of this package may opt-in to use pre-defined _flavors_ of tree transformers
+or choose to implement a new one by themselves. 
 
 ## Installation
 
@@ -48,22 +54,23 @@ $ pip install paxter
 
 ## Programmatic Usage
 
-The package is intended to be used as a library.
-Standard transformers are available to be utilized right away
-without having to write custom parsed tree transformers.
+The package is _mainly_ intended to be used as a library.
+Pre-defined tree transformers are available to be utilized right away
+without users having to write custom transformers.
 
-Here is one way to use this library.
+Here is one way to use this library with **Simple Snake**
 
 ```python
 from paxter.core import Parser
-from paxter.standard import SimplePythonTransformer
+from paxter.flavors import SimpleSnakeTransformer
 
 parser = Parser()
-transformer = SimplePythonTransformer()
+transformer = SimpleSnakeTransformer()
 
 env = {
     'name': "John Smith",
-    'age_last_year': 47,
+    'age': 47,
+    'occupation': "Student",
     'strip': lambda token: token.strip(),
     'tag': lambda token, label: f"<{label}>{token}</{label}>",
 }
@@ -72,41 +79,50 @@ tree = parser.parse('''\
 @!##{
 def add_one(num):
     return num + 1
-}##
-
-Hello, my @strip{  full name   } is @name.
-@tag[label="b"]{@name is @{age_last_year + 1} years old.}
-@!{age_this_year = age_last_year + 1}
+}##\
+\
+@strip{   Hello, my full name is @tag[label="b"]{John Smith}   }.
+I am currently @age years old, and by this time next year I will be @{age + 1} years old.
+My email is @"john@example.com".
+@!{age_next_year = add_one(age)}\
 
 Do you know that 1 + 1 = @{1 + 1}?
+
+@!##{
+import itertools
+
+counter = itertools.count(start=1)
+}##\
+\
+Let's count: @{next(counter)}, @{next(counter)}, @{next(counter)}.
 ''')
 
 updated_env, output_text = transformer.transform(env, tree)
-print(f"Age this year: {updated_env['age_this_year']}")
+print(f"Age next year: {updated_env['age_next_year']}")
 print(output_text)
 ```
 
 The above script will print the following text:
 
 ```text
-Age this year: 48
-
-
-Hello, my full name is John Smith.
-<b>John Smith is 48 years old.</b>
-
+Age next year: 48
+Hello, my full name is <b>John Smith</b>.
+I am currently 47 years old, and by this time next year I will be 48 years old.
+My email is john@example.com.
 
 Do you know that 1 + 1 = 2?
+
+Let's count: 1, 2, 3.
 ```
 
 Library users could also write their own custom transformers
 by extending the `paxter.core.BaseTransformer` class
 and use it in any way they want. Stay tuned for the tutorial.
 
-## CLI Usage
+### CLI Usage
 
-While this feature is not ready,
-users can try make a call to the following command:
+While this feature is still a work in progress,
+users may try making a call to the following command to get started:
 
 ```shell script
 $ python -m paxter  # provide --help for help messages

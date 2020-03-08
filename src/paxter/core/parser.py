@@ -148,7 +148,7 @@ class Parser:
 
     def parse_paxter_phrase(
             self, body: str, next_pos: int,
-            prefix_matchobj :Match[str],
+            prefix_matchobj: Match[str],
     ) -> Tuple[int, PaxterPhrase]:
         """
         Continues parsing for the PaxterPhrase.

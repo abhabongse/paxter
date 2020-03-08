@@ -11,8 +11,12 @@ __all__ = ['BaseTransformer']
 
 class BaseTransformer:
     """
-    Simple bottom-up parsed tree transformer for Paxter language.
-    This class should be subclasses to override the transformation behavior
+    Simple bottom-up tree transformer parsed from Paxter language source text.
+
+    Each visitor method in this class immediately
+    returns the input node as the output of the method.
+    Thus it is important that this class **would be subclassed**
+    to override the transformation behavior
     for each particular node types.
     """
 
@@ -23,6 +27,10 @@ class BaseTransformer:
         return self.visit(env, node)
 
     def visit(self, env: dict, node: Node) -> Any:
+        """
+        Dispatches to a visitor which handles the particular type
+        of the input node.
+        """
         if isinstance(node, Identifier):
             return self.visit_identifier(env, node)
         if isinstance(node, Literal):
@@ -40,22 +48,43 @@ class BaseTransformer:
         raise RuntimeError("unrecognized parsed tree node")
 
     def visit_identifier(self, env: dict, node: Identifier) -> Any:
+        """
+        Handles `paxter.core.data.Identifier` node.
+        """
         return node
 
     def visit_literal(self, env: dict, node: Literal) -> Any:
+        """
+        Handles `paxter.core.data.Literal` node.
+        """
         return node
 
     def visit_fragment_list(self, env: dict, node: FragmentList) -> Any:
+        """
+        Handles `paxter.core.data.FragmentList` node.
+        """
         return node
 
     def visit_paxter_macro(self, env: dict, node: PaxterMacro) -> Any:
+        """
+        Handles `paxter.core.data.PaxterMacro` node.
+        """
         return node
 
     def visit_paxter_func(self, env: dict, node: PaxterFunc) -> Any:
+        """
+        Handles `paxter.core.data.PaxterFunc` node.
+        """
         return node
 
     def visit_paxter_phrase(self, env: dict, node: PaxterPhrase) -> Any:
+        """
+        Handles `paxter.core.data.PaxterPhrase` node.
+        """
         return node
 
     def visit_text(self, env: dict, node: Text) -> Any:
+        """
+        Handles `paxter.core.data.Text` node.
+        """
         return node

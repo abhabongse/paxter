@@ -1,7 +1,7 @@
 import pytest
 
 from paxter.core import Parser
-from paxter.standard import SimplePythonTransformer
+from paxter.flavors import SimpleSnakeTransformer
 
 fst_environment = {
     'name': "John",
@@ -88,7 +88,7 @@ Do you know that 1 + 1 = 2?
 )
 def test_simple_python_transformer(environment, input_text, expected):
     parser = Parser()
-    transformer = SimplePythonTransformer()
+    transformer = SimpleSnakeTransformer()
     parsed_tree = parser.parse(input_text)
     _, output_text = transformer.transform(environment, parsed_tree)
     assert output_text == expected
@@ -96,7 +96,7 @@ def test_simple_python_transformer(environment, input_text, expected):
 
 def test_environment_change():
     parser = Parser()
-    transformer = SimplePythonTransformer()
+    transformer = SimpleSnakeTransformer()
 
     parsed_tree = parser.parse(fst_input_text)
     updated_environment, _ = transformer.transform(fst_environment, parsed_tree)
