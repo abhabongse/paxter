@@ -7,7 +7,6 @@ import re
 import unicodedata
 from typing import Dict, Match, Pattern
 
-
 from paxter.core.data import Identifier, KeyValue, Literal, Text
 from paxter.core.exceptions import PaxterConfigError
 from paxter.core.unicode import ID_CONT_CHARS, ID_PATTERN
@@ -38,7 +37,7 @@ class Lexer:
 
     left_brace_re = re.compile(r'(?P<left>[#<]*{)')
     left_sq_bracket_re = re.compile(r'\[')
-    option_re = re.compile(
+    kv_pair_re = re.compile(
         # At most one of str_value, num_value, id_value will be populated
         rf'\s*(?P<id_key>{ID_PATTERN})(?:\s*=\s*(?:'
         r'(?P<str_value>"(?:[^"\\]*|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*")'

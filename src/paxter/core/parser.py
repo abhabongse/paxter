@@ -215,10 +215,8 @@ class Parser:
         next_pos = prefix_matchobj.end()
 
         # First attempt: parse for left square bracket
-        if self.lexer.left_sq_bracket_re.match(body, next_pos):
-
-            # TODO: reintroduce walrus operator usage
-            left_bracket_matchobj = self.lexer.left_sq_bracket_re.match(body, next_pos)
+        left_bracket_matchobj = self.lexer.left_sq_bracket_re.match(body, next_pos)
+        if left_bracket_matchobj:
             next_pos = left_bracket_matchobj.end()
 
             # Parse options until the right (i.e. closing) square bracket
@@ -228,19 +226,19 @@ class Parser:
             left_brace_matchobj = self.lexer.left_brace_re.match(body, next_pos)
             if left_brace_matchobj is None:
                 self._expected_opening_brace(body, next_pos)
-
-        # Second attempt: parse for left (i.e. opening) brace
-        elif self.lexer.left_brace_re.match(body, next_pos):
-            # TODO: reintroduce walrus operator usage
-            left_brace_matchobj = self.lexer.left_brace_re.match(body, next_pos)
-            opts = None
-
-        # Fallback: special case for PaxterPhrase
         else:
-            text_node = Text(id_node.start_pos, id_node.end_pos, id_node.name)
-            return next_pos, PaxterPhrase(start_pos, next_pos, text_node)
+            # Second attempt: parse for left (i.e. opening) brace
+            left_brace_matchobj = self.lexer.left_brace_re.match(body, next_pos)
+            if left_brace_matchobj:
+                opts = None
+            else:
+                # Fallback: special case for PaxterPhrase
+                text_node = Text(id_node.start_pos, id_node.end_pos, id_node.name)
+                return next_pos, PaxterPhrase(start_pos, next_pos, text_node)
 
-        # Continue extracting FragmentList node from the left brace match object
+        # Falling through from the above if-statements,
+        # continue extracting FragmentList node
+        # from the left brace match object
         end_pos, fragments_node = self.parse_nested_fragments(
             body=body, next_pos=left_brace_matchobj.end(),
             left_pattern=left_brace_matchobj.group(),
@@ -255,30 +253,29 @@ class Parser:
         """
         options = []
 
-        # Keep on parsing the next option key-value pair
-        # when the next token is not the right (i.e. closing) square bracket
-        # TODO: reintroduce walrus operator usage
         while True:
+            # Keep on parsing the next option key-value pair
+            # when the next token is not the right (i.e. closing) square bracket
             break_matchobj = self.lexer.option_break_re.match(body, next_pos)
             if break_matchobj:
-                break
+                break  # end position will be extracted
 
             # Parse the next option key-value pair
-            option_matchobj = self.lexer.option_re.match(body, next_pos)
-            if option_matchobj is None:
+            kv_pair_matchobj = self.lexer.kv_pair_re.match(body, next_pos)
+            if kv_pair_matchobj is None:
                 self._expected_next_option_or_closing_bracket(body, next_pos)
 
             # Extract the key-value pair from match object
-            kv_pair = self.lexer.extract_kv_pair(option_matchobj)
+            kv_pair = self.lexer.extract_kv_pair(kv_pair_matchobj)
             options.append(kv_pair)
-            next_pos = option_matchobj.end()
+            next_pos = kv_pair_matchobj.end()
 
             # Parse for a comma or the abrupt right (i.e. closing) square bracket
             break_matchobj = self.lexer.comma_or_option_break_re.match(body, next_pos)
             if break_matchobj is None:
                 self._expected_comma_or_closing_bracket(body, next_pos)
             if break_matchobj.group('break') == ']':
-                break
+                break  # end position will be extracted
             next_pos = break_matchobj.end()
 
         end_pos = break_matchobj.end()
