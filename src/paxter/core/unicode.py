@@ -1,5 +1,8 @@
 """
 Unicode helper module.
+
+Computes a subset of characters which defines valid identifiers
+based on multiple Unicode character classes.
 """
 import sys
 import unicodedata

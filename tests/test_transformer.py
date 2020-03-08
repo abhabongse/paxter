@@ -1,7 +1,7 @@
 import pytest
 
 from paxter.core import Parser
-from paxter.standard.simple_python import SimplePythonTransformer
+from paxter.standard import SimplePythonTransformer
 
 fst_environment = {
     'name': "John",

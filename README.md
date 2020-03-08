@@ -56,7 +56,7 @@ Here is one way to use this library.
 
 ```python
 from paxter.core import Parser
-from paxter.standard.simple_python import SimplePythonTransformer
+from paxter.standard import SimplePythonTransformer
 
 parser = Parser()
 transformer = SimplePythonTransformer()
