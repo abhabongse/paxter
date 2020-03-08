@@ -102,32 +102,37 @@ class Parser:
     ) -> Tuple[int, BaseFragment]:
         """
         Attempts to parse all kinds of Paxter expressions.
+        by looking ahead for desired patterns.
         """
-        if self.lexer.paxter_macro_prefix_re.match(body, next_pos):
-            return self.parse_paxter_macro_pattern(body, next_pos)
-        if self.lexer.paxter_func_prefix_re.match(body, next_pos):
-            return self.parse_paxter_func_pattern(body, next_pos)
-        if self.lexer.paxter_phrase_prefix_re.match(body, next_pos):
-            return self.parse_paxter_phrase_pattern(body, next_pos)
-        if self.lexer.paxter_string_prefix_re.match(body, next_pos):
-            return self.parse_paxter_string_pattern(body, next_pos)
+        prefix_matchobj = self.lexer.paxter_macro_prefix_re.match(body, next_pos)
+        if prefix_matchobj:
+            return self.parse_paxter_macro(body, next_pos, prefix_matchobj)
+
+        prefix_matchobj = self.lexer.paxter_func_prefix_re.match(body, next_pos)
+        if prefix_matchobj:
+            return self.parse_paxter_func_or_phrase(body, next_pos, prefix_matchobj)
+
+        prefix_matchobj = self.lexer.paxter_phrase_prefix_re.match(body, next_pos)
+        if prefix_matchobj:
+            return self.parse_paxter_phrase(body, next_pos, prefix_matchobj)
+
+        prefix_matchobj = self.lexer.paxter_string_prefix_re.match(body, next_pos)
+        if prefix_matchobj:
+            return self.parse_paxter_string(body, next_pos, prefix_matchobj)
+
         raise PaxterSyntaxError(
             f"invalid expression after symbol {self.lexer.switch!r} at {{next_pos}}",
             body=body, positions={'next_pos': next_pos},
         )
 
-    def parse_paxter_macro_pattern(
+    def parse_paxter_macro(
             self, body: str, next_pos: int,
+            prefix_matchobj: Match[str],
     ) -> Tuple[int, PaxterMacro]:
         """
-        Parses Paxter macro.
+        Continues parsing for PaxterMarco.
         """
         start_pos = next_pos
-
-        # Parse switch symbol character and identifier
-        prefix_matchobj = self.lexer.paxter_macro_prefix_re.match(body, next_pos)
-        if prefix_matchobj is None:
-            raise RuntimeError("something went horribly wrong")
         id_node = self.lexer.extract_id_node(prefix_matchobj)
         next_pos = prefix_matchobj.end()
 
@@ -141,40 +146,32 @@ class Parser:
         end_pos, text_node = self.parse_inner_text(body, left_brace_matchobj)
         return end_pos, PaxterMacro(start_pos, end_pos, id_node, text_node)
 
-    def parse_paxter_phrase_pattern(
+    def parse_paxter_phrase(
             self, body: str, next_pos: int,
+            prefix_matchobj :Match[str],
     ) -> Tuple[int, PaxterPhrase]:
         """
-        Parses Paxter phrase.
+        Continues parsing for the PaxterPhrase.
+
+        It reuses the prefix match object provided which already captures
+        the left (i.e. opening) pattern inside inner text parser function.
         """
         start_pos = next_pos
-
-        # Parse the left (i.e. opening) pattern
-        left_brace_matchobj = self.lexer.paxter_phrase_prefix_re.match(body, next_pos)
-        if left_brace_matchobj is None:
-            raise RuntimeError("something went horribly wrong")
-
-        # Extract text node based on the found left (i.e. opening) pattern
-        # and use it to create a PaxterPhrase node
-        end_pos, text_node = self.parse_inner_text(body, left_brace_matchobj)
+        end_pos, text_node = self.parse_inner_text(body, prefix_matchobj)
         return end_pos, PaxterPhrase(start_pos, end_pos, text_node)
 
-    def parse_paxter_string_pattern(
+    def parse_paxter_string(
             self, body: str, next_pos: int,
+            prefix_matchobj: Match[str],
     ) -> Tuple[int, Text]:
         """
-        Parses Paxter string literal.
+        Continues parsing for the Paxter string literal.
+
+        It reuses the prefix match object provided which already captures
+        the left (i.e. opening) pattern inside inner text parser function.
         """
         start_pos = next_pos
-
-        # Parses the left (i.e. opening) pattern
-        left_quote_matchobj = self.lexer.paxter_string_prefix_re.match(body, next_pos)
-        if left_quote_matchobj is None:
-            raise RuntimeError("something went horribly wrong")
-
-        # Extract text node based on the found left (i.e. opening) pattern
-        # and fix the starting and ending positions before returning.
-        end_pos, text_node = self.parse_inner_text(body, left_quote_matchobj)
+        end_pos, text_node = self.parse_inner_text(body, prefix_matchobj)
         return end_pos, Text(start_pos, end_pos, text_node.string)
 
     def parse_inner_text(
@@ -204,19 +201,16 @@ class Parser:
         end_pos = text_matchobj.end()
         return end_pos, text_node
 
-    def parse_paxter_func_pattern(
+    def parse_paxter_func_or_phrase(
             self, body: str, next_pos: int,
+            prefix_matchobj: Match[str],
     ) -> Tuple[int, BaseFragment]:
         """
-        Parses for either a Paxter function call or the special Paxter phrase
+        Continues parsing the Paxter function call pattern
+        for either PaxterFunc or PaxterPhrase
         when argument to the function call does not exist.
         """
         start_pos = next_pos
-
-        # Parse switch symbol character and identifier
-        prefix_matchobj = self.lexer.paxter_func_prefix_re.match(body, next_pos)
-        if prefix_matchobj is None:
-            raise RuntimeError("something went horribly wrong")
         id_node = self.lexer.extract_id_node(prefix_matchobj)
         next_pos = prefix_matchobj.end()
 
