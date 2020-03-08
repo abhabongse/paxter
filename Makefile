@@ -127,6 +127,14 @@ endif
 	find . -name '*.egg-info' -type d | xargs rm -rf
 	coverage erase
 
+.PHONY: test_clean_totally
+test_clean_totally: test_clean
+	@# Clear all cached data resulted from testing (including tox)
+ifndef VIRTUAL_ENV
+	$(error must run target inside python virtualenv)
+endif
+	rm -rf .tox
+
 ########################
 ##@ Package Distribution
 ########################
