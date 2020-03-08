@@ -1,3 +1,33 @@
+"""
+Implements `SimplePythonTransformer` which works with
+embedded Python expressions and statements.
+
+## Interpretation of Parsed Tree
+
+- Each `paxter.core.data.PaxterPhrase` evaluates its main text as python expression.
+  Result of the evaluation will be output to the transformed text.
+- Each `paxter.core.data.PaxterFunc` will be a function application
+  of a function (which is indicated by its identifier part)
+  with the main text part as the only positional argument.
+  Specified options will be passed to the same function call as keyword arguments.
+- Each `paxter.core.data.PaxterMacro` will be a function application
+  of a function (which is indicated by its identifier ending with a `!`)
+  with two positional arguments: the environment dict and the main text respectively.
+
+Initially, the environment dict contains the following
+(unless overridden by the input environment dict):
+
+- A single `!` macro function simply executes the main text as python code.
+  However, there will no output to the transformed text whatsoever.
+- Three JSON-literal constants: `null`, `true`, and `false`.
+- `__builtins__` may be introduced automatically due to usage of
+  `eval` and `exec` built-in functions in this transformer.
+
+## TODO
+
+- Introduce special print-function that will allow text outputting into document
+  which would be useful for python code inside single `!` macro function.
+"""
 from typing import Any, Tuple, Union
 
 from paxter.core import (BaseTransformer, FragmentList, Identifier, Literal, PaxterFunc,
@@ -5,9 +35,11 @@ from paxter.core import (BaseTransformer, FragmentList, Identifier, Literal, Pax
 
 __all__ = ['SimplePythonTransformer']
 
+
 class SimplePythonTransformer(BaseTransformer):
     """
-    Transformer that does something special with Python.
+    Transformer of Paxter parsed tree which works with
+    embedded Python expressions and statements.
     """
 
     def transform(self, env: dict, node: FragmentList) -> Tuple[dict, str]:

@@ -3,45 +3,54 @@ Core functionality of Paxter document pre-processing language.
 
 ## Language Specification
 
+Here is the rough grammar of Paxter language in Backus–Naur Form.
+
 ```bnf
 start ::= fragments
 fragments ::= fragment*
 fragment ::=
-    | "@" IDENTIFIER? "!" wrapped_text          /* PaxterMacro */
-    | "@" IDENTIFIER opts? wrapped_fragments    /* PaxterFunc */
-    | "@" IDENTIFIER                            /* PaxterPhrase (special case) */
+    | "@" NORMAL_ID? "!" wrapped_text           /* PaxterMacro */
+    | "@" NORMAL_ID options? wrapped_fragments  /* PaxterFunc */
+    | "@" NORMAL_ID                             /* PaxterPhrase (special) */
     | "@" wrapped_text                          /* PaxterPhrase */
-    | "@" wrapped_string                        /* Text (special case) */
+    | "@" wrapped_string                        /* Text (special) */
     | NON_GREEDY_TEXT                           /* Text */
 wrapped_text ::=
     | "#" wrapped_text "#"
     | "<" wrapped_text ">"
     | "{" NON_GREEDY_TEXT "}"
 wrapped_string ::=
-    | "#" wrapped_string_literal "#"
-    | "<" wrapped_string_literal ">"
+    | "#" wrapped_string "#"
+    | "<" wrapped_string ">"
     | "\"" NON_GREEDY_TEXT "\""
 wrapped_fragments ::=
     | "#" wrapped_fragments "#"
     | "<" wrapped_fragments ">"
     | "{" fragments "}"
-opts ::= "[" ( opt ( "," opt )* ","? )? "]"    /* space delimited */
-opt ::=
-    | IDENTIFIER "=" ATOMIC_VALUE
-    | ATOMIC_VALUE
+options ::= "[" ( opt ( "," opt )* ","? )? "]"
+opt ::= NORMAL_ID ( "=" ATOMIC_VALUE )?
 
 NON_GREEDY_TEXT ::= /.*?/
 NORMAL_ID ::= ID_START ID_CONT*
 MACRO_ID ::= NORMAL_ID? "!"
-ATOMIC_VALUE ::= NUMBER | STRING | IDENTIFIER
-
-/* Unicode character class in valid identifiers */
-ID_START ::= /[_\p{Lu,Ll,Lt,Lm,Lo,Nl}]/
-ID_CONT ::=  /[_\p{Lu,Ll,Lt,Lm,Lo,Nl,Mn,Mc,Nd,Pc}]/
+ATOMIC_VALUE ::= JSON_NUMBER | JSON_STRING | IDENTIFIER
 ```
 
-**Note:** Parsing `NUMBER` and `STRING` tokens will follow
-the [JSON specification](https://www.json.org/json-en.html).
+### Notes
+
+- `ID_START` represents a subset of characters (for regular expression)
+  that is allowed to be the first character of an identifier,
+  consisting of an underscore (`_`) plus Unicode character classes
+  `Lu`, `Ll`, `Lt`, `Lm`, `Lo`, and `Nl`.
+- `ID_CONT` represents a subset of characters (for regular expression)
+  that is allowed to be the subsequent characters of an identifier,
+  consisting of all characters from `ID_START` plus Unicode character classes
+  `Mn`, `Mc`, `Nd`, and `Pc`.
+- Parsing `JSON_NUMBER` and `JSON_STRING` tokens will strictly follow
+  the [JSON specification](https://www.json.org/json-en.html).
+  and the value in the parsed tree will be recognized by `json.loads` function.
+- While parsing Paxter language input, white space will **not** be ignored
+  **except** for within the options list.
 """
 from paxter.core.data import (BaseAtom, BaseFragment, FragmentList, Identifier, Literal,
                               Node, PaxterFunc, PaxterMacro, PaxterPhrase, Text)
