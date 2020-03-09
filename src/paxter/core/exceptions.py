@@ -15,7 +15,7 @@ class PaxterBaseException(Exception):
     message: str
 
     def __init__(self, message: str):
-        self.message = message
+        self.message = message  # pragma: no cover
 
 
 class PaxterSyntaxError(PaxterBaseException):
@@ -43,7 +43,7 @@ class PaxterSyntaxError(PaxterBaseException):
             line = self.body.count('\n', 0, pos) + 1
             try:
                 col = pos - self.body.rindex('\n', 0, pos)
-            except ValueError:
+            except ValueError:  # pragma: no cover
                 col = pos + 1
             formatted_pos[key] = f"line {line} col {col}"
         return self.template.format(**formatted_pos)

@@ -8,3 +8,4 @@ john@"@"example.com
 My name is @name. I am @age years old!
 @!{age = age + 1}
 My name is @name. I am @age years old!
+@bold[]{one}

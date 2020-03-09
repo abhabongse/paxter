@@ -105,7 +105,7 @@ class Lexer:
         right (i.e. closing) pattern (such as `"<##<{"` into `"}>##>"`).
         """
         if not ALLOWED_LEFT_PATTERN_RE.fullmatch(left_pattern):
-            raise RuntimeError("something went horribly wrong")
+            raise RuntimeError("something went horribly wrong")  # pragma: no cover
         return left_pattern.translate(LEFT_TO_RIGHT_TRANS)[::-1]
 
     @staticmethod

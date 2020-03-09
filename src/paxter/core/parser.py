@@ -32,7 +32,7 @@ class Parser:
             body, 0,
             r'\A', r'\Z', self.lexer.global_break_re,
         )
-        if end_pos != len(body):
+        if end_pos != len(body):  # pragma: no cover
             raise RuntimeError("unexpected error; input text body not fully consumed")
         return node
 
@@ -286,8 +286,10 @@ class Parser:
             body: str, next_pos: int,
             left_pattern: str, right_pattern: str,
     ):
+        right_pattern = right_pattern.replace('}', '}}')
+        left_pattern = left_pattern.replace('{', '{{')
         raise PaxterSyntaxError(
-            f"cannot match closing pattern {right_pattern!r}"
+            f"cannot match closing pattern {right_pattern!r} "
             f"to the opening pattern {left_pattern!r} at {{next_pos}}",
             body=body, positions={'next_pos': next_pos},
         )

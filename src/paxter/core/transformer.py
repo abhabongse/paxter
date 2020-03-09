@@ -24,7 +24,7 @@ class BaseTransformer:
         """
         Start transforming the given node.
         """
-        return self.visit(env, node)
+        return self.visit(env, node)  # pragma: no cover
 
     def visit(self, env: dict, node: Node) -> Any:
         """
@@ -45,46 +45,46 @@ class BaseTransformer:
             return self.visit_paxter_phrase(env, node)
         if isinstance(node, Text):
             return self.visit_text(env, node)
-        raise RuntimeError("unrecognized parsed tree node")
+        raise RuntimeError("unrecognized parsed tree node")  # pragma: no cover
 
     def visit_identifier(self, env: dict, node: Identifier) -> Any:
         """
         Handles `paxter.core.data.Identifier` node.
         """
-        return node
+        return node  # pragma: no cover
 
     def visit_literal(self, env: dict, node: Literal) -> Any:
         """
         Handles `paxter.core.data.Literal` node.
         """
-        return node
+        return node  # pragma: no cover
 
     def visit_fragment_list(self, env: dict, node: FragmentList) -> Any:
         """
         Handles `paxter.core.data.FragmentList` node.
         """
-        return node
+        return node  # pragma: no cover
 
     def visit_paxter_macro(self, env: dict, node: PaxterMacro) -> Any:
         """
         Handles `paxter.core.data.PaxterMacro` node.
         """
-        return node
+        return node  # pragma: no cover
 
     def visit_paxter_func(self, env: dict, node: PaxterFunc) -> Any:
         """
         Handles `paxter.core.data.PaxterFunc` node.
         """
-        return node
+        return node  # pragma: no cover
 
     def visit_paxter_phrase(self, env: dict, node: PaxterPhrase) -> Any:
         """
         Handles `paxter.core.data.PaxterPhrase` node.
         """
-        return node
+        return node  # pragma: no cover
 
     def visit_text(self, env: dict, node: Text) -> Any:
         """
         Handles `paxter.core.data.Text` node.
         """
-        return node
+        return node  # pragma: no cover
