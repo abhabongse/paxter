@@ -58,7 +58,7 @@ The package is _mainly_ intended to be used as a library.
 Pre-defined tree transformers are available to be utilized right away
 without users having to write custom transformers.
 
-Here is one way to use this library with **Simple Snake**
+Here is one way to use this library with **Simple Snake** flavor of tree transformer:
 
 ```python
 from paxter.core import Parser
@@ -119,7 +119,7 @@ Library users could also write their own custom transformers
 by extending the `paxter.core.BaseTransformer` class
 and use it in any way they want. Stay tuned for the tutorial.
 
-### CLI Usage
+## CLI Usage
 
 While this feature is still a work in progress,
 users may try making a call to the following command to get started:
