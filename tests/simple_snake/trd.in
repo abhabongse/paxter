@@ -1,0 +1,10 @@
+@!##{
+def add_one(num):
+    return num + 1
+}##
+
+Hello, my @strip{  full name   } is @name.
+@tag[label="b"]{@name is @{age_last_year + 1} years old.}
+@!{age_this_year = age_last_year + 1}
+
+Do you know that 1 + 1 = @{1 + 1}?

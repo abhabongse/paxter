@@ -17,3 +17,4 @@ counter = itertools.count(start=1)
 }##\
 \
 Let's count: @{next(counter)}, @{next(counter)}, @{next(counter)}.
+@rjust[width=12,fillchar="_"]#<{<{}>}>#

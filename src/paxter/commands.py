@@ -1,7 +1,7 @@
 """
 Collection of CLI commands.
 """
-import click
+import click  # pragma: no cover
 
 
 @click.group()
@@ -47,7 +47,7 @@ def simple_snake(input_file, output_file, env_file, switch):
     """
     import runpy
     from paxter.core import Parser, Lexer
-    from paxter.flavors.simple_snake import SimpleSnakeTransformer
+    from paxter.flavors.simple_snake.transformer import SimpleSnakeTransformer
 
     lexer = Lexer(switch=switch)
     parser = Parser(lexer=lexer)

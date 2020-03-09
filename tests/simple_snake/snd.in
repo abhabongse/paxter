@@ -1,0 +1,6 @@
+@!{
+x = 1
+def add(_, a, b):
+    return a + b
+}
+@x and @add[a=x,b=2]{}

@@ -7,6 +7,8 @@ from typing import Any, Tuple, Union
 
 from paxter.core import (BaseTransformer, FragmentList, Identifier, Literal, PaxterFunc,
                          PaxterMacro, PaxterPhrase, Text)
+from paxter.flavors.simple_snake.functions import default_env
+
 
 __all__ = ['SimpleSnakeTransformer']
 
@@ -71,16 +73,10 @@ class SimpleSnakeTransformer(BaseTransformer):
         and returns a tuple pair of the final environment dict state
         and the rendered text output.
         """
-        cloned_env = {
-            '!': self._python_exec,
-            'null': None,
-            'true': True,
-            'false': False,
-            **env,
-        }
-        output_text = self.visit(cloned_env, node)
+        env = default_env.clone_and_adapt(env)
+        output_text = self.visit(env, node)
         output_text = self._remove_backslash_newline(output_text)
-        return cloned_env, output_text
+        return env, output_text
 
     def visit_identifier(self, env: dict, node: Identifier) -> Any:
         return env[node.name]
@@ -131,12 +127,3 @@ class SimpleSnakeTransformer(BaseTransformer):
         and return its result casted as a string.
         """
         return eval(expression, env)
-
-    @staticmethod
-    def _python_exec(env: dict, statements: str) -> str:
-        """
-        Invoke the given python statements for effect
-        and then return empty string.
-        """
-        exec(statements, env)
-        return ""

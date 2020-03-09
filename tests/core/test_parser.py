@@ -179,5 +179,4 @@ from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMac
 )
 def test_parser(input_text, expected):
     parser = Parser()
-
     assert parser.parse(input_text) == expected

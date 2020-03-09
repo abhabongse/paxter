@@ -1,7 +1,7 @@
 """
 Standard collection of useful transformers in various contexts.
 """
-from paxter.flavors.simple_snake import SimpleSnakeTransformer
+from paxter.flavors.simple_snake.transformer import SimpleSnakeTransformer
 
 __all__ = ['SimpleSnakeTransformer']
 

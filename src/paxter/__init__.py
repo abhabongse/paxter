@@ -13,7 +13,7 @@ metadata_file = os.path.join(this_dir, 'metadata.json')
 try:
     with open(metadata_file) as fobj:
         metadata = json.load(fobj)
-except Exception:
+except Exception:  # pragma: no cover
     metadata = {}
 
 __author__ = metadata.get('author')
