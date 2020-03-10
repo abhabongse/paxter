@@ -53,3 +53,9 @@ class PaxterConfigError(PaxterBaseException):
     """
     Exception for configuration error.
     """
+
+
+class PaxterTransformError(PaxterBaseException):
+    """
+    Exception for tree transformation error.
+    """

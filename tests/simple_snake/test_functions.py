@@ -7,6 +7,7 @@ def test_functions():
     transformer = SimpleSnakeTransformer()
 
     input_text = """\
+@load!{string}@load!{html}@load!{base64}\
 @capitalize{hello world}
 @casefold{schweiß}
 |@centering[width=11,fillchar="_"]{beans}|
@@ -32,10 +33,7 @@ one
 
 two
 }>\
-@dedent{  x
-  y
-    z}
-@cleandoc{
+@dedent{
     one
 
     two
@@ -70,9 +68,6 @@ w6nDp-C4gQ==
 _one
 
 _two
-x
-y
-  z
 one
 
 two

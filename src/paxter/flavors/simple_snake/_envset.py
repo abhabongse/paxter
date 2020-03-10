@@ -1,18 +1,15 @@
-"""
-Environment dict builder class.
-"""
 import functools
 from typing import Any, Callable, Dict, Optional
 
 
-class Environ:
+class EnvironSet:
     """
-    Environment dict builder class.
+    Helper class to gather an environment dictionary.
     """
     env: Dict[str, Any]
 
-    def __init__(self, starting_env: Optional[Dict[str, Any]] = None):
-        self.env = starting_env or {}
+    def __init__(self, start_env: Optional[Dict[str, Any]] = None):
+        self.env = start_env or {}
 
     def register_func(
             self, func: Optional[Callable] = None, *,
@@ -45,10 +42,3 @@ class Environ:
         name = name or f'{func.__name__}!'
         self.env[name] = func
         return func
-
-    def clone_and_adapt(self, outside_env: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Makes a clone of the stored environment dict
-        and extend it with the given outside environment dict.
-        """
-        return {**self.env, **outside_env}

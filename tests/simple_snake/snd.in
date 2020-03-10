@@ -4,3 +4,7 @@ def add(_, a, b):
     return a + b
 }
 @x and @add[a=x,b=2]{}
+@!<##{
+print("cool ", end="", file=buffer)
+print("beans!", end="", file=buffer)
+}##>

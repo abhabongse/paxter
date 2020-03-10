@@ -1,6 +1,20 @@
 """
-Collection of readily available functions
-in the initial environment dictionary.
+## List of Available Functions
+
+### Function Set `string`
+
+Available functions are `capitalize`, `casefold`, `centering`, `dedent`, `expandtabs`,
+`indent`, `linewrap`, `ljust`, `lstrip`, `maketitle`, `replace`, `rjust`, `rstrip`,
+`strip`, `swapcase`, `to_lower`, `to_upper`, `truncate`, `truncate_word`, and `zfill`.
+
+### Function Set `html`
+
+Available functions are `html_escape` and `html_unescape`.
+
+### Function Set `base64`
+
+Available functions are `standard_b64encode`, `standard_b64decode`,
+`urlsafe_b64encode`, and `urlsafe_b64decode`.
 """
 import base64
 import html
@@ -8,31 +22,11 @@ import inspect
 import textwrap
 from typing import Optional
 
-from paxter.helpers.environ import Environ
+from paxter.flavors.simple_snake._envset import EnvironSet
 
-default_env = Environ({
-    'null': None,
-    'true': True,
-    'false': False,
-})
-
-
-#  __  __
-# |  \/  | __ _  ___ _ __ ___
-# | |\/| |/ _` |/ __| '__/ _ \
-# | |  | | (_| | (__| | | (_) |
-# |_|  |_|\__,_|\___|_|  \___/
-#
-
-@default_env.register_macro(name='!')
-def python_exec(env: dict, statements: str) -> str:
-    """
-    Invoke the given python statements for effect
-    and then return empty string.
-    """
-    exec(statements, env)
-    return ""
-
+# TODO: Perhaps use `inspect` module to
+#       automatically and efficiently redefine functions
+# TODO: Make documentation automated
 
 #  ____  _        _
 # / ___|| |_ _ __(_)_ __   __ _
@@ -41,78 +35,127 @@ def python_exec(env: dict, statements: str) -> str:
 # |____/ \__|_|  |_|_| |_|\__, |
 #                         |___/
 
-@default_env.register_func
+string_set = EnvironSet()
+
+
+@string_set.register_func
 def capitalize(text: str) -> str:
+    """Alias for `str.capitalize`"""
     return text.capitalize()
 
 
-@default_env.register_func
+@string_set.register_func
 def casefold(text: str) -> str:
+    """Alias for `str.casefold`"""
     return text.casefold()
 
 
-@default_env.register_func(name='centering')
-def center(text: str, width: int, fillchar: str = ' ') -> str:
+@string_set.register_func
+def centering(text: str, width: int, fillchar: str = ' ') -> str:
+    """Alias for `str.center`"""
     return text.center(width, fillchar)
 
 
-@default_env.register_func
+@string_set.register_func
+def dedent(text: str) -> str:
+    """Alias for `inspect.cleandoc`"""
+    return inspect.cleandoc(text)
+
+
+@string_set.register_func
 def expandtabs(text: str, tabsize: int = 8) -> str:
+    """Alias for `str.expandtabs`"""
     return text.expandtabs(tabsize)
 
 
-@default_env.register_func
+@string_set.register_func
+def indent(text: str, prefix: str) -> str:
+    """Alias for `textwrap.indent`"""
+    return textwrap.indent(text, prefix)
+
+
+@string_set.register_func
+def linewrap(text: str, width: int = 70) -> str:
+    """Alias for `textwrap.fill`"""
+    return textwrap.fill(text, width)
+
+
+@string_set.register_func
 def ljust(text: str, width: int, fillchar: str = ' ') -> str:
+    """Alias for `str.ljust`"""
     return text.ljust(width, fillchar)
 
 
-@default_env.register_func(name='to_lower')
-def lower(text: str) -> str:
-    return text.lower()
-
-
-@default_env.register_func
+@string_set.register_func
 def lstrip(text: str, chars: Optional[str] = None) -> str:
+    """Alias for `str.lstrip`"""
     return text.lstrip(chars)
 
 
-@default_env.register_func
-def replace(text: str, old: str, new: str, count: int = -1) -> str:
-    return text.replace(old, new, count)
-
-
-@default_env.register_func
-def rjust(text: str, width: int, fillchar: str = ' ') -> str:
-    return text.rjust(width, fillchar)
-
-
-@default_env.register_func
-def rstrip(text: str, chars: Optional[str] = None) -> str:
-    return text.rstrip(chars)
-
-
-@default_env.register_func
-def strip(text: str, chars: Optional[str] = None) -> str:
-    return text.strip(chars)
-
-
-@default_env.register_func
-def swapcase(text: str) -> str:
-    return text.swapcase()
-
-
-@default_env.register_func
+@string_set.register_func
 def maketitle(text: str) -> str:
+    """Alias for `str.title`"""
     return text.title()
 
 
-@default_env.register_func(name='to_upper')
-def upper(text: str) -> str:
+@string_set.register_func
+def replace(text: str, old: str, new: str, count: int = -1) -> str:
+    """Alias for `str.replace`"""
+    return text.replace(old, new, count)
+
+
+@string_set.register_func
+def rjust(text: str, width: int, fillchar: str = ' ') -> str:
+    """Alias for `str.rjust`"""
+    return text.rjust(width, fillchar)
+
+
+@string_set.register_func
+def rstrip(text: str, chars: Optional[str] = None) -> str:
+    """Alias for `str.rstrip`"""
+    return text.rstrip(chars)
+
+
+@string_set.register_func
+def strip(text: str, chars: Optional[str] = None) -> str:
+    """Alias for `str.strip`"""
+    return text.strip(chars)
+
+
+@string_set.register_func
+def swapcase(text: str) -> str:
+    """Alias for `str.swapcase`"""
+    return text.swapcase()
+
+
+@string_set.register_func
+def to_lower(text: str) -> str:
+    """Alias for `str.lower`"""
+    return text.lower()
+
+
+@string_set.register_func
+def to_upper(text: str) -> str:
+    """Alias for `str.upper`"""
     return text.upper()
 
 
-@default_env.register_func
+@string_set.register_func
+def truncate(text: str, width, placeholder: str = '...') -> str:
+    """Truncate text if longer than the specified width."""
+    max_width = width - len(placeholder)
+    return text if len(text) <= width else f'{text[:max_width]}{placeholder}'
+
+
+@string_set.register_func
+def truncate_word(text: str, width, placeholder: str = '...') -> str:
+    """Alias for `textwrap.shorten`"""
+    return textwrap.shorten(text, width, placeholder=placeholder)
+
+
+@string_set.register_func
 def zfill(text: str, width: int) -> str:
+    """Alias for `str.zfill`"""
     return text.zfill(width)
 
 
@@ -123,13 +166,18 @@ def zfill(text: str, width: int) -> str:
 # |_| |_|\__|_| |_| |_|_|
 #
 
-@default_env.register_func
+html_set = EnvironSet()
+
+
+@html_set.register_func
 def html_escape(text: str, quote: bool = True) -> str:
+    """Alias for `html.escape`"""
     return html.escape(text, quote)
 
 
-@default_env.register_func
+@html_set.register_func
 def html_unescape(text: str) -> str:
+    """Alias for `html.unescape`"""
     return html.unescape(text)
 
 
@@ -140,59 +188,28 @@ def html_unescape(text: str) -> str:
 # |_.__/ \__,_|___/\___|\___/   |_|
 #
 
-@default_env.register_func
+base64_set = EnvironSet()
+
+
+@base64_set.register_func
 def standard_b64encode(plaintext: str) -> str:
+    """Alias for `base64.standard_b64encode`"""
     return base64.standard_b64encode(plaintext.encode()).decode()
 
 
-@default_env.register_func
+@base64_set.register_func
 def standard_b64decode(encoded_text: str) -> str:
+    """Alias for `base64.standard_b64decode`"""
     return base64.standard_b64decode(encoded_text.encode()).decode()
 
 
-@default_env.register_func
+@base64_set.register_func
 def urlsafe_b64encode(plaintext: str) -> str:
+    """Alias for `base64.urlsafe_b64encode`"""
     return base64.urlsafe_b64encode(plaintext.encode()).decode()
 
 
-@default_env.register_func
+@base64_set.register_func
 def urlsafe_b64decode(encoded_text: str) -> str:
+    """Alias for `base64.urlsafe_b64decode`"""
     return base64.urlsafe_b64decode(encoded_text.encode()).decode()
-
-
-#  _            _
-# | |_ _____  _| |___      ___ __ __ _ _ __
-# | __/ _ \ \/ / __\ \ /\ / / '__/ _` | '_ \
-# | ||  __/>  <| |_ \ V  V /| | | (_| | |_) |
-#  \__\___/_/\_\\__| \_/\_/ |_|  \__,_| .__/
-#                                     |_|
-
-@default_env.register_func
-def indent(text: str, prefix: str) -> str:
-    return textwrap.indent(text, prefix)
-
-
-@default_env.register_func
-def dedent(text: str) -> str:
-    return textwrap.dedent(text)
-
-
-@default_env.register_func
-def cleandoc(text: str) -> str:
-    return inspect.cleandoc(text)
-
-
-@default_env.register_func
-def linewrap(text: str, width: int = 70) -> str:
-    return textwrap.fill(text, width)
-
-
-@default_env.register_func
-def truncate_word(text: str, width, placeholder: str = '...') -> str:
-    return textwrap.shorten(text, width, placeholder=placeholder)
-
-
-@default_env.register_func
-def truncate(text: str, width, placeholder: str = '...') -> str:
-    max_width = width - len(placeholder)
-    return text if len(text) <= width else f'{text[:max_width]}{placeholder}'

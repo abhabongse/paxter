@@ -6,7 +6,11 @@ from typing import Any
 from paxter.core.data import (FragmentList, Identifier, Literal,
                               Node, PaxterFunc, PaxterMacro, PaxterPhrase, Text)
 
-__all__ = ['BaseTransformer']
+__all__ = ['BaseTransformer', 'visitor_method_names']
+
+visitor_method_names = ['visit', 'visit_identifier', 'visit_literal',
+                        'visit_fragment_list', 'visit_paxter_macro',
+                        'visit_paxter_func', 'visit_paxter_phrase', 'visit_text']
 
 
 class BaseTransformer:
