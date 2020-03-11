@@ -1,0 +1,8 @@
+@!##{
+    apple = 1 > 2
+    orange = 1 < 2
+    values = range(10)
+}##
+@for[v,values]{\
+    @v, @{v + 1}, @{v + 2}
+}

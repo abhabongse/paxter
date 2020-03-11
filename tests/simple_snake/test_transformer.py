@@ -35,6 +35,7 @@ def load_test_set(file_prefix):
         load_test_set('snd'),
         load_test_set('trd'),
         load_test_set('greetings'),
+        load_test_set('loops_and_conds'),
     ],
 )
 def test_simple_python_transformer(environment, input_text, expected):

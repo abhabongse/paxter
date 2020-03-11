@@ -168,4 +168,4 @@ class Lexer:
         else:
             value = None
 
-        return key, value
+        return KeyValue(key, value)

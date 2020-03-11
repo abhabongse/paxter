@@ -5,7 +5,7 @@ Docstrings in this module assumes the switch symbol character `@`
 for simplicity, though the concept is also applied to other switch symbols.
 """
 from dataclasses import dataclass
-from typing import List, Optional, Tuple, Union
+from typing import List, NamedTuple, Optional, Union
 
 __all__ = ['Node', 'BaseAtom', 'Identifier', 'Literal', 'KeyValue', 'BaseFragment',
            'FragmentList', 'Text', 'PaxterMacro', 'PaxterFunc', 'PaxterPhrase']
@@ -66,7 +66,12 @@ class Literal(BaseAtom):
     value: Union[str, int, float]
 
 
-KeyValue = Tuple[Identifier, Optional[BaseAtom]]
+class KeyValue(NamedTuple):
+    """
+    Tuple pair of key and value.
+    """
+    k: Identifier
+    v: Optional[BaseAtom]
 
 
 #  ____                 _____                                     _
