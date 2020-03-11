@@ -1,3 +1,4 @@
+import inspect
 import io
 import re
 from typing import Any, Dict, Optional, Tuple, Union
@@ -98,6 +99,7 @@ class SimpleSnakeTransformer(BaseTransformer):
         env['buffer'] = buffer
 
         # Execute python code
+        code = inspect.cleandoc(code)
         exec(code, env)
 
         # Remove buffer from environment, close it, and return its content
