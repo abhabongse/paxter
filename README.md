@@ -132,6 +132,7 @@ $ python -m paxter  # provide --help for help messages
 
 -   [Rough description of Paxter grammar](src/paxter/core/__init__.py)
 -   [ReadTheDocs documentation](https://paxter.readthedocs.io/) (under construction)
+-   Paxter documentation can be generated with [`pdoc3`](https://pdoc3.github.io/pdoc/) which can be installed with `pip install pdoc3`. Then preview this package with `pdoc --html : paxter` or compiled with `pdoc --html paxter`.
 
 ## Future Plans
 
