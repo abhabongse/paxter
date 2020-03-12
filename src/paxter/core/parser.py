@@ -139,7 +139,7 @@ class Parser:
         # Parse the left (i.e. opening) pattern
         left_brace_matchobj = self.lexer.left_brace_re.match(body, next_pos)
         if left_brace_matchobj is None:
-            self._improper_left_pattern(body, next_pos)
+            self._expected_opening_brace(body, next_pos)
 
         # Extract text node based on the found left (i.e. opening) pattern
         # and use it to create a PaxterMacro node
@@ -295,13 +295,6 @@ class Parser:
         )
 
     @staticmethod
-    def _improper_left_pattern(body: str, next_pos: int):
-        raise PaxterSyntaxError(
-            "improper opening pattern at {next_pos}",
-            body=body, positions={'next_pos': next_pos},
-        )
-
-    @staticmethod
     def _expected_opening_brace(body: str, next_pos: int):
         raise PaxterSyntaxError(
             "expected opening brace after options at {next_pos}",
@@ -311,7 +304,7 @@ class Parser:
     @staticmethod
     def _expected_next_option_or_closing_bracket(body: str, next_pos: int):
         raise PaxterSyntaxError(
-            "expected next option or closing bracket at {next_pos}",
+            "expected next option or a closing bracket at {next_pos}",
             body=body, positions={'next_pos': next_pos},
         )
 

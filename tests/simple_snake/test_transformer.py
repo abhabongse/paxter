@@ -58,13 +58,13 @@ def test_environment_change():
     input_text = """\
         @!##{
             import itertools
-            
+
             value += 99
             counter = itertools.count(start=1)
         }##
-        
+
         Hello, World!
-        
+
         @!{a = next(counter)}
         @!{b = next(counter)}
         @!{c = a + b + next(counter)}
