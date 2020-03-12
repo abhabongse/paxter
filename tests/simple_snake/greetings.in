@@ -9,7 +9,7 @@ I am currently @age years old, and by this time next year I will be @{age + 1} y
 My email is @"john@example.com".
 @!{age_next_year = add_one(age)}\
 
-Do you know that 1 + 1 = @{1 + 1}?
+Do you know that 1 + 1 = @{1 + 1}? @strip[]{ Yep }.
 
 @!##{
 import itertools

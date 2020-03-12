@@ -1,13 +1,6 @@
-from paxter.core import Parser
-from paxter.flavors import SimpleSnakeTransformer
-
-
-def test_functions():
-    parser = Parser()
-    transformer = SimpleSnakeTransformer()
-
-    input_text = """\
-@load!{string}@load!{html}@load!{base64}\
+@load!{string}\
+@load!{html}\
+@load!{base64}\
 @capitalize{hello world}
 @casefold{schweiß}
 |@centering[width=11,fillchar="_"]{beans}|
@@ -42,42 +35,3 @@ two
 @linewrap[width=8]{abc def gh ij kl mn}
 @truncate_word[width=10]{abc defg hij}
 @truncate[width=10]{abc defg hij}
-"""
-    expected = """\
-Hello world
-schweiss
-|___beans___|
-x
-|   yesno   |
-lowerUPPER
-Left and Right
-bsdfbsdfasdf
-|answer|
-ASDFσς
-One Two Three
--0004
-
-&lt;a&gt;
-<a>
-w6nDp+C4gQ==
-éçก
-w6nDp-C4gQ==
-éçก
-
-
-_one
-
-_two
-one
-
-two
-    three
-abc def
-gh ij kl
-mn
-abc...
-abc def...
-"""
-    tree = parser.parse(input_text)
-    _, output_text = transformer.transform({}, tree)
-    assert output_text == expected

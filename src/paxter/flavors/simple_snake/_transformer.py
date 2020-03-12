@@ -83,6 +83,8 @@ class SimpleSnakeTransformer(BaseTransformer):
     def visit_paxter_func(self, env: dict, node: PaxterFunc) -> Any:
         if node.id.name == 'for':
             return self._for_loop(env, node)
+        if node.id.name == 'if':
+            return self._if_cond(env, node)
 
         try:
             func = env[node.id.name]
@@ -129,13 +131,34 @@ class SimpleSnakeTransformer(BaseTransformer):
         env.update(function_env.env)
         return ''
 
-    def _for_loop(self, env: dict, node: PaxterFunc):
+    def _if_cond(self, env: dict, node: PaxterFunc):
         options: List[KeyValue] = node.options or []
-        if len(options) == 2 and all(v is None for _, v in options):
-            pass
+        if (len(options) == 0 or len(options) > 2
+                or any(v is not None for _, v in options)):
+            raise PaxterTransformError(
+                "if cond requires exactly two options in the form [item_id,seq]",
+            )
+
+        test = eval(options[0].k.name, env)
+        if len(options) == 1 or options[1].k.name == 'true':
+            target = True
+        elif options[1].k.name == 'false':
+            target = False
         else:
             raise PaxterTransformError(
-                f"for loop requires exactly two options in the form [item_id,seq]",
+                "second arg to if cond must be 'true' or 'false' literal",
+            )
+
+        if bool(test) is target:
+            return self.visit_fragment_list(env, node.fragments)
+        else:
+            return ''
+
+    def _for_loop(self, env: dict, node: PaxterFunc):
+        options: List[KeyValue] = node.options or []
+        if len(options) != 2 or any(v is not None for _, v in options):
+            raise PaxterTransformError(
+                "for loop requires exactly two options in the form [item_id,seq]",
             )
         item_id = options[0].k.name
         seq = eval(options[1].k.name, env)
