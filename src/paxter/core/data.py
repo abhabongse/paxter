@@ -235,7 +235,7 @@ class _PaxterWithOptions(BaseFragment):
         args = []
         kwargs = {}
 
-        for index, (k, v) in enumerate(options):
+        for k, v in options:
             if k is not None:
                 flipped = True
                 if k.name in kwargs:

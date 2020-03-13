@@ -6,7 +6,7 @@ import warnings
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from paxter.core import (
-    BaseAtom, BaseTransformer, FragmentList, Identifier, KeyValue, Literal, PaxterFunc,
+    BaseTransformer, FragmentList, Identifier, KeyValue, Literal, PaxterFunc,
     PaxterMacro, PaxterPhrase, PaxterTransformError, Text,
 )
 from paxter.flavors.simple_snake.functions import (
