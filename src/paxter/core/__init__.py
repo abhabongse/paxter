@@ -28,7 +28,7 @@ wrapped_fragments ::=
     | "<" wrapped_fragments ">"
     | "{" fragments "}"
 options ::= "[" ( kv_pair ( "," kv_pair )* ","? )? "]"
-kv_pair ::= NORMAL_ID ( "=" ATOMIC_VALUE )?
+kv_pair ::= ( NORMAL_ID "=" )? ATOMIC_VALUE
 
 NON_GREEDY_TEXT ::= /.*?/
 NORMAL_ID ::= ID_START ID_CONT*
@@ -53,17 +53,19 @@ ATOMIC_VALUE ::= JSON_NUMBER | JSON_STRING | IDENTIFIER
 - While parsing Paxter language input, white space will **not** be ignored
   **except** for within the options list.
 """
-from paxter.core.data import (BaseAtom, BaseFragment, FragmentList, Identifier, Literal,
-                              Node, PaxterFunc, PaxterMacro, PaxterPhrase, Text)
+from paxter.core.data import (BaseAtom, BaseFragment, FragmentList, Identifier,
+                              KeyValue, Literal, Node, PaxterFunc, PaxterMacro,
+                              PaxterPhrase, Text)
 from paxter.core.exceptions import (PaxterBaseException, PaxterConfigError,
-                                    PaxterSyntaxError)
+                                    PaxterSyntaxError, PaxterTransformError)
 from paxter.core.lexers import Lexer
 from paxter.core.parser import Parser
 from paxter.core.transformer import BaseTransformer
 
-__all__ = ['BaseAtom', 'BaseFragment', 'FragmentList', 'Identifier', 'Literal',
-           'Node', 'PaxterMacro', 'PaxterFunc', 'PaxterPhrase', 'Text',
+__all__ = ['BaseAtom', 'BaseFragment', 'FragmentList', 'Identifier', 'KeyValue',
+           'Literal', 'Node', 'PaxterMacro', 'PaxterFunc', 'PaxterPhrase', 'Text',
            'PaxterBaseException', 'PaxterConfigError', 'PaxterSyntaxError',
+           'PaxterTransformError',
            'Lexer', 'Parser', 'BaseTransformer']
 
 # Disable all docstrings for classes and functions at this level

@@ -1,3 +1,5 @@
+import re
+
 import pytest
 
 from paxter.core.exceptions import PaxterConfigError, PaxterSyntaxError
@@ -15,7 +17,7 @@ def test_invalid_switch(switch):
 
 
 @pytest.mark.parametrize(
-    ("input_text", "message_pattern"),
+    ("input_text", "message"),
     [
         pytest.param(
             """\
@@ -70,7 +72,9 @@ def test_invalid_switch(switch):
         ),
     ],
 )
-def test_cannot_match_right_pattern_error(input_text, message_pattern):
+def test_cannot_match_right_pattern_error(input_text, message):
     parser = Parser()
-    with pytest.raises(PaxterSyntaxError, match=message_pattern):
+    with pytest.raises(PaxterSyntaxError) as exc_info:
         parser.parse(input_text)
+    print(message, exc_info.value.render(input_text))
+    assert re.search(message, exc_info.value.render(input_text))

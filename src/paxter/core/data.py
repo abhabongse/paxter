@@ -70,8 +70,28 @@ class KeyValue(NamedTuple):
     """
     Tuple pair of key and value.
     """
-    k: Identifier
-    v: Optional[BaseAtom]
+    k: Optional[Identifier]
+    v: BaseAtom
+
+    def get_faux_key(self) -> str:
+        """
+        Obtains the faux key which is when the key part is absent
+        and the value part is an identifier.
+        Raises `PaxterTransformError` otherwise.
+        """
+        from paxter.core.exceptions import PaxterTransformError
+
+        if self.k is not None:
+            raise PaxterTransformError(
+                "option should not have the key part at {pos}",
+                positions={'pos': self.k.start_pos},
+            )
+        if not isinstance(self.v, Identifier):
+            raise PaxterTransformError(
+                "expected non-literal value part at {pos}",
+                positions={'pos': self.v.start_pos},
+            )
+        return self.v.name
 
 
 #  ____                 _____                                     _
@@ -137,18 +157,22 @@ class PaxterFunc(BaseFragment):
     and the optional key-value option list.
 
     The key-value option list is a comma-separated key-value pairs.
-    For each pair, the key part must always present as an identifier,
-    but the value part may still be absent from the key-value pair.
-    Should the value part be present, there must be a `=` sign separating
-    the key part and the value part within the key-value pair.
+    For each pair, the value part must be present
+    and can only be an identifier or a JSON number/string literal.
+    On the other hand, the key part if optional
+    and must be an identifier preceding the value part if present
+    (with an equal `=` sign separating the key and the value part).
 
-    For example, the option `[key1,key2="value2",key3=value3,key4=4]`
-    translates to (unimportant fields omitted):
+    For example, the option `[v1,"v2",3,k4=v3,k5="v5",k6=6]`
+    translates to the following (unimportant fields omitted for clarity):
+
     ```
-    options = [(Identifier("key1"), None),
-               (Identifier("key2"), Literal("value2")),
-               (Identifier("key3"), Identifier("value3")),
-               (Identifier("key4"), Literal(4)]
+    options = [(None, Identifier("v1"),
+               (None, Literal("v2"),
+               (None, Literal(3),
+               (Identifier("v4", Identifier("v4"),
+               (Identifier("v5", Literal("v5"),
+               (Identifier("v6", Literal(6)]
     ```
 
     Attributes:
@@ -158,8 +182,8 @@ class PaxterFunc(BaseFragment):
 
             - This value will be `None` when square brackets pair is _not_ present.
             - When the square brackets pair is present,
-              if the value part is omitted from the key-value pair,
-              the value part will be represented with `None`.
+              if the key part is omitted from the key-valur pair,
+              the key part will be represented with `None`.
 
     """
     id: Identifier

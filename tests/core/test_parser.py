@@ -1,7 +1,7 @@
 import pytest
 
-from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMacro,
-                         PaxterPhrase, Text)
+from paxter.core import (FragmentList, Identifier, KeyValue, Literal, Parser,
+                         PaxterFunc, PaxterMacro, PaxterPhrase, Text)
 
 
 # TODO: add more unit tests for syntax errors
@@ -258,9 +258,15 @@ from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMac
             ),
         ),
         pytest.param(
-            r'@hello{} @hello[]{} @hello[x]{} @hello[x,]{}',
+            r'@hello{} @hello[]{} '
+            r'@hello[x1]{} @hello[x2,]{} '
+            r'@hello[3]{} @hello[4,]{} '
+            r'@hello["5"]{} @hello["6",]{} '
+            r'@hello[x7=x8]{} @hello[x9=x10,]{} '
+            r'@hello[x11=12]{} @hello[x13=14,]{} '
+            r'@hello[x15="16"]{} @hello[x17="18"]{}',
             FragmentList(
-                start_pos=0, end_pos=44,
+                start_pos=0, end_pos=207,
                 children=[
                     PaxterFunc(
                         start_pos=0, end_pos=8,
@@ -277,20 +283,146 @@ from paxter.core import (FragmentList, Identifier, Parser, PaxterFunc, PaxterMac
                     ),
                     Text(start_pos=19, end_pos=20, string=" "),
                     PaxterFunc(
-                        start_pos=20, end_pos=31,
+                        start_pos=20, end_pos=32,
                         id=Identifier(start_pos=21, end_pos=26, name="hello"),
-                        fragments=FragmentList(start_pos=30, end_pos=30, children=[]),
+                        fragments=FragmentList(start_pos=31, end_pos=31, children=[]),
                         options=[
-                            (Identifier(start_pos=27, end_pos=28, name="x"), None),
+                            KeyValue(
+                                k=None,
+                                v=Identifier(start_pos=27, end_pos=29, name="x1"),
+                            ),
                         ],
                     ),
-                    Text(start_pos=31, end_pos=32, string=" "),
+                    Text(start_pos=32, end_pos=33, string=" "),
                     PaxterFunc(
-                        start_pos=32, end_pos=44,
-                        id=Identifier(start_pos=33, end_pos=38, name="hello"),
-                        fragments=FragmentList(start_pos=43, end_pos=43, children=[]),
+                        start_pos=33, end_pos=46,
+                        id=Identifier(start_pos=34, end_pos=39, name="hello"),
+                        fragments=FragmentList(start_pos=45, end_pos=45, children=[]),
                         options=[
-                            (Identifier(start_pos=39, end_pos=40, name="x"), None),
+                            KeyValue(
+                                k=None,
+                                v=Identifier(start_pos=40, end_pos=42, name="x2"),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=46, end_pos=47, string=" "),
+                    PaxterFunc(
+                        start_pos=47, end_pos=58,
+                        id=Identifier(start_pos=48, end_pos=53, name="hello"),
+                        fragments=FragmentList(start_pos=57, end_pos=57, children=[]),
+                        options=[
+                            KeyValue(
+                                k=None,
+                                v=Literal(start_pos=54, end_pos=55, value=3),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=58, end_pos=59, string=" "),
+                    PaxterFunc(
+                        start_pos=59, end_pos=71,
+                        id=Identifier(start_pos=60, end_pos=65, name="hello"),
+                        fragments=FragmentList(start_pos=70, end_pos=70, children=[]),
+                        options=[
+                            KeyValue(
+                                k=None,
+                                v=Literal(start_pos=66, end_pos=67, value=4),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=71, end_pos=72, string=" "),
+                    PaxterFunc(
+                        start_pos=72, end_pos=85,
+                        id=Identifier(start_pos=73, end_pos=78, name="hello"),
+                        fragments=FragmentList(start_pos=84, end_pos=84, children=[]),
+                        options=[
+                            KeyValue(
+                                k=None,
+                                v=Literal(start_pos=79, end_pos=82, value="5"),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=85, end_pos=86, string=" "),
+                    PaxterFunc(
+                        start_pos=86, end_pos=100,
+                        id=Identifier(start_pos=87, end_pos=92, name="hello"),
+                        fragments=FragmentList(start_pos=99, end_pos=99, children=[]),
+                        options=[
+                            KeyValue(
+                                k=None,
+                                v=Literal(start_pos=93, end_pos=96, value="6"),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=100, end_pos=101, string=" "),
+                    PaxterFunc(
+                        start_pos=101, end_pos=116,
+                        id=Identifier(start_pos=102, end_pos=107, name="hello"),
+                        fragments=FragmentList(start_pos=115, end_pos=115, children=[]),
+                        options=[
+                            KeyValue(
+                                k=Identifier(start_pos=108, end_pos=110, name="x7"),
+                                v=Identifier(start_pos=111, end_pos=113, name="x8"),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=116, end_pos=117, string=" "),
+                    PaxterFunc(
+                        start_pos=117, end_pos=134,
+                        id=Identifier(start_pos=118, end_pos=123, name="hello"),
+                        fragments=FragmentList(start_pos=133, end_pos=133, children=[]),
+                        options=[
+                            KeyValue(
+                                k=Identifier(start_pos=124, end_pos=126, name="x9"),
+                                v=Identifier(start_pos=127, end_pos=130, name="x10"),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=134, end_pos=135, string=" "),
+                    PaxterFunc(
+                        start_pos=135, end_pos=151,
+                        id=Identifier(start_pos=136, end_pos=141, name="hello"),
+                        fragments=FragmentList(start_pos=150, end_pos=150, children=[]),
+                        options=[
+                            KeyValue(
+                                k=Identifier(start_pos=142, end_pos=145, name="x11"),
+                                v=Literal(start_pos=146, end_pos=148, value=12),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=151, end_pos=152, string=" "),
+                    PaxterFunc(
+                        start_pos=152, end_pos=169,
+                        id=Identifier(start_pos=153, end_pos=158, name="hello"),
+                        fragments=FragmentList(start_pos=168, end_pos=168, children=[]),
+                        options=[
+                            KeyValue(
+                                k=Identifier(start_pos=159, end_pos=162, name="x13"),
+                                v=Literal(start_pos=163, end_pos=165, value=14),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=169, end_pos=170, string=" "),
+                    PaxterFunc(
+                        start_pos=170, end_pos=188,
+                        id=Identifier(start_pos=171, end_pos=176, name="hello"),
+                        fragments=FragmentList(start_pos=187, end_pos=187, children=[]),
+                        options=[
+                            KeyValue(
+                                k=Identifier(start_pos=177, end_pos=180, name="x15"),
+                                v=Literal(start_pos=181, end_pos=185, value="16"),
+                            ),
+                        ],
+                    ),
+                    Text(start_pos=188, end_pos=189, string=" "),
+                    PaxterFunc(
+                        start_pos=189, end_pos=207,
+                        id=Identifier(start_pos=190, end_pos=195, name="hello"),
+                        fragments=FragmentList(start_pos=206, end_pos=206, children=[]),
+                        options=[
+                            KeyValue(
+                                k=Identifier(start_pos=196, end_pos=199, name="x17"),
+                                v=Literal(start_pos=200, end_pos=204, value="18"),
+                            ),
                         ],
                     ),
                 ],

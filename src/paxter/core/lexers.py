@@ -38,12 +38,10 @@ class Lexer:
     left_brace_re = re.compile(r'(?P<left>[#<]*{)')
     left_sq_bracket_re = re.compile(r'\[')
     kv_pair_re = re.compile(
-        # At most one of str_value, num_value, id_value will be populated
-        rf'\s*(?P<id_key>{ID_PATTERN})(?:\s*=\s*(?:'
-        r'(?P<str_value>"(?:[^"\\]*|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*")'
-        r'|(?P<num_value>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)'
-        rf'|(?P<id_value>{ID_PATTERN})'
-        r')|(?!\s*=))',
+        rf'(?:\s*(?P<key>{ID_PATTERN})\s*=)?'
+        rf'\s*(?:(?P<id_value>{ID_PATTERN})'
+        r'|(?P<str_value>"(?:[^"\\]*|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*")'
+        r'|(?P<num_value>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?))',
     )
     comma_or_option_break_re = re.compile(r'\s*(?P<break>[,\]])')
     option_break_re = re.compile(r'\s*(?P<break>\])')
@@ -139,11 +137,14 @@ class Lexer:
         returned from `option_re` regular expression.
         """
         # Extract key based on id_key group
-        key = Identifier(
-            start_pos=matchobj.start('id_key'),
-            end_pos=matchobj.end('id_key'),
-            name=matchobj.group('id_key'),
-        )
+        if matchobj.group('key'):
+            key = Identifier(
+                start_pos=matchobj.start('key'),
+                end_pos=matchobj.end('key'),
+                name=matchobj.group('key'),
+            )
+        else:
+            key = None
 
         # Extract value based on at most one group from
         # str_value, num_value, or id_value groups
@@ -165,7 +166,7 @@ class Lexer:
                 end_pos=matchobj.end('id_value'),
                 name=matchobj.group('id_value'),
             )
-        else:
-            value = None
+        else:  # pragma: no cover
+            raise RuntimeError("something went horribly wrong")
 
         return KeyValue(key, value)

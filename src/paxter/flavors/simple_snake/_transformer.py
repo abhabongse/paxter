@@ -6,11 +6,9 @@ import warnings
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from paxter.core import (
-    BaseTransformer, FragmentList, Identifier, Literal, PaxterFunc, PaxterMacro,
-    PaxterPhrase, Text,
+    BaseAtom, BaseTransformer, FragmentList, Identifier, KeyValue, Literal, PaxterFunc,
+    PaxterMacro, PaxterPhrase, PaxterTransformError, Text,
 )
-from paxter.core.data import BaseAtom, KeyValue
-from paxter.core.exceptions import PaxterTransformError
 from paxter.flavors.simple_snake.functions import (
     base64_set, html_set, string_set,
 )
@@ -21,6 +19,8 @@ _function_envs = {
     'string': string_set,
 }
 
+
+# TODO: Add positions to PaxterTransformError
 
 class SimpleSnakeTransformer(BaseTransformer):
     """
@@ -90,6 +90,8 @@ class SimpleSnakeTransformer(BaseTransformer):
             func = env[node.id.name]
         except KeyError as exc:
             raise PaxterTransformError(f"unknown function name {exc.args[0]}") from exc
+
+        # TODO: handle keyless key-value pairs
         kwargs = {
             k.name: self.visit(env, v)
             for k, v in (node.options or [])
@@ -133,43 +135,57 @@ class SimpleSnakeTransformer(BaseTransformer):
 
     def _if_cond(self, env: dict, node: PaxterFunc):
         options: List[KeyValue] = node.options or []
-        if (len(options) == 0 or len(options) > 2
-                or any(v is not None for _, v in options)):
+        if not 1 <= len(options) <= 2:
             raise PaxterTransformError(
-                "if cond requires exactly two options in the form [item_id,seq]",
+                "if condition at {pos} requires 1 or 2 options "
+                "in the form [test_id] or [test_id,target_bool]",
+                positions={'pos': node.start_pos},
             )
 
-        test = eval(options[0].k.name, env)
-        if len(options) == 1 or options[1].k.name == 'true':
-            target = True
-        elif options[1].k.name == 'false':
-            target = False
+        if len(options) > 1:
+            target_literal = options[1].get_faux_key()
+            if target_literal == 'true':
+                target_bool = True
+            elif target_literal == 'false':
+                target_bool = False
+            else:
+                raise PaxterTransformError(
+                    "second argument of if condition at {pos} "
+                    "must either be 'true' or 'false' literal",
+                    positions={'pos': node.start_pos},
+                )
         else:
-            raise PaxterTransformError(
-                "second arg to if cond must be 'true' or 'false' literal",
-            )
+            target_bool = True
 
-        if bool(test) is target:
+        test_id = options[0].get_faux_key()
+        test = eval(test_id, env)
+        if callable(test):
+            test = test()
+
+        if bool(test) is target_bool:
             return self.visit_fragment_list(env, node.fragments)
         else:
             return ''
 
     def _for_loop(self, env: dict, node: PaxterFunc):
         options: List[KeyValue] = node.options or []
-        if len(options) != 2 or any(v is not None for _, v in options):
+        if len(options) != 2:
             raise PaxterTransformError(
-                "for loop requires exactly two options in the form [item_id,seq]",
+                "for loop at {pos} requires exactly 2 options "
+                "in the form [item_id,seq]",
+                positions={'pos': node.start_pos},
             )
-        item_id = options[0].k.name
-        seq = eval(options[1].k.name, env)
 
-        transformed_fragments = []
+        item_id = options[0].get_faux_key()
+        seq = eval(options[1].get_faux_key(), env)
+
+        fragments = []
         for value in seq:
             env[item_id] = value
             transformed = self.visit_fragment_list(env, node.fragments)
-            transformed_fragments.append(transformed)
+            fragments.append(transformed)
 
-        return ''.join(transformed_fragments)
+        return ''.join(fragments)
 
     def _verify_not_python_keyword(self, k: str):
         if keyword.iskeyword(k):
