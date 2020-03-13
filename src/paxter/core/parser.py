@@ -134,6 +134,8 @@ class Parser:
         id_node = self.lexer.extract_id_node(prefix_matchobj)
         next_pos = prefix_matchobj.end()
 
+        # TODO: allow macro to also have options
+
         # Parse the left (i.e. opening) pattern
         left_brace_matchobj = self.lexer.left_brace_re.match(body, next_pos)
         if left_brace_matchobj is None:

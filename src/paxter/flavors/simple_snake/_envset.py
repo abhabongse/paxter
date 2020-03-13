@@ -11,6 +11,10 @@ class EnvironSet:
     def __init__(self, start_env: Optional[Dict[str, Any]] = None):
         self.env = start_env or {}
 
+    # TODO: make register_func and register_macro accept env boolean option;
+    #       if true, then the attached function will env argument
+    #       before the main text argument (or do other solutions)
+
     def register_func(
             self, func: Optional[Callable] = None, *,
             name: Optional[str] = None,

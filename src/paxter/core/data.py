@@ -190,6 +190,11 @@ class PaxterFunc(BaseFragment):
     fragments: FragmentList
     options: Optional[List[KeyValue]]
 
+    # TODO: add validation functions
+    #       - whether options are all keyword arguments
+    #       - whether all positional arguments precede all keyword arguments
+    #       - and for each of the above, whether keyword arguments repeat
+
 
 @dataclass
 class PaxterPhrase(BaseFragment):
