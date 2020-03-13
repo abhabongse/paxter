@@ -1,53 +1,25 @@
-import os
-import runpy
-
 import pytest
+from click.testing import CliRunner
 
+from paxter.commands import program
 from paxter.core import Parser
 from paxter.flavors import SimpleSnakeTransformer
-
-this_dir = os.path.dirname(os.path.abspath(__file__))
-
-
-def load_test_set(file_prefix):
-    """
-    Loading a triplet of (input_text, expected, env) from the given file prefix.
-    Files ending with *.in, *.expected, and optionally *.py will be search
-    within the same directory of this source file.
-    """
-    input_text_file = os.path.join(this_dir, f"{file_prefix}.in")
-    with open(input_text_file) as fobj:
-        input_text = fobj.read()
-
-    expected_file = os.path.join(this_dir, f"{file_prefix}.expected")
-    with open(expected_file) as fobj:
-        expected = fobj.read()
-
-    env_file = os.path.join(this_dir, f"{file_prefix}.py")
-    if os.path.isfile(env_file):
-        with open(env_file) as fobj:
-            env = runpy.run_path(env_file)
-    else:
-        env = {}
-
-    return pytest.param(env, input_text, expected, id=file_prefix)
+from tests.simple_snake.loader import all_test_cases
 
 
 @pytest.mark.parametrize(
-    ("environment", "input_text", "expected"),
-    [
-        load_test_set('greetings'),
-        load_test_set('write_buffer'),
-        load_test_set('loops_and_conds'),
-        load_test_set('loading_functions'),
-    ],
+    ("env_file", "input_text_file", "expected_file"), all_test_cases,
 )
-def test_simple_python_transformer(environment, input_text, expected):
-    parser = Parser()
-    transformer = SimpleSnakeTransformer()
-    tree = parser.parse(input_text)
-    _, output_text = transformer.transform(environment, tree)
-    assert output_text == expected
+def test_program(env_file, input_text_file, expected_file):
+    runner = CliRunner()
+    command = ['simple-snake', '-i', input_text_file]
+    if env_file:
+        command.extend(['-e', env_file])
+    result = runner.invoke(program, command)
+    assert result.exit_code == 0
+    with open(expected_file) as fobj:
+        expected_output = fobj.read()
+    assert result.output == expected_output
 
 
 def test_environment_change():
