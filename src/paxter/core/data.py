@@ -1,14 +1,92 @@
 """
 Data definitions for node types presented in parsed tree
 
-Docstrings in this module assumes the switch symbol character `@`
+**Warning:** Docstrings in this module assumes the switch symbol character `@`
 for simplicity, though the concept is also applied to other switch symbols.
+
+## Fragment Types
+
+There are four kinds of `BaseFragment` types:
+`PaxterMacro`, `PaxterFunc`, `PaxterPhrase`, and `Text`.
+The first three types are collectively known as @-expressions.
+
+1.  `PaxterMacro` represents a piece of string in input text with the form
+    `@id![...]{...}` or `@id!{...}` where
+    -   The identifier part is any valid string of any length followed by a `!`
+    -   The option list part follows the [spec described below](#option-list)
+    -   The main text part will **not** recognize nested @-expressions
+
+2.  `PaxterFunc` represents a piece of string in input text with the form
+    `@id[...]{...}` or `@id{...}` where
+    -   The identifier part is any valid string of non-zero length
+    -   The option list part follows the [spec described below](#option-list)
+    -   The main text part recognizes nested @-expressions
+
+3.  `PaxterPhrase` represents a piece of string in input text with the form
+    `@{phrase}` or `@phrase`.
+    For the latter form, it must **not** be followed by an opening square bracket
+    (i.e. the option list) or a set of opening brace pattern.
+
+4.  `Text` represents all other pieces of string in input text
+    or the @-string literal of the form `@"text"`.
+
+## Matching Braces Pattern
+
+For each `{...}` pattern appeared in @-expressions,
+it can be recursively wrapped with `#`/`#` pairs or `<`/`>` pairs.
+
+For example, these following `PaxterFunc`'s yield the same parsed tree:
+
+```plain
+@id{...}
+@id<{...}>
+@id#{...}#
+@id<<{...}>>
+@id<#{...}#>
+@id#<{...}>#
+@id##{...}##
+```
+
+Paxter @-string literal also can be recursively wrapped with
+`#`/`#` pairs or `<`/`>` pairs, such as `@#"text"#` or `@<<"text">>`.
+
+
+## Option List
+
+The option list of key-value pairs is a comma-separated key-value pairs
+appearing between a pair of matching square brackets.
+If the square brackets is **not at all** present in `PaxterMacro` or `PaxterFunc`,
+then it will appear as `None` in the parsed tree of both types of nodes.
+Otherwise, it will be a list of `KeyValue` tuple.
+
+For each key-value pair, the value part must be present and can only be
+a valid identifier or a valid JSON number or string literal.
+
+On the other hand, the key part is optional or it must be an identifier
+preceding the value part (separated by `=`) if present.
+
+For example, the option `[v1,"v2",3,k4=v3,k5="v5",k6=6]`
+translates to the following (with unimportant fields omitted for clarity):
+
+```
+options = [(None, Identifier("v1"),
+           (None, Literal("v2"),
+           (None, Literal(3),
+           (Identifier("v4", Identifier("v4"),
+           (Identifier("v5", Literal("v5"),
+           (Identifier("v6", Literal(6)]
+```
+
+Please note that white spaces are ignored inside the option list,
+and it is the only place where it is so in Paxter language.
 """
 from dataclasses import dataclass
-from typing import List, NamedTuple, Optional, Union
+from typing import Dict, List, NamedTuple, Optional, Tuple, Union
 
 __all__ = ['Node', 'BaseAtom', 'Identifier', 'Literal', 'KeyValue', 'BaseFragment',
            'FragmentList', 'Text', 'PaxterMacro', 'PaxterFunc', 'PaxterPhrase']
+
+__pdoc__ = {'PaxterWithOptions.get_args_and_kwargs': True}
 
 
 @dataclass
@@ -36,20 +114,20 @@ class Node:
 @dataclass
 class BaseAtom(Node):
     """
-    Node types which are acceptable as the value part
-    of the key-value option list.
+    Base node subclass representing types which are acceptable
+    as the value part of the option list of key-value pairs.
     """
 
 
 @dataclass
 class Identifier(BaseAtom):
     """
-    Identifier name which either immediately follows
+    Node representing an identifier which immediately follows
     the switch symbol character (such as `@` symbol)
-    or is a part of the key-value options list.
+    or which is a part of the option list of key-value pairs.
 
     Attributes:
-        name: Identifier name
+        name: Name of the identifier
     """
     name: str
 
@@ -57,11 +135,10 @@ class Identifier(BaseAtom):
 @dataclass
 class Literal(BaseAtom):
     """
-    Literal value part of the key-value option list
-    which can either be JSON-compatible number or string literals.
-
-    Attributes:
-        value: The value of literal being transformed by `json.loads` function
+    Node representing a literal value which can only appear as
+    the value part of the option list of key-value pairs.
+    The value is the either a JSON number of string
+    translated by `json.loads` function.
     """
     value: Union[str, int, float]
 
@@ -71,13 +148,16 @@ class KeyValue(NamedTuple):
     Tuple pair of key and value.
     """
     k: Optional[Identifier]
+    """Key part with index 0."""
+
     v: BaseAtom
+    """Value part with index 1."""
 
     def get_faux_key(self) -> str:
         """
-        Obtains the faux key which is when the key part is absent
-        and the value part is an identifier.
-        Raises `PaxterTransformError` otherwise.
+        Obtains the faux key which is the identifier name on the value part
+        when the key part is absent.
+        It raises `paxter.core.exceptions.PaxterTransformError` otherwise.
         """
         from paxter.core.exceptions import PaxterTransformError
 
@@ -104,15 +184,17 @@ class KeyValue(NamedTuple):
 @dataclass
 class BaseFragment(Node):
     """
-    Node types which are allowed to be part
-    of the list of fragments.
+    Base node subclass representing types which are acceptable
+    as part of the list of fragments in `FragmentList`.
     """
 
 
 @dataclass
 class FragmentList(Node):
     """
-    A list of fragment nodes.
+    Node representing a list of fragment nodes.
+    It appears only at the global level of input text
+    or as the main text of `PaxterFunc`.
 
     Attributes:
         children: List of children fragment nodes
@@ -123,9 +205,10 @@ class FragmentList(Node):
 @dataclass
 class Text(BaseFragment):
     """
-    Text which may be presented inside the main body text of
+    Node representing text which may be presented inside the main text of
     `FragmentList`, `PaxterMacro`, and `PaxterPhrase`,
-    or may be embedded within the raw text following the pattern `@"text"`.
+    or it may be within the raw text following the @-string literal
+    with the form `@"text"`.
 
     Attributes:
         string: String content
@@ -134,75 +217,102 @@ class Text(BaseFragment):
 
 
 @dataclass
-class PaxterMacro(BaseFragment):
-    """
-    An @-expression macro following the `@id!{raw text}` pattern,
-    consisting of an identifier (whose names always ends with `!`)
-    and the wrapped text which _cannot_ contain nested @-expressions.
-
-    Attributes:
-        id: Identifier part (always ending with an exclamation mark)
-        text: Main text under the @-expression macro
-    """
+class _PaxterWithOptions(BaseFragment):
     id: Identifier
-    text: Text
+    options: Optional[List[KeyValue]]
+
+    def get_args_and_kwargs(self) -> Tuple[List[BaseAtom], Dict[str, BaseAtom]]:
+        """
+        Obtains a tuple of args tuple and kwargs dict
+        with the same pattern as python function call.
+        If the options are out-of-order are any keys are duplicated,
+        then `paxter.core.exceptions.PaxterTransformError` will be raised.
+        """
+        from paxter.core.exceptions import PaxterTransformError
+
+        options: List[KeyValue] = self.options or []
+        flipped = False  # kwargs found
+        args = []
+        kwargs = {}
+
+        for index, (k, v) in enumerate(options):
+            if k is not None:
+                flipped = True
+                if k.name in kwargs:
+                    raise PaxterTransformError(
+                        f"duplicated keyword {k.name!r} at {{pos}}",
+                        positions={'pos': k.start_pos},
+                    )
+                kwargs[k.name] = v
+            elif flipped:
+                raise PaxterTransformError(
+                    "found positional argument after keyword argument at {pos}",
+                    positions={'pos': v.start_pos},
+                )
+            else:
+                args.append(v)
+
+        return args, kwargs
 
 
 @dataclass
-class PaxterFunc(BaseFragment):
+class PaxterMacro(_PaxterWithOptions):
     """
-    An @-expression function call following the `@id[options]{fragments...}`
-    pattern (with options) or the `@id{fragments...}` pattern (without options).
-    It consists of an identifier, the recursive fragments,
-    and the optional key-value option list.
+    Node representing @-expression macro with the form
+    `@id![...]{...}` or `@id!{...}` where content within the braces
+    may not recognize recursively nested @-expressions.
 
-    The key-value option list is a comma-separated key-value pairs.
-    For each pair, the value part must be present
-    and can only be an identifier or a JSON number/string literal.
-    On the other hand, the key part if optional
-    and must be an identifier preceding the value part if present
-    (with an equal `=` sign separating the key and the value part).
+    Attributes:
+        id: Identifier part (whose name always contains the `!` ending)
+        options: Optional list of key-value pairs within the square brackets
+        text: Main text under the @-expression macro
+    """
+    text: Text
 
-    For example, the option `[v1,"v2",3,k4=v3,k5="v5",k6=6]`
-    translates to the following (unimportant fields omitted for clarity):
+    def get_args_and_kwargs(self):
+        """
+        Obtains a tuple of args tuple and kwargs dict
+        with the same pattern as python function call.
+        If the options are out-of-order are any keys are duplicated,
+        then `paxter.core.exceptions.PaxterTransformError` will be raised.
+        """
+        return super().get_args_and_kwargs()
 
-    ```
-    options = [(None, Identifier("v1"),
-               (None, Literal("v2"),
-               (None, Literal(3),
-               (Identifier("v4", Identifier("v4"),
-               (Identifier("v5", Literal("v5"),
-               (Identifier("v6", Literal(6)]
-    ```
+
+@dataclass
+class PaxterFunc(_PaxterWithOptions):
+    """
+    Node representing @-expression function call with the form
+    `@id[...]{...}` or `@id[...]{...}` where content within the braces
+    does recognize recursively nested @-expressions.
 
     Attributes:
         id: Identifier part
+        options: Optional list of key-value pairs within the square brackets
         fragments: List of recursively nested fragments
-        options: Optional list of key-value pairs presented within the square brackets.
-
-            - This value will be `None` when square brackets pair is _not_ present.
-            - When the square brackets pair is present,
-              if the key part is omitted from the key-valur pair,
-              the key part will be represented with `None`.
-
     """
     id: Identifier
-    fragments: FragmentList
     options: Optional[List[KeyValue]]
+    fragments: FragmentList
 
-    # TODO: add validation functions
-    #       - whether options are all keyword arguments
-    #       - whether all positional arguments precede all keyword arguments
-    #       - and for each of the above, whether keyword arguments repeat
+    def get_args_and_kwargs(self):
+        """
+        Obtains a tuple of args tuple and kwargs dict
+        with the same pattern as python function call.
+        If the options are out-of-order are any keys are duplicated,
+        then `paxter.core.exceptions.PaxterTransformError` will be raised.
+        """
+        return super().get_args_and_kwargs()
 
 
 @dataclass
 class PaxterPhrase(BaseFragment):
     """
-    An @-expression phrase is one without the identifier.
-    Normally it follows the `@{phrase}` pattern,
-    but it may also follow the simpler `@phrase` pattern
-    if it is unambiguously definitely _not_ the @-expression function call.
+    Node representing @-expression phrase, which is one without real identifier.
+    Normally it has the form of `@{phrase}`
+    but it may also follow the form of `@phrase`
+    if it is **not** immediately followed by an opening square bracket
+    or an opening brace pattern.
 
     Attributes:
         phrase: Any text phrase

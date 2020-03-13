@@ -9,6 +9,7 @@
 @to_lower{LOWER}@to_upper{upper}
 @rstrip{Left   } and @lstrip{    Right}
 @replace[old="a",new="b",count=2]{asdfasdfasdf}
+@replace["a","b",count=2]{asdfasdfasdf}
 |@strip{  answer  }|
 @swapcase{asdf@swapcase{ςσ}}
 @maketitle{one two three}

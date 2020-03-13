@@ -29,3 +29,20 @@ def test_faux_key(input_text, expected):
         else:
             with pytest.raises(PaxterTransformError):
                 kv_pair.get_faux_key()
+
+
+@pytest.mark.parametrize(
+    ("input_text", "message"),
+    [
+        ("@hello[x,y,a=1,z]{}", "found positional argument after keyword argument"),
+        ("@hello[x=2,y=3,z=4,x=5]{}", "duplicated keyword .x."),
+    ],
+)
+def test_arg_and_kwargs_error(input_text, message):
+    parser = Parser()
+    tree = parser.parse(input_text)
+    node = tree.children[0]
+    assert isinstance(node, PaxterFunc)
+
+    with pytest.raises(PaxterTransformError, match=message):
+        node.get_args_and_kwargs()

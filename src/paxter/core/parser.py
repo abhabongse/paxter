@@ -134,7 +134,15 @@ class Parser:
         id_node = self.lexer.extract_id_node(prefix_matchobj)
         next_pos = prefix_matchobj.end()
 
-        # TODO: allow macro to also have options
+        # Attempt: parse for left square bracket
+        left_bracket_matchobj = self.lexer.left_sq_bracket_re.match(body, next_pos)
+        if left_bracket_matchobj:
+            next_pos = left_bracket_matchobj.end()
+
+            # Parse options until the right (i.e. closing) square bracket
+            next_pos, opts = self.parse_inner_options(body, next_pos)
+        else:
+            opts = None
 
         # Parse the left (i.e. opening) pattern
         left_brace_matchobj = self.lexer.left_brace_re.match(body, next_pos)
@@ -144,7 +152,7 @@ class Parser:
         # Extract text node based on the found left (i.e. opening) pattern
         # and use it to create a PaxterMacro node
         end_pos, text_node = self.parse_inner_text(body, left_brace_matchobj)
-        return end_pos, PaxterMacro(start_pos, end_pos, id_node, text_node)
+        return end_pos, PaxterMacro(start_pos, end_pos, id_node, opts, text_node)
 
     def parse_paxter_phrase(
             self, body: str, next_pos: int,
@@ -240,7 +248,7 @@ class Parser:
             body=body, next_pos=left_brace_matchobj.end(),
             left_pattern=left_brace_matchobj.group(),
         )
-        return end_pos, PaxterFunc(start_pos, end_pos, id_node, fragments_node, opts)
+        return end_pos, PaxterFunc(start_pos, end_pos, id_node, opts, fragments_node)
 
     def parse_inner_options(
             self, body: str, next_pos: int,
