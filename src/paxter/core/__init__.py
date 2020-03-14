@@ -9,7 +9,7 @@ Here is the rough grammar of Paxter language in Backus–Naur Form.
 start ::= fragments
 fragments ::= fragment*
 fragment ::=
-    | "@" NORMAL_ID? "!" wrapped_text           /* PaxterMacro */
+    | "@" NORMAL_ID? "!" options? wrapped_text  /* PaxterMacro */
     | "@" NORMAL_ID options? wrapped_fragments  /* PaxterFunc */
     | "@" NORMAL_ID                             /* PaxterPhrase (special) */
     | "@" wrapped_text                          /* PaxterPhrase */
@@ -33,7 +33,7 @@ kv_pair ::= ( NORMAL_ID "=" )? ATOMIC_VALUE
 NON_GREEDY_TEXT ::= /.*?/
 NORMAL_ID ::= ID_START ID_CONT*
 MACRO_ID ::= NORMAL_ID? "!"
-ATOMIC_VALUE ::= JSON_NUMBER | JSON_STRING | IDENTIFIER
+ATOMIC_VALUE ::= JSON_NUMBER | JSON_STRING | NORMAL_ID
 ```
 
 ### Notes

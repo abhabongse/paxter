@@ -1,11 +1,25 @@
 # Changelog
 
+## 0.3.0 (14 March 2020)
+
+-   Changes in Paxter language Specification
+    -   `PaxterMacro` now allows options just like `PaxterFunc`
+    -   For each key-value pair in an option list,
+        the key part now becomes optional in place of the value part.  
+        Therefore, the option list of the form `[1,"2",v3,k4=4,k5="5",k6=v6]`
+        is a valid Paxter language syntax
+        (formerly, the first two key-value pairs were unacceptable).
+-   New utility decorators in Simple Snake: 
+    `with_env`, `with_node`, and `DefinitionSet`.
+-   Way better unit test coverages and docstrings
+
 ## 0.2.0 (12 March 2020)
 
 -   Optimized parser (remove redundant steps, refactor code, etc.)
 -   Package reorganization (e.g. flavored tree transformers now in `paxter.flavors`)
 -   **Simple Snake** behavior changes:
-    -    A line ending with backslash will remove the backslash itself along with the newline character next to it
+    -    A line ending with backslash will remove the backslash itself 
+         along with the newline character next to it
     -    Introduce `@load!` macro to load pre-defined functions
     -    Introduce `@if` and `@for` special functions
 -   Better unit test coverages and docstrings
