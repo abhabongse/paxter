@@ -60,7 +60,7 @@ def test_environment_change():
         ("@complete{}", "unknown function name .complete."),
         ("@hello{}", "function .hello. evaluation error"),
         ("@{1 + '2'}", "phrase evaluation error"),
-        ("@load!{xyzabc}", "unrecognized function group name"),
+        ("@load!{xyzabc}", "unrecognized definition set name"),
         ("@if{}", "if condition at .+ requires 1 or 2 options "
                   "in the form .+ or .+"),
         ("@if[a,tool]{}", "second argument of if condition at .+ "
