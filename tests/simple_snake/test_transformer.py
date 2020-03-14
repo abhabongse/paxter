@@ -80,3 +80,23 @@ def test_transform_error(input_text, message):
     tree = parser.parse(input_text)
     with pytest.raises(PaxterTransformError, match=message):
         transformer.transform(start_env, tree)
+
+
+@pytest.mark.parametrize(
+    "keyword", ["with", "for", "while", "async", "if", "else"],
+)
+def test_keyword_warning(keyword):
+    parser = Parser()
+    tree = parser.parse("")
+    message = f"python keyword may not be seen in the environment: {keyword}"
+
+    env_without = {'x': 1, 'y': 2, 'z': 3}
+    env = {**env_without, keyword: None}
+
+    with pytest.warns(UserWarning, match=message):
+        SimpleSnakeTransformer(env)
+
+    transformer = SimpleSnakeTransformer(env_without)
+    transformer.transform(env_without, tree)
+    with pytest.warns(UserWarning, match=message):
+        transformer.transform(env, tree)

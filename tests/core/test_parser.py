@@ -4,8 +4,6 @@ from paxter.core import (FragmentList, Identifier, KeyValue, Literal, Parser,
                          PaxterFunc, PaxterMacro, PaxterPhrase, Text)
 
 
-# TODO: add more unit tests for syntax errors
-
 @pytest.mark.parametrize(
     ("input_text", "expected"),
     [

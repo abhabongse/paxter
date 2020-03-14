@@ -34,9 +34,9 @@ class SimpleSnakeTransformer(BaseTransformer):
         and returns a tuple pair of the final environment dict state
         and the rendered text output.
         """
-        env = {**self.start_env, **env}
         for k in env.keys():
             self.not_python_keyword(k)
+        env = {**self.start_env, **env}
         output_text = self.visit(env, node)
         output_text = self.post_process(output_text)
         return env, output_text

@@ -72,7 +72,7 @@ def test_invalid_switch(switch):
         ),
     ],
 )
-def test_cannot_match_right_pattern_error(input_text, message):
+def test_parsing_error(input_text, message):
     parser = Parser()
     with pytest.raises(PaxterSyntaxError) as exc_info:
         parser.parse(input_text)
