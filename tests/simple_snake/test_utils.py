@@ -35,7 +35,7 @@ def test_with_env_with_node():
         env[id] = value
         return ''
 
-    @env_set.register(name='set_black')
+    @env_set.register
     @with_env
     def set_black(env, main_text):
         env['black'] = main_text

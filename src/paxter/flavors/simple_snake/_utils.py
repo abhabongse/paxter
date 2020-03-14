@@ -5,7 +5,7 @@ Utility decorators and classes.
 import functools
 from typing import Any, Callable, Dict, Optional, TYPE_CHECKING
 
-from paxter.core import Node
+from paxter.core import Node, PaxterConfigError
 
 if TYPE_CHECKING:
     from paxter.flavors.simple_snake._transformer import SimpleSnakeTransformer
@@ -73,9 +73,17 @@ class DefinitionSet:
         """
         if value_or_func is None:
             return functools.partial(self.register, name=name)
-        name = name or value_or_func.__name__
+        name = name or self.extract_name(value_or_func)
+        if name is None:
+            raise PaxterConfigError(f"cannot resolve name for {value_or_func}")
         self.data[name] = value_or_func
         return value_or_func
+
+    @staticmethod
+    def extract_name(obj):
+        while hasattr(obj, '__wrapped__'):
+            obj = obj.__wrapped__
+        return getattr(obj, '__name__', None)
 
     def get_copy(self):
         """
