@@ -6,34 +6,41 @@ Core functionality of Paxter document pre-processing language.
 Here is the rough grammar of Paxter language in Backus–Naur Form.
 
 ```bnf
-start ::= fragments
-fragments ::= fragment*
-fragment ::=
-    | "@" NORMAL_ID? "!" options? wrapped_text  /* PaxterMacro */
-    | "@" NORMAL_ID options? wrapped_fragments  /* PaxterFunc */
-    | "@" NORMAL_ID                             /* PaxterPhrase (special) */
-    | "@" wrapped_text                          /* PaxterPhrase */
-    | "@" wrapped_string                        /* Text (special) */
-    | NON_GREEDY_TEXT                           /* Text */
-wrapped_text ::=
-    | "#" wrapped_text "#"
-    | "<" wrapped_text ">"
-    | "{" NON_GREEDY_TEXT "}"
-wrapped_string ::=
-    | "#" wrapped_string "#"
-    | "<" wrapped_string ">"
-    | "\"" NON_GREEDY_TEXT "\""
+start ::= non_greedy_fragments                      /* FragmentList */
+non_greedy_fragments ::= fragment*?
+fragment ::= command | NON_GREEDY_TEXT
+command ::=
+    | "@" IDENTIFIER options wrapped_main_arg       /* PaxterApply */
+    | "@" IDENTIFIER wrapped_main_arg               /* PaxterApply */
+    | "@" IDENTIFIER options                        /* PaxterApply */
+    | "@" IDENTIFIER                                /* PaxterPhrase (special case) */
+    | "@" wrapped_phrase                            /* PaxterPhrase */
+    | "@" wrapped_main_arg                          /* FragmentList or Text */
+wrapped_main_arg ::=
+    | wrapped_fragments                             /* FragmentList */
+    | wrapped_text                                  /* Text */
 wrapped_fragments ::=
     | "#" wrapped_fragments "#"
     | "<" wrapped_fragments ">"
-    | "{" fragments "}"
-options ::= "[" ( kv_pair ( "," kv_pair )* ","? )? "]"
-kv_pair ::= ( NORMAL_ID "=" )? ATOMIC_VALUE
+    | "{" non_greedy_fragments "}"
+wrapped_text ::=
+    | "#" wrapped_text "#"
+    | "<" wrapped_text ">"
+    | "!{" NON_GREEDY_TEXT "}"
+    | "\"" NON_GREEDY_TEXT "\""
+wrapped_phrase ::=
+    | "#" wrapped_phrase "#"
+    | "<" wrapped_phrase ">"
+    | "(" NON_GREEDY_TEXT ")"
+options ::= "[" [ arg ( "," arg )* [ "," ] ] "]"    /* OptionList */
+arg ::= [ IDENTIFIER "=" ] val
+val ::=
+    | JSON_NUMBER                                   /* Number */
+    | IDENTIFIER                                    /* Identifier */
+    | command
 
 NON_GREEDY_TEXT ::= /.*?/
-NORMAL_ID ::= ID_START ID_CONT*
-MACRO_ID ::= NORMAL_ID? "!"
-ATOMIC_VALUE ::= JSON_NUMBER | JSON_STRING | NORMAL_ID
+IDENTIFIER ::= ID_START ID_CONT*
 ```
 
 ### Notes
@@ -47,7 +54,7 @@ ATOMIC_VALUE ::= JSON_NUMBER | JSON_STRING | NORMAL_ID
   that is allowed to be the subsequent characters of an identifier,
   consisting of all characters from `ID_START` plus Unicode character classes
   `Mn`, `Mc`, `Nd`, and `Pc`.
-- Parsing `JSON_NUMBER` and `JSON_STRING` tokens will strictly follow
+- Parsing `JSON_NUMBER` tokens will strictly follow
   the [JSON specification](https://www.json.org/json-en.html).
   and the value in the parsed tree will be recognized by `json.loads` function.
 - While parsing Paxter language input, white space will **not** be ignored
