@@ -60,7 +60,7 @@ ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
 	@which pip-compile >/dev/null 2>&1 || pip install pip-tools
-	pip-compile -o $@ $<
+	pip-compile -o $@ $< $(ARGS)
 	@echo "Generated $@ from $^"
 
 ######################

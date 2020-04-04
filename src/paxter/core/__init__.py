@@ -16,17 +16,21 @@ command ::=
     | "@" IDENTIFIER                                /* PaxterPhrase (special case) */
     | "@" wrapped_phrase                            /* PaxterPhrase */
     | "@" wrapped_main_arg                          /* FragmentList or Text */
+    | "@" wrapped_quoted_text                       /* Text */
 wrapped_main_arg ::=
     | wrapped_fragments                             /* FragmentList */
-    | wrapped_text                                  /* Text */
+    | "!" wrapped_banged_text                       /* Text */
 wrapped_fragments ::=
     | "#" wrapped_fragments "#"
     | "<" wrapped_fragments ">"
     | "{" non_greedy_fragments "}"
-wrapped_text ::=
-    | "#" wrapped_text "#"
-    | "<" wrapped_text ">"
-    | "!{" NON_GREEDY_TEXT "}"
+wrapped_banged_text ::=
+    | "#" wrapped_banged_text "#"
+    | "<" wrapped_banged_text ">"
+    | "{" NON_GREEDY_TEXT "}"
+wrapped_quoted_text ::=
+    | "#" wrapped_quoted_text "#"
+    | "<" wrapped_quoted_text ">"
     | "\"" NON_GREEDY_TEXT "\""
 wrapped_phrase ::=
     | "#" wrapped_phrase "#"
@@ -35,9 +39,10 @@ wrapped_phrase ::=
 options ::= "[" [ arg ( "," arg )* [ "," ] ] "]"    /* OptionList */
 arg ::= [ IDENTIFIER "=" ] val
 val ::=
+    | command
+    | wrapped_quoted_text                           /* Text */
     | JSON_NUMBER                                   /* Number */
     | IDENTIFIER                                    /* Identifier */
-    | command
 
 NON_GREEDY_TEXT ::= /.*?/
 IDENTIFIER ::= ID_START ID_CONT*
