@@ -61,7 +61,7 @@ without users having to write custom transformers.
 Here is one way to use this library with **Simple Snake** flavor of tree transformer:
 
 ```python
-from paxter.core import Parser
+from paxter.legacy import Parser
 from paxter.flavors import SimpleSnakeTransformer
 
 parser = Parser()
@@ -130,7 +130,7 @@ $ python -m paxter  # provide --help for help messages
 
 ## Documentation
 
--   [Rough description of Paxter grammar](src/paxter/core/__init__.py)
+-   [Rough description of Paxter grammar](src/paxter/legacy/__init__.py)
 -   [ReadTheDocs documentation](https://paxter.readthedocs.io/) (under construction)
 -   Paxter documentation can be generated with [`pdoc3`](https://pdoc3.github.io/pdoc/) which can be installed with `pip install pdoc3`. Then preview this package with `pdoc --html : paxter` or compiled with `pdoc --html paxter`.
 

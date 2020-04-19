@@ -14,7 +14,7 @@ def read(*names, **kwargs):
         return fh.read()
 
 
-metadata = json.loads(read(join('src', 'paxter', 'metadata.json')))
+metadata = json.loads(read(join('src', 'paxter', 'meta.json')))
 
 setup(
     name='paxter',

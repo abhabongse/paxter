@@ -35,16 +35,16 @@ wrapped_phrase ::=
 options ::= "[" token*? "]"
 token ::=
     | command
-    | "(" token*? ")"
-    | "[" token*? "]"
-    | "{" token*? "}"
+    | "(" token*? ")"                               /* TokenList */
+    | "[" token*? "]"                               /* TokenList */
+    | "{" token*? "}"                               /* TokenList */
     | IDENTIFIER                                    /* Identifier */
     | OPERATOR                                      /* Operator */
     | JSON_NUMBER                                   /* Number */
 
 NON_GREEDY_TEXT ::= /.*?/
 IDENTIFIER ::= ID_START ID_CONT*
-OPERATOR ::= OP_CHAR+
+OPERATOR ::= "," | ";" | OP_CHAR+
 JSON_NUMBER ::= /-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)/
 ```
 
@@ -61,25 +61,8 @@ JSON_NUMBER ::= /-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)/
 -   `OP_CHAR` represents a subset of characters (for regular expression)
     for operator tokens within the options section of PaxterApply,
     consisting of all characters from Unicode character classes
-    `Po`, `Sc`, `Sk`, `Sm`, and `So`.
+    `Po`, `Sc`, `Sk`, `Sm`, and `So` but excluding `;` and `,`.
 -   Please consult `paxter.core.data` module for definitions of all node types.
 -   While parsing Paxter language input, white space will **not** be ignored
     **except** for within the options section.
 """
-from paxter.core.data import (BaseAtom, BaseFragment, FragmentList, Identifier,
-                              KeyValue, Literal, Node, PaxterFunc, PaxterMacro,
-                              PaxterPhrase, Text)
-from paxter.core.exceptions import (PaxterBaseException, PaxterConfigError,
-                                    PaxterSyntaxError, PaxterTransformError)
-from paxter.core.lexers import Lexer
-from paxter.core.parser import Parser
-from paxter.core.transformer import BaseTransformer
-
-__all__ = ['BaseAtom', 'BaseFragment', 'FragmentList', 'Identifier', 'KeyValue',
-           'Literal', 'Node', 'PaxterMacro', 'PaxterFunc', 'PaxterPhrase', 'Text',
-           'PaxterBaseException', 'PaxterConfigError', 'PaxterSyntaxError',
-           'PaxterTransformError',
-           'Lexer', 'Parser', 'BaseTransformer']
-
-# Disable all docstrings for classes and functions at this level
-__pdoc__ = {item: False for item in __all__}

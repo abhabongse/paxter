@@ -82,7 +82,7 @@ toml==0.10.0              # via tox
 tornado==6.0.4            # via ipykernel, jupyter-client, notebook, terminado
 tox==3.14.6               # via -r dev-requirements.in
 tqdm==4.45.0              # via twine
-traitlets==4.3.3          # via ipykernel, ipython, ipywidgets, jupyter-client, jupyter-core, nbconvert, nbformat, notebook, qtconsole
+traitlets==4.3.3          # via ipykernel, ipython, ipywidgets, jupyter-client, jupyter-legacy, nbconvert, nbformat, notebook, qtconsole
 twine==3.1.1              # via -r dev-requirements.in
 urllib3==1.25.8           # via requests
 virtualenv==20.0.16       # via tox
