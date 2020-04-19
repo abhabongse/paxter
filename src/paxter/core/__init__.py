@@ -16,18 +16,14 @@ command ::=
     | "@" IDENTIFIER                                /* PaxterPhrase (special case) */
     | "@" wrapped_phrase                            /* PaxterPhrase */
     | "@" wrapped_main_arg                          /* FragmentList or Text */
-    | "@" wrapped_quoted_text                       /* Text */
+    | "@" SYMBOL                                    /* PaxterPhrase (special case) */
 wrapped_main_arg ::=
     | wrapped_fragments                             /* FragmentList */
-    | "!" wrapped_banged_text                       /* Text */
+    | wrapped_quoted_text                           /* Text */
 wrapped_fragments ::=
     | "#" wrapped_fragments "#"
     | "<" wrapped_fragments ">"
     | "{" non_greedy_fragments "}"
-wrapped_banged_text ::=
-    | "#" wrapped_banged_text "#"
-    | "<" wrapped_banged_text ">"
-    | "{" NON_GREEDY_TEXT "}"
 wrapped_quoted_text ::=
     | "#" wrapped_quoted_text "#"
     | "<" wrapped_quoted_text ">"
@@ -35,35 +31,40 @@ wrapped_quoted_text ::=
 wrapped_phrase ::=
     | "#" wrapped_phrase "#"
     | "<" wrapped_phrase ">"
-    | "(" NON_GREEDY_TEXT ")"
-options ::= "[" [ arg ( "," arg )* [ "," ] ] "]"    /* OptionList */
-arg ::= [ IDENTIFIER "=" ] val
-val ::=
+    | "|" NON_GREEDY_TEXT "|"
+options ::= "[" token*? "]"
+token ::=
     | command
-    | wrapped_quoted_text                           /* Text */
-    | JSON_NUMBER                                   /* Number */
+    | "(" token*? ")"
+    | "[" token*? "]"
+    | "{" token*? "}"
     | IDENTIFIER                                    /* Identifier */
+    | OPERATOR                                      /* Operator */
+    | JSON_NUMBER                                   /* Number */
 
 NON_GREEDY_TEXT ::= /.*?/
 IDENTIFIER ::= ID_START ID_CONT*
+OPERATOR ::= OP_CHAR+
+JSON_NUMBER ::= /-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)/
 ```
 
 ### Notes
 
-- Please consult `paxter.core.data` module for definitions of all node types.
-- `ID_START` represents a subset of characters (for regular expression)
-  that is allowed to be the first character of an identifier,
-  consisting of an underscore (`_`) plus Unicode character classes
-  `Lu`, `Ll`, `Lt`, `Lm`, `Lo`, and `Nl`.
-- `ID_CONT` represents a subset of characters (for regular expression)
-  that is allowed to be the subsequent characters of an identifier,
-  consisting of all characters from `ID_START` plus Unicode character classes
-  `Mn`, `Mc`, `Nd`, and `Pc`.
-- Parsing `JSON_NUMBER` tokens will strictly follow
-  the [JSON specification](https://www.json.org/json-en.html).
-  and the value in the parsed tree will be recognized by `json.loads` function.
-- While parsing Paxter language input, white space will **not** be ignored
-  **except** for within the options list.
+-   `ID_START` represents a subset of characters (for regular expression)
+    that is allowed to be the first character of an identifier,
+    consisting of an underscore (`_`) plus Unicode character classes
+    `Lu`, `Ll`, `Lt`, `Lm`, `Lo`, and `Nl`.
+-   `ID_CONT` represents a subset of characters (for regular expression)
+    that is allowed to be the subsequent characters of an identifier,
+    consisting of all characters from `ID_START` plus Unicode character classes
+    `Mn`, `Mc`, `Nd`, and `Pc`.
+-   `OP_CHAR` represents a subset of characters (for regular expression)
+    for operator tokens within the options section of PaxterApply,
+    consisting of all characters from Unicode character classes
+    `Po`, `Sc`, `Sk`, `Sm`, and `So`.
+-   Please consult `paxter.core.data` module for definitions of all node types.
+-   While parsing Paxter language input, white space will **not** be ignored
+    **except** for within the options section.
 """
 from paxter.core.data import (BaseAtom, BaseFragment, FragmentList, Identifier,
                               KeyValue, Literal, Node, PaxterFunc, PaxterMacro,
