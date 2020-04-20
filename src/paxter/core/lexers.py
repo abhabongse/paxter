@@ -4,7 +4,12 @@ Regular expression based lexers for Paxter language.
 import re
 from typing import Dict, Pattern
 
-from paxter.core.charset import IDENTIFIER_PATTERN, OPERATOR_PATTERN
+from paxter.core.charset import IDENTIFIER_PATTERN, OPERATOR_PATTERN, SYMBOL_PATTERN
+
+__all__ = ['LEXER']
+
+ALLOWED_OPENED_PATTERN_RE = re.compile(r'[#<]*[{"|]')
+OPENED_TO_CLOSED_TRANS = str.maketrans(r'#<{"|', r'#>}"|')
 
 
 class Lexer:
@@ -14,18 +19,21 @@ class Lexer:
     _compiled_non_rec_breaks = Dict[str, Pattern[str]]
     _compiled_rec_breaks = Dict[str, Pattern[str]]
 
+    global_break_re = re.compile(r'(?P<inner>(?s:.)*?)(?P<break>@|\Z)')
     command_prefix_re = re.compile(r'@')
     id_prefix_re = re.compile(rf'(?P<id>{IDENTIFIER_PATTERN})')
     bracket_prefix_re = re.compile(r'\[')
-    brace_prefix_re = re.compile(r'(?P<left>[#<]*{)')
-    quote_prefix_re = re.compile(r'(?P<left>[#<]*")')
-    bar_prefix_re = re.compile(r'(?P<left>[#<]*\|)')
+    brace_prefix_re = re.compile(r'(?P<opened>[#<]*{)')
+    quote_prefix_re = re.compile(r'(?P<opened>[#<]*")')
+    bar_prefix_re = re.compile(r'(?P<opened>[#<]*\|)')
+    symbol_re = re.compile(rf'(?P<symbol>{SYMBOL_PATTERN})')
     option_token_re = re.compile(
-        r'(?P<cmd_char>@)|'
-        r'(?P<paren_char>[()\[\]{}])|'
+        r'\s*(?:'
         rf'(?P<id>{IDENTIFIER_PATTERN})|'
         rf'(?P<op>{OPERATOR_PATTERN})|'
-        r'(?P<num>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)',
+        r'(?P<num>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)|'
+        r'(?P<char>[@()\[\]{}])'
+        r')',
     )
 
     def __init__(self):
@@ -40,7 +48,7 @@ class Lexer:
         closed_pattern = re.escape(closed_pattern)
         if closed_pattern not in self._compiled_non_rec_breaks:
             self._compiled_non_rec_breaks[closed_pattern] = re.compile(
-                r'(?P<text>(?s:.)*?)'
+                r'(?P<inner>(?s:.)*?)'
                 rf'(?P<break>{closed_pattern})',
             )
         return self._compiled_non_rec_breaks[closed_pattern]
@@ -54,11 +62,24 @@ class Lexer:
         closed_pattern = re.escape(closed_pattern)
         if closed_pattern not in self._compiled_rec_breaks:
             self._compiled_rec_breaks[closed_pattern] = re.compile(
-                r'(?P<text>(?s:.)*?)'
+                r'(?P<inner>(?s:.)*?)'
                 rf'(?P<break>@|{closed_pattern})',
             )
         return self._compiled_rec_breaks[closed_pattern]
 
+    @staticmethod
+    def flip_pattern(opened_pattern: str) -> str:
+        """
+        Flips the given opened (i.e. left) pattern
+        into the corresponding closed (i.e. right) pattern.
+
+        For example, the opened pattern `"<##<{"`
+        should be flipped into the closed pattern `"}>##>".
+        """
+        if not ALLOWED_OPENED_PATTERN_RE.fullmatch(opened_pattern):
+            raise RuntimeError("something went horribly wrong")  # pragma: no cover
+        return opened_pattern.translate(OPENED_TO_CLOSED_TRANS)[::-1]
+
 
 # Instance of lexer class
-lexer = Lexer()
+LEXER = Lexer()

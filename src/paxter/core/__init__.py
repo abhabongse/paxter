@@ -61,8 +61,25 @@ JSON_NUMBER ::= /-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)/
 -   `OP_CHAR` represents a subset of characters (for regular expression)
     for operator tokens within the options section of PaxterApply,
     consisting of all characters from Unicode character classes
-    `Po`, `Sc`, `Sk`, `Sm`, and `So` but excluding `;` and `,`.
+    `Pd`, `Po`, `Sc`, `Sk`, `Sm`, and `So` but excluding `;` and `,`.
 -   Please consult `paxter.core.data` module for definitions of all node types.
 -   While parsing Paxter language input, white space will **not** be ignored
     **except** for within the options section.
 """
+from paxter.core.data import (
+    Fragment, FragmentList, Identifier, Number, Operator,
+    PaxterApply, PaxterPhrase, Text, Token, TokenList,
+)
+from paxter.core.exceptions import (
+    PaxterBaseException, PaxterConfigError,
+    PaxterSyntaxError, PaxterTransformError,
+)
+from paxter.core.parser import Parser
+
+__all__ = [
+    'Fragment', 'FragmentList', 'Identifier', 'Number', 'Operator',
+    'PaxterApply', 'PaxterPhrase', 'Text', 'Token', 'TokenList',
+    'PaxterBaseException', 'PaxterConfigError',
+    'PaxterSyntaxError', 'PaxterTransformError',
+    'Parser',
+]

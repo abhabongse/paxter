@@ -1,10 +1,19 @@
 """
 Data definition for node types in Paxter parsed tree.
 """
-from dataclasses import dataclass
-from typing import List, Optional, Union
+import json
+from dataclasses import dataclass, field
+from typing import List, Match, Optional, Union
 
+__all__ = [
+    'Span', 'Token',
+    'Fragment', 'FragmentList', 'Text', 'PaxterApply', 'PaxterPhrase',
+    'TokenList', 'Identifier', 'Operator', 'Number',
+]
+
+_ENABLE_POS_PRINT = False
 MainArgument = Union['FragmentList', 'Text']
+Fragment = Union['FragmentList', 'Text', 'PaxterApply', 'PaxterPhrase']
 
 
 @dataclass
@@ -26,42 +35,144 @@ class Token:
 
 
 @dataclass
-class Fragment(Token):
+class TokenList(Token):
     """
-    Subcategory of base node representing all kinds of nodes
-    which can be an element of the `FragmentList`.
+    Node type which represents a group of tokens wrapped under
+    a pair of parentheses `()`, brackets `[]`, or braces `{}`.
     """
-    pass
+    children: List[Token]
 
 
 @dataclass
-class FragmentList(Fragment):
+class Identifier(Token):
+    """
+    Node type which represents an identifier and can either be
+    the identifier part of or within the option section of the `PaxterApply`.
+    """
+    name: str
+    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
+
+    @classmethod
+    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Identifier':
+        """
+        Creates a new node from the provided match object
+        returned by regular expression matching under the provided capture group.
+        """
+        return Identifier(
+            name=matchobj.group(capture_name),
+            pos=Span(*matchobj.span(capture_name)),
+        )
+
+
+@dataclass
+class Operator(Token):
+    """
+    Node type which represents an operator
+    and can only be part of the option section of `PaxterApply`.
+    """
+    symbol: str
+    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
+
+    @classmethod
+    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Operator':
+        """
+        Creates a new node from the provided match object
+        returned by regular expression matching under the provided capture group.
+        """
+        return Operator(
+            symbol=matchobj.group(capture_name),
+            pos=Span(*matchobj.span(capture_name)),
+        )
+
+
+@dataclass
+class Number(Token):
+    """
+    Node type which represents a number recognized by JSON grammar.
+    It can only be part of the option section of `PaxterApply`.
+    """
+    number: Union[int, float]
+    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
+
+    @classmethod
+    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Number':
+        """
+        Creates a new node from the provided match object
+        returned by regular expression matching under the provided capture group.
+        """
+        return Number(
+            number=json.loads(matchobj.group(capture_name)),
+            pos=Span(*matchobj.span(capture_name)),
+        )
+
+
+@dataclass
+class FragmentList(Token):
     """
     Special intermediate node maintaining a list of fragment children nodes.
     This usually corresponds to global-level fragments
     or fragments nested within braces following the @-command.
     """
-    children: List['Fragment']
-    opened: str
-    closed: str
+    children: List[Fragment]
 
 
 @dataclass
-class Text(Fragment):
+class Text(Token):
     """
     Text node type which does not contain nested @-commands.
     It may be presented as an element of `FragmentList`,
     the main argument of `PaxterApply` and `PaxterPhrase`,
     or within the option section of `PaxterApply`.
     """
-    value: str
-    opened: str
-    closed: str
-    pos: Span
+    inner: str
+    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
+
+    @classmethod
+    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Text':
+        """
+        Creates a new node from the provided match object
+        returned by regular expression matching under the provided capture group.
+        """
+        return Text(
+            inner=matchobj.group(capture_name),
+            pos=Span(*matchobj.span(capture_name)),
+        )
 
 
 @dataclass
-class PaxterApply(Fragment):
+class PaxterPhrase(Token):
+    """
+    Node type which represents @-command and has one of the following form:
+
+    -   It begins with a command switch `@`
+        and is immediately followed by a non-empty identifier.
+        It also must unambiguously not be a `PaxterApply`
+        (i.e. it is not followed by an option section or main argument section).
+
+    -   It begins with a command switch `@` and is immediately followed by
+        a wrapped bar section (e.g. `@|...phrase...|`, `@<#|...phrase...|#>`).
+
+    -   It begins with a command switch `@` and is immediately followed by
+        a single symbol character that is unmistakeably not a quote `"`,
+        a brace `{`, or a bar `|`.
+    """
+    inner: str
+    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
+
+    @classmethod
+    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'PaxterPhrase':
+        """
+        Creates a new node from the provided match object
+        returned by regular expression matching under the provided capture group.
+        """
+        return PaxterPhrase(
+            inner=matchobj.group(capture_name),
+            pos=Span(*matchobj.span(capture_name)),
+        )
+
+
+@dataclass
+class PaxterApply(Token):
     """
     Node type which represents @-command which has the following form:
 
@@ -79,67 +190,6 @@ class PaxterApply(Fragment):
         a `FragmentList` (surrounded by wrapped braces such as `{...main arg...}`)
         or a `Text` (surrounded by wrapped quotation marks such as `"...text..."`).
     """
-    id: 'Identifier'
-    options: Optional[List[Token]]
+    id: Identifier
+    options: Optional[TokenList]
     main_arg: Optional[MainArgument]
-
-
-@dataclass
-class PaxterPhrase(Fragment):
-    """
-    Node type which represents @-command and has one of the following form:
-
-    -   It begins with a command switch `@`
-        and is immediately followed by a non-empty identifier.
-        It also must unambiguously not be a `PaxterApply`
-        (i.e. it is not followed by an option section or main argument section).
-
-    -   It begins with a command switch `@` and is immediately followed by
-        a wrapped bar section (e.g. `@|...phrase...|`, `@<#|...phrase...|#>`).
-
-    -   It begins with a command switch `@` and is immediately followed by
-        a single symbol character that is unmistakeably not a quote `"`,
-        a brace `{`, or a bar `|`.
-    """
-    content: Text
-
-
-@dataclass
-class TokenList(Token):
-    """
-    Node type which represents a group of tokens wrapped under
-    a pair of parentheses `()`, brackets `[]`, or braces `{}`.
-    """
-    children: List[Token]
-    opened: str
-    closed: str
-
-
-@dataclass
-class Identifier(Token):
-    """
-    Node type which represents an identifier and can either be
-    the identifier part of or within the option section of the `PaxterApply`.
-    """
-    name: str
-    pos: Span
-
-
-@dataclass
-class Operator(Token):
-    """
-    Node type which represents an operator
-    and can only be part of the option section of `PaxterApply`.
-    """
-    symbol: str
-    pos: Span
-
-
-@dataclass
-class Number(Token):
-    """
-    Node type which represents a number recognized by JSON grammar.
-    It can only be part of the option section of `PaxterApply`.
-    """
-    number: Union[int, float]
-    pos: Span
