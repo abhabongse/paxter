@@ -1,7 +1,8 @@
 import pytest  # noqa
 
 from paxter.core import (
-    FragmentList, Identifier, Number, Operator, Parser, PaxterApply, PaxterPhrase, Text,
+    FragmentList, Identifier, Number, Operator, ParserContext, PaxterApply,
+    PaxterPhrase, Text,
     TokenList,
 )
 
@@ -280,9 +281,48 @@ from paxter.core import (
                 ],
             ),
         ),
+        pytest.param(
+            '@foo[\n'
+            '  a = {1 -> 2},\n'
+            '  b = @{My name is @name},\n'
+            ']{bar}\n',
+            FragmentList(
+                children=[
+                    PaxterApply(
+                        id=Identifier(name="foo"),
+                        options=TokenList(
+                            children=[
+                                Identifier(name="a"),
+                                Operator(symbol="="),
+                                TokenList(
+                                    children=[
+                                        Number(number=1),
+                                        Operator(symbol="->"),
+                                        Number(number=2),
+                                    ]
+                                ),
+                                Operator(symbol=","),
+                                Identifier(name="b"),
+                                Operator(symbol="="),
+                                FragmentList(
+                                    children=[
+                                        Text(inner="My name is "),
+                                        PaxterPhrase(inner="name"),
+                                    ]
+                                ),
+                                Operator(symbol=","),
+                            ]
+                        ),
+                        main_arg=FragmentList(children=[Text(inner="bar")]),
+                    ),
+                    Text(inner="\n"),
+                ]
+            )
+
+        ),
     ],
 )
 def test_parser(input_text, expected):
-    assert Parser.parse(input_text) == expected
+    assert ParserContext.parse(input_text) == expected
 
 # TODO: need to add a lot more unit tests
