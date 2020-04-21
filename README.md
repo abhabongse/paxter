@@ -40,8 +40,9 @@ Paxter is a document-first text pre-processing mini-language, _loosely_ inspired
 ([similarly to a DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)).
 -   The language itself **does not specify** how the parsed tree will be transformed
 into the final rendered output text.
--   Users of this package may opt-in to use pre-defined _flavors_ of tree transformers
-or choose to implement a new one by themselves. 
+    Users have all the freedom to interpret or render the document tree into an output format however they like.
+-   Instead of implementing a document tree renderer by themselves, users may opt-in to use pre-defined _flavors_ of document tree renderers also provided by this package. 
+
 
 ## Installation
 
@@ -52,7 +53,10 @@ This package can be installed from PyPI via `pip` command
 $ pip install paxter
 ```
 
+
 ## Programmatic Usage
+
+**WARNING:** This section requires a clean-up.
 
 The package is _mainly_ intended to be used as a library.
 Pre-defined tree transformers are available to be utilized right away
@@ -119,7 +123,10 @@ Library users could also write their own custom transformers
 by extending the `paxter.core.BaseTransformer` class
 and use it in any way they want. Stay tuned for the tutorial.
 
+
 ## CLI Usage
+
+**WARNING:** This section requires a clean-up.
 
 While this feature is still a work in progress,
 users may try making a call to the following command to get started:
@@ -128,11 +135,13 @@ users may try making a call to the following command to get started:
 $ python -m paxter  # provide --help for help messages
 ```
 
+
 ## Documentation
 
 -   [Rough description of Paxter grammar](src/paxter/legacy/__init__.py)
 -   [ReadTheDocs documentation](https://paxter.readthedocs.io/) (under construction)
 -   Paxter documentation can be generated with [`pdoc3`](https://pdoc3.github.io/pdoc/) which can be installed with `pip install pdoc3`. Then preview this package with `pdoc --html : paxter` or compiled with `pdoc --html paxter`.
+
 
 ## Future Plans
 
@@ -142,6 +151,7 @@ $ python -m paxter  # provide --help for help messages
 -   Re-implementing lexers and parsers in Rust for better performance
     and portability to other environments (such as WASM). 
 -   And more!
+
 
 ## Development
 

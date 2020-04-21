@@ -41,7 +41,7 @@ class Parser:
         """
         end_pos, node = self._parse_inner_fragments(
             next_pos=0,
-            opened_pattern=r'\A', closed_pattern=r'\Z',
+            opened_pattern='[BEGIN OF TEXT]', closed_pattern='[END OF TEXT]',
             break_re=LEXER.global_break_re,
         )
         if end_pos != len(self.input_text):  # pragma: no cover
@@ -59,6 +59,7 @@ class Parser:
         This method is called at the start of global-level text
         or the start of the text within the braces pattern.
         """
+        start_pos = next_pos
         children: List[Fragment] = []
 
         while True:
@@ -66,7 +67,7 @@ class Parser:
             break_matchobj = break_re.match(self.input_text, next_pos)
             if break_matchobj is None:
                 self._cannot_match_closed_pattern(
-                    next_pos,
+                    start_pos,
                     opened_pattern, closed_pattern,
                 )
 
@@ -110,10 +111,7 @@ class Parser:
         if matchobj:
             return self._parse_symbol_phrase(matchobj)
 
-        raise PaxterSyntaxError(
-            "invalid expression after @-command switch at {pos}",
-            positions={'pos': next_pos},
-        )
+        self._invalid_command(next_pos)
 
     def _parse_command_after_id(
             self, id_prefix_matchobj: Match[str],
@@ -241,6 +239,7 @@ class Parser:
         Recursively parses the options section
         until reaching the given breaking character.
         """
+        start_pos = next_pos
         expected_closed_char = opened_char.translate(OPENED_TO_CLOSED_SCOPE_TRANS)
         children = []
 
@@ -288,20 +287,25 @@ class Parser:
             # Else, something was wrong at the parsing,
             # perhaps reaching the end of text or found unmatched parenthesis.
             self._cannot_match_closed_pattern(
-                pos=next_pos,
+                pos=start_pos,
                 opened_pattern=opened_char, closed_pattern=expected_closed_char,
             )
 
-    @staticmethod
     def _cannot_match_closed_pattern(
-            pos: int,
+            self, pos: int,
             opened_pattern: str, closed_pattern: str,
     ):
-        opened_pattern = opened_pattern.replace('{', '{{')
-        closed_pattern = closed_pattern.replace('}', '}}')
+        start_pos = pos - len(opened_pattern)
+        line, col = PaxterSyntaxError.pos_to_line_col(self.input_text, start_pos)
         raise PaxterSyntaxError(
             f"cannot match closed pattern {closed_pattern!r} "
             f"to the opened pattern {opened_pattern!r} "
-            "at {pos}",
-            positions={'pos': pos},
+            f"at line {line} col {col}",
+        )
+
+    def _invalid_command(self, pos: int):
+        line, col = PaxterSyntaxError.pos_to_line_col(self.input_text, pos)
+        raise PaxterSyntaxError(
+            "invalid expression after @-command switch "
+            f"at line {line} col {col}",
         )

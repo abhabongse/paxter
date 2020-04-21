@@ -3,7 +3,7 @@ Core functionality of Paxter document pre-processing language.
 
 ## Language Specification
 
-Here is the rough grammar of Paxter language in Backus–Naur Form.
+Here is the _rough_ grammar of Paxter language in Backus–Naur Form.
 
 ```bnf
 start ::= non_greedy_fragments                      /* FragmentList */
@@ -39,47 +39,54 @@ token ::=
     | "[" token*? "]"                               /* TokenList */
     | "{" token*? "}"                               /* TokenList */
     | IDENTIFIER                                    /* Identifier */
-    | OPERATOR                                      /* Operator */
-    | JSON_NUMBER                                   /* Number */
+    | OPERATOR_TOKEN                                /* Operator */
+    | NUMBER_TOKEN                                  /* Number */
 
 NON_GREEDY_TEXT ::= /.*?/
 IDENTIFIER ::= ID_START ID_CONT*
-OPERATOR ::= "," | ";" | OP_CHAR+
-JSON_NUMBER ::= /-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)/
+OPERATOR_TOKEN ::= "," | ";" | OP_CHAR+
+NUMBER_TOKEN ::= /-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)/
 ```
+
+### Additional Character Sets
+
+Some of the character sets appeared in the above grammar
+has the following definitions.
+
+-   Rule `ID_START` represents a subset of characters that is allowed
+    to be the first character of a valid identifier.
+    It consists of an underscore (`_`) plus Unicode character classes
+    `Lu`, `Ll`, `Lt`, `Lm`, `Lo`, and `Nl`.
+-   Rule `ID_CONT` represents a subset of characters that is allowed
+    to be the subsequent characters of an identifier.
+    It consists of all characters from `ID_START` plus Unicode character
+    classes `Mn`, `Mc`, `Nd`, and `Pc`.
+-   Rule `OP_CHAR` represents a subset of characters for operator tokens
+    within the options section of `PaxterApply`.
+    It consists of Unicode character classes `Pd`, `Po` (excluding ';' and ','),
+    `Sc`, `Sk`, `Sm`, and `So`.
+-   `SYMBOL` represents a subset of characters that is allowed
+    to solely appear right after the @-command switch to indicate
+    a special case of `PaxterPhrase`.
+    It consists of Unicode character classes `Ps`, `Pe`, `Pi`, `Pf`, `Pd`, `Po`,
+    `Sc`, `Sk`, `Sm`, and `So`.
 
 ### Notes
 
--   `ID_START` represents a subset of characters (for regular expression)
-    that is allowed to be the first character of an identifier,
-    consisting of an underscore (`_`) plus Unicode character classes
-    `Lu`, `Ll`, `Lt`, `Lm`, `Lo`, and `Nl`.
--   `ID_CONT` represents a subset of characters (for regular expression)
-    that is allowed to be the subsequent characters of an identifier,
-    consisting of all characters from `ID_START` plus Unicode character classes
-    `Mn`, `Mc`, `Nd`, and `Pc`.
--   `OP_CHAR` represents a subset of characters (for regular expression)
-    for operator tokens within the options section of PaxterApply,
-    consisting of all characters from Unicode character classes
-    `Pd`, `Po`, `Sc`, `Sk`, `Sm`, and `So` but excluding `;` and `,`.
--   Please consult `paxter.core.data` module for definitions of all node types.
+-   For more information, please consult `paxter.core.data` module
+    for definitions of all node types in parsed document tree.
 -   While parsing Paxter language input, white space will **not** be ignored
     **except** for within the options section.
+-   All rules of the grammar will be parsed non-greedily and without backtracking.
 """
 from paxter.core.data import (
     Fragment, FragmentList, Identifier, Number, Operator,
     PaxterApply, PaxterPhrase, Text, Token, TokenList,
-)
-from paxter.core.exceptions import (
-    PaxterBaseException, PaxterConfigError,
-    PaxterSyntaxError, PaxterTransformError,
 )
 from paxter.core.parser import Parser
 
 __all__ = [
     'Fragment', 'FragmentList', 'Identifier', 'Number', 'Operator',
     'PaxterApply', 'PaxterPhrase', 'Text', 'Token', 'TokenList',
-    'PaxterBaseException', 'PaxterConfigError',
-    'PaxterSyntaxError', 'PaxterTransformError',
     'Parser',
 ]

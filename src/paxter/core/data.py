@@ -11,7 +11,7 @@ __all__ = [
     'TokenList', 'Identifier', 'Operator', 'Number',
 ]
 
-_ENABLE_POS_PRINT = False
+_ENABLE_POS_PRINT = True
 MainArgument = Union['FragmentList', 'Text']
 Fragment = Union['FragmentList', 'Text', 'PaxterApply', 'PaxterPhrase']
 
