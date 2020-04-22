@@ -20,8 +20,8 @@ def parse(input_file, output_file, switch):
     """
     Runs Paxter parser on input text from INPUT_FILE and write to OUTPUT_FILE.
     """
-    from paxter.core import Parser
+    from paxter.core import parse
 
-    parsed_tree = Parser.parse(input_file.read())
+    parsed_tree = parse(input_file.read())
     output_file.write(repr(parsed_tree))
     output_file.write("\n")

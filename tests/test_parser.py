@@ -1,9 +1,9 @@
 import pytest  # noqa
 
 from paxter.core import (
-    FragmentList, Identifier, Number, Operator, ParserContext, PaxterApply,
-    PaxterPhrase, Text,
-    TokenList,
+    FragmentList, Identifier, Number, Operator, PaxterApply,
+    PaxterPhrase, Text, TokenList,
+    parse,
 )
 
 
@@ -323,6 +323,6 @@ from paxter.core import (
     ],
 )
 def test_parser(input_text, expected):
-    assert ParserContext.parse(input_text) == expected
+    assert parse(input_text) == expected
 
 # TODO: need to add a lot more unit tests

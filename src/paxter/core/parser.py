@@ -10,12 +10,19 @@ from paxter.core.data import (
 from paxter.core.exceptions import PaxterSyntaxError
 from paxter.core.lexers import LEXER
 
-__all__ = ['Parser']
+__all__ = ['parse']
 
 OPENED_TO_CLOSED_SCOPE_TRANS = str.maketrans('([{', ')]}')
 
 
-class Parser:
+def parse(input_text: str) -> FragmentList:
+    """
+    Parses the given input text into Paxter document tree.
+    """
+    return ParseContext(input_text).parse_global_fragments()
+
+
+class ParseContext:
     """
     Implements recursive descent parser for Paxter language.
 
@@ -24,22 +31,14 @@ class Parser:
     """
     input_text: str
 
-    @classmethod
-    def parse(cls, input_text: str) -> FragmentList:
-        """
-        Parses the given input text into the parsed tree.
-        Internally, this class method creates a new instance of this class
-        and calls internal methods to handle the work.
-        """
-        instance = cls()
-        instance.input_text = input_text
-        return instance._parse_global_fragments()
+    def __init__(self, input_text: str):
+        self.input_text = input_text
 
-    def _parse_global_fragments(self):
+    def parse_global_fragments(self):
         """
         Parses the input text starting from the beginning.
         """
-        end_pos, node = self._parse_inner_fragments(
+        end_pos, node = self.parse_inner_fragments(
             next_pos=0,
             opened_pattern='[BEGIN OF TEXT]', closed_pattern='[END OF TEXT]',
             break_re=LEXER.global_break_re,
@@ -48,7 +47,7 @@ class Parser:
             raise RuntimeError("unexpected error; input text not fully consumed")
         return node
 
-    def _parse_inner_fragments(
+    def parse_inner_fragments(
             self, next_pos: int,
             opened_pattern: str, closed_pattern: str,
             break_re: Pattern[str],
@@ -66,7 +65,7 @@ class Parser:
             # Tries to match the break pattern
             break_matchobj = break_re.match(self.input_text, next_pos)
             if break_matchobj is None:
-                self._cannot_match_closed_pattern(
+                self.cannot_match_closed_pattern(
                     start_pos,
                     opened_pattern, closed_pattern,
                 )
@@ -81,39 +80,39 @@ class Parser:
             # and the closed (i.e. right) pattern
             break_char = break_matchobj.group('break')
             if break_char == '@':
-                next_pos, result_node = self._parse_command(next_pos=next_pos)
+                next_pos, result_node = self.parse_command(next_pos=next_pos)
                 children.append(result_node)
             else:
                 return next_pos, FragmentList(children=children)
 
-    def _parse_command(self, next_pos: int) -> Tuple[int, Fragment]:
+    def parse_command(self, next_pos: int) -> Tuple[int, Fragment]:
         """
         Attempts to parse all kinds of Paxter expressions
         by looking ahead for desired patterns.
         """
         matchobj = LEXER.id_prefix_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_command_after_id(matchobj)
+            return self.parse_command_after_id(matchobj)
 
         matchobj = LEXER.brace_prefix_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_rec_inner(matchobj)
+            return self.parse_rec_inner(matchobj)
 
         matchobj = LEXER.quote_prefix_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_text(matchobj)
+            return self.parse_text(matchobj)
 
         matchobj = LEXER.bar_prefix_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_normal_phrase(matchobj)
+            return self.parse_normal_phrase(matchobj)
 
         matchobj = LEXER.symbol_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_symbol_phrase(matchobj)
+            return self.parse_symbol_phrase(matchobj)
 
-        self._invalid_command(next_pos)
+        self.invalid_command(next_pos)
 
-    def _parse_command_after_id(
+    def parse_command_after_id(
             self, id_prefix_matchobj: Match[str],
     ) -> Tuple[int, Union[PaxterApply, PaxterPhrase]]:
         """
@@ -130,20 +129,20 @@ class Parser:
         )
         if bracket_prefix_matchobj:
             next_pos = bracket_prefix_matchobj.end()
-            next_pos, options = self._parse_options(next_pos)
+            next_pos, options = self.parse_options(next_pos)
         else:
             options = None
 
         # Parse for main arguments
         brace_prefix_matchobj = LEXER.brace_prefix_re.match(self.input_text, next_pos)
         if brace_prefix_matchobj:
-            next_pos, main_arg_node = self._parse_rec_inner(brace_prefix_matchobj)
+            next_pos, main_arg_node = self.parse_rec_inner(brace_prefix_matchobj)
         else:
             quote_prefix_matchobj = LEXER.quote_prefix_re.match(
                 self.input_text, next_pos,
             )
             if quote_prefix_matchobj:
-                next_pos, main_arg_node = self._parse_text(quote_prefix_matchobj)
+                next_pos, main_arg_node = self.parse_text(quote_prefix_matchobj)
             else:
                 main_arg_node = None
 
@@ -160,29 +159,29 @@ class Parser:
 
         return next_pos, result_node
 
-    def _parse_text(
+    def parse_text(
             self, quote_prefix_matchobj: Match[str],
     ) -> Tuple[int, Text]:
         """
         Continues parsing the command for `Text`
         following the pattern `@"..."`.
         """
-        inner_matchobj = self._parse_non_rec_inner(quote_prefix_matchobj)
+        inner_matchobj = self.parse_non_rec_inner(quote_prefix_matchobj)
         text_node = Text.from_matchobj(inner_matchobj, 'inner')
         return inner_matchobj.end(), text_node
 
-    def _parse_normal_phrase(
+    def parse_normal_phrase(
             self, bar_prefix_matchobj: Match[str],
     ) -> Tuple[int, PaxterPhrase]:
         """
         Continues parsing the command for `PaxterPhrase`
         following the pattern `@|...|`.
         """
-        inner_matchobj = self._parse_non_rec_inner(bar_prefix_matchobj)
+        inner_matchobj = self.parse_non_rec_inner(bar_prefix_matchobj)
         phrase_node = PaxterPhrase.from_matchobj(inner_matchobj, 'inner')
         return inner_matchobj.end(), phrase_node
 
-    def _parse_symbol_phrase(  # noqa
+    def parse_symbol_phrase(  # noqa
             self, symbol_matchobj: Match[str],
     ) -> Tuple[int, PaxterPhrase]:
         """
@@ -192,7 +191,7 @@ class Parser:
         phrase_node = PaxterPhrase.from_matchobj(symbol_matchobj, 'symbol')
         return symbol_matchobj.end(), phrase_node
 
-    def _parse_rec_inner(self, opened_matchobj: Match[str]) -> Tuple[int, FragmentList]:
+    def parse_rec_inner(self, opened_matchobj: Match[str]) -> Tuple[int, FragmentList]:
         """
         Recursively parses the input text until the closed (i.e. right)
         pattern corresponding to the opened (i.e. left) pattern
@@ -203,13 +202,13 @@ class Parser:
         break_re = LEXER.rec_break_re(closed_pattern)
         next_pos = opened_matchobj.end()
 
-        return self._parse_inner_fragments(
+        return self.parse_inner_fragments(
             next_pos=next_pos,
             opened_pattern=opened_pattern, closed_pattern=closed_pattern,
             break_re=break_re,
         )
 
-    def _parse_non_rec_inner(self, opened_matchobj: Match[str]) -> Match[str]:
+    def parse_non_rec_inner(self, opened_matchobj: Match[str]) -> Match[str]:
         """
         Non-recursively parses the input text until the closed (i.e. right)
         pattern corresponding to the opened (i.e. left) pattern
@@ -222,16 +221,16 @@ class Parser:
 
         inner_matchobj = break_re.match(self.input_text, next_pos)
         if inner_matchobj is None:
-            self._cannot_match_closed_pattern(next_pos, opened_pattern, closed_pattern)
+            self.cannot_match_closed_pattern(next_pos, opened_pattern, closed_pattern)
         return inner_matchobj
 
-    def _parse_options(self, next_pos: int) -> Tuple[int, TokenList]:
+    def parse_options(self, next_pos: int) -> Tuple[int, TokenList]:
         """
         Parses the options section until reaching the closed square brackets.
         """
-        return self._parse_options_rec(next_pos, '[')
+        return self.parse_options_rec(next_pos, '[')
 
-    def _parse_options_rec(
+    def parse_options_rec(
             self, next_pos: int,
             opened_char: str,
     ) -> Tuple[int, TokenList]:
@@ -269,13 +268,13 @@ class Parser:
 
             # Attempts to parse the command
             if char == '@':
-                next_pos, command_node = self._parse_command(next_pos)
+                next_pos, command_node = self.parse_command(next_pos)
                 children.append(command_node)
                 continue
 
             # Attempts to parse a list of tokens in sub-level
             if char in '([{':
-                next_pos, token_list_node = self._parse_options_rec(next_pos, char)
+                next_pos, token_list_node = self.parse_options_rec(next_pos, char)
                 children.append(token_list_node)
                 continue
 
@@ -286,15 +285,19 @@ class Parser:
 
             # Else, something was wrong at the parsing,
             # perhaps reaching the end of text or found unmatched parenthesis.
-            self._cannot_match_closed_pattern(
+            self.cannot_match_closed_pattern(
                 pos=start_pos,
                 opened_pattern=opened_char, closed_pattern=expected_closed_char,
             )
 
-    def _cannot_match_closed_pattern(
+    def cannot_match_closed_pattern(
             self, pos: int,
             opened_pattern: str, closed_pattern: str,
     ):
+        """
+        Raises syntax error for failing to match closed pattern
+        to the corresponding opened pattern.
+        """
         start_pos = pos - len(opened_pattern)
         line, col = PaxterSyntaxError.pos_to_line_col(self.input_text, start_pos)
         raise PaxterSyntaxError(
@@ -303,7 +306,10 @@ class Parser:
             f"at line {line} col {col}",
         )
 
-    def _invalid_command(self, pos: int):
+    def invalid_command(self, pos: int):
+        """
+        Raises syntax error for failing to parse @-command.
+        """
         line, col = PaxterSyntaxError.pos_to_line_col(self.input_text, pos)
         raise PaxterSyntaxError(
             "invalid expression after @-command switch "
