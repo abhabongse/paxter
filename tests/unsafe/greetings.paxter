@@ -1,0 +1,22 @@
+@python##"
+    import itertools
+
+    def strip(text):
+        return flatten_and_join(text).strip()
+
+    _symbols_ = {
+        '@': '@',
+    }
+    name = "John Smith"
+    age = 24
+    counter = itertools.count(start=1)
+"##
+My name is @strip{ @name } and I am currently @age years old.
+My email is @"john@example.com" or smith@@example.com.
+@python"age_next_year = age + 1"
+My age next year would be @age_next_year.
+
+Do you know that 1 + 1 = @|1 + 1|?
+@|next(counter)|. Item one.
+@|next(counter)|. Item two.
+@|next(counter)|. Item three.

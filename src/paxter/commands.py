@@ -20,8 +20,36 @@ def parse(input_file, output_file, switch):
     """
     Runs Paxter parser on input text from INPUT_FILE and write to OUTPUT_FILE.
     """
-    from paxter.core import parse
+    from paxter.core import ParseContext
 
-    parsed_tree = parse(input_file.read())
-    output_file.write(repr(parsed_tree))
+    tree = ParseContext(input_file.read()).parse()
+    output_file.write(repr(tree))
     output_file.write("\n")
+
+
+@program.command()
+@click.option('-i', '--input-file', type=click.File(mode='r'), default='-',
+              help="Path to input file ('-' for stdin)")
+@click.option('-o', '--output-file', type=click.File(mode='w'), default='-',
+              help="Path to output file ('-' for stdout)")
+@click.option('-e', '--env-file',
+              type=click.Path(exists=True, dir_okay=False, readable=True),
+              help="Path to python file to extract the environment.")
+@click.option('-s', '--switch', default='@', metavar='SWITCH', show_default=True,
+              help="Paxter expression switch symbol character")
+def unsafe_python(input_file, output_file, env_file, switch):
+    """
+    Runs Paxter parser followed by Unsafe Python renderer
+    in order to render input text from INPUT_FILE
+    and write the output result to OUTPUT_FILE.
+    """
+    import runpy
+    from paxter.core import ParseContext
+    from paxter.renderers.unsafe import RenderContext, create_env, flatten_and_join
+
+    input_text = input_file.read()
+    tree = ParseContext(input_text).parse()
+    env = create_env(runpy.run_path(env_file) if env_file else {})
+    output_text = flatten_and_join(RenderContext(input_text, env).visit_fragment(tree))
+
+    output_file.write(output_text)

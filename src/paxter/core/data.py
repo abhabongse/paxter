@@ -2,18 +2,18 @@
 Data definition for node types in Paxter parsed tree.
 """
 import json
+from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
 from typing import List, Match, Optional, Union
 
 __all__ = [
-    'Span', 'Token',
-    'Fragment', 'FragmentList', 'Text', 'PaxterApply', 'PaxterPhrase',
+    'Span', 'Token', 'Fragment',
+    'FragmentList', 'Text', 'PaxterApply', 'PaxterPhrase',
     'TokenList', 'Identifier', 'Operator', 'Number',
 ]
 
 _ENABLE_POS_PRINT = True
 MainArgument = Union['FragmentList', 'Text']
-Fragment = Union['FragmentList', 'Text', 'PaxterApply', 'PaxterPhrase']
 
 
 @dataclass
@@ -27,9 +27,25 @@ class Span:
 
 
 @dataclass
-class Token:
+class Token(metaclass=ABCMeta):
     """
-    Base class for all types of nodes to appear in Paxter parsed tree.
+    Base class for all types of nodes to appear in Paxter document tree.
+    """
+
+    @property
+    @abstractmethod
+    def pos(self) -> Span:
+        """
+        Returns the positional span of the node.
+        """
+        raise NotImplementedError
+
+
+@dataclass
+class Fragment(Token, metaclass=ABCMeta):
+    """
+    Subtypes of nodes in Paxter document tree that is allowed
+    to appear as elements of `FragmentList`.
     """
     pass
 
@@ -41,6 +57,14 @@ class TokenList(Token):
     a pair of parentheses `()`, brackets `[]`, or braces `{}`.
     """
     children: List[Token]
+
+    @property
+    def pos(self) -> Span:
+        positions = [token.pos for token in self.children]
+        return Span(
+            start=min(sub_span.start for sub_span in positions),
+            end=max(sub_span.start for sub_span in positions),
+        )
 
 
 @dataclass
@@ -107,7 +131,7 @@ class Number(Token):
 
 
 @dataclass
-class FragmentList(Token):
+class FragmentList(Fragment):
     """
     Special intermediate node maintaining a list of fragment children nodes.
     This usually corresponds to global-level fragments
@@ -115,9 +139,17 @@ class FragmentList(Token):
     """
     children: List[Fragment]
 
+    @property
+    def pos(self) -> Span:
+        positions = [token.pos for token in self.children]
+        return Span(
+            start=min(sub_span.start for sub_span in positions),
+            end=max(sub_span.start for sub_span in positions),
+        )
+
 
 @dataclass
-class Text(Token):
+class Text(Fragment):
     """
     Text node type which does not contain nested @-commands.
     It may be presented as an element of `FragmentList`,
@@ -140,7 +172,7 @@ class Text(Token):
 
 
 @dataclass
-class PaxterPhrase(Token):
+class PaxterPhrase(Fragment):
     """
     Node type which represents @-command and has one of the following form:
 
@@ -172,7 +204,7 @@ class PaxterPhrase(Token):
 
 
 @dataclass
-class PaxterApply(Token):
+class PaxterApply(Fragment):
     """
     Node type which represents @-command which has the following form:
 
@@ -193,3 +225,13 @@ class PaxterApply(Token):
     id: Identifier
     options: Optional[TokenList]
     main_arg: Optional[MainArgument]
+
+    @property
+    def pos(self) -> Span:
+        positions = ([self.id.pos]
+                     + (self.options.pos if self.options else [])
+                     + (self.main_arg.pos if self.main_arg else []))
+        return Span(
+            start=min(sub_span.start for sub_span in positions),
+            end=max(sub_span.start for sub_span in positions),
+        )

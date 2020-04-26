@@ -5,7 +5,7 @@ from typing import NamedTuple
 
 __all__ = [
     'PaxterBaseException',
-    'PaxterConfigError', 'PaxterSyntaxError', 'PaxterTransformError',
+    'PaxterConfigError', 'PaxterSyntaxError', 'PaxterRenderError',
 ]
 
 
@@ -17,22 +17,6 @@ class LineCol(NamedTuple):
 class PaxterBaseException(Exception):
     """
     Base exception specific to Paxter language ecosystem.
-    """
-    pass
-
-
-class PaxterConfigError(PaxterBaseException):
-    """
-    Exception for configuration error.
-    """
-    pass
-
-
-class PaxterSyntaxError(PaxterBaseException):
-    """
-    Exception for syntax error raised while parsing input text in Paxter language.
-    Positional index parameters indicates a mapping from position name
-    to its indexing inside the input text.
     """
 
     @staticmethod
@@ -49,7 +33,23 @@ class PaxterSyntaxError(PaxterBaseException):
         return LineCol(line, col)
 
 
-class PaxterTransformError(PaxterBaseException):
+class PaxterConfigError(PaxterBaseException):
+    """
+    Exception for configuration error.
+    """
+    pass
+
+
+class PaxterSyntaxError(PaxterBaseException):
+    """
+    Exception for syntax error raised while parsing input text in Paxter language.
+    Positional index parameters indicates a mapping from position name
+    to its indexing inside the input text.
+    """
+    pass
+
+
+class PaxterRenderError(PaxterBaseException):
     """
     Exception for parsed tree transformation error.
     """

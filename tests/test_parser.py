@@ -1,9 +1,8 @@
 import pytest  # noqa
 
 from paxter.core import (
-    FragmentList, Identifier, Number, Operator, PaxterApply,
-    PaxterPhrase, Text, TokenList,
-    parse,
+    FragmentList, Identifier, Number, Operator, ParseContext, PaxterApply, PaxterPhrase,
+    Text, TokenList,
 )
 
 
@@ -299,7 +298,7 @@ from paxter.core import (
                                         Number(number=1),
                                         Operator(symbol="->"),
                                         Number(number=2),
-                                    ]
+                                    ],
                                 ),
                                 Operator(symbol=","),
                                 Identifier(name="b"),
@@ -308,21 +307,20 @@ from paxter.core import (
                                     children=[
                                         Text(inner="My name is "),
                                         PaxterPhrase(inner="name"),
-                                    ]
+                                    ],
                                 ),
                                 Operator(symbol=","),
-                            ]
+                            ],
                         ),
                         main_arg=FragmentList(children=[Text(inner="bar")]),
                     ),
                     Text(inner="\n"),
-                ]
-            )
-
+                ],
+            ),
         ),
     ],
 )
 def test_parser(input_text, expected):
-    assert parse(input_text) == expected
+    assert ParseContext(input_text).parse() == expected
 
 # TODO: need to add a lot more unit tests

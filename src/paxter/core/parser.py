@@ -1,6 +1,7 @@
 """
 Recursive descent parser of Paxter language.
 """
+from dataclasses import dataclass
 from typing import List, Match, Pattern, Tuple, Union
 
 from paxter.core.data import (
@@ -10,18 +11,12 @@ from paxter.core.data import (
 from paxter.core.exceptions import PaxterSyntaxError
 from paxter.core.lexers import LEXER
 
-__all__ = ['parse']
+__all__ = ['ParseContext']
 
 OPENED_TO_CLOSED_SCOPE_TRANS = str.maketrans('([{', ')]}')
 
 
-def parse(input_text: str) -> FragmentList:
-    """
-    Parses the given input text into Paxter document tree.
-    """
-    return ParseContext(input_text).parse_global_fragments()
-
-
+@dataclass
 class ParseContext:
     """
     Implements recursive descent parser for Paxter language.
@@ -31,10 +26,7 @@ class ParseContext:
     """
     input_text: str
 
-    def __init__(self, input_text: str):
-        self.input_text = input_text
-
-    def parse_global_fragments(self):
+    def parse(self):
         """
         Parses the input text starting from the beginning.
         """

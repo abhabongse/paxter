@@ -83,10 +83,10 @@ from paxter.core.data import (
     Fragment, FragmentList, Identifier, Number, Operator,
     PaxterApply, PaxterPhrase, Text, Token, TokenList,
 )
-from paxter.core.parser import parse
+from paxter.core.parser import ParseContext
 
 __all__ = [
     'Fragment', 'FragmentList', 'Identifier', 'Number', 'Operator',
     'PaxterApply', 'PaxterPhrase', 'Text', 'Token', 'TokenList',
-    'parse',
+    'ParseContext',
 ]
