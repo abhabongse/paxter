@@ -91,5 +91,5 @@ webencodings==0.5.1       # via bleach
 wheel==0.34.2             # via -r dev-requirements.in
 widgetsnbextension==3.5.1  # via ipywidgets
 
-# The following packages are considered to be unsafe in a requirements file:
+# The following packages are considered to be python in a requirements file:
 # setuptools

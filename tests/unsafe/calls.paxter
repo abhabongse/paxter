@@ -1,0 +1,8 @@
+@python##"
+    def count(seq, target):
+        seq = flatten_and_join(seq)
+        return sum(value == target for value in seq)
+"##
+There are @count[@"i"]{Mississippi} i's in the word Mississippi.
+There are @count[@"Mississippi", @"s"] s's in the word Mississippi.
+There are @count[target=@"p", seq=@"Mississippi"] p's in the word Mississippi.

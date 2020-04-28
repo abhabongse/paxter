@@ -1,16 +1,12 @@
-"""
-Collection of `PaxterApply` function wrappers.
-"""
-import inspect
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Callable, Iterator, List, Optional, TYPE_CHECKING, Tuple
+from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple
 
-from paxter.core import Identifier, Operator, PaxterApply, Text, Token, TokenList
+from paxter.core import Identifier, Operator, PaxterApply, Token, TokenList
 from paxter.core.exceptions import PaxterRenderError
 
 if TYPE_CHECKING:
-    from paxter.renderers.unsafe.visitor import RenderContext
+    from paxter.renderers.python.visitor import RenderContext
 
 
 @dataclass
@@ -155,42 +151,3 @@ class NormalApply(BaseApply):
                         f"at line {line} col {col}",
                     )
                 remains = remains[1:]
-
-
-@DirectApply
-def python_exec(context: 'RenderContext', node: PaxterApply):
-    """
-    Executes python code within the main argument.
-    """
-    if node.options:
-        raise PaxterRenderError("expected empty options section")
-    if not isinstance(node.main_arg, Text):
-        raise PaxterRenderError("expected raw text")
-    code = inspect.cleandoc(node.main_arg.inner)
-    exec(code, context.env)
-    return ''
-
-
-def flatten(data) -> Iterator:
-    """
-    Flattens the nested lists.
-    """
-    if isinstance(data, list):
-        for element in data:
-            yield from flatten(element)
-    else:
-        yield data
-
-
-def flatten_and_join(data) -> str:
-    """
-    Flattens the nested lists and join them together i nto one string.
-    """
-    return ''.join(str(value) for value in flatten(data))
-
-
-def phrase_eval(phrase: str, env: dict) -> Any:
-    symbols = env.get('_symbols_', {})
-    if phrase in symbols:
-        return symbols[phrase]
-    return eval(phrase, env)

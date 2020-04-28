@@ -9,7 +9,7 @@ from paxter.core import (
     PaxterApply, PaxterPhrase, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
-from paxter.renderers.unsafe.funcs import BaseApply, NormalApply
+from paxter.renderers.python.wrappers import BaseApply, NormalApply
 
 
 @dataclass

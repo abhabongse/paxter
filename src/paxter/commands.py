@@ -35,9 +35,7 @@ def parse(input_file, output_file, switch):
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
               help="Path to python file to extract the environment.")
-@click.option('-s', '--switch', default='@', metavar='SWITCH', show_default=True,
-              help="Paxter expression switch symbol character")
-def unsafe_python(input_file, output_file, env_file, switch):
+def python_authoring(input_file, output_file, env_file):
     """
     Runs Paxter parser followed by Unsafe Python renderer
     in order to render input text from INPUT_FILE
@@ -45,11 +43,13 @@ def unsafe_python(input_file, output_file, env_file, switch):
     """
     import runpy
     from paxter.core import ParseContext
-    from paxter.renderers.unsafe import RenderContext, create_env, flatten_and_join
+    from paxter.renderers.python import (
+        RenderContext, create_unsafe_env, flatten_and_join,
+    )
 
     input_text = input_file.read()
     tree = ParseContext(input_text).parse()
-    env = create_env(runpy.run_path(env_file) if env_file else {})
+    env = create_unsafe_env(runpy.run_path(env_file) if env_file else {})
     output_text = flatten_and_join(RenderContext(input_text, env).visit_fragment(tree))
 
     output_file.write(output_text)
