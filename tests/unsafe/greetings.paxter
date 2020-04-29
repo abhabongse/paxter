@@ -2,7 +2,7 @@
     import itertools
 
     def strip(text):
-        return flatten_and_join(text).strip()
+        return flatten(text).strip()
 
     _symbols_ = {
         '@': '@',

@@ -102,4 +102,14 @@ class RenderContext:
         if not isinstance(func, BaseApply):
             func = NormalApply(func)
 
-        return func.call(self, token)
+        try:
+            return func.call(self, token)
+        except PaxterRenderError:
+            raise
+        except Exception as exc:
+            line, col = PaxterRenderError.pos_to_line_col(
+                self.input_text, token.id.pos.start,
+            )
+            raise PaxterRenderError(
+                f"paxter apply evaluation error at line {line} col {col}"
+            ) from exc

@@ -56,19 +56,19 @@ def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
     return eval(phrase, env)
 
 
-def flatten(data) -> Iterator:
+def flatten(data) -> str:
+    """
+    Flattens the nested lists and join them together into one string.
+    """
+    return ''.join(str(value) for value in _flatten_tokenize(data))
+
+
+def _flatten_tokenize(data) -> Iterator:
     """
     Flattens the nested lists.
     """
     if isinstance(data, list):
         for element in data:
-            yield from flatten(element)
+            yield from _flatten_tokenize(element)
     else:
         yield data
-
-
-def flatten_and_join(data) -> str:
-    """
-    Flattens the nested lists and join them together i nto one string.
-    """
-    return ''.join(str(value) for value in flatten(data))

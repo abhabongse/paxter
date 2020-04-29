@@ -68,6 +68,9 @@ class NormalApply(BaseApply):
             self, context: 'RenderContext',
             options: TokenList,
     ) -> Tuple[list, dict]:
+        """
+        Returns a pair of positional argument list and keyword argument dict.
+        """
         line, col = PaxterRenderError.pos_to_line_col(
             context.input_text, options.pos.start,
         )
@@ -100,8 +103,8 @@ class NormalApply(BaseApply):
     ) -> Tuple[Optional[str], Token]:
         """
         Generates a sequence of arguments, each of which
-        is a tuple pair of (argument name, argument value).
-        The first component may be None for positional arguments.
+        is a tuple pair of (argument name, argument value token).
+        The first component may be None which indicates positional arguments.
         """
         remains: List[Token] = list(options.children)
         while remains:

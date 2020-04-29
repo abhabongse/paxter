@@ -44,12 +44,12 @@ def python_authoring(input_file, output_file, env_file):
     import runpy
     from paxter.core import ParseContext
     from paxter.renderers.python import (
-        RenderContext, create_unsafe_env, flatten_and_join,
+        RenderContext, create_unsafe_env, flatten,
     )
 
     input_text = input_file.read()
     tree = ParseContext(input_text).parse()
     env = create_unsafe_env(runpy.run_path(env_file) if env_file else {})
-    output_text = flatten_and_join(RenderContext(input_text, env).visit_fragment(tree))
+    output_text = flatten(RenderContext(input_text, env).visit_fragment(tree))
 
     output_file.write(output_text)

@@ -10,7 +10,7 @@ To write the above snippet, you may write @<<"@#<"@<#"@##"@<"@#"@"@""#">"##"#>">
 Suppose that we define the following function:
 @python##"
     def foo(text):
-        text = flatten_and_join(text)
+        text = flatten(text)
         return f"({text})"
 "##
 

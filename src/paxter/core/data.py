@@ -4,7 +4,7 @@ Data definition for node types in Paxter parsed tree.
 import json
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
-from typing import List, Match, Optional, Union
+from typing import List, Match, NamedTuple, Optional, Union
 
 __all__ = [
     'Span', 'Token', 'Fragment',
@@ -16,8 +16,7 @@ _ENABLE_POS_PRINT = True
 MainArgument = Union['FragmentList', 'Text']
 
 
-@dataclass
-class Span:
+class Span(NamedTuple):
     """
     The position of the first character in the section
     and the position after the last character in the section.
