@@ -2,27 +2,19 @@
 Data definition for node types in Paxter parsed tree.
 """
 import json
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from dataclasses import dataclass, field
-from typing import List, Match, NamedTuple, Optional, Union
+from typing import List, Match, Optional, Union
+
+from paxter.core.scope_pattern import ScopePattern
 
 __all__ = [
-    'Span', 'Token', 'Fragment',
+    'Token', 'Fragment',
     'FragmentList', 'Text', 'PaxterApply', 'PaxterPhrase',
     'TokenList', 'Identifier', 'Operator', 'Number',
 ]
 
-_ENABLE_POS_PRINT = True
 MainArgument = Union['FragmentList', 'Text']
-
-
-class Span(NamedTuple):
-    """
-    The position of the first character in the section
-    and the position after the last character in the section.
-    """
-    start: int
-    end: int
 
 
 @dataclass
@@ -30,14 +22,15 @@ class Token(metaclass=ABCMeta):
     """
     Base class for all types of nodes to appear in Paxter document tree.
     """
+    start_pos: int = field(repr=False, compare=False)
+    end_pos: int = field(repr=False, compare=False)
 
-    @property
-    @abstractmethod
-    def pos(self) -> Span:
+    @classmethod
+    def without_pos(cls, *args, **kwargs):
         """
-        Returns the positional span of the node.
+        Create instance of the class without start_pos and end_pos.
         """
-        raise NotImplementedError
+        return cls(None, None, *args, **kwargs)
 
 
 @dataclass
@@ -57,14 +50,6 @@ class TokenList(Token):
     """
     children: List[Token]
 
-    @property
-    def pos(self) -> Span:
-        positions = [token.pos for token in self.children]
-        return Span(
-            start=min(sub_span.start for sub_span in positions),
-            end=max(sub_span.start for sub_span in positions),
-        )
-
 
 @dataclass
 class Identifier(Token):
@@ -73,18 +58,19 @@ class Identifier(Token):
     the identifier part of or within the option section of the `PaxterApply`.
     """
     name: str
-    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
 
     @classmethod
     def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Identifier':
         """
         Creates a new node from the provided match object
         returned by regular expression matching under the provided capture group.
+
+        This class method only works for classes with a single main value only
+        (which includes all token types except `PaxterApply`).
         """
-        return Identifier(
-            name=matchobj.group(capture_name),
-            pos=Span(*matchobj.span(capture_name)),
-        )
+        start_pos, end_pos = matchobj.span(capture_name)
+        name = matchobj.group(capture_name)
+        return Identifier(start_pos, end_pos, name)
 
 
 @dataclass
@@ -94,18 +80,19 @@ class Operator(Token):
     and can only be part of the option section of `PaxterApply`.
     """
     symbol: str
-    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
 
     @classmethod
     def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Operator':
         """
         Creates a new node from the provided match object
         returned by regular expression matching under the provided capture group.
+
+        This class method only works for classes with a single main value only
+        (which includes all token types except `PaxterApply`).
         """
-        return Operator(
-            symbol=matchobj.group(capture_name),
-            pos=Span(*matchobj.span(capture_name)),
-        )
+        start_pos, end_pos = matchobj.span(capture_name)
+        symbol = matchobj.group(capture_name)
+        return Operator(start_pos, end_pos, symbol)
 
 
 @dataclass
@@ -114,19 +101,20 @@ class Number(Token):
     Node type which represents a number recognized by JSON grammar.
     It can only be part of the option section of `PaxterApply`.
     """
-    number: Union[int, float]
-    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
+    value: Union[int, float]
 
     @classmethod
     def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Number':
         """
         Creates a new node from the provided match object
         returned by regular expression matching under the provided capture group.
+
+        This class method only works for classes with a single main value only
+        (which includes all token types except `PaxterApply`).
         """
-        return Number(
-            number=json.loads(matchobj.group(capture_name)),
-            pos=Span(*matchobj.span(capture_name)),
-        )
+        start_pos, end_pos = matchobj.span(capture_name)
+        value = json.loads(matchobj.group(capture_name))
+        return Number(start_pos, end_pos, value)
 
 
 @dataclass
@@ -137,14 +125,8 @@ class FragmentList(Fragment):
     or fragments nested within braces following the @-command.
     """
     children: List[Fragment]
-
-    @property
-    def pos(self) -> Span:
-        positions = [token.pos for token in self.children]
-        return Span(
-            start=min(sub_span.start for sub_span in positions),
-            end=max(sub_span.start for sub_span in positions),
-        )
+    scope_pattern: ScopePattern
+    is_command: bool = False
 
 
 @dataclass
@@ -156,18 +138,24 @@ class Text(Fragment):
     or within the option section of `PaxterApply`.
     """
     inner: str
-    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
+    scope_pattern: ScopePattern
+    is_command: bool = False
 
     @classmethod
-    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Text':
+    def from_matchobj(
+            cls, matchobj: Match[str], capture_name: str,
+            scope_pattern: ScopePattern,
+    ) -> 'Text':
         """
         Creates a new node from the provided match object
         returned by regular expression matching under the provided capture group.
+
+        This class method only works for classes with a single main value only
+        (which includes all token types except `PaxterApply`).
         """
-        return Text(
-            inner=matchobj.group(capture_name),
-            pos=Span(*matchobj.span(capture_name)),
-        )
+        start_pos, end_pos = matchobj.span(capture_name)
+        inner = matchobj.group(capture_name)
+        return Text(start_pos, end_pos, inner, scope_pattern, False)
 
 
 @dataclass
@@ -188,18 +176,23 @@ class PaxterPhrase(Fragment):
         a brace `{`, or a bar `|`.
     """
     inner: str
-    pos: Span = field(default=None, repr=_ENABLE_POS_PRINT, compare=False)
+    scope_pattern: ScopePattern
 
     @classmethod
-    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'PaxterPhrase':
+    def from_matchobj(
+            cls, matchobj: Match[str], capture_name: str,
+            scope_pattern: ScopePattern,
+    ) -> 'PaxterPhrase':
         """
         Creates a new node from the provided match object
         returned by regular expression matching under the provided capture group.
+
+        This class method only works for classes with a single main value only
+        (which includes all token types except `PaxterApply`).
         """
-        return PaxterPhrase(
-            inner=matchobj.group(capture_name),
-            pos=Span(*matchobj.span(capture_name)),
-        )
+        start_pos, end_pos = matchobj.span(capture_name)
+        inner = matchobj.group(capture_name)
+        return PaxterPhrase(start_pos, end_pos, inner, scope_pattern)
 
 
 @dataclass
@@ -224,13 +217,3 @@ class PaxterApply(Fragment):
     id: Identifier
     options: Optional[TokenList]
     main_arg: Optional[MainArgument]
-
-    @property
-    def pos(self) -> Span:
-        positions = ([self.id.pos]
-                     + (self.options.pos if self.options else [])
-                     + (self.main_arg.pos if self.main_arg else []))
-        return Span(
-            start=min(sub_span.start for sub_span in positions),
-            end=max(sub_span.start for sub_span in positions),
-        )

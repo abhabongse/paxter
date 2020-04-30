@@ -9,6 +9,7 @@ from paxter.core import (
     PaxterApply, PaxterPhrase, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
+from paxter.core.line_col import LineCol
 from paxter.renderers.python.wrappers import BaseApply, NormalApply
 
 
@@ -31,7 +32,10 @@ class RenderContext:
             return self.visit_operator(token)
         if isinstance(token, Number):
             return self.visit_number(token)
-        raise PaxterRenderError("unrecognized token")
+        raise PaxterRenderError(
+            "unrecognized token at %(pos)s",
+            pos=LineCol(self.input_text, token.start_pos),
+        )
 
     def visit_fragment(self, fragment: Fragment) -> Any:
         if isinstance(fragment, FragmentList):
@@ -42,19 +46,31 @@ class RenderContext:
             return self.visit_paxter_phrase(fragment)
         if isinstance(fragment, PaxterApply):
             return self.visit_paxter_apply(fragment)
-        raise PaxterRenderError("unrecognized fragment")
+        raise PaxterRenderError(
+            "unrecognized fragment at %(pos)s",
+            pos=LineCol(self.input_text, fragment.start_pos),
+        )
 
     def visit_token_list(self, seq: TokenList):
-        raise PaxterRenderError("not expected to be directly visited")
+        raise PaxterRenderError(
+            "token list not expected at %(pos)s",
+            pos=LineCol(self.input_text, seq.start_pos),
+        )
 
     def visit_identifier(self, token: Identifier):
-        raise PaxterRenderError("not expected to be directly visited")
+        raise PaxterRenderError(
+            "identifier not expected at %(pos)",
+            pos=LineCol(self.input_text, token.start_pos),
+        )
 
     def visit_operator(self, token: Operator):
-        raise PaxterRenderError("not expected to be directly visited")
+        raise PaxterRenderError(
+            "operator not expected at %(pos)",
+            pos=LineCol(self.input_text, token.start_pos),
+        )
 
     def visit_number(self, token: Number) -> Union[int, float]:
-        return token.number
+        return token.value
 
     def visit_fragment_list(self, seq: FragmentList) -> List[Any]:
         return [
@@ -66,12 +82,14 @@ class RenderContext:
         return token.inner
 
     def visit_paxter_phrase(self, token: PaxterPhrase) -> Any:
-        # If the phrase exists in the pre-defined symbols mapping
-        # then returns the mapped value.
+        # Fetch the phrase evaluation function from within the environment
         try:
             phrase_eval = self.env['_phrase_eval_']
         except KeyError as exc:
-            raise PaxterRenderError("expected _phrase_eval_ to be defined") from exc
+            raise PaxterRenderError(
+                "expected '_phrase_eval_' to be defined at %(pos)s",
+                pos=LineCol(self.input_text, token.start_pos),
+            ) from exc
 
         # Evaluate the expression embedded within the phrase
         try:
@@ -79,37 +97,32 @@ class RenderContext:
         except PaxterRenderError:
             raise
         except Exception as exc:
-            line, col = PaxterRenderError.pos_to_line_col(
-                self.input_text, token.pos.start,
-            )
             raise PaxterRenderError(
-                f"paxter phrase evaluation error at line {line} col {col}",
+                f"paxter phrase evaluation error at %(pos)s",
+                pos=LineCol(self.input_text, token.start_pos),
             ) from exc
 
     def visit_paxter_apply(self, token: PaxterApply):
-        # Look up the function from within the environment
-        # then make the call for that function.
+        # Fetch the function from within the environment
         try:
             func = self.env[token.id.name]
         except KeyError as exc:
-            line, col = PaxterRenderError.pos_to_line_col(
-                self.input_text, token.id.pos.start,
-            )
             raise PaxterRenderError(
-                f"unknown paxter application with id {token.id.name!r} "
-                f"at line {line} col {col}",
+                f"unknown paxter application with id {token.id.name!r} at %(pos)s",
+                pos=LineCol(self.input_text, token.start_pos),
             ) from exc
+
+        # Wrap the function if not yet wrapped
         if not isinstance(func, BaseApply):
             func = NormalApply(func)
 
+        # Make the call to the wrapped function
         try:
             return func.call(self, token)
         except PaxterRenderError:
             raise
         except Exception as exc:
-            line, col = PaxterRenderError.pos_to_line_col(
-                self.input_text, token.id.pos.start,
-            )
             raise PaxterRenderError(
-                f"paxter apply evaluation error at line {line} col {col}"
+                f"paxter apply evaluation error at %(pos)s",
+                pos=LineCol(self.input_text, token.start_pos),
             ) from exc

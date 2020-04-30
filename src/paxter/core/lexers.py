@@ -8,9 +8,6 @@ from paxter.core.charset import IDENTIFIER_PATTERN, OPERATOR_PATTERN, SYMBOL_PAT
 
 __all__ = ['LEXER']
 
-ALLOWED_OPENED_PATTERN_RE = re.compile(r'[#<]*[{"|]')
-OPENED_TO_CLOSED_TRANS = str.maketrans(r'#<{"|', r'#>}"|')
-
 
 class Lexer:
     """
@@ -66,19 +63,6 @@ class Lexer:
                 rf'(?P<break>@|{closed_pattern})',
             )
         return self._compiled_rec_breaks[closed_pattern]
-
-    @staticmethod
-    def flip_pattern(opened_pattern: str) -> str:
-        """
-        Flips the given opened (i.e. left) pattern
-        into the corresponding closed (i.e. right) pattern.
-
-        For example, the opened pattern `"<##<{"`
-        should be flipped into the closed pattern `"}>##>".
-        """
-        if not ALLOWED_OPENED_PATTERN_RE.fullmatch(opened_pattern):
-            raise RuntimeError("something went horribly wrong")  # pragma: no cover
-        return opened_pattern.translate(OPENED_TO_CLOSED_TRANS)[::-1]
 
 
 # Instance of lexer class

@@ -1,7 +1,10 @@
 """
 Exceptions specific to Paxter language ecosystem.
 """
-from typing import NamedTuple
+from typing import Dict, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from paxter.core.line_col import LineCol
 
 __all__ = [
     'PaxterBaseException',
@@ -9,28 +12,27 @@ __all__ = [
 ]
 
 
-class LineCol(NamedTuple):
-    line: int
-    col: int
-
-
 class PaxterBaseException(Exception):
     """
     Base exception specific to Paxter language ecosystem.
     """
+    message: str
+    positions: Dict[str, 'LineCol']
 
-    @staticmethod
-    def pos_to_line_col(input_text: str, pos: int) -> LineCol:
+    def __init__(self, message: str, **positions: 'LineCol'):
+        self.positions = positions
+        self.message = self.render(message, self.positions)
+        self.args = (self.message,)  # this will make error stack more readable
+
+    def render(self, message: str, positions: Dict[str, 'LineCol']) -> str:
         """
-        Based on the given input text, translates the string-global
-        0-indexed position into 1-indexed tuple pair of (line, col).
+        Substitutes the position placeholder within the message
+        with the provided positions data.
         """
-        line = input_text.count('\n', 0, pos) + 1
-        try:
-            col = pos - input_text.rindex('\n', 0, pos)
-        except ValueError:
-            col = pos + 1
-        return LineCol(line, col)
+        return message % {
+            name: line_col.rendered
+            for name, line_col in positions.items()
+        }
 
 
 class PaxterConfigError(PaxterBaseException):

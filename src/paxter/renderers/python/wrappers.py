@@ -4,6 +4,7 @@ from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple
 
 from paxter.core import Identifier, Operator, PaxterApply, Token, TokenList
 from paxter.core.exceptions import PaxterRenderError
+from paxter.core.line_col import LineCol
 
 if TYPE_CHECKING:
     from paxter.renderers.python.visitor import RenderContext
@@ -61,7 +62,7 @@ class NormalApply(BaseApply):
             args, kwargs = [], {}
         if node.main_arg:
             main_arg = context.visit_fragment(node.main_arg)
-            args.insert(0, main_arg)
+            args = [main_arg] + args
         return self.wrapped(*args, **kwargs)
 
     def extract_args_and_kwargs(
@@ -71,25 +72,23 @@ class NormalApply(BaseApply):
         """
         Returns a pair of positional argument list and keyword argument dict.
         """
-        line, col = PaxterRenderError.pos_to_line_col(
-            context.input_text, options.pos.start,
-        )
-        flipped = False  # kwargs found
+        section_flipped = False  # kwargs found
         args = []
         kwargs = {}
 
         for keyword_name, value_token in self.tokenize_args(context, options):
             if keyword_name is not None:
-                flipped = True
+                section_flipped = True
                 if keyword_name in kwargs:
                     raise PaxterRenderError(
-                        f"duplicated keyword {keyword_name} at line {line} col {col}",
+                        f"duplicated keyword {keyword_name} at %(pos)s",
+                        pos=LineCol(context.input_text, options.start_pos),
                     )
                 kwargs[keyword_name] = context.visit_token(value_token)
-            elif flipped:
+            elif section_flipped:
                 raise PaxterRenderError(
-                    f"found positional argument after keyword argument "
-                    f"at line {line} col {col}",
+                    f"found positional argument after keyword argument at %(pos)s",
+                    pos=LineCol(context.input_text, options.start_pos),
                 )
             else:
                 args.append(context.visit_token(value_token))
@@ -107,34 +106,28 @@ class NormalApply(BaseApply):
         The first component may be None which indicates positional arguments.
         """
         remains: List[Token] = list(options.children)
-        while remains:
 
-            # Checks whether the next token is an '=' operator
+        while remains:
+            # Checks whether the second token is an '=' operator
             # indicating the existence of keyword argument
             keyword_name = None
             if len(remains) >= 2:
                 first_token, second_token = remains[0], remains[1]
-                if isinstance(second_token, Operator) and second_token.symbol == '=':
+                if second_token == Operator.without_pos(symbol='='):
                     # Then the first token must be an identifier
                     if not isinstance(first_token, Identifier):
-                        line, col = PaxterRenderError.pos_to_line_col(
-                            context.input_text, first_token.pos.start,
-                        )
                         raise PaxterRenderError(
-                            f"expected an identifier before the '=' sign "
-                            f"at line {line} col {col}",
+                            f"expected an identifier before the '=' sign at %(pos)s",
+                            pos=LineCol(context.input_text, first_token.start_pos),
                         )
                     keyword_name = first_token.name
                     remains = remains[2:]
 
-            # Expects the next token to be a value token
+            # Expects the next value token to exist
             if not remains:
-                line, col = PaxterRenderError.pos_to_line_col(
-                    context.input_text, options.pos.end,
-                )
                 raise PaxterRenderError(
-                    f"expected a value after the '=' sign "
-                    f"at line {line} col {col}",
+                    f"expected a value after the '=' sign at %(pos)s",
+                    pos=LineCol(context.input_text, options.end_pos),
                 )
             value_token = remains[0]
             remains = remains[1:]
@@ -145,12 +138,9 @@ class NormalApply(BaseApply):
             # If tokens are still remaining, the next one has to be a ',' operator
             if remains:
                 end_token = remains[0]
-                if not isinstance(end_token, Operator) or end_token.symbol != ',':
-                    line, col = PaxterRenderError.pos_to_line_col(
-                        context.input_text, end_token.pos.start,
-                    )
+                if end_token != Operator.without_pos(symbol=','):
                     raise PaxterRenderError(
-                        f"expected a comma token after the value token "
-                        f"at line {line} col {col}",
+                        f"expected a comma token after the value token at %(pos)s",
+                        pos=LineCol(context.input_text, end_token.start_pos),
                     )
                 remains = remains[1:]
