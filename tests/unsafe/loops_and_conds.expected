@@ -1,0 +1,42 @@
+
+
+    0, 1, 2
+    v is |even
+    v is even
+
+    1, 2, 3
+    v is odd|
+    v is odd
+
+    2, 3, 4
+    v is |even
+    v is even
+
+    3, 4, 5
+    v is odd|
+    v is odd
+
+    4, 5, 6
+    v is |even
+    v is even
+
+    5, 6, 7
+    v is odd|
+    v is odd
+
+    6, 7, 8
+    v is |even
+    v is even
+
+    7, 8, 9
+    v is odd|
+    v is odd
+
+    8, 9, 10
+    v is |even
+    v is even
+
+    9, 10, 11
+    v is odd|
+    v is odd
+
