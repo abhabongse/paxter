@@ -26,6 +26,7 @@ def get_test_pair(stem: str) -> Tuple[str, str]:
         get_test_pair("delimiters"),
         get_test_pair("greetings"),
         get_test_pair("loops_and_conds"),
+        get_test_pair("phrase_symbols"),
     ],
 )
 def test_rendering(input_text, expected_text):

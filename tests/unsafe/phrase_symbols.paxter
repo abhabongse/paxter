@@ -1,0 +1,13 @@
+@python##"
+    _symbols_ = {
+        '@': '@',
+        '.': '&hairsp;',
+        ',': '&thinsp;',  # approx 3/18 M
+        ':': '&emsp14;',  # approx 4/18 M
+        ';': '&emsp13;',  # approx 5/18 M
+    }
+    ensp = '&ensp;'
+    emsp = '&emsp;'
+"##\
+The final exam is between 13:00@.–@.16:00.@"\"
+Hello.
