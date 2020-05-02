@@ -4,7 +4,7 @@ from typing import Tuple
 import pytest
 
 from paxter.core.parser import ParseContext
-from paxter.renderers.python import RenderContext, create_unsafe_env, flatten
+from paxter.renderers.python import RenderContext, create_unsafe_env
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "unsafe")
 
@@ -31,5 +31,5 @@ def get_test_pair(stem: str) -> Tuple[str, str]:
 def test_rendering(input_text, expected_text):
     tree = ParseContext(input_text).parse()
     env = create_unsafe_env()
-    output_text = flatten(RenderContext(input_text, env).visit_fragment(tree))
+    output_text = RenderContext(input_text, env).visit(tree)
     assert output_text == expected_text

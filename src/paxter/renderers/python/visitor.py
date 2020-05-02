@@ -1,6 +1,7 @@
 """
 Implementation of the renderer.
 """
+import re
 from dataclasses import dataclass
 from typing import Any, List, Union
 
@@ -10,7 +11,10 @@ from paxter.core import (
 )
 from paxter.core.exceptions import PaxterRenderError
 from paxter.core.line_col import LineCol
+from paxter.renderers.python import flatten
 from paxter.renderers.python.wrappers import BaseApply, NormalApply
+
+BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
 
 
 @dataclass
@@ -20,6 +24,9 @@ class RenderContext:
     """
     input_text: str
     env: dict
+
+    def visit(self, seq: FragmentList) -> str:
+        return flatten(self.visit_fragment_list(seq))
 
     def visit_token(self, token: Token) -> Any:
         if isinstance(token, Fragment):
@@ -79,7 +86,10 @@ class RenderContext:
         ]
 
     def visit_text(self, token: Text) -> str:
-        return token.inner
+        text = token.inner
+        if not token.scope_pattern.opened:
+            text = BACKSLASH_NEWLINE_RE.sub('', text)
+        return text
 
     def visit_paxter_phrase(self, token: PaxterPhrase) -> Any:
         # Fetch the phrase evaluation function from within the environment

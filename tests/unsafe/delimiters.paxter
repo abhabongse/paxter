@@ -2,7 +2,7 @@
     def foo(text):
         text = flatten(text)
         return f"({text})"
-"##
+"##\
 To escape @"@" sign, you may write @#"@"@""#.
 To write the above snippet, you may write @<"@#"@"@""#">.
 To write the above snippet, you may write @##"@<"@#"@"@""#">"##.
