@@ -79,7 +79,7 @@ env = {
     'tag': lambda token, label: f"<{label}>{token}</{label}>",
 }
 
-tree = parser.parse('''\
+tree = paxter.__main__.parse('''\
 @!##{
 def add_one(num):
     return num + 1

@@ -56,13 +56,18 @@ setup(
     },
     keywords=[],
     python_requires='>=3.7',
-    install_requires=[
-        'click>=7.0',
-    ],
-    extras_require={},
+    install_requires=[],
+    extras_require={
+        'all': [
+            'click>=5.0',
+        ],
+        'cli': [
+            'click>=5.0',
+        ],
+    },
     entry_points={
         'console_scripts': [
-            '1 = paxter.commands:program',
+            'paxter = paxter.__main__:program',
         ],
     },
 )
