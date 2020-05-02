@@ -58,11 +58,9 @@ setup(
     python_requires='>=3.7',
     install_requires=[],
     extras_require={
-        'all': [
+        'extras': [
             'click>=5.0',
-        ],
-        'cli': [
-            'click>=5.0',
+            'RestrictedPython>=5.0',
         ],
     },
     entry_points={

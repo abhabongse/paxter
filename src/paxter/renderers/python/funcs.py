@@ -134,6 +134,37 @@ def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
     return eval(phrase, env)
 
 
+@DirectApply
+def python_sandbox_exec(context: 'RenderContext', node: PaxterApply):
+    """
+    Executes python code within the main argument inside restricted sandbox.
+    """
+    from RestrictedPython import compile_restricted
+
+    if node.options:
+        raise PaxterRenderError("expected empty options section")
+    if not isinstance(node.main_arg, Text):
+        raise PaxterRenderError("expected raw text")
+    code = inspect.cleandoc(node.main_arg.inner)
+    byte_code = compile_restricted(code, filename='<string>', mode='exec')
+    exec(byte_code, context.env)
+
+
+def phrase_sandbox_eval(phrase: str, env: dict) -> Any:
+    """
+    Evaluates the given paxter phrase inside restricted sandbox.
+    However, if the phrase is within the _symbols_ mappings,
+    its mapped value will be returned instead.
+    """
+    from RestrictedPython import compile_restricted
+
+    symbols = env.get('_symbols_', {})
+    if phrase in symbols:
+        return symbols[phrase]
+    byte_code = compile_restricted(phrase, filename='<string>', mode='eval')
+    return eval(byte_code, env)
+
+
 def flatten(data) -> str:
     """
     Flattens the nested lists and join them together into one string.
