@@ -200,6 +200,15 @@ git_show_tree:
 	@git log --graph --abbrev-commit --decorate --all \
 		--format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
 
+.PHONY: ipe
+ipe:
+	@# Launch IPE program with environment variables
+	mkdir -p build/latex
+	cp docs/diagram/*.ttf build/latex
+	IPELATEXDIR=build/latex ipe
+	rm -rf build/latex
+	-rmdir build
+
 .PHONY: jnb
 jnb:
 	@# Launch jupyter notebook inside environment

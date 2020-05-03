@@ -1,0 +1,581 @@
+<?xml version="1.0"?>
+<!DOCTYPE ipe SYSTEM "ipe.dtd">
+<ipe version="70216" creator="Ipe 7.2.16">
+<info created="D:20200504013612" modified="D:20200504035049" tex="xetex"/>
+<preamble>\usepackage{fontspec}
+\defaultfontfeatures[BarlowSemiCondensed]{
+    Extension       = .ttf ,
+    UprightFont     = *-Regular ,
+    ItalicFont      = *-Italic ,
+    BoldFont        = *-Bold ,
+    BoldItalicFont  = *-BoldItalic ,
+    Scale           = 1 ,
+    WordSpace       = 1.6 ,
+}
+\setmainfont{BarlowSemiCondensed}
+
+\newcommand{\hrsp}{\ifmmode\mskip1mu\else\kern0.0625em\fi}</preamble>
+<ipestyle name="basic">
+<symbol name="arrow/arc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/farc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/ptarc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fptarc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="mark/circle(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</symbol>
+<symbol name="mark/disk(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+</path>
+</symbol>
+<symbol name="mark/fdisk(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+0.5 0 0 0.5 0 0 e
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</group>
+</symbol>
+<symbol name="mark/box(sx)" transformations="translations">
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</symbol>
+<symbol name="mark/square(sx)" transformations="translations">
+<path fill="sym-stroke">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+</path>
+</symbol>
+<symbol name="mark/fsquare(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+-0.5 -0.5 m
+0.5 -0.5 l
+0.5 0.5 l
+-0.5 0.5 l
+h
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="mark/cross(sx)" transformations="translations">
+<group>
+<path fill="sym-stroke">
+-0.43 -0.57 m
+0.57 0.43 l
+0.43 0.57 l
+-0.57 -0.43 l
+h
+</path>
+<path fill="sym-stroke">
+-0.43 0.57 m
+0.57 -0.43 l
+0.43 -0.57 l
+-0.57 0.43 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="arrow/fnormal(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/pointed(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fpointed(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/linear(spx)">
+<path stroke="sym-stroke" pen="sym-pen">
+-1 0.333 m
+0 0 l
+-1 -0.333 l
+</path>
+</symbol>
+<symbol name="arrow/fdouble(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/double(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-normal(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0.5 0 m
+-0.5 0.333 l
+-0.5 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-fnormal(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0.5 0 m
+-0.5 0.333 l
+-0.5 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-pointed(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0.5 0 m
+-0.5 0.333 l
+-0.3 0 l
+-0.5 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-fpointed(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0.5 0 m
+-0.5 0.333 l
+-0.3 0 l
+-0.5 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-double(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+1 0 m
+0 0.333 l
+0 -0.333 l
+h
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-fdouble(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+1 0 m
+0 0.333 l
+0 -0.333 l
+h
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<pen name="heavier" value="0.8"/>
+<pen name="fat" value="1.2"/>
+<pen name="ultrafat" value="2"/>
+<symbolsize name="large" value="5"/>
+<symbolsize name="small" value="2"/>
+<symbolsize name="tiny" value="1.1"/>
+<arrowsize name="large" value="10"/>
+<arrowsize name="small" value="5"/>
+<arrowsize name="tiny" value="3"/>
+<color name="red" value="1 0 0"/>
+<color name="green" value="0 1 0"/>
+<color name="blue" value="0 0 1"/>
+<color name="yellow" value="1 1 0"/>
+<color name="orange" value="1 0.647 0"/>
+<color name="gold" value="1 0.843 0"/>
+<color name="purple" value="0.627 0.125 0.941"/>
+<color name="gray" value="0.745"/>
+<color name="brown" value="0.647 0.165 0.165"/>
+<color name="navy" value="0 0 0.502"/>
+<color name="pink" value="1 0.753 0.796"/>
+<color name="seagreen" value="0.18 0.545 0.341"/>
+<color name="turquoise" value="0.251 0.878 0.816"/>
+<color name="violet" value="0.933 0.51 0.933"/>
+<color name="darkblue" value="0 0 0.545"/>
+<color name="darkcyan" value="0 0.545 0.545"/>
+<color name="darkgray" value="0.663"/>
+<color name="darkgreen" value="0 0.392 0"/>
+<color name="darkmagenta" value="0.545 0 0.545"/>
+<color name="darkorange" value="1 0.549 0"/>
+<color name="darkred" value="0.545 0 0"/>
+<color name="lightblue" value="0.678 0.847 0.902"/>
+<color name="lightcyan" value="0.878 1 1"/>
+<color name="lightgray" value="0.827"/>
+<color name="lightgreen" value="0.565 0.933 0.565"/>
+<color name="lightyellow" value="1 1 0.878"/>
+<dashstyle name="dashed" value="[4] 0"/>
+<dashstyle name="dotted" value="[1 3] 0"/>
+<dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
+<dashstyle name="dash dot dotted" value="[4 2 1 2 1 2] 0"/>
+<textsize name="large" value="\large"/>
+<textsize name="Large" value="\Large"/>
+<textsize name="LARGE" value="\LARGE"/>
+<textsize name="huge" value="\huge"/>
+<textsize name="Huge" value="\Huge"/>
+<textsize name="small" value="\small"/>
+<textsize name="footnote" value="\footnotesize"/>
+<textsize name="tiny" value="\tiny"/>
+<textstyle name="center" begin="\begin{center}" end="\end{center}"/>
+<textstyle name="itemize" begin="\begin{itemize}" end="\end{itemize}"/>
+<textstyle name="item" begin="\begin{itemize}\item{}" end="\end{itemize}"/>
+<gridsize name="4 pts" value="4"/>
+<gridsize name="8 pts (~3 mm)" value="8"/>
+<gridsize name="16 pts (~6 mm)" value="16"/>
+<gridsize name="32 pts (~12 mm)" value="32"/>
+<gridsize name="10 pts (~3.5 mm)" value="10"/>
+<gridsize name="20 pts (~7 mm)" value="20"/>
+<gridsize name="14 pts (~5 mm)" value="14"/>
+<gridsize name="28 pts (~10 mm)" value="28"/>
+<gridsize name="56 pts (~20 mm)" value="56"/>
+<anglesize name="90 deg" value="90"/>
+<anglesize name="60 deg" value="60"/>
+<anglesize name="45 deg" value="45"/>
+<anglesize name="30 deg" value="30"/>
+<anglesize name="22.5 deg" value="22.5"/>
+<opacity name="10%" value="0.1"/>
+<opacity name="30%" value="0.3"/>
+<opacity name="50%" value="0.5"/>
+<opacity name="75%" value="0.75"/>
+<tiling name="falling" angle="-60" step="4" width="1"/>
+<tiling name="rising" angle="30" step="4" width="1"/>
+</ipestyle>
+<page>
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" matrix="1 0 0 0.666667 48 285.333" stroke="black" fill="white" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 48 32" transformations="translations" pos="128 768" stroke="black" type="label" width="93.153" height="7.603" depth="2.01" halign="center" valign="center">\textbf{FragmentList}\hrsp(\textit{break}\hrsp=\,\textquotedbl\hrsp\textquotedbl)</text>
+<path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="40.946" height="6.984" depth="0.07" valign="baseline">\textbf{Document}</text>
+<path matrix="1.57143 0 0 1 -30.8571 -8" stroke="black" fill="black" pen="fat">
+40 808 m
+96 808 l
+</path>
+<path matrix="1 0 0 1 268 -8" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<path matrix="1.57143 0 0 1 -69.7143 0" stroke="black" fill="black" pen="fat">
+192 800 m
+248 800 l
+</path>
+<text matrix="1 0 0 1 -12 -56" transformations="translations" pos="48 816" stroke="black" type="label" width="80.592" height="7.603" depth="2.01" valign="baseline">\textbf{FragmentList}\hrsp(\textit{break})</text>
+<path matrix="1 0 0 1 -16 -56" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<path matrix="0.857143 0 0 0.666667 26.2857 217.333" stroke="black" fill="white" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 -12 -36" transformations="translations" pos="128 768" stroke="black" type="label" width="17.454" height="6.984" depth="0.07" halign="right" valign="center">\textbf{Text}</text>
+<text matrix="1 0 0 1 -56 8" transformations="translations" pos="172 720" stroke="black" type="label" width="58.795" height="4.959" depth="0.62" valign="baseline" size="7">\,without \textit{break} and @</text>
+<path matrix="0.714286 0 0 0.666667 72.5714 177.333" stroke="black" fill="white" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 36 -76" transformations="translations" pos="128 768" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" halign="center" valign="center">\textbf{Command}</text>
+<path matrix="1 0 0 1 0 16" stroke="black" pen="fat">
+184 716 m
+192 716
+196 716
+200 720
+200 724
+200 728
+200 732
+204 736
+208 736
+212 736
+216 736
+220 732
+220 728
+220 704
+220 700
+216 696
+212 696
+80 696
+76 696
+72 692
+72 688
+72 684
+72 680
+76 676
+80 676
+88 676 c
+</path>
+<path matrix="0.428572 0 0 0.666667 209.143 237.333" stroke="black" fill="white" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 136 -16" transformations="translations" pos="128 768" stroke="black" type="label" width="21.4" height="6.984" depth="0.07" halign="center" valign="center">\textit{break}</text>
+<path matrix="1 0 0 1 0 16" stroke="black" pen="fat">
+32 736 m
+240 736 l
+</path>
+<path matrix="1 0 0 1 0 16" stroke="black" pen="fat">
+288 736 m
+320 736 l
+</path>
+<path matrix="1 0 0 1 268 -56" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<path matrix="0.571429 0 0 0.666667 46.8571 109.333" stroke="black" fill="white" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 -8 -144" transformations="translations" pos="128 768" stroke="black" type="label" width="37.22" height="7.283" depth="0.07" halign="center" valign="center">\textbf{Identifier}</text>
+<path matrix="1 0 0 1 -16 -184" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<text matrix="1 0 0 1 -12 -184" transformations="translations" pos="48 816" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" valign="baseline">\textbf{Command}</text>
+<path matrix="1 0 0 1 268 -184" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<path stroke="black" fill="white" pen="heavier">
+8 0 0 8 96 692 e
+</path>
+<text matrix="1 0 0 1 -32 -76" transformations="translations" pos="128 768" stroke="black" type="label" width="7.91" height="6.154" depth="0.89" halign="center" valign="center">@</text>
+<path matrix="0.833333 0 0 1 17.3333 0" stroke="black" fill="white" pen="fat">
+104 692 m
+128 692 l
+</path>
+<path stroke="black" pen="fat">
+204 692 m
+212 692
+216 692
+220 688
+220 684
+220 680
+220 676
+216 672
+212 672
+60 672
+56 672
+52 676
+52 680
+52 744
+52 748
+56 752
+60 752
+64 752
+68 752
+72 748
+72 744
+72 740
+72 736
+76 732
+80 732
+88 732 c
+</path>
+<path stroke="black" pen="fat">
+32 624 m
+88 624 l
+</path>
+<path matrix="0.5 0 0 0.666667 68 69.333" stroke="black" fill="white" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 4 -184" transformations="translations" pos="128 768" stroke="black" type="label" width="26.171" height="7.276" depth="1.85" halign="center" valign="center">\textbf{Option}</text>
+<path matrix="0.714286 0 0 0.666667 140.571 89.333" stroke="black" fill="white" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 104 -164" transformations="translations" pos="128 768" stroke="black" type="label" width="58.162" height="7.275" depth="2.01" halign="center" valign="center">\textbf{MainArgument}</text>
+<path matrix="1 0 0 1 268 -224" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<path stroke="black" pen="fat">
+152 624 m
+320 624 l
+</path>
+<path stroke="black" pen="fat">
+160 584 m
+168 584
+172 584
+176 588
+176 592
+176 596
+176 600
+180 604
+184 604
+192 604 c
+</path>
+<path stroke="black" pen="fat">
+152 624 m
+160 624
+164 624
+168 620
+168 616
+168 612
+168 608
+172 604
+176 604
+192 604 c
+</path>
+<path stroke="black" pen="fat">
+152 624 m
+160 624
+164 624
+168 620
+168 616
+168 612
+168 608
+164 604
+160 604
+96 604
+92 604
+88 600
+88 596
+88 592
+88 588
+92 584
+96 584
+104 584 c
+</path>
+<path stroke="black" pen="fat">
+272 604 m
+280 604
+284 604
+288 600
+288 596
+288 592
+288 588
+292 584
+296 584
+320 584 c
+</path>
+<path stroke="black" pen="fat">
+160 584 m
+320 584 l
+</path>
+<text matrix="1 0 0 1 268 -184" transformations="translations" pos="48 816" stroke="black" type="label" width="112.966" height="7.076" depth="1.99" halign="right" valign="baseline">Identifier-Style PaxterPhrase</text>
+<text matrix="1 0 0 1 268 -248" transformations="translations" pos="48 816" stroke="black" type="label" width="46.018" height="6.987" depth="1.99" halign="right" valign="baseline">PaxterApply</text>
+</page>
+</ipe>
