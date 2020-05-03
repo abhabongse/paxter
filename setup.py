@@ -37,14 +37,10 @@ setup(
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
-        'Operating System :: Unix',
-        'Operating System :: POSIX',
-        'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Software Development :: Pre-processors',
         'Topic :: Text Processing',
         'Typing :: Typed',
@@ -60,7 +56,6 @@ setup(
     extras_require={
         'extras': [
             'click>=5.0',
-            'RestrictedPython>=5.0',
         ],
     },
     entry_points={
