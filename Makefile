@@ -14,9 +14,6 @@ PYTHON_PROJECT_PACKAGES := paxter
 # Locations to all requirement files that requires pinning down
 REQUIREMENTS_FILES := $(patsubst ./%.in,%.txt,$(shell find . -type f -name '*requirements.in'))
 
-# Location to HTML documentation build
-HTML_DOC_OUTPUT = build/docs
-
 ##########
 ## RECIPES
 ##########
@@ -166,29 +163,29 @@ pkg_clean:
 ##@ Documentation Generations
 #############################
 
-.PHONY: doc_preview
-doc_preview:
-	@# Preview documentation generated from source code
+.PHONY: docs_preview
+docs_preview:
+	@# Preview sphinx documentation
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
-	pdoc --template-dir docs/templates --http : $(PYTHON_PROJECT_PACKAGES)
+	sphinx-autobuild -b html docs docs/_build/livehtml
 
-.PHONY: doc_build
-doc_build:
-	@# Build document as HTML files
+.PHONY: docs_build
+docs_build:
+	@# Build sphinx documentation locally
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
-	pdoc --template-dir docs/templates --html --output-dir "$(HTML_DOC_OUTPUT)" \
-		$(PYTHON_PROJECT_PACKAGES)
-	@echo "HTML files are generated inside build/html directory."
+	sphinx-build -M html docs docs/_build
 
-.PHONY: doc_clean
-doc_clean:
-	@# Clean up generated HTML files
-	rm -rf "$(HTML_DOC_OUTPUT)"
-	-rmdir build
+.PHONY: docs_help
+docs_help:
+	@# Show help message for sphinx-build command
+ifndef VIRTUAL_ENV
+	$(error must run target inside python virtualenv)
+endif
+	sphinx-build -M help docs docs/_build
 
 #####################
 ##@ Program Shortcuts

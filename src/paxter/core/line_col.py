@@ -14,7 +14,9 @@ class LineCol:
     """
     input_text: InitVar[str]
     pos: InitVar[int]
+    #: 1-index line number
     line: int = field(init=False)
+    #: 1-index column index value
     col: int = field(init=False)
 
     def __post_init__(self, input_text: str, pos: int):

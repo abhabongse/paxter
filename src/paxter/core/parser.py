@@ -25,14 +25,17 @@ class ParseContext:
     """
     Implements recursive descent parser for Paxter language.
 
-    Use class method `Parser.parse` instead of
-    creating an instance of this class directly.
+    Below is how to utilize this class::
+
+        input_text = 'Hello @name'
+        tree = ParseContext(input_text).parse()
     """
     input_text: str
 
-    def parse(self):
+    def parse(self) -> FragmentList:
         """
         Parses the input text starting from the beginning.
+        This method is expensive and should not be called more than once.
         """
         end_pos, node = self.parse_inner_fragment_list(0, GLOBAL_SCOPE_PATTERN)
         if end_pos != len(self.input_text):  # pragma: no cover
@@ -172,7 +175,7 @@ class ParseContext:
         captured by the provided match object is discovered.
         """
         next_pos = brace_prefix_matchobj.end()
-        scope_pattern = ScopePattern(opened=brace_prefix_matchobj.group('opened'))
+        scope_pattern = ScopePattern(opening=brace_prefix_matchobj.group('opened'))
 
         return self.parse_inner_fragment_list(next_pos, scope_pattern)
 
@@ -182,7 +185,7 @@ class ParseContext:
         following the pattern `@"..."`.
         """
         next_pos = quote_prefix_matchobj.end()
-        scope_pattern = ScopePattern(opened=quote_prefix_matchobj.group('opened'))
+        scope_pattern = ScopePattern(opening=quote_prefix_matchobj.group('opened'))
 
         inner_matchobj = scope_pattern.non_rec_break_re.match(self.input_text, next_pos)
         if inner_matchobj is None:
@@ -199,7 +202,7 @@ class ParseContext:
         following the pattern `@|...|`.
         """
         next_pos = bar_prefix_matchobj.end()
-        scope_pattern = ScopePattern(opened=bar_prefix_matchobj.group('opened'))
+        scope_pattern = ScopePattern(opening=bar_prefix_matchobj.group('opened'))
 
         inner_matchobj = scope_pattern.non_rec_break_re.match(self.input_text, next_pos)
         if inner_matchobj is None:
@@ -292,8 +295,8 @@ class ParseContext:
         to the corresponding opened pattern.
         """
         raise PaxterSyntaxError(
-            f"cannot match closed pattern {scope_pattern.closed!r} "
-            f"to the opened pattern {scope_pattern.opened!r} at %(pos)s",
+            f"cannot match closed pattern {scope_pattern.closing!r} "
+            f"to the opened pattern {scope_pattern.opening!r} at %(pos)s",
             pos=LineCol(self.input_text, pos),
         )
 

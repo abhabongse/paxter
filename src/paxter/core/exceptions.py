@@ -1,10 +1,9 @@
 """
 Exceptions specific to Paxter language ecosystem.
 """
-from typing import Dict, TYPE_CHECKING
+from typing import Dict
 
-if TYPE_CHECKING:
-    from paxter.core.line_col import LineCol
+from paxter.core.line_col import LineCol
 
 __all__ = [
     'PaxterBaseException',
@@ -16,15 +15,17 @@ class PaxterBaseException(Exception):
     """
     Base exception specific to Paxter language ecosystem.
     """
+    #: Error message
     message: str
-    positions: Dict[str, 'LineCol']
+    #: A mapping from position name to :class:`LineCol` position data
+    positions: Dict[str, LineCol]
 
-    def __init__(self, message: str, **positions: 'LineCol'):
+    def __init__(self, message: str, **positions: LineCol):
         self.positions = positions
         self.message = self.render(message, self.positions)
         self.args = (self.message,)  # this will make error stack more readable
 
-    def render(self, message: str, positions: Dict[str, 'LineCol']) -> str:
+    def render(self, message: str, positions: Dict[str, LineCol]) -> str:
         """
         Substitutes the position placeholder within the message
         with the provided positions data.

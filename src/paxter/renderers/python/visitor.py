@@ -87,7 +87,7 @@ class RenderContext:
 
     def visit_text(self, token: Text) -> str:
         text = token.inner
-        if not token.scope_pattern.opened:
+        if not token.scope_pattern.opening:
             text = BACKSLASH_NEWLINE_RE.sub('', text)
         return text
 

@@ -21,12 +21,14 @@ class ScopePattern:
     Data regarding the opened pattern and the closed pattern
     of one particular scope.
     """
-    opened: str
-    closed: str = None
+    #: The opening pattern enclosing the scope
+    opening: str
+    #: The closing pattern enclosing the scope
+    closing: str = None
 
     def __post_init__(self):
-        if self.closed is None:
-            self.closed = self.flip_pattern(self.opened)
+        if self.closing is None:
+            self.closing = self.flip_pattern(self.opening)
 
     @staticmethod
     def flip_pattern(opened: str) -> str:
@@ -47,7 +49,7 @@ class ScopePattern:
         Compiles a regular expression lexer to non-greedily match some text
         which is then followed by the given closed (i.e. right) pattern.
         """
-        return LEXER.non_rec_break_re(self.closed)
+        return LEXER.non_rec_break_re(self.closing)
 
     @property
     def rec_break_re(self) -> Pattern[str]:
@@ -56,7 +58,7 @@ class ScopePattern:
         which is then followed by either the @-command switch symbol
         or the given closed (i.e. right) pattern.
         """
-        return LEXER.rec_break_re(self.closed)
+        return LEXER.rec_break_re(self.closing)
 
 
 class GlobalScopePattern(ScopePattern):
@@ -65,7 +67,7 @@ class GlobalScopePattern(ScopePattern):
     """
 
     def __init__(self):
-        super().__init__(opened='', closed='')
+        super().__init__(opening='', closing='')
 
     @property
     def non_rec_break_re(self) -> Pattern[str]:
@@ -85,5 +87,5 @@ class GlobalScopePattern(ScopePattern):
         return LEXER.global_break_re
 
 
-EMPTY_SCOPE_PATTERN = ScopePattern(opened='', closed='')
+EMPTY_SCOPE_PATTERN = ScopePattern(opening='', closing='')
 GLOBAL_SCOPE_PATTERN = GlobalScopePattern()

@@ -22,13 +22,16 @@ class Token(metaclass=ABCMeta):
     """
     Base class for all types of nodes to appear in Paxter document tree.
     """
+    #: The index of the starting position of the token.
     start_pos: int = field(repr=False, compare=False)
+    #: The index right after the ending position of the token.
     end_pos: int = field(repr=False, compare=False)
 
     @classmethod
     def without_pos(cls, *args, **kwargs):
         """
-        Create instance of the class without start_pos and end_pos.
+        Create an instance of the class itself without specifying
+        ``start_pos`` and ``end_pos`` attributes.
         """
         return cls(None, None, *args, **kwargs)
 
@@ -37,7 +40,7 @@ class Token(metaclass=ABCMeta):
 class Fragment(Token, metaclass=ABCMeta):
     """
     Subtypes of nodes in Paxter document tree that is allowed
-    to appear as elements of `FragmentList`.
+    to appear as elements of :class:`FragmentList`.
     """
     pass
 
@@ -45,18 +48,22 @@ class Fragment(Token, metaclass=ABCMeta):
 @dataclass
 class TokenList(Token):
     """
-    Node type which represents a group of tokens wrapped under
-    a pair of parentheses `()`, brackets `[]`, or braces `{}`.
+    Node type which represents a sequence of tokens wrapped under
+    a pair of parentheses ``()``, brackets ``[]``, or braces ``{}``.
+    It appears exclusively within the option section of :class:`PaxterApply`.
     """
+    #: A list of :class:`Token`.
     children: List[Token]
 
 
 @dataclass
 class Identifier(Token):
     """
-    Node type which represents an identifier and can either be
-    the identifier part of or within the option section of the `PaxterApply`.
+    Node type which represents an identifier.
+    It can appear at the identifier part of or within the option section
+    of :class:`PaxterApply`.
     """
+    #: String containing the name of the identifier
     name: str
 
     @classmethod
@@ -66,7 +73,7 @@ class Identifier(Token):
         returned by regular expression matching under the provided capture group.
 
         This class method only works for classes with a single main value only
-        (which includes all token types except `PaxterApply`).
+        (which includes all token types except :class:`PaxterApply`).
         """
         start_pos, end_pos = matchobj.span(capture_name)
         name = matchobj.group(capture_name)
@@ -76,9 +83,10 @@ class Identifier(Token):
 @dataclass
 class Operator(Token):
     """
-    Node type which represents an operator
-    and can only be part of the option section of `PaxterApply`.
+    Node type which represents an operator.
+    It appears exclusively within the option section of :class:`PaxterApply`.
     """
+    #: String containing the operator symbol
     symbol: str
 
     @classmethod
@@ -88,7 +96,7 @@ class Operator(Token):
         returned by regular expression matching under the provided capture group.
 
         This class method only works for classes with a single main value only
-        (which includes all token types except `PaxterApply`).
+        (which includes all token types except :class:`PaxterApply`).
         """
         start_pos, end_pos = matchobj.span(capture_name)
         symbol = matchobj.group(capture_name)
@@ -99,8 +107,9 @@ class Operator(Token):
 class Number(Token):
     """
     Node type which represents a number recognized by JSON grammar.
-    It can only be part of the option section of `PaxterApply`.
+    It appears exclusively within the option section of :class:`PaxterApply`.
     """
+    #: Numerical value deserialized from the number token
     value: Union[int, float]
 
     @classmethod
@@ -110,7 +119,7 @@ class Number(Token):
         returned by regular expression matching under the provided capture group.
 
         This class method only works for classes with a single main value only
-        (which includes all token types except `PaxterApply`).
+        (which includes all token types except :class:`PaxterApply`).
         """
         start_pos, end_pos = matchobj.span(capture_name)
         value = json.loads(matchobj.group(capture_name))
@@ -124,8 +133,11 @@ class FragmentList(Fragment):
     This usually corresponds to global-level fragments
     or fragments nested within braces following the @-command.
     """
+    #: A list of :class:`Fragment`
     children: List[Fragment]
+    #: Information of the enclosing braces pattern
     scope_pattern: ScopePattern
+    #: Boolean indicating whether this fragment list begins with @-symbol
     is_command: bool = False
 
 
@@ -133,12 +145,15 @@ class FragmentList(Fragment):
 class Text(Fragment):
     """
     Text node type which does not contain nested @-commands.
-    It may be presented as an element of `FragmentList`,
-    the main argument of `PaxterApply` and `PaxterPhrase`,
-    or within the option section of `PaxterApply`.
+    It may be presented as an element of :class:`FragmentList`,
+    the main argument of :class:`PaxterApply` and :class:`PaxterPhrase`,
+    or within the option section of :class:`PaxterApply`.
     """
+    #: The string content
     inner: str
+    #: Information of the enclosing quote pattern
     scope_pattern: ScopePattern
+    #: Boolean indicating whether this fragment list begins with @-symbol
     is_command: bool = False
 
     @classmethod
@@ -151,7 +166,7 @@ class Text(Fragment):
         returned by regular expression matching under the provided capture group.
 
         This class method only works for classes with a single main value only
-        (which includes all token types except `PaxterApply`).
+        (which includes all token types except :class:`PaxterApply`).
         """
         start_pos, end_pos = matchobj.span(capture_name)
         inner = matchobj.group(capture_name)
@@ -163,19 +178,21 @@ class PaxterPhrase(Fragment):
     """
     Node type which represents @-command and has one of the following form:
 
-    -   It begins with a command switch `@`
+    -   It begins with a command switch ``@``
         and is immediately followed by a non-empty identifier.
-        It also must unambiguously not be a `PaxterApply`
+        It also must unambiguously not be a :class:`PaxterApply`
         (i.e. it is not followed by an option section or main argument section).
 
-    -   It begins with a command switch `@` and is immediately followed by
-        a wrapped bar section (e.g. `@|...phrase...|`, `@<#|...phrase...|#>`).
+    -   It begins with a command switch ``@`` and is immediately followed by
+        a wrapped bar section (e.g. ``@|...phrase...|``, ``@<#|...phrase...|#>``).
 
-    -   It begins with a command switch `@` and is immediately followed by
-        a single symbol character that is unmistakeably not a quote `"`,
-        a brace `{`, or a bar `|`.
+    -   It begins with a command switch ``@`` and is immediately followed by
+        a single symbol character that is unmistakeably not a quote ``"``,
+        a brace ``{``, or a bar ``|``.
     """
+    #: The string content of the phrase
     inner: str
+    #: Information of the enclosing bar pattern
     scope_pattern: ScopePattern
 
     @classmethod
@@ -188,7 +205,7 @@ class PaxterPhrase(Fragment):
         returned by regular expression matching under the provided capture group.
 
         This class method only works for classes with a single main value only
-        (which includes all token types except `PaxterApply`).
+        (which includes all token types except :class:`PaxterApply`).
         """
         start_pos, end_pos = matchobj.span(capture_name)
         inner = matchobj.group(capture_name)
@@ -200,7 +217,7 @@ class PaxterApply(Fragment):
     """
     Node type which represents @-command which has the following form:
 
-    -   It begins with a command switch `@`,
+    -   It begins with a command switch ``@``,
         and is immediately followed by a non-empty identifier.
 
     -   Then it may optionally be followed by an option section
@@ -211,9 +228,16 @@ class PaxterApply(Fragment):
         then it must be followed by the main argument section.
 
         The main argument section, if present, can either be
-        a `FragmentList` (surrounded by wrapped braces such as `{...main arg...}`)
-        or a `Text` (surrounded by wrapped quotation marks such as `"...text..."`).
+        a :class:`FragmentList`
+        (surrounded by wrapped braces such as ``{...main arg...}``)
+        or a :class:`Text`
+        (surrounded by wrapped quotation marks such as ``"...text..."``).
     """
+    #: The identifier part
     id: Identifier
+    #: A list of tokens for the option section enclosed by ``[]``,
+    #: or :const:`None` if this section is not present.
     options: Optional[TokenList]
+    #: The main argument section at the end of expression,
+    #: or :const:`None` if this section is not present.
     main_arg: Optional[MainArgument]
