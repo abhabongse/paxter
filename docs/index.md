@@ -19,7 +19,7 @@ Paxter is a document-first text pre-processing mini-language, _loosely_ inspired
 
 - [Getting Started](getting_started.md)
 - [Tutorial](tutorial.md)
-- [Syntax Reference](syntax.md)
+- [Syntax Reference](syntax.rst)
 - [Core API Reference](core_api.md)
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70216" creator="Ipe 7.2.16">
-<info created="D:20200504013612" modified="D:20200505130319" tex="xetex"/>
+<info created="D:20200504013612" modified="D:20200505221319" tex="xetex"/>
 <preamble>\usepackage[MnSymbol]{mathspec}
 \usepackage{xunicode}
 \usepackage{xltxtra}
@@ -1872,6 +1872,34 @@ h
 72 320 l
 </path>
 <text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="37.22" height="7.283" depth="0.07" valign="baseline">\textbf{Identifier}</text>
+<path matrix="1 0 0 1 0 368" stroke="black" pen="fat">
+404 412 m
+412 412
+416 412
+420 408
+420 404
+420 400
+420 396
+416 392
+412 392
+240 392
+236 392
+232 396
+232 400
+232 424
+232 428
+236 432
+240 432
+244 432
+248 432
+252 428
+252 424
+252 420
+252 416
+256 412
+260 412
+268 412 c
+</path>
 </page>
 <page>
 <layer name="alpha"/>
