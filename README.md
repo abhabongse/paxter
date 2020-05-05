@@ -44,103 +44,73 @@ into the final rendered output text.
 -   Instead of implementing a document tree renderer by themselves, users may opt-in to use pre-defined _flavors_ of document tree renderers also provided by this package. 
 
 
-## Installation
+## Example
 
-This package can be installed from PyPI via `pip` command
-(or any other methods of your choice):
-
-```shell script
-$ pip install paxter
-```
-
-
-## Programmatic Usage
-
-**WARNING:** This section requires a clean-up.
-
-The package is _mainly_ intended to be used as a library.
-Pre-defined tree transformers are available to be utilized right away
-without users having to write custom transformers.
-
-Here is one way to use this library with **Simple Snake** flavor of tree transformer:
-
-```python
-from paxter.legacy import Parser
-from paxter.flavors import SimpleSnakeTransformer
-
-parser = Parser()
-transformer = SimpleSnakeTransformer()
-
-env = {
-    'name': "John Smith",
-    'age': 47,
-    'occupation': "Student",
-    'strip': lambda token: token.strip(),
-    'tag': lambda token, label: f"<{label}>{token}</{label}>",
-}
-
-tree = paxter.__main__.parse('''\
-@!##{
-def add_one(num):
-    return num + 1
-}##\
-\
-@strip{   Hello, my full name is @tag[label="b"]{John Smith}   }.
-I am currently @age years old, and by this time next year I will be @{age + 1} years old.
-My email is @"john@example.com".
-@!{age_next_year = add_one(age)}\
-
-Do you know that 1 + 1 = @{1 + 1}?
-
-@!##{
-import itertools
-
-counter = itertools.count(start=1)
-}##\
-\
-Let's count: @{next(counter)}, @{next(counter)}, @{next(counter)}.
-''')
-
-updated_env, output_text = transformer.transform(env, tree)
-print(f"Age next year: {updated_env['age_next_year']}")
-print(output_text)
-```
-
-The above script will print the following text:
+Let the input text be the following.
 
 ```text
-Age next year: 48
-Hello, my full name is <b>John Smith</b>.
-I am currently 47 years old, and by this time next year I will be 48 years old.
-My email is john@example.com.
+@python##"
+    from datetime import datetime
 
-Do you know that 1 + 1 = 2?
+    _symbols_ = {
+        '@': '@',
+        '.': '&hairsp;',
+        ',': '&thinsp;',
+    }
+    name = "Ashley"
+    birth_year = 1987
+    age = datetime.now().year - birth_year
+"##\
+My name is @name and I am @age years old.
+My email is ashley@@example.com.
+My shop opens Monday@,-@,Friday.
 
-Let's count: 1, 2, 3.
+@python#<"
+    from itertools import count
+    counter = count(start=1)
+">#\
+Counting is as easy as @|next(counter)|, @|next(counter)|, @|next(counter)|.
+Arithmetic? Not a problem: 7 * 11 * 13 = @|7 * 11 * 13|.
+
+Escaping is easy, just enclose the text with as many #...# or <...> as you like.
+For example, one way to escape the @#""@""# symbol, you can write @<"@#""@""#">.
+In turn, to write @<"@#""@""#"> as-is, you can do by typing @##"@<"@#""@""#">"##.
+
+@python#<"
+    def is_odd(value):
+        return value % 2 == 1
+">#\
+Odd digits are@for[i in @|range(10)|]{@if[@|is_odd(i)|]{ @i}}.
 ```
 
-Library users could also write their own custom transformers
-by extending the `paxter.core.BaseTransformer` class
-and use it in any way they want. Stay tuned for the tutorial.
+Suppose that we are using the Python authoring mode (which is an rendering extension of Paxter library package).
+Then the above input text will render to the following output.
 
+```text
+My name is Ashley and I am 33 years old.
+My email is ashley@example.com.
+My shop opens Monday&thinsp;-&thinsp;Friday.
 
-## CLI Usage
+Counting is as easy as 1, 2, 3.
+Arithmetic? Not a problem: 7 * 11 * 13 = 1001.
 
-**WARNING:** This section requires a clean-up.
+Escaping is easy, just enclose the text with as many #...# or <...> as you like.
+For example, one way to escape the "@" symbol, you can write @#""@""#.
+In turn, to write @#""@""# as-is, you can do by typing @<"@#""@""#">.
 
-While this feature is still a work in progress,
-users may try making a call to the following command to get started:
-
-```shell script
-$ python -m paxter  # provide --help for help messages
+Odd digits are 1 3 5 7 9.
 ```
 
 
 ## Documentation
 
--   [Rough description of Paxter grammar](src/paxter/legacy/__init__.py)
--   [ReadTheDocs documentation](https://paxter.readthedocs.io/) (under construction)
--   Paxter documentation can be generated with [`pdoc3`](https://pdoc3.github.io/pdoc/) which can be installed with `pip install pdoc3`. Then preview this package with `pdoc --html : paxter` or compiled with `pdoc --html paxter`.
+Information available at [ReadTheDocs documentation](https://paxter.readthedocs.io/) website:
+ 
+-   [Getting Started](https://paxter.readthedocs.io/en/latest/getting_started.html)
+-   [Tutorials](https://paxter.readthedocs.io/en/latest/tutorial.html)
+-   [Syntax Reference](https://paxter.readthedocs.io/en/latest/syntax.html)
+-   [Core API Reference](https://paxter.readthedocs.io/en/latest/core_api.html)
+-   and more
 
 
 ## Future Plans
