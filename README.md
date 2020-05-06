@@ -106,7 +106,7 @@ Odd digits are 1 3 5 7 9.
 
 Information available at [ReadTheDocs documentation](https://paxter.readthedocs.io/) website:
  
--   [Getting Started](https://paxter.readthedocs.io/en/latest/getting_started.html)
+-   [Installation and Getting Started](https://paxter.readthedocs.io/en/latest/getting_started.html)
 -   [Tutorials](https://paxter.readthedocs.io/en/latest/tutorial.html)
 -   [Syntax Reference](https://paxter.readthedocs.io/en/latest/syntax.html)
 -   [Core API Reference](https://paxter.readthedocs.io/en/latest/core_api.html)

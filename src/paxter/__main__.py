@@ -48,7 +48,7 @@ def python_authoring(input_file, output_file, env_file):
     input_text = input_file.read()
     tree = ParseContext(input_text).parse()
     env = create_unsafe_env(runpy.run_path(env_file) if env_file else {})
-    output_text = flatten(RenderContext(input_text, env).visit(tree))
+    output_text = flatten(RenderContext(input_text, env, tree).render())
 
     output_file.write(output_text)
 

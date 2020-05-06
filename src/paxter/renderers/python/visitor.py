@@ -24,74 +24,75 @@ class RenderContext:
     """
     input_text: str
     env: dict
+    tree: FragmentList
 
-    def visit(self, seq: FragmentList) -> str:
-        return flatten(self.visit_fragment_list(seq))
+    def render(self) -> str:
+        return flatten(self.transform_fragment_list(self.tree))
 
-    def visit_token(self, token: Token) -> Any:
+    def transform_token(self, token: Token) -> Any:
         if isinstance(token, Fragment):
-            return self.visit_fragment(token)
+            return self.transform_fragment(token)
         if isinstance(token, TokenList):
-            return self.visit_token_list(token)
+            return self.transform_token_list(token)
         if isinstance(token, Identifier):
-            return self.visit_identifier(token)
+            return self.transform_identifier(token)
         if isinstance(token, Operator):
-            return self.visit_operator(token)
+            return self.transform_operator(token)
         if isinstance(token, Number):
-            return self.visit_number(token)
+            return self.transform_number(token)
         raise PaxterRenderError(
             "unrecognized token at %(pos)s",
             pos=LineCol(self.input_text, token.start_pos),
         )
 
-    def visit_fragment(self, fragment: Fragment) -> Any:
+    def transform_fragment(self, fragment: Fragment) -> Any:
         if isinstance(fragment, FragmentList):
-            return self.visit_fragment_list(fragment)
+            return self.transform_fragment_list(fragment)
         if isinstance(fragment, Text):
-            return self.visit_text(fragment)
+            return self.transform_text(fragment)
         if isinstance(fragment, PaxterPhrase):
-            return self.visit_paxter_phrase(fragment)
+            return self.transform_paxter_phrase(fragment)
         if isinstance(fragment, PaxterApply):
-            return self.visit_paxter_apply(fragment)
+            return self.transform_paxter_apply(fragment)
         raise PaxterRenderError(
             "unrecognized fragment at %(pos)s",
             pos=LineCol(self.input_text, fragment.start_pos),
         )
 
-    def visit_token_list(self, seq: TokenList):
+    def transform_token_list(self, seq: TokenList):
         raise PaxterRenderError(
             "token list not expected at %(pos)s",
             pos=LineCol(self.input_text, seq.start_pos),
         )
 
-    def visit_identifier(self, token: Identifier):
+    def transform_identifier(self, token: Identifier):
         raise PaxterRenderError(
             "identifier not expected at %(pos)",
             pos=LineCol(self.input_text, token.start_pos),
         )
 
-    def visit_operator(self, token: Operator):
+    def transform_operator(self, token: Operator):
         raise PaxterRenderError(
             "operator not expected at %(pos)",
             pos=LineCol(self.input_text, token.start_pos),
         )
 
-    def visit_number(self, token: Number) -> Union[int, float]:
+    def transform_number(self, token: Number) -> Union[int, float]:
         return token.value
 
-    def visit_fragment_list(self, seq: FragmentList) -> List[Any]:
+    def transform_fragment_list(self, seq: FragmentList) -> List[Any]:
         return [
-            self.visit_fragment(fragment)
+            self.transform_fragment(fragment)
             for fragment in seq.children
         ]
 
-    def visit_text(self, token: Text) -> str:
+    def transform_text(self, token: Text) -> str:
         text = token.inner
         if not token.scope_pattern.opening:
             text = BACKSLASH_NEWLINE_RE.sub('', text)
         return text
 
-    def visit_paxter_phrase(self, token: PaxterPhrase) -> Any:
+    def transform_paxter_phrase(self, token: PaxterPhrase) -> Any:
         # Fetch the phrase evaluation function from within the environment
         try:
             phrase_eval = self.env['_phrase_eval_']
@@ -112,7 +113,7 @@ class RenderContext:
                 pos=LineCol(self.input_text, token.start_pos),
             ) from exc
 
-    def visit_paxter_apply(self, token: PaxterApply):
+    def transform_paxter_apply(self, token: PaxterApply):
         # Fetch the function from within the environment
         try:
             func = self.env[token.id.name]

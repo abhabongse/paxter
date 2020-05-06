@@ -61,7 +61,7 @@ class NormalApply(BaseApply):
         else:
             args, kwargs = [], {}
         if node.main_arg:
-            main_arg = context.visit_fragment(node.main_arg)
+            main_arg = context.transform_fragment(node.main_arg)
             args = [main_arg] + args
         return self.wrapped(*args, **kwargs)
 
@@ -84,14 +84,14 @@ class NormalApply(BaseApply):
                         f"duplicated keyword {keyword_name} at %(pos)s",
                         pos=LineCol(context.input_text, options.start_pos),
                     )
-                kwargs[keyword_name] = context.visit_token(value_token)
+                kwargs[keyword_name] = context.transform_token(value_token)
             elif section_flipped:
                 raise PaxterRenderError(
                     f"found positional argument after keyword argument at %(pos)s",
                     pos=LineCol(context.input_text, options.start_pos),
                 )
             else:
-                args.append(context.visit_token(value_token))
+                args.append(context.transform_token(value_token))
 
         return args, kwargs
 

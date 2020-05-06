@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70216" creator="Ipe 7.2.16">
-<info created="D:20200504013612" modified="D:20200505221319" tex="xetex"/>
+<info created="D:20200504013612" modified="D:20200506161811" tex="xetex"/>
 <preamble>\usepackage[MnSymbol]{mathspec}
 \usepackage{xunicode}
 \usepackage{xltxtra}
@@ -335,981 +335,6 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<path layer="alpha" matrix="0.571429 0 0 0.666667 38.8571 173.333" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 -15.8876 -83.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
-<path matrix="1 0 0 1 -16 -120" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<text matrix="1 0 0 1 -12 -120" transformations="translations" pos="48 816" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" valign="baseline">\textbf{Command}</text>
-<path matrix="1 0 0 1 380 -120" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="0.5 0 0 0.666667 172 153.333" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 376 -120" transformations="translations" pos="48 816" stroke="black" type="label" width="71.859" height="5.647" depth="1.59" halign="right" valign="baseline" size="footnote">“Id-Style PaxterPhrase”</text>
-<text matrix="1 0 0 1 108.112 -103.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.104" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<text matrix="1 0 0 1 -12 -732" transformations="translations" pos="48 816" stroke="black" type="label" width="153.972" height="7.604" depth="1.93" valign="baseline">\textbf{NonRecursiveText} (with \textit{break} pattern)</text>
-<path matrix="1 0 0 1 -16 -744" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="0.833332 0 0 1 5.33328 -584" stroke="black" pen="fat">
-32 648 m
-128 648 l
-</path>
-<path matrix="1 0 0 1 47.9999 -40" stroke="black" pen="fat">
-268 588 m
-384 588 l
-</path>
-<path matrix="1 0 0 1 47.9999 -44" stroke="black" pen="fat">
-268 560 m
-384 560 l
-</path>
-<text matrix="1 0 0 1 -12 -48" transformations="translations" pos="48 816" stroke="black" type="label" width="134.575" height="7.603" depth="2.01" valign="baseline">\textbf{FragmentList} (with \textit{break} pattern)</text>
-<path matrix="1 0 0 1 -16 -48" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1 0 0 1 32 -32.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<path matrix="0.714286 0 0 0.666667 248.571 221.333" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<path matrix="1 0 0 1 380 -48" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1 0 0 1 180 44" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 148 -32" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="6.273" depth="0.81" halign="center" valign="center">\texttt{@}</text>
-<text matrix="1 0 0 1 32.1124 -27.035" transformations="translations" pos="128 768" stroke="black" type="label" width="61.47" height="6.439" depth="1.99" halign="center" valign="baseline">non-empty \textbf{text}</text>
-<text matrix="1 0 0 1 212.112 -35.035" transformations="translations" pos="128 768" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" halign="center" valign="baseline">\textbf{Command}</text>
-<text matrix="1 0 0 1 32.1124 -35.035" transformations="translations" pos="128 768" stroke="black" type="label" width="100.806" height="4.568" depth="1.26" halign="center" valign="baseline" size="6">(containing neither \texttt{\textquotedbl@\textquotedbl} nor \textit{break} pattern)</text>
-<path matrix="1 0 0 1 380 -260" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1 0 0 1 380 -292" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<text matrix="1 0 0 1 376 -260" transformations="translations" pos="48 816" stroke="black" type="label" width="45.47" height="5.659" depth="1.69" halign="right" valign="baseline" size="footnote">“FragmentList”</text>
-<text matrix="1 0 0 1 376 -292" transformations="translations" pos="48 816" stroke="black" type="label" width="17.191" height="5.583" depth="0.06" halign="right" valign="baseline" size="footnote">“Text”</text>
-<path matrix="1.21429 0 0 1 92.5714 -320.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -315.035" transformations="translations" pos="128 768" stroke="black" type="label" width="96.657" height="7.075" depth="2.11" halign="center" valign="baseline">single \textbf{symbol} codepoint</text>
-<text matrix="1 0 0 1 376 -356" transformations="translations" pos="48 816" stroke="black" type="label" width="88.461" height="5.647" depth="1.59" halign="right" valign="baseline" size="footnote">“Symbol-Style PaxterPhrase”</text>
-<text matrix="1 0 0 1 120.112 -323.035" transformations="translations" pos="128 768" stroke="black" type="label" width="127.556" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Ps}, \textit{Pe}, \textit{Pi}, \textit{Pf}, \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So})</text>
-<path matrix="1 0 0 1 0 -40" stroke="black" pen="fat">
-32 728 m
-80 728 l
-</path>
-<path matrix="1 0 0 1 88 -24" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 56 -100" transformations="translations" pos="128 768" stroke="black" type="label" width="5.379" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
-<path matrix="1 0 0 1 192 -24" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 160 -100" transformations="translations" pos="128 768" stroke="black" type="label" width="5.379" height="7.318" depth="1.03" halign="center" valign="center">\texttt{]}</text>
-<path matrix="1 0 0 1 -4 -60" stroke="black" pen="fat">
-196 728 m
-212 728 l
-</path>
-<path matrix="1 0 0 1 -4 -60" stroke="black" pen="fat">
-268 728 m
-284 728 l
-</path>
-<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="40.946" height="6.984" depth="0.07" valign="baseline">\textbf{Document}</text>
-<path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1 0 0 1 380 -8" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1.07143 0 0 1 94.857 27.998" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 104.112 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="53.769" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
-<text matrix="1 0 0 1 104.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="93.208" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with end-of-string as the \textit{break} pattern</text>
-<path matrix="0.928575 0 0 0.666667 221.143 245.333" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 212 -8" transformations="translations" pos="128 768" stroke="black" type="label" width="89.445" height="6.977" depth="1.93" halign="center" valign="center">matches \textit{break} pattern</text>
-<path matrix="1.14286 0 0 1 -4.57142 8" stroke="black" fill="lightyellow" pen="fat">
-32 752 m
-256 752 l
-</path>
-<path matrix="1.66671 0 0 1 -208.013 8" stroke="black" fill="lightyellow" pen="fat">
-360 752 m
-384 752 l
-</path>
-<path matrix="1 0 0 1 32 12" stroke="black" pen="fat">
-252 724 m
-268 724 l
-</path>
-<path matrix="1.07143 0 0 1 110.857 -148.002" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -143.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.769" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
-<text matrix="1 0 0 1 120.112 -151.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.003" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
-<path matrix="1.07143 0 0 1 110.857 -180.002" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -175.035" transformations="translations" pos="128 768" stroke="black" type="label" width="73.165" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{NonRecursiveText}</text>
-<text matrix="1 0 0 1 120.112 -183.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.004" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
-<path matrix="0.5 0 0 1 80 -148.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 16.1124 -143.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.039" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{/[\#&lt;]*\{/}</text>
-<text matrix="1 0 0 1 16.1124 -151.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
-<path matrix="0.5 0 0 1 80 -180.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 16.112 -175.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.039" height="7.318" depth="1.03" halign="center" valign="baseline">\texttt{/[\#&lt;]*&quot;/}</text>
-<text matrix="1 0 0 1 16.112 -183.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
-<path matrix="1 0 0 1 0 32" stroke="black" dash="dashed" pen="heavier">
-92 612 m
-92 540 l
-332 540 l
-332 612 l
-h
-</path>
-<path matrix="1 0 0 1 0 24" stroke="black" pen="fat">
-144 664 m
-152 664
-156 664
-160 660
-160 656
-160 652
-160 648
-164 644
-168 644
-176 644 c
-</path>
-<path matrix="1 0 0 1 0 32" stroke="black" pen="fat">
-92 592 m
-96 592
-100 588
-100 584
-100 568
-100 564
-104 560
-108 560
-116 560 c
-</path>
-<path matrix="1 0 0 1 0 32" stroke="black" pen="fat">
-308 560 m
-316 560
-320 560
-324 564
-324 568
-324 584
-324 588
-328 592
-332 592 c
-</path>
-<path matrix="0.181818 0 0 1 295.273 12" stroke="black" fill="pink" pen="heavier">
-180 652 m
-180 660 l
-268 660 l
-268 652 l
-h
-</path>
-<text matrix="1 0 0 1 160 6.467" transformations="translations" pos="176 660" stroke="black" type="label" width="7.841" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
-<path matrix="1 0 0 1 0 24" stroke="black" pen="fat">
-296 644 m
-328 644 l
-</path>
-<text matrix="1 0 0 1 376 -184" transformations="translations" pos="48 816" stroke="black" type="label" width="40.943" height="5.591" depth="1.59" halign="right" valign="baseline" size="footnote">“PaxterApply”</text>
-<path matrix="1 0 0 1 380 -184" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1.63157 0 0 1 -194.526 32" stroke="black" pen="fat">
-308 592 m
-384 592 l
-</path>
-<path matrix="0.181818 0 0 1 195.273 32" stroke="black" fill="pink" pen="heavier">
-180 652 m
-180 660 l
-268 660 l
-268 652 l
-h
-</path>
-<text matrix="1 0 0 1 60 26.467" transformations="translations" pos="176 660" stroke="black" type="label" width="7.84" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
-<path matrix="1 0 0 1 0 24" stroke="black" pen="fat">
-144 664 m
-228 664 l
-</path>
-<path matrix="1.34286 0 0 1 -83.657 24" stroke="black" pen="fat">
-244 664 m
-384 664 l
-</path>
-<path matrix="1.21429 0 0 1 92.5713 -224.002" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -219.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.769" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
-<text matrix="1 0 0 1 120.112 -227.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.004" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
-<path matrix="1.21429 0 0 1 92.5713 -256.002" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -251.035" transformations="translations" pos="128 768" stroke="black" type="label" width="73.166" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{NonRecursiveText}</text>
-<text matrix="1 0 0 1 120.112 -259.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.003" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
-<path matrix="0.5 0 0 1 64 -224.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 0.1124 -219.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.038" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{/[\#&lt;]*\{/}</text>
-<text matrix="1 0 0 1 0.1124 -227.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
-<path matrix="0.5 0 0 1 64 -256.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 0.112 -251.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.038" height="7.318" depth="1.03" halign="center" valign="baseline">\texttt{/[\#&lt;]*&quot;/}</text>
-<text matrix="1 0 0 1 0.112 -259.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
-<path matrix="1.5 0 0 1 -102 -44" stroke="black" pen="fat">
-172 592 m
-188 592 l
-</path>
-<path matrix="1.5 0 0 1 -102 -44" stroke="black" pen="fat">
-172 560 m
-188 560 l
-</path>
-<path matrix="1 0 0 1 0 32" stroke="black" pen="fat">
-172 592 m
-188 592 l
-</path>
-<path matrix="1 0 0 1 0 32" stroke="black" pen="fat">
-172 560 m
-188 560 l
-</path>
-<path matrix="1 0 0 0 47.9999 484" stroke="black" pen="fat">
-268 560 m
-384 560 l
-</path>
-<path matrix="1 0 0 1 380 -324" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<text matrix="1 0 0 1 376 -324" transformations="translations" pos="48 816" stroke="black" type="label" width="70.408" height="5.591" depth="0.06" halign="right" valign="baseline" size="footnote">“Normal PaxterPhrase”</text>
-<path matrix="1.21429 0 0 1 92.5713 -288.002" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -283.035" transformations="translations" pos="128 768" stroke="black" type="label" width="73.165" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{NonRecursiveText}</text>
-<text matrix="1 0 0 1 120.112 -291.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.003" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
-<path matrix="0.5 0 0 1 64 -288.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 0.112 -283.035" transformations="translations" pos="128 768" stroke="black" type="label" width="48.418" height="7.318" depth="1.03" halign="center" valign="baseline">\texttt{/[\#&lt;]*\textbackslash|/}</text>
-<text matrix="1 0 0 1 0.112 -291.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
-<path matrix="1.5 0 0 1 -102 -76" stroke="black" pen="fat">
-172 560 m
-188 560 l
-</path>
-<path matrix="0.181818 0 0 1 87.273 -204" stroke="black" fill="pink" pen="heavier">
-180 652 m
-180 660 l
-268 660 l
-268 652 l
-h
-</path>
-<text matrix="1 0 0 1 -48 -209.533" transformations="translations" pos="176 660" stroke="black" type="label" width="7.841" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
-<path matrix="1.22222 0 0 1 -5.77778 32" stroke="black" pen="fat">
-116 420 m
-152 420 l
-</path>
-<path matrix="1 0 0 1 47.9999 -108" stroke="black" pen="fat">
-268 560 m
-384 560 l
-</path>
-<path matrix="1 0 0 1 380 -356" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="0.785714 0 0 1 55.4286 -708.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 28.1124 -703.035" transformations="translations" pos="128 768" stroke="black" type="label" width="16.279" height="6.446" depth="0.07" halign="center" valign="baseline">\textbf{text}</text>
-<text matrix="1 0 0 1 28.1124 -711.035" transformations="translations" pos="128 768" stroke="black" type="label" width="70.625" height="4.568" depth="1.26" halign="center" valign="baseline" size="6">(not containing \textit{break} pattern)</text>
-<path matrix="0.928575 0 0 0.666667 197.143 -450.667" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 188 -704" transformations="translations" pos="128 768" stroke="black" type="label" width="89.445" height="6.977" depth="1.93" halign="center" valign="center">matches \textit{break} pattern</text>
-<path matrix="2 0 0 1 -184 -288" stroke="black" pen="fat">
-192 352 m
-224 352 l
-</path>
-<path matrix="1.14286 0 0 1 -6.8572 -288" stroke="black" pen="fat">
-328 352 m
-384 352 l
-</path>
-<path matrix="1 0 0 1 380 -744" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<text matrix="1 0 0 1 -12 -392" transformations="translations" pos="48 816" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" valign="baseline">\textbf{Identifier}</text>
-<path matrix="1 0 0 1 -16 -392" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1.21429 0 0 1 -7.42863 -356.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<path matrix="1 0 0 1 380 -392" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<text matrix="1 0 0 1 20.1124 -351.035" transformations="translations" pos="128 768" stroke="black" type="label" width="78.525" height="7.083" depth="0.07" halign="center" valign="baseline">identifier start \textbf{char}</text>
-<text matrix="1 0 0 1 20.1124 -359.035" transformations="translations" pos="128 768" stroke="black" type="label" width="112.306" height="4.567" depth="0.97" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Nl} and \texttt{&quot;\_&quot;})</text>
-<path matrix="1.21429 0 0 1 180.571 -376.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 208.112 -371.035" transformations="translations" pos="128 768" stroke="black" type="label" width="79.671" height="7.083" depth="0.07" halign="center" valign="baseline">identifier cont.\ \textbf{char}</text>
-<text matrix="1 0 0 1 208.112 -379.035" transformations="translations" pos="128 768" stroke="black" type="label" width="127.663" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Mn}, \textit{Mc}, \textit{Nl}, \textit{Nd}, \textit{Pc})</text>
-<path matrix="1.125 0 0 1 0.00002415 96" stroke="black" pen="fat">
-192 320 m
-384 320 l
-</path>
-<path matrix="1.2 0 0 1 -6.4 96" stroke="black" pen="fat">
-32 320 m
-72 320 l
-</path>
-<path matrix="1 0 0 1 4 32" stroke="black" pen="fat">
-56 528 m
-56 524
-56 520
-60 516
-64 516
-96 516 c
-</path>
-<path matrix="1 0 0 1 4 32" stroke="black" pen="fat">
-56 496 m
-56 492
-56 488
-60 484
-64 484
-96 484 c
-</path>
-<path matrix="1 0 0 1 4 32" stroke="black" pen="fat">
-56 464 m
-56 460
-56 456
-60 452
-64 452
-96 452 c
-</path>
-<path matrix="1.12904 0 0 0 -4.12905 800" stroke="black" pen="fat">
-32 800 m
-156 800 l
-</path>
-<path matrix="1.12904 0 0 1 -19.6127 0" stroke="black" pen="fat">
-276 800 m
-400 800 l
-</path>
-<text matrix="1 0 0 1 -12 -448" transformations="translations" pos="48 816" stroke="black" type="label" width="39.104" height="7.283" depth="0.07" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1 0 0 1 -16 -448" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1 0 0 1 380 -448" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<path matrix="1 0 0 1 0 56" stroke="black" pen="fat">
-32 304 m
-432 304 l
-</path>
-<path matrix="1.07143 0 0 0.666667 110.857 -174.667" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -431.035" transformations="translations" pos="128 768" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" halign="center" valign="baseline">\textbf{Command}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 -198.667" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -455.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 -222.667" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -479.035" transformations="translations" pos="128 768" stroke="black" type="label" width="35.517" height="7.057" depth="1.85" halign="center" valign="baseline">\textbf{Operator}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 -246.667" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -503.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.648" height="7.064" depth="0.08" halign="center" valign="baseline">\textbf{JSON Number}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 -270.667" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -527.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 -294.667" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -551.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.104" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 -318.667" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 120.112 -575.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1 0 0 1 68 -472" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 36 -548" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
-<path matrix="1 0 0 1 68 -448" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 36 -524" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.537" depth="1.25" halign="center" valign="center">\texttt{(}</text>
-<path matrix="1 0 0 1 68 -496" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 36 -572" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.496" depth="1.21" halign="center" valign="center">\texttt{\{}</text>
-<path matrix="1 0 0 1 236 -472" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 204 -548" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{]}</text>
-<path matrix="1 0 0 1 236 -448" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 204 -524" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.537" depth="1.25" halign="center" valign="center">\texttt{)}</text>
-<path matrix="1 0 0 1 236 -496" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 204 -572" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.496" depth="1.21" halign="center" valign="center">\texttt{\}}</text>
-<path matrix="1 0 0 1 16 56" stroke="black" pen="fat">
-156 188 m
-172 188 l
-</path>
-<path matrix="1 0 0 1 16 56" stroke="black" pen="fat">
-156 164 m
-172 164 l
-</path>
-<path matrix="1 0 0 1 16 56" stroke="black" pen="fat">
-156 140 m
-172 140 l
-</path>
-<path matrix="1 0 0 1 16 56" stroke="black" pen="fat">
-292 188 m
-308 188 l
-</path>
-<path matrix="1 0 0 1 16 56" stroke="black" pen="fat">
-292 164 m
-308 164 l
-</path>
-<path matrix="1 0 0 1 16 56" stroke="black" pen="fat">
-292 140 m
-308 140 l
-</path>
-<path matrix="1 0 0 1 -8 56" stroke="black" pen="fat">
-144 176 m
-144 172
-144 168
-148 164
-152 164
-164 164 c
-</path>
-<path matrix="1 0 0 1 -8 56" stroke="black" pen="fat">
-144 200 m
-144 196
-144 192
-148 188
-152 188
-164 188 c
-</path>
-<path matrix="1 0 0 1 -8 56" stroke="black" pen="fat">
-144 224 m
-144 220
-144 216
-148 212
-152 212
-196 212 c
-</path>
-<path matrix="1 0 0 1 -8 56" stroke="black" pen="fat">
-144 248 m
-144 244
-144 240
-148 236
-152 236
-196 236 c
-</path>
-<path matrix="1 0 0 1 -8 104" stroke="black" pen="fat">
-144 224 m
-144 220
-144 216
-148 212
-152 212
-196 212 c
-</path>
-<path matrix="1 0 0 1 -8 104" stroke="black" pen="fat">
-144 248 m
-144 244
-144 240
-148 236
-152 236
-196 236 c
-</path>
-<path matrix="1 0 0 1 -8 56" stroke="black" pen="fat">
-316 284 m
-360 284
-364 284
-368 280
-368 276
-368 128
-368 124
-364 120
-360 120
-132 120
-128 120
-124 124
-124 128
-124 296
-124 300
-128 304
-132 304
-136 304
-140 304
-144 300
-144 296
-144 148
-144 144
-148 140
-152 140
-164 140 c
-</path>
-<path matrix="1 0 0 1 -8 56" stroke="black" pen="fat">
-348 140 m
-360 140
-364 140
-368 136
-368 132
-368 128 c
-</path>
-<path matrix="1 0 0 1 -8 80" stroke="black" pen="fat">
-348 140 m
-360 140
-364 140
-368 136
-368 132
-368 128 c
-</path>
-<path matrix="1 0 0 1 -8 104" stroke="black" pen="fat">
-348 140 m
-360 140
-364 140
-368 136
-368 132
-368 128 c
-</path>
-<path matrix="1 0 0 1 -8 56" stroke="black" pen="fat">
-316 212 m
-360 212
-364 212
-368 208
-368 204
-368 200 c
-</path>
-<path matrix="1 0 0 1 -8 80" stroke="black" pen="fat">
-316 212 m
-360 212
-364 212
-368 208
-368 204
-368 200 c
-</path>
-<path matrix="1 0 0 1 -8 104" stroke="black" pen="fat">
-316 212 m
-360 212
-364 212
-368 208
-368 204
-368 200 c
-</path>
-<path matrix="1 0 0 1 12 -556" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 -20 -636" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="1.474" depth="1.61" halign="center" valign="baseline">\texttt{,}</text>
-<path matrix="1 0 0 1 12 -576" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 -20 -656" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="4.586" depth="1.61" halign="center" valign="baseline">\texttt{;}</text>
-<path matrix="1.35715 0 0 1 86.2853 -620.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 132.112 -615.035" transformations="translations" pos="128 768" stroke="black" type="label" width="54.635" height="6.977" depth="1.93" halign="center" valign="baseline">operator \textbf{char}</text>
-<text matrix="1 0 0 1 132.112 -623.035" transformations="translations" pos="128 768" stroke="black" type="label" width="141.795" height="4.569" depth="0.96" halign="center" valign="baseline" size="6">(Unicode classes \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So}, excl.\ \texttt{&quot;,&quot;} and \texttt{&quot;;&quot;})</text>
-<path matrix="1 0 0 1 380 -656" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<text matrix="1 0 0 1 -12 -448" transformations="translations" pos="48 816" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1 0 0 1 -16 -656" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
-h
-</path>
-<text matrix="1 0 0 1 -12 -656" transformations="translations" pos="48 816" stroke="black" type="label" width="35.517" height="7.057" depth="1.85" valign="baseline">\textbf{Operator}</text>
-<path matrix="0.716981 0 0 1 9.0566 0" stroke="black" pen="fat">
-32 152 m
-244 152 l
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-216 756 m
-224 756
-228 756
-232 760
-232 764
-232 768
-232 772
-236 776
-240 776
-244 776
-248 776
-252 772
-252 768
-252 760
-252 756
-256 752
-260 752
-268 752 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-380 752 m
-388 752
-392 752
-396 748
-396 744
-396 740
-392 736
-388 736
-76 736
-72 736
-68 740
-68 744
-68 768
-68 772
-72 776
-76 776
-80 776
-84 776
-88 772
-88 768
-88 764
-88 760
-92 756
-96 756
-104 756 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-296 684 m
-304 684
-308 684
-312 680
-312 676
-312 672
-308 668
-304 668
-88 668
-84 668
-80 664
-80 660
-80 648
-80 644
-84 640
-88 640
-116 640 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-160 696 m
-160 676
-160 672
-156 668
-152 668
-144 668 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-344 684 m
-352 684
-356 684
-360 680
-360 676
-360 648
-360 644
-364 640
-368 640
-376 640 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-32 704 m
-52 704
-56 704
-60 700
-60 696
-60 476
-60 472
-64 468
-68 468
-120 468 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-404 412 m
-412 412
-416 412
-420 408
-420 404
-420 400
-420 396
-416 392
-412 392
-240 392
-236 392
-232 396
-232 400
-232 424
-232 428
-236 432
-240 432
-244 432
-248 432
-252 428
-252 424
-252 420
-252 416
-256 412
-260 412
-268 412 c
-</path>
-<path matrix="1 0 0 1 -24 -16" stroke="black" pen="fat">
-104 160 m
-104 156
-108 152
-112 152
-124 152 c
-</path>
-<path matrix="1.33333 0 0 1 -144 -16" stroke="black" pen="fat">
-360 168 m
-432 168 l
-</path>
-<path matrix="1 0 0 1 12 -576" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 -20 -656" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="4.586" depth="1.61" halign="center" valign="baseline">\texttt{;}</text>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-32 168 m
-72 168
-76 168
-80 164
-80 160
-80 140
-80 136
-84 132
-88 132
-100 132 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-116 132 m
-376 132
-380 132
-384 136
-384 140
-384 160
-384 164
-388 168
-392 168
-432 168 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-116 152 m
-128 152
-132 152
-136 148
-136 144
-136 140
-136 136
-140 132
-144 132
-160 132 c
-</path>
-<path matrix="1 0 0 1 0 -16" stroke="black" pen="fat">
-336 168 m
-344 168
-348 168
-352 164
-352 160
-352 152
-352 148
-348 144
-344 144
-176 144
-172 144
-168 148
-168 152
-168 160
-168 164
-172 168
-176 168
-184 168 c
-</path>
-</page>
-<page>
-<layer name="alpha"/>
-<view layers="alpha" active="alpha"/>
 <text layer="alpha" matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="40.947" height="6.984" depth="0.07" valign="baseline">\textbf{Document}</text>
 <path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
 48 812 m
@@ -1331,7 +356,7 @@ h
 h
 </path>
 <text matrix="1 0 0 1 104.112 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="53.768" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
-<text matrix="1 0 0 1 104.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="93.209" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with end-of-string as the \textit{break} pattern</text>
+<text matrix="1 0 0 1 104.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="93.208" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with end-of-string as the \textit{break} pattern</text>
 <path matrix="1.12904 0 0 0 -4.12905 800" stroke="black" pen="fat">
 32 800 m
 156 800 l
@@ -1344,7 +369,7 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="134.575" height="7.603" depth="2.01" valign="baseline">\textbf{FragmentList} (with \textit{break} pattern)</text>
+<text layer="alpha" matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="134.576" height="7.603" depth="2.01" valign="baseline">\textbf{FragmentList} (with \textit{break} pattern)</text>
 <path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
@@ -1374,7 +399,7 @@ h
 <path matrix="1 0 0 1 180 84" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 148 8" transformations="translations" pos="128 768" stroke="black" type="label" width="5.379" height="6.273" depth="0.81" halign="center" valign="center">\texttt{@}</text>
+<text matrix="1 0 0 1 148 8" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="6.273" depth="0.81" halign="center" valign="center">\texttt{@}</text>
 <text matrix="1 0 0 1 32.1124 12.965" transformations="translations" pos="128 768" stroke="black" type="label" width="61.469" height="6.439" depth="1.99" halign="center" valign="baseline">non-empty \textbf{text}</text>
 <text matrix="1 0 0 1 212.112 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="40.19" height="7.064" depth="0.07" halign="center" valign="baseline">\textbf{Command}</text>
 <text matrix="1 0 0 1 32.1124 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="100.806" height="4.568" depth="1.26" halign="center" valign="baseline" size="6">(containing neither \texttt{\textquotedbl@\textquotedbl} nor \textit{break} pattern)</text>
@@ -1385,7 +410,7 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 212 32" transformations="translations" pos="128 768" stroke="black" type="label" width="89.444" height="6.977" depth="1.93" halign="center" valign="center">matches \textit{break} pattern</text>
+<text matrix="1 0 0 1 212 32" transformations="translations" pos="128 768" stroke="black" type="label" width="89.445" height="6.977" depth="1.93" halign="center" valign="center">matches \textit{break} pattern</text>
 <path matrix="1.14286 0 0 1 -4.57142 48" stroke="black" fill="lightyellow" pen="fat">
 32 752 m
 256 752 l
@@ -1463,7 +488,7 @@ h
 52 808 l
 h
 </path>
-<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" valign="baseline">\textbf{Command}</text>
+<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="40.19" height="7.064" depth="0.07" valign="baseline">\textbf{Command}</text>
 <path matrix="1 0 0 1 380 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
@@ -1478,7 +503,7 @@ h
 h
 </path>
 <text matrix="1 0 0 1 376 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="71.858" height="5.647" depth="1.59" halign="right" valign="baseline" size="footnote">“Id-Style PaxterPhrase”</text>
-<text matrix="1 0 0 1 108.112 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="39.104" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
+<text matrix="1 0 0 1 108.112 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
 <path matrix="1 0 0 1 47.9999 72" stroke="black" pen="fat">
 268 588 m
 384 588 l
@@ -1499,8 +524,8 @@ h
 52 808 l
 h
 </path>
-<text matrix="1 0 0 1 376 -148" transformations="translations" pos="48 816" stroke="black" type="label" width="45.469" height="5.659" depth="1.69" halign="right" valign="baseline" size="footnote">“FragmentList”</text>
-<text matrix="1 0 0 1 376 -180" transformations="translations" pos="48 816" stroke="black" type="label" width="17.192" height="5.583" depth="0.06" halign="right" valign="baseline" size="footnote">“Text”</text>
+<text matrix="1 0 0 1 376 -148" transformations="translations" pos="48 816" stroke="black" type="label" width="45.47" height="5.659" depth="1.69" halign="right" valign="baseline" size="footnote">“FragmentList”</text>
+<text matrix="1 0 0 1 376 -180" transformations="translations" pos="48 816" stroke="black" type="label" width="17.191" height="5.583" depth="0.06" halign="right" valign="baseline" size="footnote">“Text”</text>
 <path matrix="1.21429 0 0 1 92.5714 -208.002" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
@@ -1510,7 +535,7 @@ h
 </path>
 <text matrix="1 0 0 1 120.112 -203.035" transformations="translations" pos="128 768" stroke="black" type="label" width="96.658" height="7.075" depth="2.11" halign="center" valign="baseline">single \textbf{symbol} codepoint</text>
 <text matrix="1 0 0 1 376 -244" transformations="translations" pos="48 816" stroke="black" type="label" width="88.46" height="5.647" depth="1.59" halign="right" valign="baseline" size="footnote">“Symbol-Style PaxterPhrase”</text>
-<text matrix="1 0 0 1 120.112 -211.035" transformations="translations" pos="128 768" stroke="black" type="label" width="127.556" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Ps}, \textit{Pe}, \textit{Pi}, \textit{Pf}, \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So})</text>
+<text matrix="1 0 0 1 120.112 -211.035" transformations="translations" pos="128 768" stroke="black" type="label" width="127.555" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Ps}, \textit{Pe}, \textit{Pi}, \textit{Pf}, \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So})</text>
 <path matrix="1 0 0 1 0 72" stroke="black" pen="fat">
 32 728 m
 80 728 l
@@ -1539,7 +564,7 @@ h
 h
 </path>
 <text matrix="1 0 0 1 120.112 -31.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.769" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
-<text matrix="1 0 0 1 120.112 -39.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.003" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
+<text matrix="1 0 0 1 120.112 -39.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.004" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
 <path matrix="1.07143 0 0 1 110.857 -68.002" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
@@ -1548,7 +573,7 @@ h
 h
 </path>
 <text matrix="1 0 0 1 120.112 -63.035" transformations="translations" pos="128 768" stroke="black" type="label" width="73.165" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{NonRecursiveText}</text>
-<text matrix="1 0 0 1 120.112 -71.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.004" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
+<text matrix="1 0 0 1 120.112 -71.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.003" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
 <path matrix="0.5 0 0 1 80 -36.002" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
@@ -1556,7 +581,7 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 16.1124 -31.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.039" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{/[\#&lt;]*\{/}</text>
+<text matrix="1 0 0 1 16.1124 -31.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.038" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{/[\#&lt;]*\{/}</text>
 <text matrix="1 0 0 1 16.1124 -39.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
 <path matrix="0.5 0 0 1 80 -68.002" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
@@ -1565,7 +590,7 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 16.112 -63.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.039" height="7.318" depth="1.03" halign="center" valign="baseline">\texttt{/[\#&lt;]*&quot;/}</text>
+<text matrix="1 0 0 1 16.112 -63.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.038" height="7.318" depth="1.03" halign="center" valign="baseline">\texttt{/[\#&lt;]*&quot;/}</text>
 <text matrix="1 0 0 1 16.112 -71.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
 <path matrix="1 0 0 1 0 144" stroke="black" dash="dashed" pen="heavier">
 92 612 m
@@ -1615,7 +640,7 @@ h
 268 652 l
 h
 </path>
-<text matrix="1 0 0 1 160 118.467" transformations="translations" pos="176 660" stroke="black" type="label" width="7.841" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
+<text matrix="1 0 0 1 160 118.467" transformations="translations" pos="176 660" stroke="black" type="label" width="7.84" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
 <path matrix="1 0 0 1 0 136" stroke="black" pen="fat">
 296 644 m
 328 644 l
@@ -1638,7 +663,7 @@ h
 268 652 l
 h
 </path>
-<text matrix="1 0 0 1 60 138.467" transformations="translations" pos="176 660" stroke="black" type="label" width="7.84" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
+<text matrix="1 0 0 1 60 138.467" transformations="translations" pos="176 660" stroke="black" type="label" width="7.841" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
 <path matrix="1 0 0 1 0 136" stroke="black" pen="fat">
 144 664 m
 228 664 l
@@ -1654,7 +679,7 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 -107.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.769" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
+<text matrix="1 0 0 1 120.112 -107.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.768" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
 <text matrix="1 0 0 1 120.112 -115.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.004" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
 <path matrix="1.21429 0 0 1 92.5713 -144.002" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
@@ -1664,7 +689,7 @@ h
 h
 </path>
 <text matrix="1 0 0 1 120.112 -139.035" transformations="translations" pos="128 768" stroke="black" type="label" width="73.166" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{NonRecursiveText}</text>
-<text matrix="1 0 0 1 120.112 -147.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.003" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
+<text matrix="1 0 0 1 120.112 -147.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.004" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
 <path matrix="0.5 0 0 1 64 -112.002" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
@@ -1673,7 +698,7 @@ h
 h
 </path>
 <text matrix="1 0 0 1 0.1124 -107.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.038" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{/[\#&lt;]*\{/}</text>
-<text matrix="1 0 0 1 0.1124 -115.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
+<text matrix="1 0 0 1 0.1124 -115.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.178" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
 <path matrix="0.5 0 0 1 64 -144.002" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
@@ -1682,7 +707,7 @@ h
 h
 </path>
 <text matrix="1 0 0 1 0.112 -139.035" transformations="translations" pos="128 768" stroke="black" type="label" width="43.038" height="7.318" depth="1.03" halign="center" valign="baseline">\texttt{/[\#&lt;]*&quot;/}</text>
-<text matrix="1 0 0 1 0.112 -147.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
+<text matrix="1 0 0 1 0.112 -147.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.178" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
 <path matrix="1.5 0 0 1 -102 68" stroke="black" pen="fat">
 172 592 m
 188 592 l
@@ -1717,8 +742,8 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 -171.035" transformations="translations" pos="128 768" stroke="black" type="label" width="73.165" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{NonRecursiveText}</text>
-<text matrix="1 0 0 1 120.112 -179.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.003" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
+<text matrix="1 0 0 1 120.112 -171.035" transformations="translations" pos="128 768" stroke="black" type="label" width="73.166" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{NonRecursiveText}</text>
+<text matrix="1 0 0 1 120.112 -179.035" transformations="translations" pos="128 768" stroke="black" type="label" width="111.004" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">with the flipping of \textit{prefix} as the \textit{break} pattern</text>
 <path matrix="0.5 0 0 1 64 -176.002" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
@@ -1726,7 +751,7 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 0.112 -171.035" transformations="translations" pos="128 768" stroke="black" type="label" width="48.419" height="7.318" depth="1.03" halign="center" valign="baseline">\texttt{/[\#&lt;]*\textbackslash|/}</text>
+<text matrix="1 0 0 1 0.112 -171.035" transformations="translations" pos="128 768" stroke="black" type="label" width="48.418" height="7.318" depth="1.03" halign="center" valign="baseline">\texttt{/[\#&lt;]*\textbackslash|/}</text>
 <text matrix="1 0 0 1 0.112 -179.035" transformations="translations" pos="128 768" stroke="black" type="label" width="32.177" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">\textit{prefix} pattern</text>
 <path matrix="1.5 0 0 1 -102 36" stroke="black" pen="fat">
 172 560 m
@@ -1862,7 +887,7 @@ h
 h
 </path>
 <text matrix="1 0 0 1 208.112 12.965" transformations="translations" pos="128 768" stroke="black" type="label" width="79.671" height="7.083" depth="0.07" halign="center" valign="baseline">identifier cont.\ \textbf{char}</text>
-<text matrix="1 0 0 1 208.112 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="127.663" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Mn}, \textit{Mc}, \textit{Nl}, \textit{Nd}, \textit{Pc})</text>
+<text matrix="1 0 0 1 208.112 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="127.664" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Mn}, \textit{Mc}, \textit{Nl}, \textit{Nd}, \textit{Pc})</text>
 <path matrix="1.125 0 0 1 0.00002415 480" stroke="black" pen="fat">
 192 320 m
 384 320 l
@@ -1917,239 +942,264 @@ h
 52 808 l
 h
 </path>
-<path matrix="1 0 0 1 0 496" stroke="black" pen="fat">
-32 304 m
-432 304 l
-</path>
-<path matrix="1.07143 0 0 0.666667 110.857 265.333" stroke="black" fill="lightgreen" pen="heavier">
+<path matrix="1.07143 0 0 0.666667 158.857 265.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" halign="center" valign="baseline">\textbf{Command}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 241.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 168.112 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" halign="center" valign="baseline">\textbf{Command}</text>
+<path matrix="1.07143 0 0 0.666667 158.857 241.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 -15.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 217.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 168.112 -15.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
+<path matrix="1.07143 0 0 0.666667 158.857 217.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 -39.035" transformations="translations" pos="128 768" stroke="black" type="label" width="35.517" height="7.057" depth="1.85" halign="center" valign="baseline">\textbf{Operator}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 193.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 168.112 -39.035" transformations="translations" pos="128 768" stroke="black" type="label" width="35.517" height="7.057" depth="1.85" halign="center" valign="baseline">\textbf{Operator}</text>
+<path matrix="1.07143 0 0 0.666667 158.857 193.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 -63.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.647" height="7.064" depth="0.08" halign="center" valign="baseline">\textbf{JSON Number}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 169.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 168.112 -63.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.648" height="7.064" depth="0.08" halign="center" valign="baseline">\textbf{JSON Number}</text>
+<path matrix="1.07143 0 0 0.666667 158.857 169.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 -87.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 145.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 168.112 -87.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
+<path matrix="1.07143 0 0 0.666667 158.857 145.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 -111.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1.07143 0 0 0.666667 110.857 121.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 168.112 -111.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.104" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
+<path matrix="1.07143 0 0 0.666667 158.857 121.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 120.112 -135.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1 0 0 1 68 -32" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 168.112 -135.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
+<path matrix="1 0 0 1 116 -32" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 36 -108" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
-<path matrix="1 0 0 1 68 -8" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 84 -108" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
+<path matrix="1 0 0 1 116 -8" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 36 -84" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.537" depth="1.25" halign="center" valign="center">\texttt{(}</text>
-<path matrix="1 0 0 1 68 -56" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 84 -84" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.537" depth="1.25" halign="center" valign="center">\texttt{(}</text>
+<path matrix="1 0 0 1 116 -56" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 36 -132" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.496" depth="1.21" halign="center" valign="center">\texttt{\{}</text>
-<path matrix="1 0 0 1 236 -32" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 84 -132" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.496" depth="1.21" halign="center" valign="center">\texttt{\{}</text>
+<path matrix="1 0 0 1 284 -32" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 204 -108" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{]}</text>
-<path matrix="1 0 0 1 236 -8" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 252 -108" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{]}</text>
+<path matrix="1 0 0 1 284 -8" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 204 -84" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.537" depth="1.25" halign="center" valign="center">\texttt{)}</text>
-<path matrix="1 0 0 1 236 -56" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 252 -84" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.537" depth="1.25" halign="center" valign="center">\texttt{)}</text>
+<path matrix="1 0 0 1 284 -56" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 204 -132" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.496" depth="1.21" halign="center" valign="center">\texttt{\}}</text>
-<path matrix="1 0 0 1 16 496" stroke="black" pen="fat">
+<text matrix="1 0 0 1 252 -132" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.496" depth="1.21" halign="center" valign="center">\texttt{\}}</text>
+<path matrix="1 0 0 1 64 496" stroke="black" pen="fat">
 156 188 m
 172 188 l
 </path>
-<path matrix="1 0 0 1 16 496" stroke="black" pen="fat">
+<path matrix="1 0 0 1 64 496" stroke="black" pen="fat">
 156 164 m
 172 164 l
 </path>
-<path matrix="1 0 0 1 16 496" stroke="black" pen="fat">
+<path matrix="1 0 0 1 64 496" stroke="black" pen="fat">
 156 140 m
 172 140 l
 </path>
-<path matrix="1 0 0 1 16 496" stroke="black" pen="fat">
+<path matrix="1 0 0 1 64 496" stroke="black" pen="fat">
 292 188 m
 308 188 l
 </path>
-<path matrix="1 0 0 1 16 496" stroke="black" pen="fat">
+<path matrix="1 0 0 1 64 496" stroke="black" pen="fat">
 292 164 m
 308 164 l
 </path>
-<path matrix="1 0 0 1 16 496" stroke="black" pen="fat">
+<path matrix="1 0 0 1 64 496" stroke="black" pen="fat">
 292 140 m
 308 140 l
 </path>
-<path matrix="1 0 0 1 -8 496" stroke="black" pen="fat">
-144 176 m
-144 172
-144 168
-148 164
-152 164
-164 164 c
+<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="39.104" height="7.283" depth="0.07" valign="baseline">\textbf{TokenList}</text>
+<path matrix="0.571432 0 0 0.666667 50.857 285.333" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
 </path>
-<path matrix="1 0 0 1 -8 496" stroke="black" pen="fat">
-144 200 m
-144 196
-144 192
-148 188
-152 188
-164 188 c
+<text matrix="1 0 0 1 -4 32" transformations="translations" pos="128 768" stroke="black" type="label" width="48.379" height="7.076" depth="1.93" halign="center" valign="center">whitespaces</text>
+<path matrix="1.07143 0 0 1 -2.28571 0" stroke="black" pen="fat">
+32 800 m
+88 800 l
 </path>
-<path matrix="1 0 0 1 -8 496" stroke="black" pen="fat">
-144 224 m
-144 220
-144 216
-148 212
-152 212
-196 212 c
+<path matrix="1 0 0 1 4 12" stroke="black" pen="fat">
+184 660 m
+184 656
+184 652
+188 648
+192 648
+200 648 c
 </path>
-<path matrix="1 0 0 1 -8 496" stroke="black" pen="fat">
-144 248 m
-144 244
-144 240
-148 236
-152 236
-196 236 c
+<path matrix="1 0 0 1 4 36" stroke="black" pen="fat">
+184 660 m
+184 656
+184 652
+188 648
+192 648
+200 648 c
 </path>
-<path matrix="1 0 0 1 -8 544" stroke="black" pen="fat">
-144 224 m
-144 220
-144 216
-148 212
-152 212
-196 212 c
+<path matrix="1 0 0 1 4 12" stroke="black" pen="fat">
+184 708 m
+184 704
+184 700
+188 696
+192 696
+232 696 c
 </path>
-<path matrix="1 0 0 1 -8 544" stroke="black" pen="fat">
-144 248 m
-144 244
-144 240
-148 236
-152 236
-196 236 c
+<path matrix="1 0 0 1 4 36" stroke="black" pen="fat">
+184 708 m
+184 704
+184 700
+188 696
+192 696
+232 696 c
 </path>
-<path matrix="1 0 0 1 -8 496" stroke="black" pen="fat">
-316 284 m
-360 284
-364 284
-368 280
-368 276
-368 128
-368 124
-364 120
-360 120
-132 120
-128 120
-124 124
-124 128
-124 296
-124 300
-128 304
-132 304
-136 304
-140 304
-144 300
-144 296
-144 148
-144 144
-148 140
-152 140
-164 140 c
+<path matrix="1 0 0 1 4 60" stroke="black" pen="fat">
+184 708 m
+184 704
+184 700
+188 696
+192 696
+232 696 c
 </path>
-<path matrix="1 0 0 1 -8 496" stroke="black" pen="fat">
-348 140 m
-360 140
-364 140
-368 136
-368 132
-368 128 c
+<path matrix="1 0 0 1 4 84" stroke="black" pen="fat">
+184 708 m
+184 704
+184 700
+188 696
+192 696
+232 696 c
 </path>
-<path matrix="1 0 0 1 -8 520" stroke="black" pen="fat">
-348 140 m
-360 140
-364 140
-368 136
-368 132
-368 128 c
+<path matrix="1 0 0 1 4 12" stroke="black" pen="fat">
+352 744 m
+392 744
+396 744
+400 740
+400 736
+400 732 c
 </path>
-<path matrix="1 0 0 1 -8 544" stroke="black" pen="fat">
-348 140 m
-360 140
-364 140
-368 136
-368 132
-368 128 c
+<path matrix="1 0 0 1 4 -12" stroke="black" pen="fat">
+352 744 m
+392 744
+396 744
+400 740
+400 736
+400 732 c
 </path>
-<path matrix="1 0 0 1 -8 496" stroke="black" pen="fat">
-316 212 m
-360 212
-364 212
-368 208
-368 204
-368 200 c
+<path matrix="1 0 0 1 4 -36" stroke="black" pen="fat">
+352 744 m
+392 744
+396 744
+400 740
+400 736
+400 732 c
 </path>
-<path matrix="1 0 0 1 -8 520" stroke="black" pen="fat">
-316 212 m
-360 212
-364 212
-368 208
-368 204
-368 200 c
+<path matrix="1 0 0 1 4 12" stroke="black" pen="fat">
+384 672 m
+392 672
+396 672
+400 668
+400 664 c
 </path>
-<path matrix="1 0 0 1 -8 544" stroke="black" pen="fat">
-316 212 m
-360 212
-364 212
-368 208
-368 204
-368 200 c
+<path matrix="1 0 0 1 4 -12" stroke="black" pen="fat">
+384 672 m
+392 672
+396 672
+400 668
+400 664 c
 </path>
-<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" valign="baseline">\textbf{TokenList}</text>
+<path matrix="1 0 0 1 4 -36" stroke="black" pen="fat">
+384 672 m
+392 672
+396 672
+400 668
+400 664 c
+</path>
+<path stroke="black" pen="fat">
+156 800 m
+432 800 l
+</path>
+<path stroke="black" pen="fat">
+356 780 m
+396 780
+400 780
+404 776
+404 772
+404 624
+404 620
+400 616
+396 616
+68 616
+64 616
+60 620
+60 624
+60 792
+60 796
+64 800
+68 800
+72 800
+76 800
+80 796
+80 792
+80 788
+80 784
+84 780
+88 780
+160 780
+164 780
+168 784
+168 788
+168 792
+168 796
+172 800
+176 800
+180 800
+184 800
+188 796
+188 792
+188 644
+188 640
+192 636
+196 636
+204 636 c
+</path>
 </page>
 <page>
 <layer name="alpha"/>
@@ -2169,8 +1219,8 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 132.112 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="54.636" height="6.977" depth="1.93" halign="center" valign="baseline">operator \textbf{char}</text>
-<text matrix="1 0 0 1 132.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="141.794" height="4.569" depth="0.96" halign="center" valign="baseline" size="6">(Unicode classes \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So}, excl.\ \texttt{&quot;,&quot;} and \texttt{&quot;;&quot;})</text>
+<text matrix="1 0 0 1 132.112 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="54.635" height="6.977" depth="1.93" halign="center" valign="baseline">operator \textbf{char}</text>
+<text matrix="1 0 0 1 132.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="141.795" height="4.569" depth="0.96" halign="center" valign="baseline" size="6">(Unicode classes \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So}, excl.\ \texttt{&quot;,&quot;} and \texttt{&quot;;&quot;})</text>
 <path matrix="1 0 0 1 380 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
@@ -2263,7 +1313,7 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 -12 4" transformations="translations" pos="48 816" stroke="black" type="label" width="153.973" height="7.604" depth="1.93" valign="baseline">\textbf{NonRecursiveText} (with \textit{break} pattern)</text>
+<text layer="alpha" matrix="1 0 0 1 -12 4" transformations="translations" pos="48 816" stroke="black" type="label" width="153.972" height="7.604" depth="1.93" valign="baseline">\textbf{NonRecursiveText} (with \textit{break} pattern)</text>
 <path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l

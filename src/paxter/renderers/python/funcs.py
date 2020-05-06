@@ -41,12 +41,12 @@ def for_statement(context: 'RenderContext', node: PaxterApply):
 
     # Obtain sequence
     id_name = node.options.children[0].name
-    seq = context.visit_token(node.options.children[2])
+    seq = context.transform_token(node.options.children[2])
 
     result = []
     for value in seq:
         context.env[id_name] = value
-        rendered = context.visit_token(node.main_arg)
+        rendered = context.transform_token(node.main_arg)
         result.append(rendered)
 
     return result
@@ -98,7 +98,7 @@ def if_statement(context: 'RenderContext', node: PaxterApply):  # noqa: C901
         raise_error("ill-formed sequence of tokens")
 
     # Evaluate conditional clause
-    cond = context.visit_token(cond_node)
+    cond = context.transform_token(cond_node)
     if callable(cond):
         cond = cond()
 
@@ -106,7 +106,7 @@ def if_statement(context: 'RenderContext', node: PaxterApply):  # noqa: C901
     result_node = then_node if bool(cond) is target_bool else else_node
     if result_node is None:
         return
-    return context.visit_token(result_node)
+    return context.transform_token(result_node)
 
 
 @DirectApply

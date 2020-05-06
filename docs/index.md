@@ -17,14 +17,13 @@ Paxter is a document-first text pre-processing mini-language, _loosely_ inspired
 
 ## Contents
 
-- [Getting Started](getting_started.md)
-- [Tutorial](tutorial.md)
+- [Getting Started](getting_started.rst)
+- [Tutorials](tutorials.md)
 - [Syntax Reference](syntax.rst)
 - [Core API Reference](core_api.md)
 
 
-Indices and tables
-==================
+## Indices and tables
 
 - ```eval_rst
   :ref:`genindex`
