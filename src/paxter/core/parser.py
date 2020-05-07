@@ -30,11 +30,12 @@ class ParseContext:
         input_text = 'Hello @name'
         tree = ParseContext(input_text).parse()
     """
+    #: Document source text
     input_text: str
 
     def parse(self) -> FragmentList:
         """
-        Parses the input text starting from the beginning.
+        Parses the already provided input text starting from the beginning.
         This method is expensive and should not be called more than once.
         """
         end_pos, node = self.parse_inner_fragment_list(0, GLOBAL_SCOPE_PATTERN)

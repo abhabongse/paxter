@@ -21,12 +21,23 @@ BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
 class RenderContext:
     """
     A suite of Paxter document tree renderer.
+
+    Users of this renderer may embed and run python code
+    directly from within the Paxter document source file.
     """
+    #: Document source text
     input_text: str
+    #: Python execution environment data
     env: dict
+    #: Parsed document tree
     tree: FragmentList
 
     def render(self) -> str:
+        """
+        Transforms the already provided input source text,
+        the initial python execution environment data,
+        and the parsed document tree, into the final output.
+        """
         return flatten(self.transform_fragment_list(self.tree))
 
     def transform_token(self, token: Token) -> Any:

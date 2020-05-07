@@ -37,7 +37,7 @@ which contains a document **written in Paxter language syntax**.
 
 .. note::
 
-   Learn more about :doc:`Paxter language grammar and features <tutorials>`.
+   Learn more about :doc:`Paxter language grammar and features <paxter_language_tutorial>`.
 
 Parsing
 ~~~~~~~
@@ -146,8 +146,8 @@ The above code will output the following.
 
 .. note::
 
-   Learn more about :doc:`how to use Python authoring mode <tutorials>`
-   and :doc:`how to write custom renderer <tutorials>`.
+   Learn more about :doc:`how to use Python authoring mode <python_authoring_mode_tutorial>`
+   and :doc:`how to write custom renderer <custom_renderer_tutorial>`.
 
 Create Your Function
 ~~~~~~~~~~~~~~~~~~~~

@@ -1,4 +1,4 @@
-# Core API Documentation
+# Core API Reference
 
 Paxter language package provides the following core functionality.
 
@@ -81,7 +81,7 @@ Classes in this subsection is for reference only.
 
 ```eval_rst
 .. autoclass:: paxter.core.ScopePattern
-   :members: opened, closed
+   :members: opening, closing
 
 .. autoclass:: paxter.core.LineCol
    :members: line, col
