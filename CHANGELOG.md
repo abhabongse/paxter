@@ -1,10 +1,11 @@
 # Changelog
 
-## 0.4.0 (not yet released)
+## 0.4.0 (7 May 2020)
 
 -   The entire Paxter language grammar is re-designed from the ground up. _No longer compatible with all previous versions._
 -   Parsed tree transformers are now called renderers.
 -   Simple Snake flavor of tree transformers (i.e. renderers) are removed and no longer exists.
+-   ReadTheDocs documentation is now set up.
 
 ## 0.3.0 (14 March 2020)
 
