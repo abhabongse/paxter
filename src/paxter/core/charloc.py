@@ -4,18 +4,20 @@ into 1-indexed line number and column number.
 """
 from dataclasses import InitVar, dataclass, field
 
-__all__ = ['LineCol']
+__all__ = ['CharLoc']
 
 
 @dataclass
-class LineCol:
+class CharLoc:
     """
     The starting or ending position of a token within the input text.
     """
     input_text: InitVar[str]
     pos: InitVar[int]
+
     #: 1-index line number
     line: int = field(init=False)
+
     #: 1-index column index value
     col: int = field(init=False)
 

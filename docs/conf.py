@@ -12,6 +12,7 @@
 
 import os
 import sys
+
 from recommonmark.transform import AutoStructify
 
 sys.path.insert(
@@ -28,7 +29,6 @@ copyright = '2020, Abhabongse Janthong'
 author = 'Abhabongse Janthong'
 github_doc_root = 'https://github.com/abhabongse/paxter/tree/master/docs/'
 version = paxter.__version__
-
 
 # -- General configuration ---------------------------------------------------
 

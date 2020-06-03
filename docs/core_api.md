@@ -46,12 +46,8 @@ The result of the parsing yields the parsed tree consisting of the following cla
    :members: inner, scope_pattern, is_command
    :show-inheritance:
 
-.. autoclass:: paxter.core.PaxterPhrase
+.. autoclass:: paxter.core.Command
    :members: inner, scope_pattern
-   :show-inheritance:
-
-.. autoclass:: paxter.core.PaxterApply
-   :members: id, options, main_arg
    :show-inheritance:
 ```
 
@@ -80,9 +76,12 @@ Here are the list of exceptions raised from this library.
 Classes in this subsection is for reference only.
 
 ```eval_rst
-.. autoclass:: paxter.core.ScopePattern
+.. autoclass:: paxter.core.EnclosingPattern
    :members: opening, closing
 
-.. autoclass:: paxter.core.LineCol
+.. autoclass:: paxter.core.GlobalEnclosingPattern
+   :members: opening, closing
+
+.. autoclass:: paxter.core.CharLoc
    :members: line, col
 ```

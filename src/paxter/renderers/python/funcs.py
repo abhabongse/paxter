@@ -4,9 +4,8 @@ Collection of `PaxterApply` function wrappers.
 import inspect
 from typing import Any, Iterator, TYPE_CHECKING
 
-from paxter.core import Identifier, PaxterApply, Text
+from paxter.core import CharLoc, Command, Identifier, Text
 from paxter.core.exceptions import PaxterRenderError
-from paxter.core.line_col import LineCol
 from paxter.renderers.python.wrappers import DirectApply
 
 if TYPE_CHECKING:
@@ -14,7 +13,7 @@ if TYPE_CHECKING:
 
 
 @DirectApply
-def for_statement(context: 'RenderContext', node: PaxterApply):
+def for_statement(context: 'RenderContext', node: Command):
     """
     Simulates simple for loops.
     """
@@ -22,7 +21,7 @@ def for_statement(context: 'RenderContext', node: PaxterApply):
     def raise_error(message):
         raise PaxterRenderError(
             f"{message} in for statement at %(pos)s",
-            pos=LineCol(context.input_text, node.options.start_pos),
+            pos=CharLoc(context.input_text, node.options.start_pos),
         )
 
     if not (node.options
@@ -53,7 +52,7 @@ def for_statement(context: 'RenderContext', node: PaxterApply):
 
 
 @DirectApply
-def if_statement(context: 'RenderContext', node: PaxterApply):  # noqa: C901
+def if_statement(context: 'RenderContext', node: Command):  # noqa: C901
     """
     Simulates simple if statement.
     """
@@ -61,7 +60,7 @@ def if_statement(context: 'RenderContext', node: PaxterApply):  # noqa: C901
     def raise_error(message):
         raise PaxterRenderError(
             f"{message} in if statement at %(pos)s",
-            pos=LineCol(context.input_text, node.options.start_pos),
+            pos=CharLoc(context.input_text, node.options.start_pos),
         )
 
     target_bool = True
@@ -110,7 +109,7 @@ def if_statement(context: 'RenderContext', node: PaxterApply):  # noqa: C901
 
 
 @DirectApply
-def python_unsafe_exec(context: 'RenderContext', node: PaxterApply):
+def python_unsafe_exec(context: 'RenderContext', node: Command):
     """
     Unsafely executes python code within the main argument.
     """

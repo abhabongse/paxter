@@ -3,7 +3,7 @@ Exceptions specific to Paxter language ecosystem.
 """
 from typing import Dict
 
-from paxter.core.line_col import LineCol
+from paxter.core.charloc import CharLoc
 
 __all__ = [
     'PaxterBaseException',
@@ -18,14 +18,14 @@ class PaxterBaseException(Exception):
     #: Error message
     message: str
     #: A mapping from position name to :class:`LineCol` position data
-    positions: Dict[str, LineCol]
+    positions: Dict[str, CharLoc]
 
-    def __init__(self, message: str, **positions: LineCol):
+    def __init__(self, message: str, **positions: CharLoc):
         self.positions = positions
         self.message = self.render(message, self.positions)
         self.args = (self.message,)  # this will make error stack more readable
 
-    def render(self, message: str, positions: Dict[str, LineCol]) -> str:
+    def render(self, message: str, positions: Dict[str, CharLoc]) -> str:
         """
         Substitutes the position placeholder within the message
         with the provided positions data.

@@ -1,16 +1,18 @@
 """
-Core functionality of Paxter document pre-processing language.
+Core functionality of Paxter text pre-processing language.
 """
+from paxter.core.charloc import CharLoc
 from paxter.core.data import (
-    Fragment, FragmentList, Identifier, Number, Operator,
-    PaxterApply, PaxterPhrase, Text, Token, TokenList,
+    Command, Fragment, FragmentList, Identifier, Number,
+    Operator, Text, Token, TokenList,
 )
-from paxter.core.line_col import LineCol
+from paxter.core.enclosing import EnclosingPattern, GlobalEnclosingPattern
 from paxter.core.parser import ParseContext
-from paxter.core.scope_pattern import ScopePattern
 
 __all__ = [
-    'Fragment', 'FragmentList', 'Identifier', 'Number', 'Operator',
-    'PaxterApply', 'PaxterPhrase', 'Text', 'Token', 'TokenList',
-    'LineCol', 'ParseContext', 'ScopePattern',
+    'CharLoc',
+    'Command', 'Fragment', 'FragmentList', 'Identifier',
+    'Number', 'Operator', 'Text', 'Token', 'TokenList',
+    'EnclosingPattern', 'GlobalEnclosingPattern',
+    'ParseContext',
 ]

@@ -2,9 +2,8 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple
 
-from paxter.core import Identifier, Operator, PaxterApply, Token, TokenList
+from paxter.core import CharLoc, Command, Identifier, Operator, Token, TokenList
 from paxter.core.exceptions import PaxterRenderError
-from paxter.core.line_col import LineCol
 
 if TYPE_CHECKING:
     from paxter.renderers.python.visitor import RenderContext
@@ -17,7 +16,7 @@ class BaseApply(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def call(self, context: 'RenderContext', node: PaxterApply) -> Any:
+    def call(self, context: 'RenderContext', node: Command) -> Any:
         """
         Performs the evaluation of the given `PaxterApply` node
         in any way desired (including macro expansion before evaluation).
@@ -31,12 +30,12 @@ class DirectApply(BaseApply):
     Special function call where the wrapped function handles
     the environment and the `PaxterApply` token directly.
     """
-    wrapped: Callable[['RenderContext', PaxterApply], Any]
+    wrapped: Callable[['RenderContext', Command], Any]
 
     def __call__(self, *args, **kwargs):
         return self.wrapped(*args, **kwargs)
 
-    def call(self, context: 'RenderContext', node: PaxterApply) -> Any:
+    def call(self, context: 'RenderContext', node: Command) -> Any:
         return self.wrapped(context, node)
 
 
@@ -55,7 +54,7 @@ class NormalApply(BaseApply):
     def __call__(self, *args, **kwargs):
         return self.wrapped(*args, **kwargs)
 
-    def call(self, context: 'RenderContext', node: PaxterApply) -> Any:
+    def call(self, context: 'RenderContext', node: Command) -> Any:
         if node.options:
             args, kwargs = self.extract_args_and_kwargs(context, node.options)
         else:
@@ -82,13 +81,13 @@ class NormalApply(BaseApply):
                 if keyword_name in kwargs:
                     raise PaxterRenderError(
                         f"duplicated keyword {keyword_name} at %(pos)s",
-                        pos=LineCol(context.input_text, options.start_pos),
+                        pos=CharLoc(context.input_text, options.start_pos),
                     )
                 kwargs[keyword_name] = context.transform_token(value_token)
             elif section_flipped:
                 raise PaxterRenderError(
                     f"found positional argument after keyword argument at %(pos)s",
-                    pos=LineCol(context.input_text, options.start_pos),
+                    pos=CharLoc(context.input_text, options.start_pos),
                 )
             else:
                 args.append(context.transform_token(value_token))
@@ -113,12 +112,12 @@ class NormalApply(BaseApply):
             keyword_name = None
             if len(remains) >= 2:
                 first_token, second_token = remains[0], remains[1]
-                if second_token == Operator.without_pos(symbol='='):
+                if second_token == Operator.without_pos(symbols='='):
                     # Then the first token must be an identifier
                     if not isinstance(first_token, Identifier):
                         raise PaxterRenderError(
                             f"expected an identifier before the '=' sign at %(pos)s",
-                            pos=LineCol(context.input_text, first_token.start_pos),
+                            pos=CharLoc(context.input_text, first_token.start_pos),
                         )
                     keyword_name = first_token.name
                     remains = remains[2:]
@@ -127,7 +126,7 @@ class NormalApply(BaseApply):
             if not remains:
                 raise PaxterRenderError(
                     f"expected a value after the '=' sign at %(pos)s",
-                    pos=LineCol(context.input_text, options.end_pos),
+                    pos=CharLoc(context.input_text, options.end_pos),
                 )
             value_token = remains[0]
             remains = remains[1:]
@@ -138,9 +137,9 @@ class NormalApply(BaseApply):
             # If tokens are still remaining, the next one has to be a ',' operator
             if remains:
                 end_token = remains[0]
-                if end_token != Operator.without_pos(symbol=','):
+                if end_token != Operator.without_pos(symbols=','):
                     raise PaxterRenderError(
                         f"expected a comma token after the value token at %(pos)s",
-                        pos=LineCol(context.input_text, end_token.start_pos),
+                        pos=CharLoc(context.input_text, end_token.start_pos),
                     )
                 remains = remains[1:]

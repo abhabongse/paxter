@@ -1,20 +1,21 @@
 """
-Data definition for node types in Paxter parsed tree.
+Data definitions for node types in Paxter parsed tree.
 """
 import json
 from abc import ABCMeta
 from dataclasses import dataclass, field
-from typing import List, Match, Optional, Union
+from typing import Any, List, Match, Optional, Type, TypeVar, Union
 
-from paxter.core.scope_pattern import ScopePattern
+from paxter.core.enclosing import EnclosingPattern
 
 __all__ = [
     'Token', 'Fragment',
-    'FragmentList', 'Text', 'PaxterApply', 'PaxterPhrase',
     'TokenList', 'Identifier', 'Operator', 'Number',
+    'FragmentList', 'Text', 'Command',
 ]
 
 MainArgument = Union['FragmentList', 'Text']
+T = TypeVar('T', bound='Token')
 
 
 @dataclass
@@ -22,16 +23,44 @@ class Token(metaclass=ABCMeta):
     """
     Base class for all types of nodes to appear in Paxter document tree.
     """
-    #: The index of the starting position of the token.
-    start_pos: int = field(repr=False, compare=False)
-    #: The index right after the ending position of the token.
-    end_pos: int = field(repr=False, compare=False)
+    #: The index of the starting position of the token
+    start_pos: int = field(repr=True, compare=False)
+
+    #: The index right after the ending position of the token
+    end_pos: int = field(repr=True, compare=False)
+
+    @classmethod
+    def from_matchobj(
+            cls: Type[T], matchobj: Match[str], capture_name: str,
+            *args, **kwargs,
+    ) -> T:
+        """
+        Creates a new node from the provided match object
+        returned by regexp matching under the provided capture group name.
+
+        This class method work only with subclasses of this parent class
+        when it has just one extra attribute.
+        """
+        if not callable(cls.sanitize):
+            raise RuntimeError("something went horribly wrong")  # pragma: no cover
+
+        value = cls.sanitize(matchobj.group(capture_name))
+        start_pos, end_pos = matchobj.span(capture_name)
+        return cls(start_pos, end_pos, value, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def sanitize(cls, value: str) -> Any:
+        """
+        Sanitizes string form of value (extracted from match object)
+        into proper type so that it can be saved to the first argument
+        of node construction.
+        """
+        return value
 
     @classmethod
     def without_pos(cls, *args, **kwargs):
         """
-        Create an instance of the class itself without specifying
-        ``start_pos`` and ``end_pos`` attributes.
+        Creates a new node but specifying the position with null data.
         """
         return cls(None, None, *args, **kwargs)
 
@@ -49,58 +78,33 @@ class Fragment(Token, metaclass=ABCMeta):
 class TokenList(Token):
     """
     Node type which represents a sequence of tokens wrapped under
-    a pair of parentheses ``()``, brackets ``[]``, or braces ``{}``.
-    It appears exclusively within the option section of :class:`PaxterApply`.
+    a pair of parentheses ``()``, brackets ``[]``, or braces ``{}``,
+    all of which appears exclusively within the option section of :class:`Command`.
     """
-    #: A list of :class:`Token`.
+    #: List of :class:`Token` instances
     children: List[Token]
+
+    sanitize = None
 
 
 @dataclass
 class Identifier(Token):
     """
-    Node type which represents an identifier.
-    It can appear at the identifier part of or within the option section
-    of :class:`PaxterApply`.
+    Node type which represents an identifier,
+    which can appear only within the option section of :class:`Command`.
     """
-    #: String containing the name of the identifier
+    #: Identifier string name
     name: str
-
-    @classmethod
-    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Identifier':
-        """
-        Creates a new node from the provided match object
-        returned by regular expression matching under the provided capture group.
-
-        This class method only works for classes with a single main value only
-        (which includes all token types except :class:`PaxterApply`).
-        """
-        start_pos, end_pos = matchobj.span(capture_name)
-        name = matchobj.group(capture_name)
-        return Identifier(start_pos, end_pos, name)
 
 
 @dataclass
 class Operator(Token):
     """
-    Node type which represents an operator.
-    It appears exclusively within the option section of :class:`PaxterApply`.
+    Node type which represents an operator,
+    which can appear only within the option section of :class:`Command`.
     """
-    #: String containing the operator symbol
-    symbol: str
-
-    @classmethod
-    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Operator':
-        """
-        Creates a new node from the provided match object
-        returned by regular expression matching under the provided capture group.
-
-        This class method only works for classes with a single main value only
-        (which includes all token types except :class:`PaxterApply`).
-        """
-        start_pos, end_pos = matchobj.span(capture_name)
-        symbol = matchobj.group(capture_name)
-        return Operator(start_pos, end_pos, symbol)
+    #: Symbol as a string of characters
+    symbols: str
 
 
 @dataclass
@@ -109,135 +113,92 @@ class Number(Token):
     Node type which represents a number recognized by JSON grammar.
     It appears exclusively within the option section of :class:`PaxterApply`.
     """
-    #: Numerical value deserialized from the number token
+    #: Numerical value deserialized from the number literal
     value: Union[int, float]
 
     @classmethod
-    def from_matchobj(cls, matchobj: Match[str], capture_name: str) -> 'Number':
-        """
-        Creates a new node from the provided match object
-        returned by regular expression matching under the provided capture group.
-
-        This class method only works for classes with a single main value only
-        (which includes all token types except :class:`PaxterApply`).
-        """
-        start_pos, end_pos = matchobj.span(capture_name)
-        value = json.loads(matchobj.group(capture_name))
-        return Number(start_pos, end_pos, value)
+    def sanitize(cls, value: str) -> Union[int, float]:
+        return json.loads(value)
 
 
 @dataclass
 class FragmentList(Fragment):
     """
     Special intermediate node maintaining a list of fragment children nodes.
-    This usually corresponds to global-level fragments
-    or fragments nested within braces following the @-command.
+    Nodes of this type usually correspond to either the global-level fragments
+    or fragments nested within enclosing brace pattern.
+
+    The enclosing brace pattern may appear right after the @-symbol
+    within the option section of the :class:`Command` node
+    or as a :class:`Fragment` node within the :class:`FragmentList`.
+    It may also appear as the main argument of a :class:`Command` node.
     """
-    #: A list of :class:`Fragment`
+    #: List of :class:`Fragment` instances
     children: List[Fragment]
+
     #: Information of the enclosing braces pattern
-    scope_pattern: ScopePattern
+    enclosing: EnclosingPattern
+
     #: Boolean indicating whether this fragment list begins with @-symbol
-    is_command: bool = False
+    #: (i.e. whether it is a part of @-expression)
+    at_prefix: bool = False
+
+    sanitize = None
 
 
 @dataclass
 class Text(Fragment):
     """
-    Text node type which does not contain nested @-commands.
-    It may be presented as an element of :class:`FragmentList`,
-    the main argument of :class:`PaxterApply` and :class:`PaxterPhrase`,
-    or within the option section of :class:`PaxterApply`.
+    Text node type which does not contain nested @-expressions.
+    Nodes of this type usually be presented as an element of :class:`FragmentList`
+    or as text wrapped within enclosing quoted pattern.
+
+    The enclosing quote pattern may appear right after the @-symbol
+    within the option section of the :class:`Command` node
+    or as a :class:`Fragment` node within the :class:`FragmentList`.
+    It may also appear as the main argument of a :class:`Command` node.
     """
-    #: The string content
+    #: Inner string content
     inner: str
+
     #: Information of the enclosing quote pattern
-    scope_pattern: ScopePattern
+    enclosing: EnclosingPattern
+
     #: Boolean indicating whether this fragment list begins with @-symbol
-    is_command: bool = False
-
-    @classmethod
-    def from_matchobj(
-            cls, matchobj: Match[str], capture_name: str,
-            scope_pattern: ScopePattern,
-    ) -> 'Text':
-        """
-        Creates a new node from the provided match object
-        returned by regular expression matching under the provided capture group.
-
-        This class method only works for classes with a single main value only
-        (which includes all token types except :class:`PaxterApply`).
-        """
-        start_pos, end_pos = matchobj.span(capture_name)
-        inner = matchobj.group(capture_name)
-        return Text(start_pos, end_pos, inner, scope_pattern, False)
+    #: (i.e. whether it is a part of @-expression)
+    at_prefix: bool = False
 
 
 @dataclass
-class PaxterPhrase(Fragment):
-    """
-    Node type which represents @-command and has one of the following form:
-
-    -   It begins with a command switch ``@``
-        and is immediately followed by a non-empty identifier.
-        It also must unambiguously not be a :class:`PaxterApply`
-        (i.e. it is not followed by an option section or main argument section).
-
-    -   It begins with a command switch ``@`` and is immediately followed by
-        a wrapped bar section (e.g. ``@|...phrase...|``, ``@<#|...phrase...|#>``).
-
-    -   It begins with a command switch ``@`` and is immediately followed by
-        a single symbol character that is unmistakeably not a quote ``"``,
-        a brace ``{``, or a bar ``|``.
-    """
-    #: The string content of the phrase
-    inner: str
-    #: Information of the enclosing bar pattern
-    scope_pattern: ScopePattern
-
-    @classmethod
-    def from_matchobj(
-            cls, matchobj: Match[str], capture_name: str,
-            scope_pattern: ScopePattern,
-    ) -> 'PaxterPhrase':
-        """
-        Creates a new node from the provided match object
-        returned by regular expression matching under the provided capture group.
-
-        This class method only works for classes with a single main value only
-        (which includes all token types except :class:`PaxterApply`).
-        """
-        start_pos, end_pos = matchobj.span(capture_name)
-        inner = matchobj.group(capture_name)
-        return PaxterPhrase(start_pos, end_pos, inner, scope_pattern)
-
-
-@dataclass
-class PaxterApply(Fragment):
+class Command(Fragment):
     """
     Node type which represents @-command which has the following form:
 
-    -   It begins with a command switch ``@``,
-        and is immediately followed by a non-empty identifier.
+    - It begins with a command switch ``@``,
 
-    -   Then it may optionally be followed by an option section
-        surrounded by square brackets.
+    - Then, it is immediately followed by a command introduction section
+      which is simply a string in valid identifier form
+      or a string surrounded by enclosing bar pattern: ``|...|``.
 
-    -   If options section is present, then it may be followed by
-        a main argument section; however, if options is not present,
-        then it must be followed by the main argument section.
+    - Next, it may optionally be followed by an option section
+      surrounded by square brackets: ``[...]``.
 
-        The main argument section, if present, can either be
-        a :class:`FragmentList`
-        (surrounded by wrapped braces such as ``{...main arg...}``)
-        or a :class:`Text`
-        (surrounded by wrapped quotation marks such as ``"...text..."``).
+    - Finally, it may optionally be followed by a main argument section
+      which can either be a :class:`Fragment` or a :class:`Text`.
+      Note that the former would be surrounded by
+      the enclosing brace pattern such as ``{...}``
+      whereas the latter by the enclosing quote pattern such as ``"..."``.
     """
-    #: The identifier part
-    id: Identifier
+    #: Command introduction section
+    intro: str
+
+    #: Information of the enclosing bar pattern over the introduction section
+    intro_enclosing: EnclosingPattern
+
     #: A list of tokens for the option section enclosed by ``[]``,
     #: or :const:`None` if this section is not present.
     options: Optional[TokenList]
+
     #: The main argument section at the end of expression,
     #: or :const:`None` if this section is not present.
     main_arg: Optional[MainArgument]

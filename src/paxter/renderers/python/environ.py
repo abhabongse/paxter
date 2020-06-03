@@ -15,7 +15,7 @@ def create_unsafe_env(data: Optional[dict] = None):
     """
     data = data or {}
     return {
-        '_phrase_eval_': phrase_unsafe_eval,
+        '_cmd_eval_': phrase_unsafe_eval,
         'for': for_statement,
         'if': if_statement,
         'python': python_unsafe_exec,

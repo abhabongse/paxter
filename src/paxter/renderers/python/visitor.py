@@ -6,11 +6,10 @@ from dataclasses import dataclass
 from typing import Any, List, Union
 
 from paxter.core import (
-    Fragment, FragmentList, Identifier, Number, Operator,
-    PaxterApply, PaxterPhrase, Text, Token, TokenList,
+    CharLoc, Command, Fragment, FragmentList, Identifier, Number,
+    Operator, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
-from paxter.core.line_col import LineCol
 from paxter.renderers.python import flatten
 from paxter.renderers.python.wrappers import BaseApply, NormalApply
 
@@ -53,7 +52,7 @@ class RenderContext:
             return self.transform_number(token)
         raise PaxterRenderError(
             "unrecognized token at %(pos)s",
-            pos=LineCol(self.input_text, token.start_pos),
+            pos=CharLoc(self.input_text, token.start_pos),
         )
 
     def transform_fragment(self, fragment: Fragment) -> Any:
@@ -61,31 +60,29 @@ class RenderContext:
             return self.transform_fragment_list(fragment)
         if isinstance(fragment, Text):
             return self.transform_text(fragment)
-        if isinstance(fragment, PaxterPhrase):
-            return self.transform_paxter_phrase(fragment)
-        if isinstance(fragment, PaxterApply):
+        if isinstance(fragment, Command):
             return self.transform_paxter_apply(fragment)
         raise PaxterRenderError(
             "unrecognized fragment at %(pos)s",
-            pos=LineCol(self.input_text, fragment.start_pos),
+            pos=CharLoc(self.input_text, fragment.start_pos),
         )
 
     def transform_token_list(self, seq: TokenList):
         raise PaxterRenderError(
             "token list not expected at %(pos)s",
-            pos=LineCol(self.input_text, seq.start_pos),
+            pos=CharLoc(self.input_text, seq.start_pos),
         )
 
     def transform_identifier(self, token: Identifier):
         raise PaxterRenderError(
             "identifier not expected at %(pos)",
-            pos=LineCol(self.input_text, token.start_pos),
+            pos=CharLoc(self.input_text, token.start_pos),
         )
 
     def transform_operator(self, token: Operator):
         raise PaxterRenderError(
             "operator not expected at %(pos)",
-            pos=LineCol(self.input_text, token.start_pos),
+            pos=CharLoc(self.input_text, token.start_pos),
         )
 
     def transform_number(self, token: Number) -> Union[int, float]:
@@ -99,52 +96,49 @@ class RenderContext:
 
     def transform_text(self, token: Text) -> str:
         text = token.inner
-        if not token.scope_pattern.opening:
+        if not token.enclosing.left:
             text = BACKSLASH_NEWLINE_RE.sub('', text)
         return text
 
-    def transform_paxter_phrase(self, token: PaxterPhrase) -> Any:
-        # Fetch the phrase evaluation function from within the environment
+    def transform_paxter_apply(self, token: Command):
+        # Fetch the intro value from within the environment if exists
         try:
-            phrase_eval = self.env['_phrase_eval_']
-        except KeyError as exc:
-            raise PaxterRenderError(
-                "expected '_phrase_eval_' to be defined at %(pos)s",
-                pos=LineCol(self.input_text, token.start_pos),
-            ) from exc
+            intro = self.env[token.intro]
+        except KeyError:
+            # Otherwise, try to evaluate the intro section
+            # using the command evaluator stored within '_cmd_eval_'
+            try:
+                cmd_eval = self.env['_cmd_eval_']
+            except KeyError as exc:
+                raise PaxterRenderError(
+                    "expected '_cmd_eval_' to be defined at %(pos)s",
+                    pos=CharLoc(self.input_text, token.start_pos),
+                ) from exc
+            try:
+                intro = cmd_eval(token.intro, self.env)
+            except PaxterRenderError:
+                raise
+            except Exception as exc:
+                raise PaxterRenderError(
+                    f"paxter command intro evaluation error at %(pos)s",
+                    pos=CharLoc(self.input_text, token.start_pos),
+                ) from exc
 
-        # Evaluate the expression embedded within the phrase
-        try:
-            return phrase_eval(token.inner, self.env)
-        except PaxterRenderError:
-            raise
-        except Exception as exc:
-            raise PaxterRenderError(
-                f"paxter phrase evaluation error at %(pos)s",
-                pos=LineCol(self.input_text, token.start_pos),
-            ) from exc
-
-    def transform_paxter_apply(self, token: PaxterApply):
-        # Fetch the function from within the environment
-        try:
-            func = self.env[token.id.name]
-        except KeyError as exc:
-            raise PaxterRenderError(
-                f"unknown paxter application with id {token.id.name!r} at %(pos)s",
-                pos=LineCol(self.input_text, token.start_pos),
-            ) from exc
+        # Bail out if options section and main arg section are empty
+        if token.options is None and token.main_arg is None:
+            return intro
 
         # Wrap the function if not yet wrapped
-        if not isinstance(func, BaseApply):
-            func = NormalApply(func)
+        if not isinstance(intro, BaseApply):
+            intro = NormalApply(intro)
 
         # Make the call to the wrapped function
         try:
-            return func.call(self, token)
+            return intro.call(self, token)
         except PaxterRenderError:
             raise
         except Exception as exc:
             raise PaxterRenderError(
                 f"paxter apply evaluation error at %(pos)s",
-                pos=LineCol(self.input_text, token.start_pos),
+                pos=CharLoc(self.input_text, token.start_pos),
             ) from exc

@@ -66,7 +66,7 @@ Below are syntax diagrams for Paxter language.
 
   * However, if the token immediately succeeding the identifier
     neither does match the option section path nor does match the main argument path,
-    the the parsing results in the identifier-style :class:`PaxterPhrase <paxter.core.PaxterPhrase>`
+    the the parsing results in the identifier-style :class:`PaxterPhrase`
     whose inner phrase content derives from the identifier string.
 
   * If the command begins with the brace prefix pattern,
@@ -76,11 +76,11 @@ Below are syntax diagrams for Paxter language.
     then the parsing yields a regular :class:`Text <paxter.core.Text>` node as a result
 
   * If the command begins with the bar prefix pattern,
-    then the parsing outputs the normal :class:`PaxterPhrase <paxter.core.PaxterPhrase>` node.
+    then the parsing outputs the normal :class:`PaxterPhrase` node.
 
   * Finally, if the first token found does not match any of the above scenarios,
     then a single symbol codepoint is consumed and such character becomes
-    the inner phrase content of symbol-style :class:`PaxterPhrase <paxter.core.PaxterPhrase>`.
+    the inner phrase content of symbol-style :class:`PaxterPhrase`.
 
   |nbsp|
 

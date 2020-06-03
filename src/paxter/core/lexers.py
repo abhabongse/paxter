@@ -17,12 +17,12 @@ class Lexer:
     _compiled_rec_breaks = Dict[str, Pattern[str]]
 
     global_break_re = re.compile(r'(?P<inner>(?s:.)*?)(?P<break>@|\Z)')
-    command_prefix_re = re.compile(r'@')
-    id_prefix_re = re.compile(rf'(?P<id>{IDENTIFIER_PATTERN})')
-    bracket_prefix_re = re.compile(r'\[')
-    brace_prefix_re = re.compile(r'(?P<opened>[#<]*{)')
-    quote_prefix_re = re.compile(r'(?P<opened>[#<]*")')
-    bar_prefix_re = re.compile(r'(?P<opened>[#<]*\|)')
+    at_re = re.compile(r'@')
+    id_re = re.compile(rf'(?P<id>{IDENTIFIER_PATTERN})')
+    left_bar_re = re.compile(r'(?P<left>#*\|)')
+    left_bracket_re = re.compile(r'\[')
+    left_brace_re = re.compile(r'(?P<left>#*{)')
+    left_quote_re = re.compile(r'(?P<left>#*")')
     symbol_re = re.compile(rf'(?P<symbol>{SYMBOL_PATTERN})')
     option_token_re = re.compile(
         r'\s*(?:'
@@ -37,32 +37,32 @@ class Lexer:
         self._compiled_non_rec_breaks = {}
         self._compiled_rec_breaks = {}
 
-    def non_rec_break_re(self, closed_pattern: str) -> Pattern[str]:
+    def non_rec_break_re(self, right_pattern: str) -> Pattern[str]:
         """
         Compiles a regular expression lexer to non-greedily match some text
-        which is then followed by the given closed (i.e. right) pattern.
+        which is then followed by the given right enclosing pattern.
         """
-        closed_pattern = re.escape(closed_pattern)
-        if closed_pattern not in self._compiled_non_rec_breaks:
-            self._compiled_non_rec_breaks[closed_pattern] = re.compile(
+        right_pattern = re.escape(right_pattern)
+        if right_pattern not in self._compiled_non_rec_breaks:
+            self._compiled_non_rec_breaks[right_pattern] = re.compile(
                 r'(?P<inner>(?s:.)*?)'
-                rf'(?P<break>{closed_pattern})',
+                rf'(?P<break>{right_pattern})',
             )
-        return self._compiled_non_rec_breaks[closed_pattern]
+        return self._compiled_non_rec_breaks[right_pattern]
 
-    def rec_break_re(self, closed_pattern: str) -> Pattern[str]:
+    def rec_break_re(self, right_pattern: str) -> Pattern[str]:
         """
         Compiles a regular expression lexer to non-greedily match some text
         which is then followed by either the @-command switch symbol
-        or the given closed (i.e. right) pattern.
+        or the given enclosing right pattern.
         """
-        closed_pattern = re.escape(closed_pattern)
-        if closed_pattern not in self._compiled_rec_breaks:
-            self._compiled_rec_breaks[closed_pattern] = re.compile(
+        right_pattern = re.escape(right_pattern)
+        if right_pattern not in self._compiled_rec_breaks:
+            self._compiled_rec_breaks[right_pattern] = re.compile(
                 r'(?P<inner>(?s:.)*?)'
-                rf'(?P<break>@|{closed_pattern})',
+                rf'(?P<break>@|{right_pattern})',
             )
-        return self._compiled_rec_breaks[closed_pattern]
+        return self._compiled_rec_breaks[right_pattern]
 
 
 # Instance of lexer class

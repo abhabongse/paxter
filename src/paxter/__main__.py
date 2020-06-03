@@ -22,7 +22,7 @@ def parse(input_file, output_file, switch):
     """
     from paxter.core import ParseContext
 
-    tree = ParseContext(input_file.read()).parse()
+    tree = ParseContext(input_file.read()).tree
     output_file.write(repr(tree))
     output_file.write("\n")
 
@@ -46,7 +46,7 @@ def python_authoring(input_file, output_file, env_file):
     from paxter.renderers.python import RenderContext, create_unsafe_env, flatten
 
     input_text = input_file.read()
-    tree = ParseContext(input_text).parse()
+    tree = ParseContext(input_text).tree
     env = create_unsafe_env(runpy.run_path(env_file) if env_file else {})
     output_text = flatten(RenderContext(input_text, env, tree).render())
 

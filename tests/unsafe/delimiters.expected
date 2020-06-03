@@ -1,10 +1,8 @@
 To escape @ sign, you may write @"@".
 To write the above snippet, you may write @#"@"@""#.
-To write the above snippet, you may write @<"@#"@"@""#">.
-To write the above snippet, you may write @##"@<"@#"@"@""#">"##.
-To write the above snippet, you may write @<#"@##"@<"@#"@"@""#">"##"#>.
-To write the above snippet, you may write @#<"@<#"@##"@<"@#"@"@""#">"##"#>">#.
-To write the above snippet, you may write @<<"@#<"@<#"@##"@<"@#"@"@""#">"##"#>">#">>.
+To write the above snippet, you may write @##"@#"@"@""#"##.
+To write the above snippet, you may write @###"@##"@#"@"@""#"##"###.
+To write the above snippet, you may write @####"@###"@##"@#"@"@""#"##"###"####.
 
 Suppose that we define the following function:
 @python##"

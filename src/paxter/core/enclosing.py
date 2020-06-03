@@ -1,0 +1,83 @@
+"""
+Utility class for enclosing (opening and closing) patterns
+surrounding a particular scope of data:
+
+- Brace pattern for :class:`FragmentList`
+- Quoted pattern for :class:`Text`
+- Bar pattern for the intro part of :class:`Command.`
+"""
+import re
+from dataclasses import dataclass, field
+from typing import Pattern
+
+from paxter.core.lexers import LEXER
+
+__all__ = ['EnclosingPattern', 'GlobalEnclosingPattern']
+
+ALLOWED_LEFT_PATTERN_RE = re.compile(r'(?:#*[|{"])?')
+LEFT_TO_RIGHT_TRANS = str.maketrans(r'#|{"', r'#|}"')
+
+
+@dataclass
+class EnclosingPattern:
+    """
+    Data regarding the enclosing (left and right) scope patterns.
+    """
+    #: The left (i.e. opening) pattern enclosing the scope
+    left: str
+
+    #: The right (i.e. closing) pattern enclosing the scope
+    right: str = None
+
+    def __post_init__(self):
+        if self.right is None:
+            self.right = self.flip_pattern(self.left)
+
+    @staticmethod
+    def flip_pattern(left: str) -> str:
+        """
+        Flips the given left pattern into the corresponding right pattern.
+
+        For example, the opened pattern `"<##<{"`
+        should be flipped into the closed pattern `"}>##>".
+        """
+        if not ALLOWED_LEFT_PATTERN_RE.fullmatch(left):
+            raise RuntimeError("something went horribly wrong")  # pragma: no cover
+        return left.translate(LEFT_TO_RIGHT_TRANS)[::-1]
+
+    @property
+    def non_rec_break_re(self) -> Pattern[str]:
+        """
+        Compiles a regular expression lexer to non-greedily match some text
+        which is then followed by the given enclosing right pattern.
+        """
+        return LEXER.non_rec_break_re(self.right)
+
+    @property
+    def rec_break_re(self) -> Pattern[str]:
+        """
+        Compiles a regular expression lexer to non-greedily match some text
+        which is then followed by either the @-command switch symbol
+        or the given enclosing right pattern.
+        """
+        return LEXER.rec_break_re(self.right)
+
+
+@dataclass
+class GlobalEnclosingPattern(EnclosingPattern):
+    """
+    Specialized scope pattern just for global-level fragment list.
+    """
+    left: str = field(default=None, init=False, repr=False)
+    right: str = field(default=None, init=False, repr=False)
+
+    def __post_init__(self):
+        pass
+
+    @property
+    def non_rec_break_re(self) -> Pattern[str]:
+        raise AttributeError
+
+    @property
+    def rec_break_re(self) -> Pattern[str]:
+        return LEXER.global_break_re
