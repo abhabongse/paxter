@@ -20,6 +20,7 @@ TESTS = [
     get_test_files("calls"),
     get_test_files("delimiters"),
     get_test_files("greetings"),
+    get_test_files("lookup_and_call"),
     get_test_files("loops_and_conds"),
     get_test_files("phrase_symbols"),
 ]

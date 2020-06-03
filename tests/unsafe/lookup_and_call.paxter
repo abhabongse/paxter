@@ -1,0 +1,11 @@
+@python##"
+    def _add_one(num):
+        return num + 1
+    def _mul_two(num):
+        return num * 2
+    functions = {
+        1: _add_one,
+        2: _mul_two,
+    }
+"##\
+@|functions[2]|[@|functions[1]|[5]]
