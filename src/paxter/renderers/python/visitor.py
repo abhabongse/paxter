@@ -2,7 +2,7 @@
 Implementation of the renderer.
 """
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, List, Union
 
 from paxter.core import (
@@ -26,18 +26,18 @@ class RenderContext:
     """
     #: Document source text
     input_text: str
+
     #: Python execution environment data
     env: dict
+
     #: Parsed document tree
     tree: FragmentList
 
-    def render(self) -> str:
-        """
-        Transforms the already provided input source text,
-        the initial python execution environment data,
-        and the parsed document tree, into the final output.
-        """
-        return flatten(self.transform_fragment_list(self.tree))
+    #: Result of the rendering
+    rendered: str = field(init=False)
+
+    def __post_init__(self):
+        self.rendered = flatten(self.transform_fragment_list(self.tree))
 
     def transform_token(self, token: Token) -> Any:
         if isinstance(token, Fragment):

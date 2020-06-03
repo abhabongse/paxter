@@ -65,21 +65,21 @@ My name is @name and I am @age years old.
 My email is ashley@@example.com.
 My shop opens Monday@,-@,Friday.
 
-@python#<"
+@python##"
     from itertools import count
     counter = count(start=1)
-">#\
+"##\
 Counting is as easy as @|next(counter)|, @|next(counter)|, @|next(counter)|.
 Arithmetic? Not a problem: 7 * 11 * 13 = @|7 * 11 * 13|.
 
-Escaping is easy, just enclose the text with as many #...# or <...> as you like.
-For example, one way to escape the @#""@""# symbol, you can write @<"@#""@""#">.
-In turn, to write @<"@#""@""#"> as-is, you can do by typing @##"@<"@#""@""#">"##.
+Escaping is easy, just enclose the text with as many #...# as you like.
+For example, one way to escape the @#""@""# symbol, you can write @##"@#""@""#"##.
+In turn, to write @##"@#""@""#"## as-is, you can do by typing @###"@##"@#""@""#"##"###.
 
-@python#<"
+@python##"
     def is_odd(value):
         return value % 2 == 1
-">#\
+"##\
 Odd digits are@for[i in @|range(10)|]{@if[@|is_odd(i)|]{ @i}}.
 ```
 
@@ -94,9 +94,9 @@ My shop opens Monday&thinsp;-&thinsp;Friday.
 Counting is as easy as 1, 2, 3.
 Arithmetic? Not a problem: 7 * 11 * 13 = 1001.
 
-Escaping is easy, just enclose the text with as many #...# or <...> as you like.
+Escaping is easy, just enclose the text with as many #...# as you like.
 For example, one way to escape the "@" symbol, you can write @#""@""#.
-In turn, to write @#""@""# as-is, you can do by typing @<"@#""@""#">.
+In turn, to write @#""@""# as-is, you can do by typing @##"@#""@""#"##.
 
 Odd digits are 1 3 5 7 9.
 ```

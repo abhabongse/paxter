@@ -50,7 +50,7 @@ to transform the source text into a parsed document tree.
 
    from paxter.core import ParseContext
 
-   tree = ParseContext(source_text).parse()
+   tree = ParseContext(source_text).tree
 
 **Note:** We can see the structure of the document tree in full by printing out
 the content of the variable ``tree`` from above (output reformatted for clarity).
@@ -59,51 +59,96 @@ the content of the variable ``tree`` from above (output reformatted for clarity)
 
    >>> tree
    FragmentList(
+       start_pos=0,
+       end_pos=236,
        children=[
-           PaxterApply(
-               id=Identifier(name="python"),
+           Command(
+               start_pos=1,
+               end_pos=148,
+               intro="python",
+               intro_enclosing=EnclosingPattern(left="", right=""),
                options=None,
                main_arg=Text(
+                   start_pos=10,
+                   end_pos=145,
                    inner='\n    from datetime import datetime\n\n    name = "Ashley"\n    year_of_birth = 1987\n    current_age = datetime.now().year - year_of_birth\n',
-                   scope_pattern=ScopePattern(opening='##"', closing='"##'),
-                   is_command=False,
+                   enclosing=EnclosingPattern(left='##"', right='"##'),
+                   at_prefix=False,
                ),
            ),
            Text(
-               inner="\nMy name is ",
-               scope_pattern=ScopePattern(opening="", closing=""),
-               is_command=False,
+               start_pos=148,
+               end_pos=161,
+               inner="\\\nMy name is ",
+               enclosing=EnclosingPattern(left="", right=""),
+               at_prefix=False,
            ),
-           PaxterPhrase(inner="name", scope_pattern=ScopePattern(opening="", closing="")),
+           Command(
+               start_pos=162,
+               end_pos=166,
+               intro="name",
+               intro_enclosing=EnclosingPattern(left="", right=""),
+               options=None,
+               main_arg=None,
+           ),
            Text(
+               start_pos=166,
+               end_pos=189,
                inner=" and my current age is ",
-               scope_pattern=ScopePattern(opening="", closing=""),
-               is_command=False,
+               enclosing=EnclosingPattern(left="", right=""),
+               at_prefix=False,
            ),
-           PaxterPhrase(
-               inner="current_age", scope_pattern=ScopePattern(opening="", closing="")
+           Command(
+               start_pos=190,
+               end_pos=201,
+               intro="current_age",
+               intro_enclosing=EnclosingPattern(left="", right=""),
+               options=None,
+               main_arg=None,
            ),
            Text(
+               start_pos=201,
+               end_pos=223,
                inner=".\nMy shop opens Monday",
-               scope_pattern=ScopePattern(opening="", closing=""),
-               is_command=False,
+               enclosing=EnclosingPattern(left="", right=""),
+               at_prefix=False,
            ),
-           PaxterPhrase(inner=",", scope_pattern=ScopePattern(opening="", closing="")),
+           Command(
+               start_pos=224,
+               end_pos=225,
+               intro=",",
+               intro_enclosing=EnclosingPattern(left="", right=""),
+               options=None,
+               main_arg=None,
+           ),
            Text(
+               start_pos=225,
+               end_pos=226,
                inner="-",
-               scope_pattern=ScopePattern(opening="", closing=""),
-               is_command=False,
+               enclosing=EnclosingPattern(left="", right=""),
+               at_prefix=False,
            ),
-           PaxterPhrase(inner=",", scope_pattern=ScopePattern(opening="", closing="")),
+           Command(
+               start_pos=227,
+               end_pos=228,
+               intro=",",
+               intro_enclosing=EnclosingPattern(left="", right=""),
+               options=None,
+               main_arg=None,
+           ),
            Text(
+               start_pos=228,
+               end_pos=236,
                inner="Friday.\n",
-               scope_pattern=ScopePattern(opening="", closing=""),
-               is_command=False,
+               enclosing=EnclosingPattern(left="", right=""),
+               at_prefix=False,
            ),
        ],
-       scope_pattern=GlobalScopePattern(opening="", closing=""),
-       is_command=False,
+       enclosing=GlobalEnclosingPattern(),
+       at_prefix=False,
    )
+
+
 
 
 Notice that the source text above also contains what seems like a python code.
@@ -134,7 +179,7 @@ wrapped by ``@python`` application command.
        '_symbols_': {',': '&thinsp;'},
    })
 
-   output_text = RenderContext(source_text, env, tree).render()
+   output_text = RenderContext(source_text, env, tree).rendered
    print(output_text)  # or write to a file, etc.
 
 The above code will output the following.
@@ -161,8 +206,8 @@ we can write a utility function such as in the following:
    from paxter.renderers.python import RenderContext, create_unsafe_env
 
    def interp(source_text: str) -> str:
-       tree = ParseContext(source_text).parse()
-       output = RenderContext(source_text, create_unsafe_env(), tree).render()
+       tree = ParseContext(source_text).tree
+       output = RenderContext(source_text, create_unsafe_env(), tree).rendered
        return output
 
 Command-Line Usage

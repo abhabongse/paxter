@@ -8,7 +8,7 @@ This class implements the parser for Paxter language.
 
 ```eval_rst
 .. autoclass:: paxter.core.ParseContext
-   :members: parse, input_text
+   :members: input_text, tree
 ```
 
 ## Data Definitions
@@ -31,7 +31,7 @@ The result of the parsing yields the parsed tree consisting of the following cla
    :show-inheritance:
 
 .. autoclass:: paxter.core.Operator
-   :members: symbol
+   :members: symbols
    :show-inheritance:
 
 .. autoclass:: paxter.core.Number
@@ -39,15 +39,15 @@ The result of the parsing yields the parsed tree consisting of the following cla
    :show-inheritance:
 
 .. autoclass:: paxter.core.FragmentList
-   :members: children, scope_pattern, is_command
+   :members: children, enclosing, at_prefix
    :show-inheritance:
 
 .. autoclass:: paxter.core.Text
-   :members: inner, scope_pattern, is_command
+   :members: inner, enclosing, at_prefix
    :show-inheritance:
 
 .. autoclass:: paxter.core.Command
-   :members: inner, scope_pattern
+   :members: intro, intro_enclosing, options, main_arg
    :show-inheritance:
 ```
 
@@ -77,10 +77,10 @@ Classes in this subsection is for reference only.
 
 ```eval_rst
 .. autoclass:: paxter.core.EnclosingPattern
-   :members: opening, closing
+   :members: left, right
 
 .. autoclass:: paxter.core.GlobalEnclosingPattern
-   :members: opening, closing
+   :members: left, right
 
 .. autoclass:: paxter.core.CharLoc
    :members: line, col

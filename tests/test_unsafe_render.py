@@ -33,7 +33,7 @@ def test_rendering(input_file, expected_file):
         expected_text = fobj.read()
     tree = ParseContext(input_text).tree
     env = create_unsafe_env()
-    output_text = RenderContext(input_text, env, tree).render()
+    output_text = RenderContext(input_text, env, tree).rendered
     assert output_text == expected_text
 
 
