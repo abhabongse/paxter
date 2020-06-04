@@ -33,6 +33,9 @@ class EnclosingPattern:
         if self.right is None:
             self.right = self.flip_pattern(self.left)
 
+    def __bool__(self):
+        return bool(self.left)
+
     @staticmethod
     def flip_pattern(left: str) -> str:
         """

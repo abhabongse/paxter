@@ -101,40 +101,37 @@ class RenderContext:
         return text
 
     def transform_paxter_apply(self, token: Command):
-        # Fetch the intro value from within the environment if exists
+        # Try to evaluate the intro section
+        # using the evaluator function from _intro_eval_
         try:
-            intro = self.env[token.intro]
-        except KeyError:
-            # Otherwise, try to evaluate the intro section
-            # using the command evaluator stored within '_cmd_eval_'
-            try:
-                cmd_eval = self.env['_cmd_eval_']
-            except KeyError as exc:
-                raise PaxterRenderError(
-                    "expected '_cmd_eval_' to be defined at %(pos)s",
-                    pos=CharLoc(self.input_text, token.start_pos),
-                ) from exc
-            try:
-                intro = cmd_eval(token.intro, self.env)
-            except PaxterRenderError:
-                raise
-            except Exception as exc:
-                raise PaxterRenderError(
-                    f"paxter command intro evaluation error at %(pos)s",
-                    pos=CharLoc(self.input_text, token.start_pos),
-                ) from exc
+            intro_eval = self.env['_intro_eval_']
+        except KeyError as exc:
+            raise PaxterRenderError(
+                "expected '_intro_eval_' to be defined at %(pos)s",
+                pos=CharLoc(self.input_text, token.start_pos),
+            ) from exc
+        try:
+            intro_value = intro_eval(token.intro, self.env)
+        except PaxterRenderError:
+            raise
+        except Exception as exc:
+            raise PaxterRenderError(
+                "paxter command intro evaluation error at %(pos)s: "
+                f"{token.intro!r}",
+                pos=CharLoc(self.input_text, token.start_pos),
+            ) from exc
 
         # Bail out if options section and main arg section are empty
         if token.options is None and token.main_arg is None:
-            return intro
+            return intro_value
 
         # Wrap the function if not yet wrapped
-        if not isinstance(intro, BaseApply):
-            intro = NormalApply(intro)
+        if not isinstance(intro_value, BaseApply):
+            intro_value = NormalApply(intro_value)
 
         # Make the call to the wrapped function
         try:
-            return intro.call(self, token)
+            return intro_value.call(self, token)
         except PaxterRenderError:
             raise
         except Exception as exc:

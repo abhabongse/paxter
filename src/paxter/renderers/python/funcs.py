@@ -124,12 +124,14 @@ def python_unsafe_exec(context: 'RenderContext', node: Command):
     exec(code, context.env)
 
 
-def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
+def intro_unsafe_eval(phrase: str, env: dict) -> Any:
     """
     Unsafely evaluates the given paxter phrase.
     However, if the phrase is within the _symbols_ mappings,
     its mapped value will be returned instead.
     """
+    if phrase in env:
+        return env[phrase]
     symbols = env.get('_symbols_', {})
     if phrase in symbols:
         return symbols[phrase]
