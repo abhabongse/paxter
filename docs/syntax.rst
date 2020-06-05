@@ -3,39 +3,19 @@ Syntax Reference
 
 Below are syntax diagrams for Paxter language. 
 
-* **Document**: Top-level document; parsing starts here.
-  Once all fragments of the fragment list is parsed,
-  the caret pointer must end exactly at the end of input text.
+- **Document:** Starting rule of Paxter language grammar.
+  It is a special case of **FragmentList** rule, and thus
+  the result is always a :class:`FragmentList <paxter.core.FragmentList>` node
+  whose children are non-empty :class:`Text <paxter.core.Text>`
+  interleaving with the result produced by **AtExpression** rule.
 
   .. image:: _static/Document.png
 
   |nbsp|
 
-* **FragmentList:** Consists of an interleaving of raw texts and @-commands,
-  and ends with dynamically designated *break pattern*
-  (which is simply tells where the fragment list stops).
+- **AtExpression:** Rule for parsing right after encountering @-switch symbol.
 
-  .. image:: _static/FragmentList.png
-
-  |nbsp|
-
-  For example, if preceding the fragment list is an opening brace pattern ``##<#{``,
-  then the break (i.e. closing) pattern for this fragment list would be ``}#>##``,
-  which mirrors the opening pattern.
-
-  Please note that by construction of the language,
-  the non-empty raw text would never contain the *break pattern*;
-  if it was the case then the parsing of fragment list would have terminated earlier.
-  In other words, we *non-greedily* parses text within the fragment list.
-
-  The result of parsing fragment list is a :class:`FragmentList <paxter.core.FragmentList>` node type
-  whose children is a list of :class:`Text <paxter.core.Text>` or command tokens.
-
-  |nbsp|
-
-* **Command:** Parses right after the @-symbol for one of 6 possibilities.
-
-  .. image:: _static/Command.png
+  .. image:: _static/AtExpression.png
 
   |nbsp|
 
@@ -43,48 +23,70 @@ Below are syntax diagrams for Paxter language.
 
      The red ``else`` box in this diagram indicates that such path can be followed
      only if the next token does not match any other possible paths.
-     Walking through the boxes in itself consumes nothing.
+     Pursuing this ``else`` path does not consume anything.
 
-  .. note::
+  There are 4 possible scenarios.
 
-     The *prefix pattern* matched before the fragment list or the non-recursive text
-     will be used to determine the break pattern indicating when to stop parsing for
-     the fragment list or the non-recursive text itself, respectively.
-     The break pattern is generally the mirror image of the matched prefix pattern,
-     and can be computed by flipping the entire string as well as flipping
-     each individual character to its mirror counterpart.
+  1. A normal :class:`Command <paxter.core.Command>` node consisting of 3 sections:
+     introduction, options, and main argument, respectively.
 
-  Possible results are:
+     The introduction section is resulted from parsing
+     either greedily for an identifier or non-greedily for a text
+     enclosed by a pair of bars plus and an equal number of zero or more hashes
+     at both ends.
 
-  * A :class:`PaxterApply <paxter.core.PaxterApply>` which consists of an identifier,
-    followed by at least one option section or one main argument section.
-    The option section is a list of tokens enclosed by a pair of square brackets
-    (node is represented with :class:`TokenList <paxter.core.TokenList>`).
-    On the other hand, the main argument section (surrounded by the dashed box in diagram below)
-    is either a fragment list (represented with :class:`FragmentList <paxter.core.FragmentList>`)
-    or a non-recursive raw text (represented with :class:`Text <paxter.core.Text>`).
+     Following the introduction section, if a left square bracket is found,
+     then the options section as a list of tokens must be parsed
+     and it will result in a :class:`TokenList <paxter.core.TokenList>` node.
+     Otherwise (if the left square bracket is absent),
+     this options section will be represented by :const:`None`.
 
-  * However, if the token immediately succeeding the identifier
-    neither does match the option section path nor does match the main argument path,
-    the the parsing results in the identifier-style :class:`PaxterPhrase`
-    whose inner phrase content derives from the identifier string.
+     Finally, the main argument section.
+     (a) If there is zero or more hashes followed by a left brace,
+     then the **FragmentList** parse rule must be followed
+     and thus yields :class:`FragmentList <paxter.core.FragmentList>` as the result.
 
-  * If the command begins with the brace prefix pattern,
-    then the parsing yields the :class:`FragmentList <paxter.core.FragmentList>` node as a result.
+     .. warning::
 
-  * If the command begins with the quoted prefix pattern,
-    then the parsing yields a regular :class:`Text <paxter.core.Text>` node as a result
+        There is a restriction imposed on parsing the **FragmentList** rule,
+        which is that the child text node may not contain a right brace
+        followed by the same number of hashes as the preceding part.
+        Otherwise, the parsing of **FragmentList** rule would have terminated earlier.
 
-  * If the command begins with the bar prefix pattern,
-    then the parsing outputs the normal :class:`PaxterPhrase` node.
+     However, (b) if there is zero or more hashes followed by a quotation mark,
+     then the text is parsed non-greedily until the another quotation mark
+     followed by the same number of hashes is found.
 
-  * Finally, if the first token found does not match any of the above scenarios,
-    then a single symbol codepoint is consumed and such character becomes
-    the inner phrase content of symbol-style :class:`PaxterPhrase`.
+     Well, if both conditions (a) and (b) do not hold,
+     then the main argument would be :const:`None`.
+
+  2. A :class:`FragmentList <paxter.core.FragmentList>` node
+     which begins with zero or more hashes followed by a left brace.
+     The **FragmentList** rule is followed similarly to scenario (a) from above.
+
+  3. A :class:`Text <paxter.core.Text>` node
+     which begins with zero or more hashes followed by a quotation mark.
+     The inner text is parsed the same way as scenario (b) from above.
+
+  4. A special :class:`Command <paxter.core.Command>` node where
+     the introduction section is a single symbol following the @-switch,
+     and the other sections (options and main argument) are both empty.
+
+- **FragmentList:** Consists of an interleaving of non-empty texts
+  and results produced by **AtExpression** rule.
+
+  Note that the parsing of **AtExpression** rule at the *previous level*
+  may put some restriction on the parsing of :class:`Text <paxter.core.Text>` nodes.
+  For example, if preceding the fragment list is an opening brace pattern ``###{``,
+  then each :class:`Text <paxter.core.Text>` node may contain ``}###``.
+
+  In other words, we *non-greedily* parses text within the fragment list.
+
+  .. image:: _static/FragmentList.png
 
   |nbsp|
 
-* **TokenList:** A sequence of zero or more tokens
+- **TokenList:** A sequence of zero or more tokens
   Each token either a command, an identifier, an operator,
   a number following JSON specification,
   or a nested token list enclosed by a pair of parentheses ``()``,
@@ -102,32 +104,20 @@ Below are syntax diagrams for Paxter language.
 
   |nbsp|
 
-* **Identifier:** Generally follows Python rules for parsing identifier token
-  (with some exceptions).
+- **Identifier:** Generally follows Python rules for greedily parsing
+  an identifier token (with some extreme exceptions).
   The result is an :class:`Identifier <paxter.core.Identifier>` node type.
 
   .. image:: _static/Identifier.png
 
   |nbsp|
 
-* **Operator:** Greedily consumes as many operator character as possible
+- **Operator:** Greedily consumes as many operator character as possible
   (with two notable exceptions: a comma and a semicolon, which has to appear on their own).
   A whitespace may be needed to separate two consecutive, multi-character operator tokens.
   The result is an :class:`Operator <paxter.core.Operator>` node type.
 
   .. image:: _static/Operator.png
-
-  |nbsp|
-
-* **NonRecursiveText:** Parses the text content until encountering the *break pattern*.
-  As opposed to fragment list, no @-symbol will be recognized
-  as the indicator of the beginning of a command.
-
-  Text extracted through this process will be used as the inner content of either
-  :class:`Text <paxter.core.Text>` or :class:`FragmentList <paxter.core.FragmentList>`
-  while a command is being parsed.
-
-  .. image:: _static/NonRecursiveText.png
 
   |nbsp|
 

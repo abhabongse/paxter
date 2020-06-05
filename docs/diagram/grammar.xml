@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.18">
-<info created="D:20200504013612" modified="D:20200605224938" tex="xetex"/>
+<info created="D:20200504013612" modified="D:20200606004019" tex="xetex"/>
 <preamble>\usepackage[MnSymbol]{mathspec}
 \usepackage{xunicode}
 \usepackage{xltxtra}
@@ -965,7 +965,7 @@ h
 268 724 l
 </path>
 <text matrix="1 0 0 1 64.1124 -7.035" transformations="translations" pos="128 768" stroke="black" type="label" width="99.257" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">restriction may be enforced while parsing</text>
-<text matrix="1 0 0 1 64.1124 -15.035" transformations="translations" pos="128 768" stroke="black" type="label" width="84.062" height="4.568" depth="1.2" halign="center" valign="baseline" size="6">for \textbf{FragmentList} inside \textbf{Command})</text>
+<text matrix="1 0 0 1 64.1124 -15.035" transformations="translations" pos="128 768" stroke="black" type="label" width="92.084" height="4.568" depth="1.2" halign="center" valign="baseline" size="6">for \textbf{FragmentList} inside \textbf{AtExpression})</text>
 <path matrix="1 0 0 1 8 0" stroke="black" pen="fat">
 240 768 m
 252 768
@@ -1037,7 +1037,7 @@ h
 52 808 l
 h
 </path>
-<text matrix="1 0 0 1 36.1124 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="78.525" height="7.083" depth="0.07" halign="center" valign="baseline">identifier start \textbf{char}</text>
+<text matrix="1 0 0 1 36.1124 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="78.526" height="7.083" depth="0.07" halign="center" valign="baseline">identifier start \textbf{char}</text>
 <text matrix="1 0 0 1 36.1124 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="112.307" height="4.567" depth="0.97" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Nl} and \texttt{&quot;\_&quot;})</text>
 <path matrix="1.21429 0 0 1 204.571 3.998" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
@@ -1052,7 +1052,7 @@ h
 32 320 m
 72 320 l
 </path>
-<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" valign="baseline">\textbf{Identifier}</text>
+<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="37.22" height="7.283" depth="0.07" valign="baseline">\textbf{Identifier}</text>
 <path matrix="1 0 0 1 16 0" stroke="black" pen="fat">
 412 776 m
 424 776
@@ -1116,7 +1116,7 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 212.112 -15.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.22" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
+<text matrix="1 0 0 1 212.112 -15.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
 <path matrix="1.07143 0 0 0.666667 202.857 217.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
@@ -1160,7 +1160,7 @@ h
 <path matrix="1 0 0 1 160 -32" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 128 -108" transformations="translations" pos="128 768" stroke="black" type="label" width="5.379" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
+<text matrix="1 0 0 1 128 -108" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
 <path matrix="1 0 0 1 160 -8" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
@@ -1366,11 +1366,11 @@ h
 <path layer="alpha" matrix="1 0 0 1 28 92" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 -4 12" transformations="translations" pos="128 768" stroke="black" type="label" width="5.379" height="1.474" depth="1.61" halign="center" valign="baseline">\texttt{,}</text>
+<text matrix="1 0 0 1 -4 12" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="1.474" depth="1.61" halign="center" valign="baseline">\texttt{,}</text>
 <path matrix="1 0 0 1 28 72" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 -4 -8" transformations="translations" pos="128 768" stroke="black" type="label" width="5.379" height="4.586" depth="1.61" halign="center" valign="baseline">\texttt{;}</text>
+<text matrix="1 0 0 1 -4 -8" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="4.586" depth="1.61" halign="center" valign="baseline">\texttt{;}</text>
 <path matrix="1.35715 0 0 1 126.285 27.998" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
