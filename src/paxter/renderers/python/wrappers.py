@@ -86,7 +86,7 @@ class NormalApply(BaseApply):
                 kwargs[keyword_name] = context.transform_token(value_token)
             elif section_flipped:
                 raise PaxterRenderError(
-                    f"found positional argument after keyword argument at %(pos)s",
+                    "found positional argument after keyword argument at %(pos)s",
                     pos=CharLoc(context.input_text, options.start_pos),
                 )
             else:
@@ -116,7 +116,7 @@ class NormalApply(BaseApply):
                     # Then the first token must be an identifier
                     if not isinstance(first_token, Identifier):
                         raise PaxterRenderError(
-                            f"expected an identifier before the '=' sign at %(pos)s",
+                            "expected an identifier before the '=' sign at %(pos)s",
                             pos=CharLoc(context.input_text, first_token.start_pos),
                         )
                     keyword_name = first_token.name
@@ -125,7 +125,7 @@ class NormalApply(BaseApply):
             # Expects the next value token to exist
             if not remains:
                 raise PaxterRenderError(
-                    f"expected a value after the '=' sign at %(pos)s",
+                    "expected a value after the '=' sign at %(pos)s",
                     pos=CharLoc(context.input_text, options.end_pos),
                 )
             value_token = remains[0]
@@ -139,7 +139,7 @@ class NormalApply(BaseApply):
                 end_token = remains[0]
                 if end_token != Operator.without_pos(symbols=','):
                     raise PaxterRenderError(
-                        f"expected a comma token after the value token at %(pos)s",
+                        "expected a comma token after the value token at %(pos)s",
                         pos=CharLoc(context.input_text, end_token.start_pos),
                     )
                 remains = remains[1:]

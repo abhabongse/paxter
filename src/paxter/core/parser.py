@@ -305,6 +305,6 @@ class ParseContext:
         Raises syntax error for failing to parse @-command.
         """
         raise PaxterSyntaxError(
-            f"invalid expression after @-command at %(pos)s",
+            "invalid expression after @-command at %(pos)s",
             pos=CharLoc(self.input_text, pos),
         )

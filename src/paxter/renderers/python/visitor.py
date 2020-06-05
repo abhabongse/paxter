@@ -136,6 +136,6 @@ class RenderContext:
             raise
         except Exception as exc:
             raise PaxterRenderError(
-                f"paxter apply evaluation error at %(pos)s",
+                "paxter apply evaluation error at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
