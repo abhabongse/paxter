@@ -250,7 +250,7 @@ then we can use the following command:
 
 .. code-block:: bash
 
-   $ paxter python-authoring -i intro.paxter
+   $ paxter pyauthor -i intro.paxter
 
 which will result in
 

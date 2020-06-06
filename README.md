@@ -100,7 +100,7 @@ Escaping is easy, just enclose the text with as many #...# as you like.
 For example, one way to escape the "@" symbol, you can write @#""@""#.
 In turn, to write @#""@""# as-is, you can do by typing @##"@#""@""#"##.
 
-Odd digits are[None, [' ', 1], None, [' ', 3], None, [' ', 5], None, [' ', 7], None, [' ', 9]].
+Odd digits are 1 3 5 7 9.
 Expected outcome for rolling a die is 3.5.
 ```
 
