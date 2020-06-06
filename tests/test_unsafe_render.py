@@ -6,6 +6,7 @@ from click.testing import CliRunner
 
 from paxter.core.parser import ParseContext
 from paxter.pyauthor import RenderContext, create_unsafe_env
+from paxter.pyauthor.funcs import flatten
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "unsafe")
 
@@ -28,13 +29,21 @@ TESTS = [
 
 @pytest.mark.parametrize(("input_file", "expected_file"), TESTS)
 def test_rendering(input_file, expected_file):
+
+    # Read test file contents
     with open(input_file) as fobj:
         input_text = fobj.read()
     with open(expected_file) as fobj:
         expected_text = fobj.read()
+
+    # Parse input
     tree = ParseContext(input_text).tree
+
+    # Render into output using python authoring mode
     env = create_unsafe_env()
-    output_text = RenderContext(input_text, env, tree).rendered
+    output = RenderContext(input_text, env, tree).rendered
+    output_text = flatten(output, levels=1)
+
     assert output_text == expected_text
 
 
@@ -44,6 +53,7 @@ def test_cli_render(input_file, expected_file):
 
     with open(expected_file) as fobj:
         expected_text = fobj.read()
+
     runner = CliRunner()
     result = runner.invoke(program, ['pyauthor', '-i', input_file])
     assert result.output == expected_text

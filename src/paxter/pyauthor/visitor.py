@@ -10,7 +10,6 @@ from paxter.core import (
     Operator, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
-from paxter.pyauthor.funcs.standards import flatten
 from paxter.pyauthor.wrappers import BaseApply, NormalApply
 
 BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
@@ -37,7 +36,7 @@ class RenderContext:
     rendered: str = field(init=False)
 
     def __post_init__(self):
-        self.rendered = flatten(self.transform_fragment_list(self.tree), levels=1)
+        self.rendered = self.transform_fragment_list(self.tree)
 
     def transform_token(self, token: Token) -> Any:
         if isinstance(token, Fragment):
