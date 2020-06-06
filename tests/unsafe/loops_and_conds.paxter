@@ -1,7 +1,7 @@
 @python##"
     is_odd = lambda v: v % 2 == 1
 "##\
-@flatten[recursive=@True]{@for[v in @|range(10)|]{\
+@flatten{@for[v in @|range(10)|]{\
     @v, @|v + 1|, @|v + 2|
     v is @if[@is_odd[@v]]{odd}|@if[not @is_odd[@v]]{even}
     v is @if[@is_odd[@v] then @"odd" else @"even"]

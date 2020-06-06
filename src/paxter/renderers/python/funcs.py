@@ -2,9 +2,10 @@
 Collection of `PaxterApply` function wrappers.
 """
 import inspect
-from typing import Any, Iterator, TYPE_CHECKING
+import math
+from typing import Any, Iterator, TYPE_CHECKING, Union
 
-from paxter.core import CharLoc, Command, FragmentList, Identifier, Text
+from paxter.core import CharLoc, Command, Identifier, Text
 from paxter.core.exceptions import PaxterRenderError
 from paxter.renderers.python.wrappers import DirectApply
 
@@ -46,10 +47,7 @@ def for_statement(context: 'RenderContext', node: Command):
     for value in seq:
         context.env[id_name] = value
         rendered = context.transform_token(node.main_arg)
-        if isinstance(node.main_arg, FragmentList):
-            result.extend(rendered)
-        else:
-            result.append(rendered)
+        result.append(rendered)
 
     return result
 
@@ -138,26 +136,22 @@ def intro_unsafe_eval(phrase: str, env: dict) -> Any:
     return eval(phrase, env)
 
 
-def flatten(data, recursive=False) -> str:
+def flatten(data, levels: int = math.inf) -> str:
     """
-    Flattens the list and join them together into one string.
+    Flattens the list by unrolling them with the specified number of levels
+    and join them together into one string.
+    If the number of levels is not specified,
+    nest lists at all levels will be unrolled.
     """
-    if isinstance(data, list):
-        if recursive:
-            data = _rec_flatten_tokenize(data)
-        return ''.join(
-            str(value) for value in data
-            if value is not None
-        )
-    return str(data)
+    return ''.join(
+        str(element) for element in _rec_flatten_tokenize(data, levels)
+        if element is not None
+    )
 
 
-def _rec_flatten_tokenize(data) -> Iterator:
-    """
-    Flattens the nested lists.
-    """
-    if isinstance(data, list):
+def _rec_flatten_tokenize(data, levels: Union[int, float]) -> Iterator:
+    if levels >= 1 and isinstance(data, list):
         for element in data:
-            yield from _rec_flatten_tokenize(element)
+            yield from _rec_flatten_tokenize(element, levels - 1)
     else:
         yield data

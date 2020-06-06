@@ -37,7 +37,7 @@ class RenderContext:
     rendered: str = field(init=False)
 
     def __post_init__(self):
-        self.rendered = flatten(self.transform_fragment_list(self.tree))
+        self.rendered = flatten(self.transform_fragment_list(self.tree), levels=1)
 
     def transform_token(self, token: Token) -> Any:
         if isinstance(token, Fragment):

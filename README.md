@@ -50,6 +50,7 @@ Let the input text be the following.
 
 ```text
 @python##"
+    import statistics
     from datetime import datetime
 
     _symbols_ = {
@@ -80,7 +81,8 @@ In turn, to write @##"@#""@""#"## as-is, you can do by typing @###"@##"@#""@""#"
     def is_odd(value):
         return value % 2 == 1
 "##\
-Odd digits are@for[i in @|range(10)|]{@if[@|is_odd(i)|]{ @i}}.
+Odd digits are@flatten{@for[i in @|range(10)|]{@if[@|is_odd(i)|]{ @i}}}.
+Expected outcome for rolling a die is @|statistics.mean|[@|range(1, 7)|].
 ```
 
 Suppose that we are using the Python authoring mode (which is an rendering extension of Paxter library package).
@@ -98,7 +100,8 @@ Escaping is easy, just enclose the text with as many #...# as you like.
 For example, one way to escape the "@" symbol, you can write @#""@""#.
 In turn, to write @#""@""# as-is, you can do by typing @##"@#""@""#"##.
 
-Odd digits are 1 3 5 7 9.
+Odd digits are[None, [' ', 1], None, [' ', 3], None, [' ', 5], None, [' ', 7], None, [' ', 9]].
+Expected outcome for rolling a die is 3.5.
 ```
 
 
@@ -109,7 +112,7 @@ Information available at [ReadTheDocs documentation](https://paxter.readthedocs.
 -   [Installation and Getting Started](https://paxter.readthedocs.io/en/latest/getting_started.html)
 -   [Paxter Language Tutorial](https://paxter.readthedocs.io/en/latest/paxter_language_tutorial.html)
 -   [Python Authoring Mode Tutorial](https://paxter.readthedocs.io/en/latest/python_authoring_mode_tutorial.html)
--   [Custom Render Tutorial](https://paxter.readthedocs.io/en/latest/custom_render_tutorial.html)
+-   [Custom Renderer Tutorial](https://paxter.readthedocs.io/en/latest/custom_renderer_tutorial.html)
 -   [Syntax Reference](https://paxter.readthedocs.io/en/latest/syntax.html)
 -   [Core API Reference](https://paxter.readthedocs.io/en/latest/core_api.html)
 -   and more
