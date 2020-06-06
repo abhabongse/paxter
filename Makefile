@@ -8,7 +8,7 @@
 ## USER CONFIGURABLE SECTIONS
 #############################
 
-# List of written python packages
+# List of written pyauthor packages
 PYTHON_PROJECT_PACKAGES := paxter
 
 # Locations to all requirement files that requires pinning down
@@ -39,7 +39,7 @@ help:
 
 .PHONY: install_python_packages
 install_python_packages: $(REQUIREMENTS_FILES)
-	@# Install python packages in current virtual environment
+	@# Install pyauthor packages in current virtual environment
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
@@ -49,7 +49,7 @@ endif
 
 .PHONY: lock_python_requirements
 lock_python_requirements: $(REQUIREMENTS_FILES)
-	@# Pin down python package dependencies as *-requirements.txt files
+	@# Pin down pyauthor package dependencies as *-requirements.txt files
 
 # NOTE: another second expansion prerequisites at the bottom of this Makefile
 $(REQUIREMENTS_FILES): %.txt: %.in
@@ -70,7 +70,7 @@ test: flake8 pytest tox_python tox_sanity
 
 .PHONY: pytest
 pytest:
-	@# Run python unit tests (you may also specify ARGS='<pytest args>')
+	@# Run pyauthor unit tests (you may also specify ARGS='<pytest args>')
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
@@ -78,7 +78,7 @@ endif
 
 .PHONY: pytest_cov
 pytest_cov:
-	@# Run python unit tests with code coverage summary
+	@# Run pyauthor unit tests with code coverage summary
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
@@ -87,7 +87,7 @@ endif
 
 .PHONY: tox_python
 tox_python:
-	@# Run pytest on various python versions
+	@# Run pytest on various pyauthor versions
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
@@ -100,7 +100,7 @@ tox_sanity:
 
 .PHONY: flake8
 flake8:
-	@# Run flake8 python code linter tool
+	@# Run flake8 pyauthor code linter tool
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
@@ -108,7 +108,7 @@ endif
 
 .PHONY: mypy
 mypy:
-	@# Run python type checker tool
+	@# Run pyauthor type checker tool
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif

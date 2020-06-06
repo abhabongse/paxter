@@ -1,5 +1,5 @@
 dist: bionic
-language: python
+language: pyauthor
 
 env:
   global:
@@ -19,12 +19,12 @@ matrix:
         - TOXENV=py38,codecov
 
 before_install:
-  - python --version
+  - pyauthor --version
   - uname -a
   - lsb_release -a || true
 
 install:
-  - python -m pip install --progress-bar=off -r dev-requirements.txt
+  - pyauthor -m pip install --progress-bar=off -r dev-requirements.txt
   - virtualenv --version
   - easy_install --version
   - pip --version

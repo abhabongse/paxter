@@ -10,8 +10,8 @@ from paxter.core import (
     Operator, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
-from paxter.renderers.python import flatten
-from paxter.renderers.python.wrappers import BaseApply, NormalApply
+from paxter.pyauthor.funcs.standards import flatten
+from paxter.pyauthor.wrappers import BaseApply, NormalApply
 
 BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
 
@@ -21,7 +21,7 @@ class RenderContext:
     """
     A suite of Paxter document tree renderer.
 
-    Users of this renderer may embed and run python code
+    Users of this renderer may embed and run pyauthor code
     directly from within the Paxter document source file.
     """
     #: Document source text

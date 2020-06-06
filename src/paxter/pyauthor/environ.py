@@ -3,15 +3,15 @@ A collection of pre-defined execution environment.
 """
 from typing import Optional
 
-from paxter.renderers.python.funcs import (
+from paxter.pyauthor.funcs import (
     flatten, for_statement, if_statement, intro_unsafe_eval, python_unsafe_exec,
 )
 
 
 def create_unsafe_env(data: Optional[dict] = None):
     """
-    Creates an unsafe environment data
-    for Paxter source code evaluation in Python authoring mode.
+    Creates an unsafe environment data for Paxter source code evaluation
+    in Python authoring mode.
     """
     data = data or {}
     return {
@@ -22,3 +22,11 @@ def create_unsafe_env(data: Optional[dict] = None):
         'flatten': flatten,
         **data,
     }
+
+
+def create_unsafe_html_env(data: Optional[dict] = None):
+    """
+    Creates an unsafe environment data for Paxter source code evaluation
+    in Python authoring mode, specializes in construction HTML tree.
+    """
+    ...

@@ -18,7 +18,9 @@ def program():
               help="Paxter expression switch symbol character")
 def parse(input_file, output_file, switch):
     """
-    Runs Paxter parser on input text from INPUT_FILE and write to OUTPUT_FILE.
+    Runs only the parser on the input.
+    It reads input text from INPUT_FILE
+    and writes the parsed tree to OUTPUT_FILE.
     """
     from paxter.core import ParseContext
 
@@ -34,16 +36,18 @@ def parse(input_file, output_file, switch):
               help="Path to output file ('-' for stdout)")
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
-              help="Path to python file to extract the environment.")
-def python_authoring(input_file, output_file, env_file):
+              help="Path to pyauthor file to extract the environment.")
+def pyauthor(input_file, output_file, env_file):
     """
-    Runs Paxter parser followed by Unsafe Python renderer
-    in order to render input text from INPUT_FILE
-    and write the output result to OUTPUT_FILE.
+    Python authoring mode: run the parser with a Python renderer.
+    It reads input text from INPUT_FILE and pass it through the parser.
+    Then the parsed tree is transformed into the final result
+    using the unsafe Python renderer, and output to OUTPUT_FILE.
     """
     import runpy
     from paxter.core import ParseContext
-    from paxter.renderers.python import RenderContext, create_unsafe_env, flatten
+    from paxter.pyauthor import RenderContext, create_unsafe_env
+    from paxter.pyauthor.funcs import flatten
 
     input_text = input_file.read()
     tree = ParseContext(input_text).tree

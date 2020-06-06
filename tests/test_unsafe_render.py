@@ -5,7 +5,7 @@ import pytest
 from click.testing import CliRunner
 
 from paxter.core.parser import ParseContext
-from paxter.renderers.python import RenderContext, create_unsafe_env
+from paxter.pyauthor import RenderContext, create_unsafe_env
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "unsafe")
 
@@ -45,5 +45,5 @@ def test_cli_render(input_file, expected_file):
     with open(expected_file) as fobj:
         expected_text = fobj.read()
     runner = CliRunner()
-    result = runner.invoke(program, ['python-authoring', '-i', input_file])
+    result = runner.invoke(program, ['pyauthor', '-i', input_file])
     assert result.output == expected_text

@@ -1,3 +1,6 @@
+"""
+Collection of function wrappers in Python authoring mode.
+"""
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple
@@ -6,7 +9,7 @@ from paxter.core import CharLoc, Command, Identifier, Operator, Token, TokenList
 from paxter.core.exceptions import PaxterRenderError
 
 if TYPE_CHECKING:
-    from paxter.renderers.python.visitor import RenderContext
+    from paxter.pyauthor.visitor import RenderContext
 
 
 @dataclass
