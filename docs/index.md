@@ -1,7 +1,7 @@
 # Welcome to Paxter's documentation!
 
 Paxter is a document-first text pre-processing mini-language, _loosely_ inspired by
-[at-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).  
+[@-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).  
 
 -   The language mainly provides a toolchain to parse an input text into a document tree
     ([similarly to a DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)).

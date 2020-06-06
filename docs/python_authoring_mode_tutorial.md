@@ -13,6 +13,6 @@ The following class implements a standard parser which
 comes with Paxter package library.
 
 ```eval_rst
-.. autoclass:: paxter.renderers.python.RenderContext
-   :members: input_text, env, tree, render
+.. autoclass:: paxter.pyauthor.RenderContext
+   :members: input_text, env, tree
 ```
