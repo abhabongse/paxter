@@ -33,7 +33,7 @@ class RenderContext:
     tree: FragmentList
 
     #: Result of the rendering
-    rendered: str = field(init=False)
+    rendered: list = field(init=False)
 
     def __post_init__(self):
         self.rendered = self.transform_fragment_list(self.tree)

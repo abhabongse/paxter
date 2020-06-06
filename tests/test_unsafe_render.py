@@ -42,7 +42,7 @@ def test_rendering(input_file, expected_file):
     # Render into output using python authoring mode
     env = create_unsafe_env()
     output = RenderContext(input_text, env, tree).rendered
-    output_text = flatten(output, levels=1)
+    output_text = flatten(output)
 
     assert output_text == expected_text
 

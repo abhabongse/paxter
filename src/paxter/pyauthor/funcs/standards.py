@@ -2,8 +2,7 @@
 Collection of standard functions for Python authoring mode.
 """
 import inspect
-import math
-from typing import Any, Iterator, TYPE_CHECKING, Union
+from typing import Any, Iterator, TYPE_CHECKING
 
 from paxter.core import Command, Text
 from paxter.core.exceptions import PaxterRenderError
@@ -40,22 +39,27 @@ def intro_unsafe_eval(phrase: str, env: dict) -> Any:
     return eval(phrase, env)
 
 
-def flatten(data, levels: int = math.inf) -> str:
+def flatten(data, keep_levels: int = 0) -> Any:
     """
-    Flattens the list by unrolling them with the specified number of levels
-    and join them together into one string.
-    If the number of levels is not specified,
-    nest lists at all levels will be unrolled.
+    Flattens the nested lists by unrolling them
+    but keep the first few specified number of levels.
     """
+    if not isinstance(data, list):
+        return data
+    if keep_levels >= 1:
+        return [
+            flatten(element, keep_levels - 1)
+            for element in data
+        ]
     return ''.join(
-        str(element) for element in _rec_flatten_tokenize(data, levels)
+        str(element) for element in _rec_flatten_tokenize(data)
         if element is not None
     )
 
 
-def _rec_flatten_tokenize(data, levels: Union[int, float]) -> Iterator:
-    if levels >= 1 and isinstance(data, list):
+def _rec_flatten_tokenize(data) -> Iterator:
+    if isinstance(data, list):
         for element in data:
-            yield from _rec_flatten_tokenize(element, levels - 1)
+            yield from _rec_flatten_tokenize(element)
     else:
         yield data
