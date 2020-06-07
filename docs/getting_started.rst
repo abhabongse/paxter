@@ -4,7 +4,8 @@ Getting Started
 Installation
 ------------
 
-Paxter language package can be installed from PyPI via ``pip`` command (or any other methods of your choice):
+Paxter language package can be installed from PyPI via ``pip`` command
+(or any other methods of your choice):
 
 .. code-block:: shell
 
@@ -14,9 +15,9 @@ Paxter language package can be installed from PyPI via ``pip`` command (or any o
 Programmatic Usage
 ------------------
 
-The package is *mainly* intended to be used as a library.
-To get started, let’s assume that we have a source text
-which contains a document **written in Paxter language syntax**.
+This package is *mainly* intended to be utilized as a library.
+To get started, let’s assume that we have a document source text
+written using **Paxter language syntax**.
 
 .. code-block:: python
 
@@ -43,21 +44,21 @@ Parsing
 ~~~~~~~
 
 First and foremost, we use a **parser**
-(which is implemented by the class :class:`ParseContext <paxter.core.ParseContext>`)
-to transform the source text into a parsed document tree.
+(implemented by the class :class:`ParseContext <paxter.core.ParseContext>`)
+to transform the source input into an intermediate parsed tree.
 
 .. code-block:: python
 
    from paxter.core import ParseContext
 
-   tree = ParseContext(source_text).tree
+   parsed_tree = ParseContext(source_text).tree
 
-**Note:** We can see the structure of the document tree in full by printing out
-the content of the variable ``tree`` from above (output reformatted for clarity).
+**Note:** We can see the structure of the parsed tree in full
+by printing out its content as shown below (output reformatted for clarify).
 
 .. code-block:: pycon
 
-   >>> tree
+   >>> parsed_tree
    FragmentList(
        start_pos=0,
        end_pos=236,
@@ -148,30 +149,28 @@ the content of the variable ``tree`` from above (output reformatted for clarity)
        at_prefix=False,
    )
 
-
-
-
-Notice that the source text above also contains what seems like a python code.
-This is **not** part of the Paxter language grammar in any way;
-it simply uses the Paxter application command to embed python code,
-to which we will give meaningful interpretation later.
+Notice how the source text above also contains what seems like a Python code.
+This has *nothing* to do with Paxter language grammar in any way;
+it simply uses the Paxter *command* syntax to *embed* Python code
+to which we will give a meaningful interpretation later.
 
 Rendering
 ~~~~~~~~~
 
-Next step, we use a **renderer** to transform the document tree into its final output.
+Next step, we use a **renderer** to transform the intermediate parsed tree
+into its final output.
 It is important to remember that
-**the semantics of the document is given depending on which renderer we choose**.
+**the semantics of the documents depends on which renderer we are choosing**.
 
-We will use :class:`paxter.renderers.python.RenderContext`
-already pre-defined by Paxter library package
-to render the document tree into the final output.
-One of its useful features is that it will execute python code
-wrapped by ``@python`` application command.
+We will use :class:`RenderContext <paxter.pyauthor.RenderContext>`
+already pre-defined by the Paxter library package
+to transform the parsed tree into the desired final form.
+One of its very useful features is that it will execute python code
+under the ``@python`` command.
 
 .. code-block:: python
 
-   from paxter.renderers.python import RenderContext, create_unsafe_env
+   from paxter.pyauthor import RenderContext, create_unsafe_env
 
    # This dictionary data represents the initial global dict state
    # for the interpretation the document tree in python authoring mode.
@@ -179,8 +178,8 @@ wrapped by ``@python`` application command.
        '_symbols_': {',': '&thinsp;'},
    })
 
-   output_text = RenderContext(source_text, env, tree).rendered
-   print(output_text)  # or write to a file, etc.
+   result = RenderContext(source_text, env, parsed_tree).rendered
+   print(result)  # or write to a file, etc.
 
 The above code will output the following.
 
@@ -194,38 +193,41 @@ The above code will output the following.
    Learn more about :doc:`how to use Python authoring mode <python_authoring_mode_tutorial>`
    and :doc:`how to write custom renderer <custom_renderer_tutorial>`.
 
-Create Your Function
-~~~~~~~~~~~~~~~~~~~~
+Create your own function
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to reuse this parse-and-render setup,
-we can write a utility function such as in the following:
+We recommend Paxter library users to by themselves write a utility function
+to connect all of the toolchains provided Paxter package.
+This is the minimal example of a function to get you started.
 
 .. code-block:: python
 
    from paxter.core import ParseContext
-   from paxter.renderers.python import RenderContext, create_unsafe_env
+   from paxter.pyauthor import RenderContext, create_unsafe_env
 
    def interp(source_text: str) -> str:
-       tree = ParseContext(source_text).tree
-       output = RenderContext(source_text, create_unsafe_env(), tree).rendered
-       return output
+       parsed_tree = ParseContext(source_text).tree
+       result = RenderContext(source_text, create_unsafe_env(), tree).rendered
+       return result
+
 
 Command-Line Usage
 ------------------
 
-As a shortcut, Paxter library package also provides utility via command-line.
-To get started, read the help message by typing:
+As a shortcut, Paxter library package also provided some utilities
+via command-line program.
+To get started, red the help message using the following command:
 
 .. code-block:: bash
 
    $ paxter --help
 
-To get the parsing result only, we will use ``parse`` subcommand.
-Suppose that we have an input file called ``intro.paxter`` which contains
-the following text:
+To play around with the parser, you may use ``parse`` subcommand with an input.
+Suppose that we have the following input file.
 
-.. code-block:: text
+.. code-block:: bash
 
+   $ cat intro.paxter
    @python##"
        from datetime import datetime
 
@@ -239,22 +241,24 @@ the following text:
    My name is @name and my current age is @current_age.
    My shop opens Monday@,-@,Friday.
 
-Then we can look at the intermediate parsed tree result with the following command:
+Then we can see the intermediate parsed tree using this command:
 
 .. code-block:: bash
 
    $ paxter parse -i intro.paxter
 
-If we wish to render the document source text with the default environment dict,
-then we can use the following command:
+If we wish to also render the document written in Paxter language
+under the Python authoring mode with the default environment,
+then use the following command:
 
 .. code-block:: bash
 
-   $ paxter pyauthor -i intro.paxter
-
-which will result in
-
-.. code-block:: text
-
+   $ paxter pyauthor -i intro.paxter -o result.txt
+   $ cat result.txt
    My name is Ashley and my current age is 33.
    My shop opens Monday&thinsp;-&thinsp;Friday.
+
+However, this command-line option does *not* provide a lot of flexibility.
+So we recommend users to dig deeper with a more programmatic usage.
+It may require a lot of time and effort to setup the entire toolchain,
+but it will definitely pay off in the long run.
