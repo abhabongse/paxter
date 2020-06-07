@@ -3,21 +3,161 @@
 ```eval_rst
 .. note:: 
 
-   This is a tutorial for bare Paxter language,
-   which discusses only the basic Paxter syntax without any semantics.
-   The semantics to the parsed tree is generally given by users of Paxter library.
-   For a simpler usage of Paxter, please also see
-   :doc:`Python Authoring Mode Tutorial page<python_authoring_mode_tutorial>`.
+   This is a tutotrial for *bare* Paxter language specification.
+   It discusses only the basic Paxter syntax without any associated semantics
+   as the semantics to the intermediate parsed tree is generally given
+   by users of Paxter library.
+
+   For a simpler usage of Paxter library package, please also see
+   :doc:`Python authoring mode tutorial page <python_authoring_mode_tutorial>`.
 ```
 
-Paxter syntax is very simple. 
-In almost all cases, a typical text will be a valid Paxter document.
-However, Paxter provides a special syntax to insert a richer data
-into the document itself called an **@-expressions** (pronounced as “at expressions”).
-There are 3 kinds of @-expressions:
-**(1)** a command,
-**(2)** a wrapped fragment list, and
-**(3)** a wrapped text.
+Paxter syntax is very simple.
+In most cases, a typical text is a valid Paxter document, like in the following:
+
+```text
+Hello, World!
+My name is Ashley, and I am 33 years old.
+```
+
+However, Paxter provides a special syntax called **@-expressions**
+(pronounced as “at expressions”)
+so that richer information may be inserted into the document.
+There are 3 kinds of @-expressions, all of which begins with an @-symbol:
+
+1. a text wrapped within the _quoted pattern_
+2. a fragment list, wrapped within the _brace pattern_
+3. a command (the most powerful syntax in Paxter)
+
+This @-symbol is sometimes called a _switch_ because it indicates 
+the beginning of an @-expression,
+and whatever follows the switch determines which kind of @-expression it is.
+
+Next, we dive into each kind of @-expressions.
+
+```eval_rst
+.. note::
+
+   While reading on the next 2 sections on the first 2 kinds of @-expressions,
+   it may not be obvious yet why they are imporant
+   because all of the juicy meat is in the last kind of @-expressions, the command.
+
+   So may I suggest readers to skim the next 2 sections, read on how the command works,
+   then jump back to read those 2 sections again.
+```
+
+
+## 1. Wrapped Text 
+
+An @-expression of this kind begins with an @-symbol,
+then it is followed by a textual content wrapped within the _quoted pattern_,
+which means that the inner text must be surrounded by 
+a pair of quotation marks (U+0022).
+
+So for example, here is a text `Hello, World!` written in wrapped text form:
+
+```text
+@"Hello, World!"
+```
+
+One important thing to note about the wrapped text is that
+@-symbols contained within the inner content of the wrapped text
+will _never_ be interpreted as a switch for @-expressions.
+Hence, the usefulness of this kind of syntax shines best
+when we would like to write something containing @-symbols (such as email)
+since **there is no other mechanisms to escape @-symbol switches**.
+
+In the example below, both are acceptable ways to “escape” @-symbols.
+However, the first one will be parsed into simply a single token `ashley@example.com`
+whereas the second one will be parsed into a sequence of 3 tokens:
+`ashley`, `@`, and `example.com`.
+
+```text
+@"ashley@example.com"
+ashley@"@"example.com
+```
+
+But what if we wish to include quotation marks within the inner content
+of the wrapped text?
+Luckily there is rather a non-painful way to write this:
+simply append **an equal number of hashes** (U+0023) to 
+_both ends_ of the matching quotation mark pairs.
+
+Confused? Let’s consider the following example.
+
+```text
+@"No "quotation marks" allowed here."
+@##"Allowing "quotation marks" within the wrapped text."##
+```
+
+For the first line, the second quotation mark preceding the word _quotation_
+is matched with the very first quotation mark right after the beginning @-symbol.
+Hence, the inner content of the first wrapped text is simply `No `
+(with a space at the end),
+followed by `quotation marks" allowed here."` as the second text token
+(**not** `No "quotation marks" allowed here.` as some might have expected).
+
+However, the whole sentence in the second line of the above example
+constitutes the entire inner content of the wrapped text.
+Note that if the sentence itself were to contain `"##` somewhere mid-sentence,
+then the parsing of the wrapped text would have terminated earlier.
+
+In the next example below, 
+the first line of input is parsed into a single token `good"#"boy`
+whereas the second line is parsed into two tokens, `bad` and `"boy"##`.
+ 
+```text
+@##"good"#"boy"##
+@##"bad"##"boy"##
+```
+
+```eval_rst
+.. important::
+
+   An important thing to remember is that Paxter parser will attempt to
+   *non-greedily* match the **balanced pair of hashes for the quoted pattern**.
+   In fact, this also applies to other kinds of patterns, which we will see later.
+```
+
+
+## 2. Wrapped Fragment List
+
+Wrapped fragment lists differs from wrapped texts for 2 major reasons:
+
+-   Instead of using a pair of quotation marks surrounding the inner content, 
+    wrapped fragment lists uses a matching pair of braces instead
+    (U+007B and U+007D).
+    This is called the _brace pattern_ in analogous to the _quoted pattern_
+    for wrapped texts.
+-   Nested @-expressions are allowed within the inner content of wrapped fragment lists.
+    
+This kind of @-expressions will be proven useful when we wish to embed textual data
+within the options section of a command (to be discussed below).
+
+Below is one example of how this kind of syntax is used.
+Do not worry about the unfamiliar command syntax yet,
+just know that the area between the matching pair of square brackets 
+is called the _options section_ of a command.
+
+```text
+@ordered_list[
+    @{This is the first item},
+    @{This is the second item},
+    @{Send your complaints to my email at @"ashley@example.com"!},
+]
+```
+
+
+## 3. Command
+
+A **command** is the most powerful syntax in Paxter language.
+It consists of the following 3 sections of information:
+
+```text
+"@" introduction [options] [main_argument]
+```
+
+
 
 
 ## 1. Command
@@ -220,45 +360,4 @@ For example, both lines presented below are considered identical.
 ```text
 Email from me@@example.com: stop by today between 3@,-@,5 PM.
 Email from me@|@|example.com: stop by today between 3@|,|-@|,|5 PM.
-```
-
-
-## 2. Wrapped Fragment List
-
-There may be a piece of content wrapped by the _brace pattern_
-following the @-symbol switch.
-This kind of @-expression is called a wrapped fragment list.
-It is especially useful when written inside the options section of a command.
-
-For example,
-```text
-@ordered_list[
-    @{This is the first item.}
-    @{This is the second item.}
-    @{This is the third item.}
-]
-```
-
-However, nothing prevents us from using this form of @-expression in other locations.
-So the following is also a valid usage:
-
-```text
-My favorite subject is @{@{Mathematics} and @{History}}. 
-```
-
-## 3. Wrapped Text
-
-This kind of @-expression is very similar to the wrapped fragment list kind,
-except that the nested @-symbols within the text content
-will not be interpreted as the switch for nested @-expressions.
-As you may have guessed, it is written as a @-switch 
-followed by the content in the _quoted pattern_.
-
-This form of @-expression is especially useful when you wish to write
-text content containing @-symbols (such as an email). 
-For example,
-
-```text
-My name is @name and my email is @"yourname@example.com".
-To write @"@" symbol in Paxter, you have to write it as @#"@"@""#.
 ```
