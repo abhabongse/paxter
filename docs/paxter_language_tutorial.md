@@ -25,12 +25,12 @@ However, Paxter provides a special syntax called **@-expressions**
 so that richer information may be inserted into the document.
 There are 3 kinds of @-expressions, all of which begins with an @-symbol:
 
-1. a text wrapped within the _quoted pattern_
+1. a command
 2. a fragment list, wrapped within the _brace pattern_
-3. a command (the most powerful syntax in Paxter)
+3. a text wrapped within the _quoted pattern_
 
-This @-symbol is sometimes called a _switch_ because it indicates 
-the beginning of an @-expression,
+This @-symbol (codepoint U+0040) is sometimes called a _switch_ 
+because it indicates the beginning of an @-expression,
 and whatever follows the switch determines which kind of @-expression it is.
 
 Next, we dive into each kind of @-expressions.
@@ -38,34 +38,286 @@ Next, we dive into each kind of @-expressions.
 ```eval_rst
 .. note::
 
-   While reading on the next 2 sections on the first 2 kinds of @-expressions,
-   it may not be obvious yet why they are imporant
-   because all of the juicy meat is in the last kind of @-expressions, the command.
-
-   So may I suggest readers to skim the next 2 sections, read on how the command works,
-   then jump back to read those 2 sections again.
+   Consult :doc:`Syntax Reference <syntax>` for 
+   a more detailed Paxter language grammar specification.
 ```
 
 
-## 1. Wrapped Text 
+## 1. Command
 
-An @-expression of this kind begins with an @-symbol,
-then it is followed by a textual content wrapped within the _quoted pattern_,
-which means that the inner text must be surrounded by 
-a pair of quotation marks (U+0022).
-
-So for example, here is a text `Hello, World!` written in wrapped text form:
+A **command** is the most powerful syntax in Paxter language.
+It consists of the following 3 sections of information:
 
 ```text
-@"Hello, World!"
+"@" introduction [options] [main_argument]
 ```
 
-One important thing to note about the wrapped text is that
-@-symbols contained within the inner content of the wrapped text
-will _never_ be interpreted as a switch for @-expressions.
-Hence, the usefulness of this kind of syntax shines best
-when we would like to write something containing @-symbols (such as email)
-since **there is no other mechanisms to escape @-symbol switches**.
+Among these 3 sections, only the introduction section is mandatory;
+the other 2 sections are optional and can be omitted.
+Additionally, there should _not_ be any whitespace characters
+separating between the switch and the introduction section,
+nor between different sections of the same command.
+
+### Introduction section
+
+An introduction of a command may contain any textual content,
+surrounded by a pair of bars `|` (U+007C).
+
+Here are examples of a valid command with only the introduction section.
+
+```text
+@|foo|
+@|_create|
+@|สวัสดี|
+@|foo.bar|
+@|1 + 1|
+@|Hello, World!|
+```
+
+However, if the content of the introduction section
+takes the form of a valid Python identifier,
+then the pair of bars may be dropped. 
+So the first 3 examples from above may be rewritten as follows:
+
+```text
+@foo
+@_create
+@สวัสดี
+```
+
+However, the textual content of the introduction may sometimes contain
+a bar as part of itself (such as `x || y || z`).
+Then we may additionally surround the matching pair of bars
+with an equal number of hashes `#` (U+0023):
+
+```text
+@#|x || y || z|#
+@###|x || y || z|###
+```
+
+But the following example will _not_ work as expected:
+
+```text
+@|x || y || z| is a command whose introduction contains exactly just “x ”
+followed by regular text “| y || z|”.
+```
+
+Obviously, if the introduction section begins with _n_ hashes followed by a bar,
+then the textual content itself _cannot_ contain a bar followed by _n_ hashes
+(otherwise, the introduction section would have terminated earlier).
+
+```text
+@##|good|#|one|##
+@##|bad|##|one|##
+```
+
+In this example (shown above), the introduction of the first command is `good|#|boy`
+whereas the introduction of the other command cuts short at `bad`.
+
+**Note:** In a sense, this _bar pattern_ (by which we mean 
+the pattern of surrounding some content with a pair of bars
+plus an equal number of hashes on both ends) will be parsed **non-greedily**
+(i.e. the parsing of the introduction halts as soon as the closing pattern
+corresponding to the opening pattern encountered earlier is found).
+
+### Options section
+
+The existence of a left square bracket immediately after the introduction section
+of a command _always_ indicates the beginning of the options section.
+The options section itself is a sequence of _tokens_ where each token can be
+one of the following:
+
+-   Another @-expression of all 3 kinds
+-   An identifier (according to Python grammar)
+-   An operator which can be a single comma, a single semicolon,
+    or a combination of all _other_ symbol characters
+    (excluding parentheses, curly braces, and square brackets)
+-   A number whose syntactical form adheres to JSON grammar for number literal
+-   A nested sequence of tokens itself,
+    surrounded by a matching pair of parentheses (U+0028 and U+0029), 
+    curly braces (U+007B and U+007D), or square brackets (U+005B and U+005D).
+
+```eval_rst
+.. warning::
+
+   Please note that inside the options section of a command
+   is the only place in Paxter language where whitespace characters
+   between tokens are ignored.
+```
+
+Here are a couple of examples of commands which include the options section:
+
+-   For the command `@foo[x=1, y=2.5]`,
+    its options section contains a sequence of 7 tokens:
+    
+    1.  an identifier `x`
+    2.  an equal sign operator `=`
+    3.  the number literal `1`
+    4.  a comma operator `,`
+    5.  an identifier `y`
+    6.  an equal sign operator `=`, and
+    7.  the number literal `2.5`
+
+-   For the command `@|foo.bar|[x <- {2}; @baz]`,
+    its options section contains a sequence of 5 tokens:
+    
+    1.  an identifier `x`
+    2.  a left arrow operator `<-`
+    3.  a nested sequence containing the number literal `2` as the only token within it
+    4.  a semicolon operator `;`, and
+    5.  a nested command with `baz` as the introduction section
+        and with all other sections omitted.
+
+Paxter language syntax gives a lot of freedom for what is allowed within
+the options section of a command;
+a programmer-write who writes a renderer to transform Paxter intermediate parsed trees
+into data of another form has a liberty to add whatever constraints
+to the syntactical structure within the options section.
+
+### Main argument section
+
+Main argument section, if exists, contains the main text associated to a command.
+There are 2 modes for the main argument:
+the fragment list mode (in which the content is wrapped within the _brace pattern_)
+and the text mode (the content is wrapped within the _quoted pattern_).
+
+#### (a) Wrapped fragment list mode
+
+For a fragment list mode as the main argument,
+the content may contain texts as well as any _nested_ @-expressions (of all 3 kinds).
+
+The content itself must be surrounded by a pair of curly braces
+(U+007B and U+007D) called the _brace pattern_
+(in analogous to the _bar pattern_ 
+associated with the introduction section of a command).
+Of course, additionally appending the equal number of hashes to both ends are allowed.
+
+For example,
+
+```text
+@foo{Hello, @name}
+@repeat[count=500]{I will not forget to do homework again.}
+@|foo.bar|##{A set of natural numbers: {0, 1, 2, 3, ...}.}##.
+```
+
+Similarly to the _bar pattern_ from the introduction section,
+if the wrapped fragment list begins with _n_ hashes followed by a left curly brace,
+then the **immediate** inner textual content may _not_ contain
+a right curly brace followed by _n_ hashes.
+
+In the following example, the outermost command has the introduction `foo`
+and its main argument is in fact `@bar{1###}###`.
+That is because (1) the curly braces pair surrounding `1###`
+(marked with “^”) match with each other, 
+and thus (2) the succeeding 3 hashes are not associated 
+with the marked closing curly brace.  
+
+```text
+@foo###{@bar{1###}###}###
+            ^    ^
+```
+
+#### (b) Wrapped text mode
+
+Wrapped texts are somewhat similar to wrapped fragment lists,
+except for 2 major reasons:
+
+-   Instead of using a matching pair of curly braces surrounding the inner content,
+    wrapped texts use a pair of quotation marks (U+0022).
+    This is called the _quoted pattern_ in analogous to the _brace pattern_
+    for wrapped fragment lists.
+-   All @-symbol characters within the textual content
+    will _not_ be interpreted as the switch for @-expressions.
+    Hence, wrapped texts may _not_ contain any nested @-expressions.
+
+This mode of main argument is useful especially when we expect the inner content
+of the main argument to be from **another domain** where @-symbols are prevalent.
+
+For example, when you want to embed source code from another language:
+
+```text
+@source_code[language=python]##"
+
+    # Results of the following function is cached 
+    # depending on its input
+    from functools import lru_cache
+    
+    @lru_cache(maxsize=None)
+    def add(x, y):
+        return x + y
+
+"##
+```
+
+Again, if the inner content needs to contain a quotation mark,
+we may add an equal number of hashes to both ends:
+
+```text
+@alert#"Submit your feedback to "ashley@example.com"."#
+```
+
+### Special form of command
+
+Recall that a command generally has the following form
+
+```text
+"@" introduction [options] [main_argument]
+```
+
+In fact, there is another special form of a command, which is
+when there is a single symbol character immediately following the @-symbol switch.
+This single _symbol_ would be the sole content of the introduction section
+while the other sections (i.e. the options and main argument sections)
+will be considered empty.
+
+For example, both of the following lines are equivalent.
+
+```text
+Message from ashley@@example.com: free food today between 3@,-@,5 PM.
+Message from ashley@|@|example.com: free food today between 3@#|,|#-@##|,|##5 PM.
+```
+
+```eval_rst
+.. warning::
+
+   If ``@#`` happens to be the prefix of a full-form @-expressions
+   (such as in ``@#|foo|#`` or ``@{Hello, World!}`` which we discuss next),
+   then ``@#`` by itself is *not* a valid command in special form.
+   It must be **unambiguously** *not* part of full-form @-expressions
+   for itself to become a valid command of special form.
+```
+
+## 2. Wrapped fragment List 
+
+An @-expression of this kind begins with an @-symbol switch,
+followed by a textual content wrapped within the _quoted pattern_
+(as we have already discussed earlier in fragment lists mode 
+of the main argument section of a command).
+
+This kind of @-expressions is particularly useful
+when we want to add some text within the options section of a command.
+
+For example, this might be a way to write down an ordered list of text content.
+
+```text
+@ordered_list[
+    @{This is the @emph{first} item.},
+    @{This is the @strong{second} item.},
+    @{Three is a magic number.},
+]
+```
+
+## 3. Wrapped text
+
+Just like wrapped fragment lists, wrapped texts works similarly
+but it follows the _quoted pattern_ instead of the _brace pattern_
+and @-symbol characters do not work as a switch for @-expressions
+unlike wrapped fragment lists.
+
+This kind of @-expression can be used when you want to “escape”
+@-symbol characters within text itself
+(e.g. when you wish to write down an email address).
+Note that **there is no other mechanisms to escape @-symbol switches**.
 
 In the example below, both are acceptable ways to “escape” @-symbols.
 However, the first one will be parsed into simply a single token `ashley@example.com`
@@ -77,287 +329,9 @@ whereas the second one will be parsed into a sequence of 3 tokens:
 ashley@"@"example.com
 ```
 
-But what if we wish to include quotation marks within the inner content
-of the wrapped text?
-Luckily there is rather a non-painful way to write this:
-simply append **an equal number of hashes** (U+0023) to 
-_both ends_ of the matching quotation mark pairs.
-
-Confused? Let’s consider the following example.
+Here is another example which illustrates the power of wrapped text
+in conjunction with hashes:
 
 ```text
-@"No "quotation marks" allowed here."
-@##"Allowing "quotation marks" within the wrapped text."##
-```
-
-For the first line, the second quotation mark preceding the word _quotation_
-is matched with the very first quotation mark right after the beginning @-symbol.
-Hence, the inner content of the first wrapped text is simply `No `
-(with a space at the end),
-followed by `quotation marks" allowed here."` as the second text token
-(**not** `No "quotation marks" allowed here.` as some might have expected).
-
-However, the whole sentence in the second line of the above example
-constitutes the entire inner content of the wrapped text.
-Note that if the sentence itself were to contain `"##` somewhere mid-sentence,
-then the parsing of the wrapped text would have terminated earlier.
-
-In the next example below, 
-the first line of input is parsed into a single token `good"#"boy`
-whereas the second line is parsed into two tokens, `bad` and `"boy"##`.
- 
-```text
-@##"good"#"boy"##
-@##"bad"##"boy"##
-```
-
-```eval_rst
-.. important::
-
-   An important thing to remember is that Paxter parser will attempt to
-   *non-greedily* match the **balanced pair of hashes for the quoted pattern**.
-   In fact, this also applies to other kinds of patterns, which we will see later.
-```
-
-
-## 2. Wrapped Fragment List
-
-Wrapped fragment lists differs from wrapped texts for 2 major reasons:
-
--   Instead of using a pair of quotation marks surrounding the inner content, 
-    wrapped fragment lists uses a matching pair of braces instead
-    (U+007B and U+007D).
-    This is called the _brace pattern_ in analogous to the _quoted pattern_
-    for wrapped texts.
--   Nested @-expressions are allowed within the inner content of wrapped fragment lists.
-    
-This kind of @-expressions will be proven useful when we wish to embed textual data
-within the options section of a command (to be discussed below).
-
-Below is one example of how this kind of syntax is used.
-Do not worry about the unfamiliar command syntax yet,
-just know that the area between the matching pair of square brackets 
-is called the _options section_ of a command.
-
-```text
-@ordered_list[
-    @{This is the first item},
-    @{This is the second item},
-    @{Send your complaints to my email at @"ashley@example.com"!},
-]
-```
-
-
-## 3. Command
-
-A **command** is the most powerful syntax in Paxter language.
-It consists of the following 3 sections of information:
-
-```text
-"@" introduction [options] [main_argument]
-```
-
-
-
-
-## 1. Command
-
-A **command** always begin with a switch, indicated by an **@**-symbol.
-Following the switch, a command consists of 3 sections as follows.
-
-```text
-"@" introduction [options] [main argument]
-```
-
-Among these 3 sections, only the introduction section is mandatory;
-the other 2 sections are optional and may be omitted.
-There should _not_ be any whitespace characters separating between
-the switch and the introduction section,
-or between different sections of the same command.
-
-### Introduction section
-
-Any text could be part of an introduction section of a command.
-There are 2 different ways to write down a command introduction section:
-either **(a)** using an identifier form
-or **(b)** surrounding the text with the _bar pattern_.
-
--   **(a)** If the text itself already has a valid Python identifier form
-    (such as `foo`, `_create`, or even `จำนวน`),
-    then you may simply write them down as is.
-    For example,
-    
-    ```text
-    @foo
-    @_create
-    @สวัสดี
-    ```
-
--   **(b)** However, there are variety of texts that do not conform to 
-    a Python identifier form.
-    Hence, there is another way to write the introduction section:
-    using the _bar pattern_.
-    Simply surround the text with a pair of bars. 
-
-    For example, if you wish to write `1 + 1` as introduction section of the command,
-    you may write it as follows:
-    
-    ```text
-    @|1 + 1|
-    ```
-    
-    Sometimes, the text may contain a bar as part of itself (such as `left || right`).
-    Then you may additionally surround the matching pair of bars
-    with an equal number of hashes:
-    
-    ```text
-    @#|left || right|#
-    ```
-    
-    Obviously, if the introduction section begins with _n_ hashes followed by a bar,
-    then the text itself may _not_ contain a bar followed by _n_ hashes.
-    (Otherwise, the introduction section would have terminated earlier.)
-    
-    ```text
-    @##|good|#|boy|##  →  the introduction section is "good|#|boy"
-    @##|bad|##|boy|##  →  the introduction section is "bad"
-    ```
-
-### Options section
-
-The existence of a left square bracket right after the introduction section
-of a command always indicates the beginning of the options section.
-The options section itself is a sequence of tokens where each token can be
-
--   Another @-expression of all 3 kinds
--   An identifier
--   An operator which can be a comma, a semicolon,
-    or a combination of all other symbol characters
-    (excluding parentheses, braces, and square brackets)
--   A number whose syntactical form adheres to JSON grammar for number literal
--   A nested sequence of tokens itself, surrounded by a matching pair of
-    parentheses, braces, or square brackets.
-
-```eval_rst
-.. warning::
-
-   Please note that inside the options section of a command
-   is the only place in Paxter language where whitespace characters
-   between tokens are ignored.
-
-.. note::
-
-   Consult :doc:`Syntax Reference <syntax>` for 
-   a more detailed Paxter language grammar specification.
-```
-
-Here is an example of commands with options section present:
-
--   The options section of the command `@foo[x=1, y=2.5]`
-    is a sequence of 7 tokens: 
-    
-    1.  an identifier `x`
-    2.  an equal sign operator `=`
-    3.  the number literal `1`
-    4.  a comma operator `,`
-    5.  an identifier `y`
-    6.  an equal sign operator `=`, and
-    7.  the number literal `2.5`
-
--   The options section of the command `@|foo.bar|[x <- {2}; @baz]`
-    is a sequence of 5 tokens:
-    
-    1.  an identifier `x`
-    2.  a left arrow operator `<-`
-    3.  a nested sequence containing the number literal `2` as the only token
-    4.  a semicolon operator `;`
-    5.  a nested command with `baz` as the introduction section
-        and with all other sections omitted.
-
-Paxter language gives a lot of freedom for what is allowed
-within the options section of a command;
-a programmer-writer who writes a renderer to translate parsed trees in Paxter
-is free to add whatever constraints to the formatting within the options section.
-
-### Main argument section
-
-Main argument section, if exists, contains the main text associated to a command.
-There are 2 modes for the main argument section:
-**(a)** wrapped fragment list mode and **(b)** wrapped raw text mode.
-
--   **(a)** For a fragment list mode as the main argument,
-    the text content is allowed to be mixed with nested @-expressions.
-    
-    The main argument content of this mode must be surrounded by a pair of braces
-    (called the _brace pattern_, which is analogous to the _bar pattern_).
-    For example,
-    
-    ```text
-    @foo{Hello, @name}.
-    ```
-    
-    If the main argument has to contain right braces,
-    then the pair of matching braces may additionally surrounded by
-    the same number of hashes, as in the following:
-    
-    ```text
-    @foo##{A set of natural numbers {0, 1, 2, ...}.}##
-    ```
-    
-    Similarly to the _bar pattern_ from the introduction section,
-    if the wrapped fragment list begins with _n_ hashes followed by a left brace,
-    then the _immediate_ inner content may not contain
-    a right brace followed by _n_ hashes. 
-    
-    For example, the following piece of Paxter document
-    is a command with `foo` as the introduction,
-    and with `@bar{1}###@bar{2}` as the main argument.
-    Notice that the right brace right after `1` is not associated
-    with the succeeding `###` because it matches with the left brace
-    preceding `1`.
-    ```text
-    @foo###{@bar{1}###@bar{2}}###
-    ```
-    
--   **(b)** For a wrapped text mode as the main argument,
-    nested @-symbols will _not_ be interpreted as the switch for @-expressions.
-    And instead of using a matching pair of braces, 
-    a pair of straight quotation mark has to be deployed.
-    This is called the _quoted pattern_.
-    
-    This is useful especially when you expect the content 
-    of the main argument to be from another domain where @-symbol is prevalent.
-    For example, 
-    ```text
-    @mailto"yourname@example.com"
-    ```
-    
-    Again, if the inner text needs to contain a quotation mark,
-    add an equal number of hashes to both ends.
-    
-    ```text
-    @alert#"Send your feedback to "yourname@example.com"."#
-    ```
-
-### Combinations
-
-Obviously, both the options section and the main argument section
-may be presented at the same time. For example,
-
-```text
-@repeat[15]{I will submit my homework on time next time! }
-```
-
-### Special form
-
-There is a special form of a command, which is when there is 
-a single symbol character that follows the @-switch.
-Such symbol will become the sole content of the introduction section,
-while the options section and the main argument section are considered empty.
-
-For example, both lines presented below are considered identical.
-
-```text
-Email from me@@example.com: stop by today between 3@,-@,5 PM.
-Email from me@|@|example.com: stop by today between 3@|,|-@|,|5 PM.
+To write @"@" symbol, you may have to write it as @#"@"@""#.
 ```
