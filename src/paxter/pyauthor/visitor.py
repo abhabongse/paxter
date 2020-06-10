@@ -60,7 +60,7 @@ class RenderContext:
         if isinstance(fragment, Text):
             return self.transform_text(fragment)
         if isinstance(fragment, Command):
-            return self.transform_paxter_apply(fragment)
+            return self.transform_command(fragment)
         raise PaxterRenderError(
             "unrecognized fragment at %(pos)s",
             pos=CharLoc(self.input_text, fragment.start_pos),
@@ -88,9 +88,13 @@ class RenderContext:
         return token.value
 
     def transform_fragment_list(self, seq: FragmentList) -> List[Any]:
-        return [
+        transformed_fragments = (
             self.transform_fragment(fragment)
             for fragment in seq.children
+        )
+        return [
+            fragment for fragment in transformed_fragments
+            if fragment is not None
         ]
 
     def transform_text(self, token: Text) -> str:
@@ -99,7 +103,7 @@ class RenderContext:
             text = BACKSLASH_NEWLINE_RE.sub('', text)
         return text
 
-    def transform_paxter_apply(self, token: Command):
+    def transform_command(self, token: Command):
         # Try to evaluate the intro section
         # using the evaluator function from _intro_eval_
         try:

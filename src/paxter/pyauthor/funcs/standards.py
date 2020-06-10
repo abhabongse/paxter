@@ -2,7 +2,7 @@
 Collection of standard functions for Python authoring mode.
 """
 import inspect
-from typing import Any, Iterator, TYPE_CHECKING
+from typing import Any, Iterator, List, TYPE_CHECKING, Union
 
 from paxter.core import Command, Text
 from paxter.core.exceptions import PaxterRenderError
@@ -39,22 +39,17 @@ def intro_unsafe_eval(phrase: str, env: dict) -> Any:
     return eval(phrase, env)
 
 
-def flatten(data, keep_levels: int = 0) -> Any:
+def flatten(data, join: bool = True) -> Union[List[str], str]:
     """
-    Flattens the nested lists by unrolling them
-    but keep the first few specified number of levels.
+    Flattens the nested list of elements by unrolling them into a single list.
+    Then if the join is not disabled,
+    all elements will be combined to a single string.
     """
-    if not isinstance(data, list):
-        return data
-    if keep_levels >= 1:
-        return [
-            flatten(element, keep_levels - 1)
-            for element in data
-        ]
-    return ''.join(
-        str(element) for element in _rec_flatten_tokenize(data)
-        if element is not None
-    )
+    seq = _rec_flatten_tokenize(data)
+    if join:
+        return ''.join(str(element) for element in seq)
+    else:
+        return list(seq)
 
 
 def _rec_flatten_tokenize(data) -> Iterator:
