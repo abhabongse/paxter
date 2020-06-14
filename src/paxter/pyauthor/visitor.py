@@ -10,6 +10,7 @@ from paxter.core import (
     Operator, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
+from paxter.pyauthor.funcs import flatten
 from paxter.pyauthor.wrappers import BaseApply, NormalApply
 
 BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
@@ -32,11 +33,17 @@ class RenderContext:
     #: Parsed document tree
     tree: FragmentList
 
+    #: Whether the list should always be joined into string
+    #: whenever possible
+    is_joined: bool = True
+
     #: Result of the rendering
-    rendered: list = field(init=False)
+    rendered: Union[str, list] = field(init=False)
 
     def __post_init__(self):
         self.rendered = self.transform_fragment_list(self.tree)
+        if self.is_joined:
+            self.rendered = flatten(self.rendered, is_joined=True)
 
     def transform_token(self, token: Token) -> Any:
         if isinstance(token, Fragment):
@@ -92,10 +99,13 @@ class RenderContext:
             self.transform_fragment(fragment)
             for fragment in seq.children
         )
-        return [
+        result = [
             fragment for fragment in transformed_fragments
             if fragment is not None
         ]
+        if self.is_joined:
+            result = ''.join(str(fragment) for fragment in result)
+        return result
 
     def transform_text(self, token: Text) -> str:
         text = token.inner

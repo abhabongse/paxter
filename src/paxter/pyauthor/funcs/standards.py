@@ -39,14 +39,25 @@ def intro_unsafe_eval(phrase: str, env: dict) -> Any:
     return eval(phrase, env)
 
 
-def flatten(data, join: bool = True) -> Union[List[str], str]:
+def flatten(data, is_joined: bool = True) -> Union[List[str], str]:
     """
     Flattens the nested list of elements by unrolling them into a single list.
-    Then if the join is not disabled,
+    Unless the ``is_joined`` option is disabled,
     all elements will be combined to a single string.
+
+    >>> flatten(["Hello", ",", " ", "World", "!"])
+    "Hello, World!"
+    >>> flatten(["Hello", [",", " "], ["World"], "!"])
+    "Hello, World!"
+    >>> flatten(["Hello", [",", " "], ["World"], "!"], is_joined=False)
+    ["Hello", ",", " ", "World", "!"]
+    >>> flatten("Hello, World!")
+    "Hello, World!"
+    >>> flatten("Hello, World!", is_joined=False)
+    ["Hello, World!"]
     """
     seq = _rec_flatten_tokenize(data)
-    if join:
+    if is_joined:
         return ''.join(str(element) for element in seq)
     else:
         return list(seq)

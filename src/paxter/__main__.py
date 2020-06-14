@@ -52,7 +52,7 @@ def pyauthor(input_file, output_file, env_file):
     input_text = input_file.read()
     tree = ParseContext(input_text).tree
     env = create_unsafe_env(runpy.run_path(env_file) if env_file else {})
-    output = RenderContext(input_text, env, tree).rendered
+    output = RenderContext(input_text, env, tree, is_joined=False).rendered
     output_text = flatten(output)
 
     output_file.write(output_text)
