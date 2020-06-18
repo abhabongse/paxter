@@ -94,6 +94,9 @@ Expected outcome for rolling a die is @|statistics.mean|[@|range(1, 7)|].
 Using the parser in Paxter library package to process this document,
 we obtain the following result.
 
+<details>
+<summary>Click Here To Expand</summary>
+
 ```python
 FragmentList(
     start_pos=0,
@@ -489,6 +492,7 @@ FragmentList(
     at_prefix=False,
 )
 ```
+</details>
 
 If we are using the Python authoring mode
 (a renderer extension provided by Paxter library package)
