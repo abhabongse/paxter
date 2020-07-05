@@ -4,8 +4,7 @@ import json
 from glob import glob
 from os.path import basename, dirname, join, splitext
 
-from setuptools import find_packages
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 def read(*names, **kwargs):

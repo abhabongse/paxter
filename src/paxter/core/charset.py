@@ -9,7 +9,7 @@ ID_START_CATEGORIES = ['Lu', 'Ll', 'Lt', 'Lm', 'Lo', 'Nl']
 ID_CONT_CATEGORIES = ID_START_CATEGORIES + ['Mn', 'Mc', 'Nd', 'Pc']
 SYMBOL_CATEGORIES = ['Ps', 'Pe', 'Pi', 'Pf', 'Pd', 'Po', 'Sc', 'Sk', 'Sm', 'So']
 OP_CATEGORIES = ['Pd', 'Po', 'Sc', 'Sk', 'Sm', 'So']
-OP_BANNED_CHARS = [',', ';', '@']
+OP_BANNED_CHARS = [',', ';', '@', '#', '"']
 
 ID_START_CHARS = ''.join(
     c for c in map(chr, range(sys.maxunicode + 1))

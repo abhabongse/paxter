@@ -148,7 +148,7 @@ class ParseContext:
         lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
         if lbracket_matchobj:
             next_pos = lbracket_matchobj.end()
-            next_pos, options = self._parse_options(next_pos)
+            next_pos, options = self._parse_option(next_pos)
         else:
             options = None
 
@@ -212,16 +212,9 @@ class ParseContext:
         command_node = SymbolCommand.from_matchobj(symbol_matchobj, 'symbol')
         return next_pos, command_node
 
-    def _parse_options(self, next_pos: int) -> Tuple[int, TokenList]:
+    def _parse_option(self, next_pos: int) -> Tuple[int, TokenList]:
         """
-        Parses the option section until reaching the closed square brackets.
-        """
-        return self._parse_options_rec(next_pos)
-
-    def _parse_options_rec(self, next_pos: int) -> Tuple[int, TokenList]:
-        """
-        Recursively parses the option section
-        until reaching the right square bracket character.
+        Parses the option section until reaching the right square brackets.
         """
         start_pos = next_pos
         children = []
@@ -281,9 +274,9 @@ class ParseContext:
 
             # Attempts to parse a sub-level list of tokens
             lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
-            if lbrace_matchobj:
+            if lbracket_matchobj:
                 next_pos = lbracket_matchobj.end()
-                next_pos, token_list_node = self._parse_options_rec(next_pos)
+                next_pos, token_list_node = self._parse_option(next_pos)
                 children.append(token_list_node)
                 continue
 
@@ -306,7 +299,7 @@ class ParseContext:
         raise PaxterSyntaxError(
             f"cannot match enclosing right pattern {enclosing.right!r} "
             f"to the left pattern {enclosing.left!r} at %(pos)s",
-            pos=CharLoc(self.input_text, pos),
+            pos=CharLoc(self.input_text, pos - len(enclosing.left)),
         )
 
     def _cannot_match_char(self, pos: int, left_char: str, right_char: str):
@@ -317,7 +310,7 @@ class ParseContext:
         raise PaxterSyntaxError(
             f"cannot match enclosing right character {right_char!r} "
             f"to the left character {left_char!r} at %(pos)s",
-            pos=CharLoc(self.input_text, pos),
+            pos=CharLoc(self.input_text, pos - len(left_char)),
         )
 
     def _invalid_command(self, pos: int):

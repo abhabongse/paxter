@@ -29,7 +29,6 @@ TESTS = [
 
 @pytest.mark.parametrize(("input_file", "expected_file"), TESTS)
 def test_rendering(input_file, expected_file):
-
     # Read test file contents
     with open(input_file) as fobj:
         input_text = fobj.read()
