@@ -1,5 +1,5 @@
 """
-Collection of character set definitions.
+Collection of character sets used in text parsing.
 """
 import re
 import sys

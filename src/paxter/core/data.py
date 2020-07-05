@@ -11,7 +11,7 @@ from paxter.core.enclosing import EnclosingPattern
 __all__ = [
     'Token', 'Fragment',
     'TokenList', 'Identifier', 'Operator', 'Number',
-    'FragmentList', 'Text', 'Command',
+    'FragmentList', 'Text', 'Command', 'SymbolCommand',
 ]
 
 MainArgument = Union['FragmentList', 'Text']
@@ -69,7 +69,7 @@ class Token(metaclass=ABCMeta):
 class Fragment(Token, metaclass=ABCMeta):
     """
     Subtypes of nodes in Paxter document tree that is allowed
-    to appear as elements of :class:`FragmentList`.
+    to appear as direct members of :class:`FragmentList`.
     """
     pass
 
@@ -77,9 +77,9 @@ class Fragment(Token, metaclass=ABCMeta):
 @dataclass
 class TokenList(Token):
     """
-    Node type which represents a sequence of tokens wrapped under
-    a pair of parentheses ``()``, brackets ``[]``, or braces ``{}``,
-    all of which appears exclusively within the option section of :class:`Command`.
+    Node type which represents a sequence of tokens
+    wrapped under a matching pair of brackets ``[]``,
+    all of which appears only within the option section of :class:`Command`.
     """
     #: List of :class:`Token` instances
     children: List[Token]
@@ -110,8 +110,8 @@ class Operator(Token):
 @dataclass
 class Number(Token):
     """
-    Node type which represents a number recognized by JSON grammar.
-    It appears exclusively within the option section of :class:`PaxterApply`.
+    Node type which represents a number recognized by JSON grammar,
+    which can appear only within the option section of :class:`Command`.
     """
     #: Numerical value deserialized from the number literal
     value: Union[int, float]
@@ -122,26 +122,21 @@ class Number(Token):
 
 
 @dataclass
-class FragmentList(Fragment):
+class FragmentList(Token):
     """
     Special intermediate node maintaining a list of fragment children nodes.
     Nodes of this type usually correspond to either the global-level fragments
     or fragments nested within enclosing brace pattern.
 
-    The enclosing brace pattern may appear right after the @-symbol
-    within the option section of the :class:`Command` node
-    or as a :class:`Fragment` node within the :class:`FragmentList`.
-    It may also appear as the main argument of a :class:`Command` node.
+    The enclosing brace pattern may appear
+    as the main argument of a :class:`Command` node
+    or as a token within the option section of a :class:`Command` node.
     """
     #: List of :class:`Fragment` instances
     children: List[Fragment]
 
     #: Information of the enclosing braces pattern
     enclosing: EnclosingPattern
-
-    #: Boolean indicating whether this fragment list begins with @-symbol
-    #: (i.e. whether it is a part of @-expression)
-    at_prefix: bool = False
 
     sanitize = None
 
@@ -153,20 +148,16 @@ class Text(Fragment):
     Nodes of this type usually be presented as an element of :class:`FragmentList`
     or as text wrapped within enclosing quoted pattern.
 
-    The enclosing quote pattern may appear right after the @-symbol
-    within the option section of the :class:`Command` node
-    or as a :class:`Fragment` node within the :class:`FragmentList`.
-    It may also appear as the main argument of a :class:`Command` node.
+    The enclosing quote pattern may appear
+    as the main argument of a :class:`Command` node,
+    as a token within the option section of a :class:`Command` node,
+    or as a fragment element of a :class:`FragmentList` node.
     """
     #: Inner string content
     inner: str
 
     #: Information of the enclosing quote pattern
     enclosing: EnclosingPattern
-
-    #: Boolean indicating whether this fragment list begins with @-symbol
-    #: (i.e. whether it is a part of @-expression)
-    at_prefix: bool = False
 
 
 @dataclass
@@ -184,7 +175,7 @@ class Command(Fragment):
       surrounded by square brackets: ``[...]``.
 
     - Finally, it may optionally be followed by a main argument section
-      which can either be a :class:`Fragment` or a :class:`Text`.
+      which can either be a :class:`FragmentList` or a :class:`Text`.
       Note that the former would be surrounded by
       the enclosing brace pattern such as ``{...}``
       whereas the latter by the enclosing quote pattern such as ``"..."``.
@@ -202,3 +193,14 @@ class Command(Fragment):
     #: The main argument section at the end of expression,
     #: or :const:`None` if this section is not present.
     main_arg: Optional[MainArgument]
+
+
+@dataclass
+class SymbolCommand(Fragment):
+    """
+    Node type which represents a special @-command
+    which is the @-switch character followed by a single symbol character
+    such as ``@@``, ``@;``, ``@!``, etc.
+    """
+    #: Symbol character appeared after the @-switch.
+    symbol: str

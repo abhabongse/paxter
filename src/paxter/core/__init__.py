@@ -1,10 +1,11 @@
 """
-Core functionality of Paxter text pre-processing language.
+Implements core functionality of Paxter language,
+mostly consisting of the parser and related tools.
 """
 from paxter.core.charloc import CharLoc
 from paxter.core.data import (
-    Command, Fragment, FragmentList, Identifier, Number,
-    Operator, Text, Token, TokenList,
+    Command, Fragment, FragmentList, Identifier,
+    Number, Operator, Text, Token, TokenList,
 )
 from paxter.core.enclosing import EnclosingPattern, GlobalEnclosingPattern
 from paxter.core.parser import ParseContext

@@ -1,10 +1,11 @@
 """
-Utility class for enclosing (opening and closing) patterns
-surrounding a particular scope of data:
+Utility class for textual enclosing (left and right) patterns
+which surrounds a particular scope of string data.
+It is used in the following scenarios:
 
-- Brace pattern for :class:`FragmentList`
-- Quoted pattern for :class:`Text`
-- Bar pattern for the intro part of :class:`Command.`
+- Brace pattern for FragmentList nodes
+- Quoted pattern for Text nodes
+- Bar pattern for the intro part of Command nodes
 """
 import re
 from dataclasses import dataclass, field
@@ -21,7 +22,8 @@ LEFT_TO_RIGHT_TRANS = str.maketrans(r'#|{"', r'#|}"')
 @dataclass
 class EnclosingPattern:
     """
-    Data regarding the enclosing (left and right) scope patterns.
+    Information regarding the enclosing (left and right) patterns
+    for a particular scope of string data.
     """
     #: The left (i.e. opening) pattern enclosing the scope
     left: str

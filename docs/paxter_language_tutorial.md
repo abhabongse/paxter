@@ -120,11 +120,11 @@ plus an equal number of hashes on both ends) will be parsed **non-greedily**
 (i.e. the parsing of the introduction halts as soon as the closing pattern
 corresponding to the opening pattern encountered earlier is found).
 
-### Options section
+### Option section
 
 The existence of a left square bracket immediately after the introduction section
-of a command _always_ indicates the beginning of the options section.
-The options section itself is a sequence of _tokens_ where each token can be
+of a command _always_ indicates the beginning of the option section.
+The option section itself is a sequence of _tokens_ where each token can be
 one of the following:
 
 -   Another @-expression of all 3 kinds
@@ -140,15 +140,15 @@ one of the following:
 ```eval_rst
 .. warning::
 
-   Please note that inside the options section of a command
+   Please note that inside the option section of a command
    is the only place in Paxter language where whitespace characters
    between tokens are ignored.
 ```
 
-Here are a couple of examples of commands which include the options section:
+Here are a couple of examples of commands which include the option section:
 
 -   For the command `@foo[x=1, y=2.5]`,
-    its options section contains a sequence of 7 tokens:
+    its option section contains a sequence of 7 tokens:
     
     1.  an identifier `x`
     2.  an equal sign operator `=`
@@ -159,7 +159,7 @@ Here are a couple of examples of commands which include the options section:
     7.  the number literal `2.5`
 
 -   For the command `@|foo.bar|[x <- {2}; @baz]`,
-    its options section contains a sequence of 5 tokens:
+    its option section contains a sequence of 5 tokens:
     
     1.  an identifier `x`
     2.  a left arrow operator `<-`
@@ -169,10 +169,10 @@ Here are a couple of examples of commands which include the options section:
         and with all other sections omitted.
 
 Paxter language syntax gives a lot of freedom for what is allowed within
-the options section of a command;
+the option section of a command;
 a programmer-write who writes a renderer to transform Paxter intermediate parsed trees
 into data of another form has a liberty to add whatever constraints
-to the syntactical structure within the options section.
+to the syntactical structure within the option section.
 
 ### Main argument section
 
@@ -295,7 +295,7 @@ followed by a textual content wrapped within the _quoted pattern_
 of the main argument section of a command).
 
 This kind of @-expressions is particularly useful
-when we want to add some text within the options section of a command.
+when we want to add some text within the option section of a command.
 
 For example, this might be a way to write down an ordered list of text content.
 

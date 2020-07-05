@@ -1,6 +1,6 @@
 """
 Utility class which converts 0-indexed absolute positional value
-into 1-indexed line number and column number.
+of the input text into 1-indexed line number and column number.
 """
 from dataclasses import InitVar, dataclass, field
 
@@ -10,7 +10,8 @@ __all__ = ['CharLoc']
 @dataclass
 class CharLoc:
     """
-    The starting or ending position of a token within the input text.
+    The position (starting or ending) of a token within the input text
+    useful for line and column information in error messages.
     """
     input_text: InitVar[str]
     pos: InitVar[int]
@@ -31,6 +32,6 @@ class CharLoc:
     @property
     def rendered(self) -> str:
         """
-        Renders the line and column integer values into standard string.
+        The rendered string containing the line and column integer values.
         """
         return f"line {self.line} col {self.col}"

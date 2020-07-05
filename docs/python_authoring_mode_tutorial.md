@@ -90,7 +90,7 @@ hence it is important to flatten them into a single string first
 When there is more than one argument to the function,
 the main argument of the command will always be the first argument of the function,
 and the rest of the function arguments can be supplied
-to options section of the command (similarly to Python function call syntax):
+to option section of the command (similarly to Python function call syntax):
 
 ```text
 @python##"
@@ -114,11 +114,11 @@ This is (((sound.
 This is ___sound___.
 ```
 
-Notice that we use wrapped text @-expression inside the options section
+Notice that we use wrapped text @-expression inside the option section
 in order to supply strings as arguments to the function `surround`.
 
 Additionally, we may also omit the main argument section,
-and then the entire options section will all be the arguments to the function:
+and then the entire option section will all be the arguments to the function:
 
 ```text
 @python##"

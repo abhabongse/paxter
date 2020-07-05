@@ -1,5 +1,5 @@
 """
-Exceptions specific to Paxter language ecosystem.
+Error classes specific to Paxter language ecosystem.
 """
 from typing import Dict
 
@@ -25,7 +25,8 @@ class PaxterBaseException(Exception):
         self.message = self.render(message, self.positions)
         self.args = (self.message,)  # this will make error stack more readable
 
-    def render(self, message: str, positions: Dict[str, CharLoc]) -> str:
+    @staticmethod
+    def render(message: str, positions: Dict[str, CharLoc]) -> str:
         """
         Substitutes the position placeholder within the message
         with the provided positions data.

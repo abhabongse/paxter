@@ -45,7 +45,7 @@ class DirectApply(BaseApply):
 @dataclass
 class NormalApply(BaseApply):
     """
-    Normal function call, assuming that the options section
+    Normal function call, assuming that the option section
     is a sequence of positional and keyword arguments
     in addition to the main argument section to the function.
 

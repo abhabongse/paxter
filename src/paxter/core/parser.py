@@ -156,7 +156,7 @@ class ParseContext:
         """
         Continues parsing the Command after the intro section.
         """
-        # Parses for options section (square brackets)
+        # Parses for option section (square brackets)
         left_bracket_matchobj = LEXER.left_bracket_re.match(self.input_text, next_pos)
         if left_bracket_matchobj:
             next_pos = left_bracket_matchobj.end()
@@ -228,7 +228,7 @@ class ParseContext:
 
     def _parse_options(self, next_pos: int) -> Tuple[int, TokenList]:
         """
-        Parses the options section until reaching the closed square brackets.
+        Parses the option section until reaching the closed square brackets.
         """
         return self._parse_options_rec(next_pos, '[')
 
@@ -236,7 +236,7 @@ class ParseContext:
             self, next_pos: int, opened_char: str,
     ) -> Tuple[int, TokenList]:
         """
-        Recursively parses the options section
+        Recursively parses the option section
         until reaching the given breaking character.
         """
         start_pos = next_pos

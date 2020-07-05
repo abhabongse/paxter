@@ -36,10 +36,10 @@ Below are syntax diagrams for Paxter language.
      at both ends.
 
      Following the introduction section, if a left square bracket is found,
-     then the options section as a list of tokens must be parsed
+     then the option section as a list of tokens must be parsed
      and it will result in a :class:`TokenList <paxter.core.TokenList>` node.
      Otherwise (if the left square bracket is absent),
-     this options section will be represented by :const:`None`.
+     this option section will be represented by :const:`None`.
 
      Finally, the main argument section.
      (a) If there is zero or more hashes followed by a left brace,

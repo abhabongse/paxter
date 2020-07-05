@@ -134,7 +134,7 @@ class RenderContext:
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
 
-        # Bail out if options section and main arg section are empty
+        # Bail out if option section and main arg section are empty
         if token.options is None and token.main_arg is None:
             return intro_value
 
