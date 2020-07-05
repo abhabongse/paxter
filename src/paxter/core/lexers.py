@@ -16,12 +16,13 @@ class Lexer:
     _compiled_non_rec_breaks = Dict[str, Pattern[str]]
     _compiled_rec_breaks = Dict[str, Pattern[str]]
 
+    ws_re = re.compile(r'\s*')
     at_re = re.compile(r'@')
-    left_bar_re = re.compile(r'(?P<left>#*\|)')
-    left_brace_re = re.compile(r'(?P<left>#*{)')
-    left_quote_re = re.compile(r'(?P<left>#*")')
-    left_bracket_re = re.compile(r'\[')
-    right_bracket_re = re.compile(r']')
+    lbar_re = re.compile(r'(?P<left>#*\|)')
+    lbrace_re = re.compile(r'(?P<left>#*{)')
+    lquote_re = re.compile(r'(?P<left>#*")')
+    lbracket_re = re.compile(r'\[')
+    rbracket_re = re.compile(r']')
     id_re = re.compile(rf'(?P<id>{IDENTIFIER_PATTERN})')
     symbol_re = re.compile(rf'(?P<symbol>{SYMBOL_PATTERN})')
     op_re = re.compile(rf'(?P<op>{OPERATOR_PATTERN})')

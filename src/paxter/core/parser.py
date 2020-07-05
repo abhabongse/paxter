@@ -6,7 +6,8 @@ from typing import List, Match, Tuple
 
 from paxter.core.charloc import CharLoc
 from paxter.core.data import (
-    Command, Fragment, FragmentList, Identifier, Number, Operator, Text, TokenList,
+    Command, Fragment, FragmentList, Identifier, Number, Operator, SymbolCommand, Text,
+    TokenList,
 )
 from paxter.core.enclosing import EnclosingPattern, GlobalEnclosingPattern
 from paxter.core.exceptions import PaxterSyntaxError
@@ -60,7 +61,7 @@ class ParseContext:
             # Attempts to match the next break pattern
             break_matchobj = enclosing.rec_break_re.match(self.input_text, next_pos)
             if break_matchobj is None:
-                self._cannot_match_enclosing(start_pos, enclosing.left, enclosing.right)
+                self._cannot_match_enclosing(start_pos, enclosing)
 
             # Append non-empty text node to children list
             text_node = Text.from_matchobj(
@@ -85,71 +86,58 @@ class ParseContext:
 
     def _parse_at_expr(self, next_pos: int) -> Tuple[int, Fragment]:
         """
-        Parses at expressions starting from right after @-symbol.
-        This method is the wraps over the actual working method
-        and gives the final touch to the output.
-        """
-        next_pos, command_node = self._parse_2nd_level_at_expr(next_pos)
-        if isinstance(command_node, (FragmentList, Text)):
-            command_node.at_prefix = True
-        return next_pos, command_node
-
-    def _parse_2nd_level_at_expr(self, next_pos: int) -> Tuple[int, Fragment]:
-        """
-        Parses at expressions starting from right after @-symbol.
-        Attempts to dispatch the parsing according to lookahead patterns.
+        Parses @-expressions starting from immediately after @-symbol
+        by attempting to dispatch the next step through lookahead patterns.
         """
         matchobj = LEXER.id_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_cmd_id_intro(matchobj)
+            return self._parse_command_with_id_intro(matchobj)
 
-        matchobj = LEXER.left_bar_re.match(self.input_text, next_pos)
+        matchobj = LEXER.lbar_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_cmd_bar_intro(matchobj)
-
-        matchobj = LEXER.left_brace_re.match(self.input_text, next_pos)
-        if matchobj:
-            return self._parse_fragment_list(matchobj)
-
-        matchobj = LEXER.left_quote_re.match(self.input_text, next_pos)
-        if matchobj:
-            return self._parse_text(matchobj)
+            return self._parse_command_with_bar_intro(matchobj)
 
         matchobj = LEXER.symbol_re.match(self.input_text, next_pos)
         if matchobj:
-            return self.parse_symbol_phrase(matchobj)
+            return self._parse_symbol_command(matchobj)
 
         self._invalid_command(next_pos)
 
-    def _parse_cmd_id_intro(self, id_matchobj: Match[str]) -> Tuple[int, Command]:
+    def _parse_command_with_id_intro(
+            self, id_matchobj: Match[str],
+    ) -> Tuple[int, Command]:
         """
         Continues parsing the intro section of the Command
         by using the identifier name content as the intro section.
         """
-        cmd_start_pos, next_pos = id_matchobj.span()
+        command_start_pos, next_pos = id_matchobj.span()
         intro = id_matchobj.group('id')
         enclosing = EnclosingPattern(left='')
-        return self._parse_cmd_after_intro(next_pos, cmd_start_pos, intro, enclosing)
+        return self._parse_command_after_intro(
+            next_pos, command_start_pos, intro, enclosing,
+        )
 
-    def _parse_cmd_bar_intro(
-            self, left_bar_matchobj: Match[str],
+    def _parse_command_with_bar_intro(
+            self, lbar_matchobj: Match[str],
     ) -> Tuple[int, Command]:
         """
         Continues parsing the intro section of the Command
         which is enclosed by the bar pattern.
         """
-        cmd_start_pos, next_pos = left_bar_matchobj.span()
-        enclosing = EnclosingPattern(left=left_bar_matchobj.group('left'))
+        command_start_pos, next_pos = lbar_matchobj.span()
+        enclosing = EnclosingPattern(left=lbar_matchobj.group('left'))
 
         inner_matchobj = enclosing.non_rec_break_re.match(self.input_text, next_pos)
         if inner_matchobj is None:
-            self._cannot_match_enclosing(next_pos, enclosing.left, enclosing.right)
+            self._cannot_match_enclosing(next_pos, enclosing)
 
         next_pos = inner_matchobj.end()
         intro = inner_matchobj.group('inner')
-        return self._parse_cmd_after_intro(next_pos, cmd_start_pos, intro, enclosing)
+        return self._parse_command_after_intro(
+            next_pos, command_start_pos, intro, enclosing,
+        )
 
-    def _parse_cmd_after_intro(
+    def _parse_command_after_intro(
             self, next_pos: int, cmd_start_pos: int,
             intro: str, intro_enclosing: EnclosingPattern,
     ) -> Tuple[int, Command]:
@@ -157,146 +145,178 @@ class ParseContext:
         Continues parsing the Command after the intro section.
         """
         # Parses for option section (square brackets)
-        left_bracket_matchobj = LEXER.left_bracket_re.match(self.input_text, next_pos)
-        if left_bracket_matchobj:
-            next_pos = left_bracket_matchobj.end()
+        lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
+        if lbracket_matchobj:
+            next_pos = lbracket_matchobj.end()
             next_pos, options = self._parse_options(next_pos)
         else:
             options = None
 
         # Parses for main argument
-        left_brace_matchobj = LEXER.left_brace_re.match(self.input_text, next_pos)
-        if left_brace_matchobj:
-            next_pos, main_arg_node = self._parse_fragment_list(left_brace_matchobj)
+        lbrace_matchobj = LEXER.lbrace_re.match(self.input_text, next_pos)
+        if lbrace_matchobj:
+            next_pos, main_arg_node = self._parse_fragment_list(lbrace_matchobj)
         else:
-            quote_matchobj = LEXER.left_quote_re.match(self.input_text, next_pos)
-            if quote_matchobj:
-                next_pos, main_arg_node = self._parse_text(quote_matchobj)
+            lquote_matchobj = LEXER.lquote_re.match(self.input_text, next_pos)
+            if lquote_matchobj:
+                next_pos, main_arg_node = self._parse_text(lquote_matchobj)
             else:
                 main_arg_node = None
 
         # Construct Command node
-        cmd_node = Command(
+        command_node = Command(
             cmd_start_pos, next_pos, intro, intro_enclosing,
             options, main_arg_node,
         )
-        return next_pos, cmd_node
+        return next_pos, command_node
 
     def _parse_fragment_list(
-            self, left_brace_matchobj: Match[str],
+            self, lbrace_matchobj: Match[str],
     ) -> Tuple[int, FragmentList]:
         """
         Recursively parses the input until the enclosing right pattern
         corresponding to the enclosing left pattern
         (captured by the provided match object) is discovered.
         """
-        next_pos = left_brace_matchobj.end()
-        enclosing = EnclosingPattern(left=left_brace_matchobj.group('left'))
+        next_pos = lbrace_matchobj.end()
+        enclosing = EnclosingPattern(left=lbrace_matchobj.group('left'))
         return self._inner_parse_fragment_list(next_pos, enclosing)
 
-    def _parse_text(self, left_quote_matchobj: Match[str]) -> Tuple[int, Text]:
+    def _parse_text(self, lquote_matchobj: Match[str]) -> Tuple[int, Text]:
         """
         Continues parsing the input for raw :class:`Text` node
         until the enclosing right pattern corresponding to the
         enclosing left pattern (captured by the provided match object)
         is discovered.
         """
-        next_pos = left_quote_matchobj.end()
-        enclosing = EnclosingPattern(left=left_quote_matchobj.group('left'))
+        next_pos = lquote_matchobj.end()
+        enclosing = EnclosingPattern(left=lquote_matchobj.group('left'))
 
         inner_matchobj = enclosing.non_rec_break_re.match(self.input_text, next_pos)
         if inner_matchobj is None:
-            self._cannot_match_enclosing(next_pos, enclosing.left, enclosing.right)
+            self._cannot_match_enclosing(next_pos, enclosing)
 
         next_pos = inner_matchobj.end()
         text_node = Text.from_matchobj(inner_matchobj, 'inner', enclosing)
         return next_pos, text_node
 
-    def parse_symbol_phrase(
+    def _parse_symbol_command(
             self, symbol_matchobj: Match[str],
-    ) -> Tuple[int, Command]:
+    ) -> Tuple[int, SymbolCommand]:
         """
         A special case of at-expression where a single-character symbol
         follows the @-symbol, which will result in a special Command
         with such symbol as the intro section and without anything else.
         """
-        cmd_start_pos, next_pos = symbol_matchobj.span()
-        symbol = symbol_matchobj.group('symbol')
-        enclosing = EnclosingPattern(left='')
-        cmd_node = Command(cmd_start_pos, next_pos, symbol, enclosing, None, None)
-        return next_pos, cmd_node
+        next_pos = symbol_matchobj.end()
+        command_node = SymbolCommand.from_matchobj(symbol_matchobj, 'symbol')
+        return next_pos, command_node
 
     def _parse_options(self, next_pos: int) -> Tuple[int, TokenList]:
         """
         Parses the option section until reaching the closed square brackets.
         """
-        return self._parse_options_rec(next_pos, '[')
+        return self._parse_options_rec(next_pos)
 
-    def _parse_options_rec(
-            self, next_pos: int, opened_char: str,
-    ) -> Tuple[int, TokenList]:
+    def _parse_options_rec(self, next_pos: int) -> Tuple[int, TokenList]:
         """
         Recursively parses the option section
-        until reaching the given breaking character.
+        until reaching the right square bracket character.
         """
         start_pos = next_pos
-        expected_closed_char = opened_char.translate(OPENED_TO_CLOSED_SCOPE_TRANS)
         children = []
 
         while True:
-            token_matchobj = LEXER.option_token_re.match(self.input_text, next_pos)
-            next_pos = token_matchobj.end()
+            # Remove leading whitespaces
+            ws_matchobj = LEXER.ws_re.match(self.input_text, next_pos)
+            next_pos = ws_matchobj.end()
 
             # Attempts to extract identifier node
-            if token_matchobj.group('id'):
-                id_node = Identifier.from_matchobj(token_matchobj, 'id')
+            id_matchobj = LEXER.id_re.match(self.input_text, next_pos)
+            if id_matchobj:
+                next_pos = id_matchobj.end()
+                id_node = Identifier.from_matchobj(id_matchobj, 'id')
                 children.append(id_node)
                 continue
 
             # Attempts to extract operator node
-            if token_matchobj.group('op'):
-                op_node = Operator.from_matchobj(token_matchobj, 'op')
+            op_matchobj = LEXER.op_re.match(self.input_text, next_pos)
+            if op_matchobj:
+                next_pos = op_matchobj.end()
+                op_node = Operator.from_matchobj(op_matchobj, 'op')
                 children.append(op_node)
                 continue
 
             # Attempts to extract number literal node
-            if token_matchobj.group('num'):
-                num_node = Number.from_matchobj(token_matchobj, 'num')
+            num_matchobj = LEXER.num_re.match(self.input_text, next_pos)
+            if num_matchobj:
+                next_pos = num_matchobj.end()
+                num_node = Number.from_matchobj(num_matchobj, 'num')
                 children.append(num_node)
                 continue
 
-            char = token_matchobj.group('char')
-
-            # Attempts to parse the command
-            if char == '@':
-                next_pos, command_node = self._parse_at_expr(next_pos)
-                children.append(command_node)
+            # Attempts to extract fragment list node
+            lbrace_matchobj = LEXER.lbrace_re.match(self.input_text, next_pos)
+            if lbrace_matchobj:
+                next_pos, fragment_list_node = (
+                    self._parse_fragment_list(lbrace_matchobj)
+                )
+                children.append(fragment_list_node)
                 continue
 
-            # Attempts to parse a list of tokens in sub-level
-            if isinstance(char, str) and char in '([{':
-                next_pos, token_list_node = self._parse_options_rec(next_pos, char)
+            # Attempts to extract text node
+            lquote_matchobj = LEXER.lquote_re.match(self.input_text, next_pos)
+            if lquote_matchobj:
+                next_pos, text_node = self._parse_text(lquote_matchobj)
+                children.append(text_node)
+                continue
+
+            # Attempts to extract @-expressions
+            at_matchobj = LEXER.at_re.match(self.input_text, next_pos)
+            if at_matchobj:
+                next_pos = at_matchobj.end()
+                next_pos, at_expr_node = self._parse_at_expr(next_pos)
+                children.append(at_expr_node)
+                continue
+
+            # Attempts to parse a sub-level list of tokens
+            lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
+            if lbrace_matchobj:
+                next_pos = lbracket_matchobj.end()
+                next_pos, token_list_node = self._parse_options_rec(next_pos)
                 children.append(token_list_node)
                 continue
 
-            # Asserts that the character matches the expected closed character.
-            # Return the token list if this is the case.
-            if isinstance(char, str) and char == expected_closed_char:
-                end_pos = token_matchobj.start()
+            # Attempts to parse the end of token list
+            # Return the token list if this is the case
+            rbracket_matchobj = LEXER.rbracket_re.match(self.input_text, next_pos)
+            if rbracket_matchobj:
+                end_pos, next_pos = rbracket_matchobj.span()
                 return next_pos, TokenList(start_pos, end_pos, children)
 
             # Else, something was wrong at the parsing,
             # perhaps reaching the end of text or found unmatched parenthesis.
-            self._cannot_match_enclosing(start_pos, opened_char, expected_closed_char)
+            self._cannot_match_char(start_pos, '[', ']')
 
-    def _cannot_match_enclosing(self, pos: int, left_pattern: str, right_pattern: str):
+    def _cannot_match_enclosing(self, pos: int, enclosing: EnclosingPattern):
         """
         Raises syntax error for failing to match enclosing right pattern
         to the corresponding enclosing left pattern.
         """
         raise PaxterSyntaxError(
-            f"cannot match enclosing right pattern {right_pattern!r} "
-            f"to the left pattern {left_pattern!r} at %(pos)s",
+            f"cannot match enclosing right pattern {enclosing.right!r} "
+            f"to the left pattern {enclosing.left!r} at %(pos)s",
+            pos=CharLoc(self.input_text, pos),
+        )
+
+    def _cannot_match_char(self, pos: int, left_char: str, right_char: str):
+        """
+        Raises syntax error for failing to match enclosing right char
+        to the corresponding enclosing left char.
+        """
+        raise PaxterSyntaxError(
+            f"cannot match enclosing right character {right_char!r} "
+            f"to the left character {left_char!r} at %(pos)s",
             pos=CharLoc(self.input_text, pos),
         )
 
