@@ -7,7 +7,7 @@ from typing import Any, List, Union
 
 from paxter.core import (
     CharLoc, Command, Fragment, FragmentList, Identifier, Number,
-    Operator, Text, Token, TokenList,
+    Operator, SymbolCommand, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
 from paxter.pyauthor.funcs import flatten
@@ -56,18 +56,20 @@ class RenderContext:
             return self.transform_operator(token)
         if isinstance(token, Number):
             return self.transform_number(token)
+        if isinstance(token, FragmentList):
+            return self.transform_fragment_list(token)
         raise PaxterRenderError(
             "unrecognized token at %(pos)s",
             pos=CharLoc(self.input_text, token.start_pos),
         )
 
     def transform_fragment(self, fragment: Fragment) -> Any:
-        if isinstance(fragment, FragmentList):
-            return self.transform_fragment_list(fragment)
         if isinstance(fragment, Text):
             return self.transform_text(fragment)
         if isinstance(fragment, Command):
             return self.transform_command(fragment)
+        if isinstance(fragment, SymbolCommand):
+            return self.transform_symbol_command(fragment)
         raise PaxterRenderError(
             "unrecognized fragment at %(pos)s",
             pos=CharLoc(self.input_text, fragment.start_pos),
@@ -152,3 +154,22 @@ class RenderContext:
                 "paxter apply evaluation error at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
+
+    def transform_symbol_command(self, token: SymbolCommand):
+        # Lookup _symbols_ for the desired symbol
+        try:
+            symbols = self.env['_symbols_']
+        except KeyError as exc:
+            raise PaxterRenderError(
+                "expected '_symbols_' to be defined at %(pos)s",
+                pos=CharLoc(self.input_text, token.start_pos),
+            ) from exc
+        try:
+            return symbols[token.symbol]
+        except KeyError as exc:
+            raise PaxterRenderError(
+                f"undefined symbol {token.symbol} within '_symbol_' at %(pos)s",
+                pos=CharLoc(self.input_text, token.start_pos),
+            )
+        except Exception as exc:
+            raise RuntimeError("unexpected error from within library")

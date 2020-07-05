@@ -4,7 +4,8 @@ A collection of pre-defined execution environment.
 from typing import Optional
 
 from paxter.pyauthor.funcs import (
-    flatten, for_statement, if_statement, intro_unsafe_eval, python_unsafe_exec,
+    flatten, for_statement, if_statement, intro_unsafe_eval,
+    python_unsafe_exec, verbatim,
 )
 
 
@@ -19,6 +20,7 @@ def create_unsafe_env(data: Optional[dict] = None):
         'for': for_statement,
         'if': if_statement,
         'python': python_unsafe_exec,
+        'verb': verbatim,
         'flatten': flatten,
         **data,
     }

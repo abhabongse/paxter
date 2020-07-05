@@ -28,15 +28,19 @@ def python_unsafe_exec(context: 'RenderContext', node: Command):
 def intro_unsafe_eval(phrase: str, env: dict) -> Any:
     """
     Unsafely evaluates the given paxter phrase.
-    However, if the phrase is within the _symbols_ mappings,
-    its mapped value will be returned instead.
     """
     if phrase in env:
         return env[phrase]
-    symbols = env.get('_symbols_', {})
-    if phrase in symbols:
-        return symbols[phrase]
     return eval(phrase, env)
+
+
+def verbatim(text: Any) -> str:
+    """
+    Returns the main string argument as-is.
+    """
+    if not isinstance(text, str):
+        raise TypeError("argument to verbatim must be string")
+    return text
 
 
 def flatten(data, is_joined: bool = True) -> Union[List[str], str]:

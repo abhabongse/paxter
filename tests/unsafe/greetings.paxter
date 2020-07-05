@@ -12,7 +12,7 @@
     counter = itertools.count(start=1)
 "##\
 My name is @strip{ @name } and I am currently @age years old.
-My email is @"john@example.com" or smith@@example.com.
+My email is smith@@example.com.
 @python"age_next_year = age + 1"\
 My age next year would be @age_next_year.
 

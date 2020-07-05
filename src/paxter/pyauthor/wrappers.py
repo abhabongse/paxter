@@ -63,7 +63,7 @@ class NormalApply(BaseApply):
         else:
             args, kwargs = [], {}
         if node.main_arg:
-            main_arg = context.transform_fragment(node.main_arg)
+            main_arg = context.transform_token(node.main_arg)
             args = [main_arg] + args
         return self.wrapped(*args, **kwargs)
 

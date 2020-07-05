@@ -1,8 +1,9 @@
-To escape @ sign, you may write @"@".
-To write the above snippet, you may write @#"@"@""#.
-To write the above snippet, you may write @##"@#"@"@""#"##.
-To write the above snippet, you may write @###"@##"@#"@"@""#"##"###.
-To write the above snippet, you may write @####"@###"@##"@#"@"@""#"##"###"####.
+It is recommended to escape @ sign by configuring
+the symbol command @@ to render into a single @ symbol.
+Alternatively, to escape @@, you may write @@.
+To write the above verbatim command, you may write @verb"@@".
+To write the above verbatim command, you may write @verb#"@verb"@@""#.
+To write the above verbatim command, you may write @verb##"@verb#"@verb"@@""#"##.
 
 Suppose that we define the following function:
 @python##"
