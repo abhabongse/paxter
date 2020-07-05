@@ -170,6 +170,6 @@ class RenderContext:
             raise PaxterRenderError(
                 f"undefined symbol {token.symbol} within '_symbol_' at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
-            )
+            ) from exc
         except Exception as exc:
-            raise RuntimeError("unexpected error from within library")
+            raise RuntimeError("unexpected error from within library") from exc
