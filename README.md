@@ -36,14 +36,13 @@
 **Paxter** is a document-first, text pre-processing mini-language toolchain,
 _loosely_ inspired by [@-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).
 
--   The Paxter library package mainly provides a toolchain for 
-    parsing an input text (written in **Paxter language**) 
-    into _an intermediate parsed tree_.
--   However, the Paxter toolchain **does not specify** how 
-    the parsed tree should be interpreted or rendered into final result.
-    Users of the Paxter library have all the freedom to do
-    whatever they like to transform the intermediate result
-    into a final output result they wish to achieve.  
+-   The Paxter library package defines the syntax for **Paxter language**
+    and provides a toolchain for parsing input texts
+    written in Paxter language into _an intermediate parsed tree_.
+-   However, the semantics of Paxter language is left unspecified,
+    meaning that users of the library have all the freedom to do
+    whatever they like to render or transform the intermediate parsed tree
+    into a final output they wish to achieve.  
 -   Alternatively, instead of implementing an interpreter 
     for intermediate parsed tree by themselves,
     users may opt-in to utilize a preset _parsed tree renderers_,
@@ -79,9 +78,17 @@ My shop opens Monday@,-@,Friday.
 Counting is as easy as @|next(counter)|, @|next(counter)|, @|next(counter)|.
 Arithmetic? Not a problem: 7 * 11 * 13 = @|7 * 11 * 13|.
 
-Escaping is easy, just enclose the text with as many #...# as you like.
-For example, one way to escape the @#""@""# symbol, you can write @##"@#""@""#"##.
-In turn, to write @##"@#""@""#"## as-is, you can do by typing @###"@##"@#""@""#"##"###.
+@python##"
+    def tag(text, name='span'):
+        return f'<{name}>{flatten(text)}</{name}>'
+"##\
+This is a very @tag["b"]{important @tag["i"]{feature}}:
+@@-expressions are allowed to be nested within the main argument
+using fragment list syntax (section surrounded by a pair of curly braces).
+
+To escape right curly braces literal characters with the fragment list main argument,
+simply enclose the main argument with as many #...# as you like
+(@tag##{such as {this}!}##).
 
 @python##"
     def is_odd(value):
@@ -100,7 +107,7 @@ we obtain the following result.
 ```python
 FragmentList(
     start_pos=0,
-    end_pos=1031,
+    end_pos=1263,
     children=[
         Command(
             start_pos=1,
@@ -113,7 +120,6 @@ FragmentList(
                 end_pos=245,
                 inner="\n    import statistics\n    from datetime import datetime\n\n    _symbols_ = {\n        '@': '@',\n        '.': '&hairsp;',\n        ',': '&thinsp;',\n    }\n    name = \"Ashley\"\n    birth_year = 1987\n    age = datetime.now().year - birth_year\n",
                 enclosing=EnclosingPattern(left='##"', right='"##'),
-                at_prefix=False,
             ),
         ),
         Text(
@@ -121,7 +127,6 @@ FragmentList(
             end_pos=261,
             inner="\\\nMy name is ",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
             start_pos=262,
@@ -136,7 +141,6 @@ FragmentList(
             end_pos=276,
             inner=" and I am ",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
             start_pos=277,
@@ -151,52 +155,27 @@ FragmentList(
             end_pos=310,
             inner=" years old.\nMy email is ashley",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
-        Command(
-            start_pos=311,
-            end_pos=312,
-            intro="@",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
-            main_arg=None,
-        ),
+        SymbolCommand(start_pos=311, end_pos=312, symbol="@"),
         Text(
             start_pos=312,
             end_pos=345,
             inner="example.com.\nMy shop opens Monday",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
-        Command(
-            start_pos=346,
-            end_pos=347,
-            intro=",",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
-            main_arg=None,
-        ),
+        SymbolCommand(start_pos=346, end_pos=347, symbol=","),
         Text(
             start_pos=347,
             end_pos=348,
             inner="-",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
-        Command(
-            start_pos=349,
-            end_pos=350,
-            intro=",",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
-            main_arg=None,
-        ),
+        SymbolCommand(start_pos=349, end_pos=350, symbol=","),
         Text(
             start_pos=350,
             end_pos=359,
             inner="Friday.\n\n",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
             start_pos=360,
@@ -209,7 +188,6 @@ FragmentList(
                 end_pos=431,
                 inner="\n    from itertools import count\n    counter = count(start=1)\n",
                 enclosing=EnclosingPattern(left='##"', right='"##'),
-                at_prefix=False,
             ),
         ),
         Text(
@@ -217,7 +195,6 @@ FragmentList(
             end_pos=459,
             inner="\\\nCounting is as easy as ",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
             start_pos=460,
@@ -232,7 +209,6 @@ FragmentList(
             end_pos=477,
             inner=", ",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
             start_pos=478,
@@ -247,7 +223,6 @@ FragmentList(
             end_pos=495,
             inner=", ",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
             start_pos=496,
@@ -262,7 +237,6 @@ FragmentList(
             end_pos=554,
             inner=".\nArithmetic? Not a problem: 7 * 11 * 13 = ",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
             start_pos=555,
@@ -274,112 +248,173 @@ FragmentList(
         ),
         Text(
             start_pos=568,
-            end_pos=678,
-            inner=".\n\nEscaping is easy, just enclose the text with as many #...# as you like.\nFor example, one way to escape the ",
-            enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
-        ),
-        Text(
-            start_pos=681,
-            end_pos=684,
-            inner='"@"',
-            enclosing=EnclosingPattern(left='#"', right='"#'),
-            at_prefix=True,
-        ),
-        Text(
-            start_pos=686,
-            end_pos=709,
-            inner=" symbol, you can write ",
-            enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
-        ),
-        Text(
-            start_pos=713,
-            end_pos=721,
-            inner='@#""@""#',
-            enclosing=EnclosingPattern(left='##"', right='"##'),
-            at_prefix=True,
-        ),
-        Text(
-            start_pos=724,
-            end_pos=744,
-            inner=".\nIn turn, to write ",
-            enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
-        ),
-        Text(
-            start_pos=748,
-            end_pos=756,
-            inner='@#""@""#',
-            enclosing=EnclosingPattern(left='##"', right='"##'),
-            at_prefix=True,
-        ),
-        Text(
-            start_pos=759,
-            end_pos=788,
-            inner=" as-is, you can do by typing ",
-            enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
-        ),
-        Text(
-            start_pos=793,
-            end_pos=808,
-            inner='@##"@#""@""#"##',
-            enclosing=EnclosingPattern(left='###"', right='"###'),
-            at_prefix=True,
-        ),
-        Text(
-            start_pos=812,
-            end_pos=815,
+            end_pos=571,
             inner=".\n\n",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
-            start_pos=816,
-            end_pos=882,
+            start_pos=572,
+            end_pos=668,
             intro="python",
             intro_enclosing=EnclosingPattern(left="", right=""),
             options=None,
             main_arg=Text(
-                start_pos=825,
-                end_pos=879,
-                inner="\n    def is_odd(value):\n        return value % 2 == 1\n",
+                start_pos=581,
+                end_pos=665,
+                inner="\n    def tag(text, name='span'):\n        return f'<{name}>{flatten(text)}</{name}>'\n",
                 enclosing=EnclosingPattern(left='##"', right='"##'),
-                at_prefix=False,
             ),
         ),
         Text(
-            start_pos=882,
-            end_pos=898,
-            inner="\\\nOdd digits are",
+            start_pos=668,
+            end_pos=685,
+            inner="\\\nThis is a very ",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
-            start_pos=899,
-            end_pos=955,
+            start_pos=686,
+            end_pos=724,
+            intro="tag",
+            intro_enclosing=EnclosingPattern(left="", right=""),
+            options=TokenList(
+                start_pos=690,
+                end_pos=693,
+                children=[
+                    Text(
+                        start_pos=691,
+                        end_pos=692,
+                        inner="b",
+                        enclosing=EnclosingPattern(left='"', right='"'),
+                    )
+                ],
+            ),
+            main_arg=FragmentList(
+                start_pos=695,
+                end_pos=723,
+                children=[
+                    Text(
+                        start_pos=695,
+                        end_pos=705,
+                        inner="important ",
+                        enclosing=EnclosingPattern(left="", right=""),
+                    ),
+                    Command(
+                        start_pos=706,
+                        end_pos=723,
+                        intro="tag",
+                        intro_enclosing=EnclosingPattern(left="", right=""),
+                        options=TokenList(
+                            start_pos=710,
+                            end_pos=713,
+                            children=[
+                                Text(
+                                    start_pos=711,
+                                    end_pos=712,
+                                    inner="i",
+                                    enclosing=EnclosingPattern(left='"', right='"'),
+                                )
+                            ],
+                        ),
+                        main_arg=FragmentList(
+                            start_pos=715,
+                            end_pos=722,
+                            children=[
+                                Text(
+                                    start_pos=715,
+                                    end_pos=722,
+                                    inner="feature",
+                                    enclosing=EnclosingPattern(left="", right=""),
+                                )
+                            ],
+                            enclosing=EnclosingPattern(left="{", right="}"),
+                        ),
+                    ),
+                ],
+                enclosing=EnclosingPattern(left="{", right="}"),
+            ),
+        ),
+        Text(
+            start_pos=724,
+            end_pos=726,
+            inner=":\n",
+            enclosing=EnclosingPattern(left="", right=""),
+        ),
+        SymbolCommand(start_pos=727, end_pos=728, symbol="@"),
+        Text(
+            start_pos=728,
+            end_pos=1018,
+            inner="-expressions are allowed to be nested within the main argument\nusing fragment list syntax (section surrounded by a pair of curly braces).\n\nTo escape right curly braces literal characters with the fragment list main argument,\nsimply enclose the main argument with as many #...# as you like\n(",
+            enclosing=EnclosingPattern(left="", right=""),
+        ),
+        Command(
+            start_pos=1019,
+            end_pos=1043,
+            intro="tag",
+            intro_enclosing=EnclosingPattern(left="", right=""),
+            options=None,
+            main_arg=FragmentList(
+                start_pos=1025,
+                end_pos=1040,
+                children=[
+                    Text(
+                        start_pos=1025,
+                        end_pos=1040,
+                        inner="such as {this}!",
+                        enclosing=EnclosingPattern(left="", right=""),
+                    )
+                ],
+                enclosing=EnclosingPattern(left="##{", right="}##"),
+            ),
+        ),
+        Text(
+            start_pos=1043,
+            end_pos=1047,
+            inner=").\n\n",
+            enclosing=EnclosingPattern(left="", right=""),
+        ),
+        Command(
+            start_pos=1048,
+            end_pos=1114,
+            intro="python",
+            intro_enclosing=EnclosingPattern(left="", right=""),
+            options=None,
+            main_arg=Text(
+                start_pos=1057,
+                end_pos=1111,
+                inner="\n    def is_odd(value):\n        return value % 2 == 1\n",
+                enclosing=EnclosingPattern(left='##"', right='"##'),
+            ),
+        ),
+        Text(
+            start_pos=1114,
+            end_pos=1130,
+            inner="\\\nOdd digits are",
+            enclosing=EnclosingPattern(left="", right=""),
+        ),
+        Command(
+            start_pos=1131,
+            end_pos=1187,
             intro="flatten",
             intro_enclosing=EnclosingPattern(left="", right=""),
             options=None,
             main_arg=FragmentList(
-                start_pos=907,
-                end_pos=954,
+                start_pos=1139,
+                end_pos=1186,
                 children=[
                     Command(
-                        start_pos=908,
-                        end_pos=954,
+                        start_pos=1140,
+                        end_pos=1186,
                         intro="for",
                         intro_enclosing=EnclosingPattern(left="", right=""),
                         options=TokenList(
-                            start_pos=912,
-                            end_pos=929,
+                            start_pos=1144,
+                            end_pos=1161,
                             children=[
-                                Identifier(start_pos=912, end_pos=913, name="i"),
-                                Identifier(start_pos=914, end_pos=916, name="in"),
+                                Identifier(start_pos=1144, end_pos=1145, name="i"),
+                                Identifier(start_pos=1146, end_pos=1148, name="in"),
                                 Command(
-                                    start_pos=918,
-                                    end_pos=929,
+                                    start_pos=1150,
+                                    end_pos=1161,
                                     intro="range(10)",
                                     intro_enclosing=EnclosingPattern(
                                         left="|", right="|"
@@ -390,21 +425,21 @@ FragmentList(
                             ],
                         ),
                         main_arg=FragmentList(
-                            start_pos=931,
-                            end_pos=953,
+                            start_pos=1163,
+                            end_pos=1185,
                             children=[
                                 Command(
-                                    start_pos=932,
-                                    end_pos=953,
+                                    start_pos=1164,
+                                    end_pos=1185,
                                     intro="if",
                                     intro_enclosing=EnclosingPattern(left="", right=""),
                                     options=TokenList(
-                                        start_pos=935,
-                                        end_pos=947,
+                                        start_pos=1167,
+                                        end_pos=1179,
                                         children=[
                                             Command(
-                                                start_pos=936,
-                                                end_pos=947,
+                                                start_pos=1168,
+                                                end_pos=1179,
                                                 intro="is_odd(i)",
                                                 intro_enclosing=EnclosingPattern(
                                                     left="|", right="|"
@@ -415,21 +450,20 @@ FragmentList(
                                         ],
                                     ),
                                     main_arg=FragmentList(
-                                        start_pos=949,
-                                        end_pos=952,
+                                        start_pos=1181,
+                                        end_pos=1184,
                                         children=[
                                             Text(
-                                                start_pos=949,
-                                                end_pos=950,
+                                                start_pos=1181,
+                                                end_pos=1182,
                                                 inner=" ",
                                                 enclosing=EnclosingPattern(
                                                     left="", right=""
                                                 ),
-                                                at_prefix=False,
                                             ),
                                             Command(
-                                                start_pos=951,
-                                                end_pos=952,
+                                                start_pos=1183,
+                                                end_pos=1184,
                                                 intro="i",
                                                 intro_enclosing=EnclosingPattern(
                                                     left="", right=""
@@ -439,38 +473,34 @@ FragmentList(
                                             ),
                                         ],
                                         enclosing=EnclosingPattern(left="{", right="}"),
-                                        at_prefix=False,
                                     ),
                                 )
                             ],
                             enclosing=EnclosingPattern(left="{", right="}"),
-                            at_prefix=False,
                         ),
                     )
                 ],
                 enclosing=EnclosingPattern(left="{", right="}"),
-                at_prefix=False,
             ),
         ),
         Text(
-            start_pos=955,
-            end_pos=995,
+            start_pos=1187,
+            end_pos=1227,
             inner=".\nExpected outcome for rolling a die is ",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
         Command(
-            start_pos=996,
-            end_pos=1029,
+            start_pos=1228,
+            end_pos=1261,
             intro="statistics.mean",
             intro_enclosing=EnclosingPattern(left="|", right="|"),
             options=TokenList(
-                start_pos=1014,
-                end_pos=1028,
+                start_pos=1246,
+                end_pos=1260,
                 children=[
                     Command(
-                        start_pos=1015,
-                        end_pos=1028,
+                        start_pos=1247,
+                        end_pos=1260,
                         intro="range(1, 7)",
                         intro_enclosing=EnclosingPattern(left="|", right="|"),
                         options=None,
@@ -481,15 +511,13 @@ FragmentList(
             main_arg=None,
         ),
         Text(
-            start_pos=1029,
-            end_pos=1031,
+            start_pos=1261,
+            end_pos=1263,
             inner=".\n",
             enclosing=EnclosingPattern(left="", right=""),
-            at_prefix=False,
         ),
     ],
     enclosing=GlobalEnclosingPattern(),
-    at_prefix=False,
 )
 ```
 </details>
@@ -507,9 +535,13 @@ My shop opens Monday&thinsp;-&thinsp;Friday.
 Counting is as easy as 1, 2, 3.
 Arithmetic? Not a problem: 7 * 11 * 13 = 1001.
 
-Escaping is easy, just enclose the text with as many #...# as you like.
-For example, one way to escape the "@" symbol, you can write @#""@""#.
-In turn, to write @#""@""# as-is, you can do by typing @##"@#""@""#"##.
+This is a very <b>important <i>feature</i></b>:
+@-expressions are allowed to be nested within the main argument
+using fragment list syntax (section surrounded by a pair of curly braces).
+
+To escape right curly braces literal characters with the fragment list main argument,
+simply enclose the main argument with as many #...# as you like
+(<span>such as {this}!</span>).
 
 Odd digits are 1 3 5 7 9.
 Expected outcome for rolling a die is 3.5.
