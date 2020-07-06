@@ -7,7 +7,7 @@ from typing import Any, List, Union
 
 from paxter.core import (
     CharLoc, Command, Fragment, FragmentList, Identifier, Number,
-    Operator, SymbolCommand, Text, Token, TokenList,
+    Operator, ShortSymbol, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
 from paxter.pyauthor.funcs import flatten
@@ -68,7 +68,7 @@ class RenderContext:
             return self.transform_text(fragment)
         if isinstance(fragment, Command):
             return self.transform_command(fragment)
-        if isinstance(fragment, SymbolCommand):
+        if isinstance(fragment, ShortSymbol):
             return self.transform_symbol_command(fragment)
         raise PaxterRenderError(
             "unrecognized fragment at %(pos)s",
@@ -119,34 +119,34 @@ class RenderContext:
         # Try to evaluate the intro section
         # using the evaluator function from _intro_eval_
         try:
-            intro_eval = self.env['_intro_eval_']
+            starter_eval = self.env['_starter_eval_']
         except KeyError as exc:
             raise PaxterRenderError(
-                "expected '_intro_eval_' to be defined at %(pos)s",
+                "expected '_starter_eval_' to be defined at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
         try:
-            intro_value = intro_eval(token.intro, self.env)
+            starter_value = starter_eval(token.starter, self.env)
         except PaxterRenderError:
             raise
         except Exception as exc:
             raise PaxterRenderError(
                 "paxter command intro evaluation error at %(pos)s: "
-                f"{token.intro!r}",
+                f"{token.starter!r}",
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
 
         # Bail out if option section and main arg section are empty
         if token.options is None and token.main_arg is None:
-            return intro_value
+            return starter_value
 
         # Wrap the function if not yet wrapped
-        if not isinstance(intro_value, BaseApply):
-            intro_value = NormalApply(intro_value)
+        if not isinstance(starter_value, BaseApply):
+            starter_value = NormalApply(starter_value)
 
         # Make the call to the wrapped function
         try:
-            return intro_value.call(self, token)
+            return starter_value.call(self, token)
         except PaxterRenderError:
             raise
         except Exception as exc:
@@ -155,7 +155,7 @@ class RenderContext:
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
 
-    def transform_symbol_command(self, token: SymbolCommand):
+    def transform_symbol_command(self, token: ShortSymbol):
         # Lookup _symbols_ for the desired symbol
         try:
             symbols = self.env['_symbols_']

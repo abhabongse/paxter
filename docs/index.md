@@ -3,14 +3,13 @@
 **Paxter** is a document-first, text pre-processing mini-language toolchain,
 _loosely_ inspired by [@-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).
 
--   The Paxter library package mainly provides a toolchain for 
-    parsing an input text (written in **Paxter language**) 
-    into _an intermediate parsed tree_.
--   However, the Paxter toolchain **does not specify** how 
-    the parsed tree should be interpreted or rendered into final result.
-    Users of the Paxter library have all the freedom to do
-    whatever they like to transform the intermediate result
-    into a final output result they wish to achieve.  
+-   The Paxter library package defines the syntax for **Paxter language**
+    and provides a toolchain for parsing input texts
+    written in Paxter language into _an intermediate parsed tree_.
+-   However, the semantics of Paxter language is left unspecified,
+    meaning that users of the library have all the freedom to do
+    whatever they like to render or transform the intermediate parsed tree
+    into a final output they wish to achieve.  
 -   Alternatively, instead of implementing an interpreter 
     for intermediate parsed tree by themselves,
     users may opt-in to utilize a preset _parsed tree renderers_,

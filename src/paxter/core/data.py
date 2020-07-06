@@ -11,7 +11,7 @@ from paxter.core.enclosing import EnclosingPattern
 __all__ = [
     'Token', 'Fragment',
     'TokenList', 'Identifier', 'Operator', 'Number',
-    'FragmentList', 'Text', 'Command', 'SymbolCommand',
+    'FragmentList', 'Text', 'Command', 'ShortSymbol',
 ]
 
 MainArgument = Union['FragmentList', 'Text']
@@ -163,28 +163,25 @@ class Text(Fragment):
 @dataclass
 class Command(Fragment):
     """
-    Node type which represents @-command which has the following form:
+    Node type representing @-expression which has the following form:
 
-    - It begins with a command switch ``@``,
+    - It begins with an ``@`` switch character.
 
-    - Then, it is immediately followed by a command introduction section
-      which is simply a string in valid identifier form
+    - Then, it is immediately followed by a section called a starter
+      which is simply a string in valid Python identifier form
       or a string surrounded by enclosing bar pattern: ``|...|``.
 
     - Next, it may optionally be followed by an option section
-      surrounded by square brackets: ``[...]``.
+      which is a sequence of :class:`Token` nodes.
 
     - Finally, it may optionally be followed by a main argument section
       which can either be a :class:`FragmentList` or a :class:`Text`.
-      Note that the former would be surrounded by
-      the enclosing brace pattern such as ``{...}``
-      whereas the latter by the enclosing quote pattern such as ``"..."``.
     """
-    #: Command introduction section
-    intro: str
+    #: Command starter section
+    starter: str
 
-    #: Information of the enclosing bar pattern over the introduction section
-    intro_enclosing: EnclosingPattern
+    #: Information of the enclosing bar pattern over the starter section
+    starter_enclosing: EnclosingPattern
 
     #: A list of tokens for the option section enclosed by ``[]``,
     #: or :const:`None` if this section is not present.
@@ -196,7 +193,7 @@ class Command(Fragment):
 
 
 @dataclass
-class SymbolCommand(Fragment):
+class ShortSymbol(Fragment):
     """
     Node type which represents a special @-command
     which is the @-switch character followed by a single symbol character

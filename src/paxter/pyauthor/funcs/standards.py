@@ -25,7 +25,7 @@ def python_unsafe_exec(context: 'RenderContext', node: Command):
     exec(code, context.env)
 
 
-def intro_unsafe_eval(phrase: str, env: dict) -> Any:
+def starter_unsafe_eval(phrase: str, env: dict) -> Any:
     """
     Unsafely evaluates the given paxter phrase.
     """

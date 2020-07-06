@@ -5,7 +5,7 @@ It is used in the following scenarios:
 
 - Brace pattern for FragmentList nodes
 - Quoted pattern for Text nodes
-- Bar pattern for the intro part of Command nodes
+- Bar pattern for the starter part of Command nodes
 """
 import re
 from dataclasses import dataclass, field

@@ -6,7 +6,7 @@ from typing import List, Match, Tuple
 
 from paxter.core.charloc import CharLoc
 from paxter.core.data import (
-    Command, Fragment, FragmentList, Identifier, Number, Operator, SymbolCommand, Text,
+    Command, Fragment, FragmentList, Identifier, Number, Operator, ShortSymbol, Text,
     TokenList,
 )
 from paxter.core.enclosing import EnclosingPattern, GlobalEnclosingPattern
@@ -70,7 +70,7 @@ class ParseContext:
             if text_node.inner:
                 children.append(text_node)
 
-            # Dispatch parsing between the @-command switch
+            # Dispatch parsing between the @-expression switch
             # and the closing (i.e. right) pattern
             next_pos = break_matchobj.end()
             break_char = break_matchobj.group('break')
@@ -91,58 +91,60 @@ class ParseContext:
         """
         matchobj = LEXER.id_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_command_with_id_intro(matchobj)
+            return self._parse_cmd_with_id_starter(matchobj)
 
         matchobj = LEXER.lbar_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_command_with_bar_intro(matchobj)
+            return self._parse_cmd_with_bar_starter(matchobj)
 
         matchobj = LEXER.symbol_re.match(self.input_text, next_pos)
         if matchobj:
-            return self._parse_symbol_command(matchobj)
+            return self._parse_short_symbol(matchobj)
 
-        self._invalid_command(next_pos)
+        self._invalid_cmd(next_pos)
 
-    def _parse_command_with_id_intro(
+    def _parse_cmd_with_id_starter(
             self, id_matchobj: Match[str],
     ) -> Tuple[int, Command]:
         """
-        Continues parsing the intro section of the Command
-        by using the identifier name content as the intro section.
+        Continues parsing the starter section of the Command
+        by using the identifier name content as the starter section.
         """
-        command_start_pos, next_pos = id_matchobj.span()
-        intro = id_matchobj.group('id')
-        enclosing = EnclosingPattern(left='')
-        return self._parse_command_after_intro(
-            next_pos, command_start_pos, intro, enclosing,
+        cmd_start_pos, next_pos = id_matchobj.span()
+        starter = id_matchobj.group('id')
+        starter_enclosing = EnclosingPattern(left='')
+        return self._parse_cmd_after_starter(
+            next_pos, cmd_start_pos, starter, starter_enclosing,
         )
 
-    def _parse_command_with_bar_intro(
+    def _parse_cmd_with_bar_starter(
             self, lbar_matchobj: Match[str],
     ) -> Tuple[int, Command]:
         """
-        Continues parsing the intro section of the Command
+        Continues parsing the starter section of the Command
         which is enclosed by the bar pattern.
         """
-        command_start_pos, next_pos = lbar_matchobj.span()
-        enclosing = EnclosingPattern(left=lbar_matchobj.group('left'))
+        cmd_start_pos, next_pos = lbar_matchobj.span()
+        starter_enclosing = EnclosingPattern(left=lbar_matchobj.group('left'))
 
-        inner_matchobj = enclosing.non_rec_break_re.match(self.input_text, next_pos)
+        inner_matchobj = starter_enclosing.non_rec_break_re.match(
+            self.input_text, next_pos,
+        )
         if inner_matchobj is None:
-            self._cannot_match_enclosing(next_pos, enclosing)
+            self._cannot_match_enclosing(next_pos, starter_enclosing)
 
         next_pos = inner_matchobj.end()
-        intro = inner_matchobj.group('inner')
-        return self._parse_command_after_intro(
-            next_pos, command_start_pos, intro, enclosing,
+        starter = inner_matchobj.group('inner')
+        return self._parse_cmd_after_starter(
+            next_pos, cmd_start_pos, starter, starter_enclosing,
         )
 
-    def _parse_command_after_intro(
+    def _parse_cmd_after_starter(
             self, next_pos: int, cmd_start_pos: int,
-            intro: str, intro_enclosing: EnclosingPattern,
+            starter: str, starter_enclosing: EnclosingPattern,
     ) -> Tuple[int, Command]:
         """
-        Continues parsing the Command after the intro section.
+        Continues parsing the Command after the starter section.
         """
         # Parses for option section (square brackets)
         lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
@@ -164,11 +166,11 @@ class ParseContext:
                 main_arg_node = None
 
         # Construct Command node
-        command_node = Command(
-            cmd_start_pos, next_pos, intro, intro_enclosing,
+        cmd_node = Command(
+            cmd_start_pos, next_pos, starter, starter_enclosing,
             options, main_arg_node,
         )
-        return next_pos, command_node
+        return next_pos, cmd_node
 
     def _parse_fragment_list(
             self, lbrace_matchobj: Match[str],
@@ -200,16 +202,15 @@ class ParseContext:
         text_node = Text.from_matchobj(inner_matchobj, 'inner', enclosing)
         return next_pos, text_node
 
-    def _parse_symbol_command(
+    def _parse_short_symbol(
             self, symbol_matchobj: Match[str],
-    ) -> Tuple[int, SymbolCommand]:
+    ) -> Tuple[int, ShortSymbol]:
         """
-        A special case of at-expression where a single-character symbol
-        follows the @-symbol, which will result in a special Command
-        with such symbol as the intro section and without anything else.
+        A special case of @-expression (called a "short symbol")
+        where a single-character symbol follows the @-switch character.
         """
         next_pos = symbol_matchobj.end()
-        command_node = SymbolCommand.from_matchobj(symbol_matchobj, 'symbol')
+        command_node = ShortSymbol.from_matchobj(symbol_matchobj, 'symbol')
         return next_pos, command_node
 
     def _parse_option(self, next_pos: int) -> Tuple[int, TokenList]:
@@ -313,7 +314,7 @@ class ParseContext:
             pos=CharLoc(self.input_text, pos - len(left_char)),
         )
 
-    def _invalid_command(self, pos: int):
+    def _invalid_cmd(self, pos: int):
         """
         Raises syntax error for failing to parse @-command.
         """

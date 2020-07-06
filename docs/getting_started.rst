@@ -74,7 +74,6 @@ by printing out its content as shown below (output reformatted for clarify).
                    end_pos=145,
                    inner='\n    from datetime import datetime\n\n    name = "Ashley"\n    year_of_birth = 1987\n    current_age = datetime.now().year - year_of_birth\n',
                    enclosing=EnclosingPattern(left='##"', right='"##'),
-                   at_prefix=False,
                ),
            ),
            Text(
@@ -82,7 +81,6 @@ by printing out its content as shown below (output reformatted for clarify).
                end_pos=161,
                inner="\\\nMy name is ",
                enclosing=EnclosingPattern(left="", right=""),
-               at_prefix=False,
            ),
            Command(
                start_pos=162,
@@ -97,7 +95,6 @@ by printing out its content as shown below (output reformatted for clarify).
                end_pos=189,
                inner=" and my current age is ",
                enclosing=EnclosingPattern(left="", right=""),
-               at_prefix=False,
            ),
            Command(
                start_pos=190,
@@ -112,58 +109,42 @@ by printing out its content as shown below (output reformatted for clarify).
                end_pos=223,
                inner=".\nMy shop opens Monday",
                enclosing=EnclosingPattern(left="", right=""),
-               at_prefix=False,
            ),
-           Command(
-               start_pos=224,
-               end_pos=225,
-               intro=",",
-               intro_enclosing=EnclosingPattern(left="", right=""),
-               options=None,
-               main_arg=None,
-           ),
+           SymbolCommand(start_pos=224, end_pos=225, symbol=","),
            Text(
                start_pos=225,
                end_pos=226,
                inner="-",
                enclosing=EnclosingPattern(left="", right=""),
-               at_prefix=False,
            ),
-           Command(
-               start_pos=227,
-               end_pos=228,
-               intro=",",
-               intro_enclosing=EnclosingPattern(left="", right=""),
-               options=None,
-               main_arg=None,
-           ),
+           SymbolCommand(start_pos=227, end_pos=228, symbol=","),
            Text(
                start_pos=228,
                end_pos=236,
                inner="Friday.\n",
                enclosing=EnclosingPattern(left="", right=""),
-               at_prefix=False,
            ),
        ],
        enclosing=GlobalEnclosingPattern(),
-       at_prefix=False,
    )
 
+
 Notice how the source text above also contains what seems like a Python code.
-This has *nothing* to do with Paxter language grammar in any way;
+This has *nothing* to do with Paxter core grammar in any way;
 it simply uses the Paxter *command* syntax to *embed* Python code
 to which we will give a meaningful interpretation later.
 
 Rendering
 ~~~~~~~~~
 
-Next step, we use a **renderer** to transform the intermediate parsed tree
-into its final output.
+Next step, we use a built-in **renderer**
+to transform the intermediate parsed tree into its final output.
 It is important to remember that
 **the semantics of the documents depends on which renderer we are choosing**.
 
-We will use :class:`RenderContext <paxter.pyauthor.RenderContext>`
-already pre-defined by the Paxter library package
+We will adopt the **Python authoring mode** whose renderer
+(implemented by :class:`RenderContext <paxter.pyauthor.RenderContext>`)
+is already pre-defined by the Paxter library package
 to transform the parsed tree into the desired final form.
 One of its very useful features is that it will execute python code
 under the ``@python`` command.

@@ -21,13 +21,10 @@ My name is Ashley, and I am 33 years old.
 ```
 
 However, Paxter provides a special syntax called **@-expressions**
-(pronounced as “at expressions”)
+(pronounced “at expressions”)
 so that richer information may be inserted into the document.
-There are 3 kinds of @-expressions, all of which begins with an @-symbol:
-
-1. a command
-2. a fragment list, wrapped within the _brace pattern_
-3. a text wrapped within the _quoted pattern_
+There are 2 kinds of @-expressions, all of which begins with an @-symbol:
+a regular command and a _special_ symbol command.
 
 This @-symbol (codepoint U+0040) is sometimes called a _switch_ 
 because it indicates the beginning of an @-expression,
