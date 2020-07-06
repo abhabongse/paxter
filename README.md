@@ -112,9 +112,9 @@ FragmentList(
         Command(
             start_pos=1,
             end_pos=248,
-            intro="python",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
+            starter="python",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=None,
             main_arg=Text(
                 start_pos=10,
                 end_pos=245,
@@ -131,9 +131,9 @@ FragmentList(
         Command(
             start_pos=262,
             end_pos=266,
-            intro="name",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
+            starter="name",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=None,
             main_arg=None,
         ),
         Text(
@@ -145,9 +145,9 @@ FragmentList(
         Command(
             start_pos=277,
             end_pos=280,
-            intro="age",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
+            starter="age",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=None,
             main_arg=None,
         ),
         Text(
@@ -180,9 +180,9 @@ FragmentList(
         Command(
             start_pos=360,
             end_pos=434,
-            intro="python",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
+            starter="python",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=None,
             main_arg=Text(
                 start_pos=369,
                 end_pos=431,
@@ -199,9 +199,9 @@ FragmentList(
         Command(
             start_pos=460,
             end_pos=475,
-            intro="next(counter)",
-            intro_enclosing=EnclosingPattern(left="|", right="|"),
-            options=None,
+            starter="next(counter)",
+            starter_enclosing=EnclosingPattern(left="|", right="|"),
+            option=None,
             main_arg=None,
         ),
         Text(
@@ -213,9 +213,9 @@ FragmentList(
         Command(
             start_pos=478,
             end_pos=493,
-            intro="next(counter)",
-            intro_enclosing=EnclosingPattern(left="|", right="|"),
-            options=None,
+            starter="next(counter)",
+            starter_enclosing=EnclosingPattern(left="|", right="|"),
+            option=None,
             main_arg=None,
         ),
         Text(
@@ -227,9 +227,9 @@ FragmentList(
         Command(
             start_pos=496,
             end_pos=511,
-            intro="next(counter)",
-            intro_enclosing=EnclosingPattern(left="|", right="|"),
-            options=None,
+            starter="next(counter)",
+            starter_enclosing=EnclosingPattern(left="|", right="|"),
+            option=None,
             main_arg=None,
         ),
         Text(
@@ -241,9 +241,9 @@ FragmentList(
         Command(
             start_pos=555,
             end_pos=568,
-            intro="7 * 11 * 13",
-            intro_enclosing=EnclosingPattern(left="|", right="|"),
-            options=None,
+            starter="7 * 11 * 13",
+            starter_enclosing=EnclosingPattern(left="|", right="|"),
+            option=None,
             main_arg=None,
         ),
         Text(
@@ -255,9 +255,9 @@ FragmentList(
         Command(
             start_pos=572,
             end_pos=668,
-            intro="python",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
+            starter="python",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=None,
             main_arg=Text(
                 start_pos=581,
                 end_pos=665,
@@ -274,9 +274,9 @@ FragmentList(
         Command(
             start_pos=686,
             end_pos=724,
-            intro="tag",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=TokenList(
+            starter="tag",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=TokenList(
                 start_pos=690,
                 end_pos=693,
                 children=[
@@ -301,9 +301,9 @@ FragmentList(
                     Command(
                         start_pos=706,
                         end_pos=723,
-                        intro="tag",
-                        intro_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        starter="tag",
+                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        option=TokenList(
                             start_pos=710,
                             end_pos=713,
                             children=[
@@ -349,9 +349,9 @@ FragmentList(
         Command(
             start_pos=1019,
             end_pos=1043,
-            intro="tag",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
+            starter="tag",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=None,
             main_arg=FragmentList(
                 start_pos=1025,
                 end_pos=1040,
@@ -375,9 +375,9 @@ FragmentList(
         Command(
             start_pos=1048,
             end_pos=1114,
-            intro="python",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
+            starter="python",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=None,
             main_arg=Text(
                 start_pos=1057,
                 end_pos=1111,
@@ -394,9 +394,9 @@ FragmentList(
         Command(
             start_pos=1131,
             end_pos=1187,
-            intro="flatten",
-            intro_enclosing=EnclosingPattern(left="", right=""),
-            options=None,
+            starter="flatten",
+            starter_enclosing=EnclosingPattern(left="", right=""),
+            option=None,
             main_arg=FragmentList(
                 start_pos=1139,
                 end_pos=1186,
@@ -404,9 +404,9 @@ FragmentList(
                     Command(
                         start_pos=1140,
                         end_pos=1186,
-                        intro="for",
-                        intro_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        starter="for",
+                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        option=TokenList(
                             start_pos=1144,
                             end_pos=1161,
                             children=[
@@ -415,11 +415,11 @@ FragmentList(
                                 Command(
                                     start_pos=1150,
                                     end_pos=1161,
-                                    intro="range(10)",
-                                    intro_enclosing=EnclosingPattern(
+                                    starter="range(10)",
+                                    starter_enclosing=EnclosingPattern(
                                         left="|", right="|"
                                     ),
-                                    options=None,
+                                    option=None,
                                     main_arg=None,
                                 ),
                             ],
@@ -431,20 +431,20 @@ FragmentList(
                                 Command(
                                     start_pos=1164,
                                     end_pos=1185,
-                                    intro="if",
-                                    intro_enclosing=EnclosingPattern(left="", right=""),
-                                    options=TokenList(
+                                    starter="if",
+                                    starter_enclosing=EnclosingPattern(left="", right=""),
+                                    option=TokenList(
                                         start_pos=1167,
                                         end_pos=1179,
                                         children=[
                                             Command(
                                                 start_pos=1168,
                                                 end_pos=1179,
-                                                intro="is_odd(i)",
-                                                intro_enclosing=EnclosingPattern(
+                                                starter="is_odd(i)",
+                                                starter_enclosing=EnclosingPattern(
                                                     left="|", right="|"
                                                 ),
-                                                options=None,
+                                                option=None,
                                                 main_arg=None,
                                             )
                                         ],
@@ -464,11 +464,11 @@ FragmentList(
                                             Command(
                                                 start_pos=1183,
                                                 end_pos=1184,
-                                                intro="i",
-                                                intro_enclosing=EnclosingPattern(
+                                                starter="i",
+                                                starter_enclosing=EnclosingPattern(
                                                     left="", right=""
                                                 ),
-                                                options=None,
+                                                option=None,
                                                 main_arg=None,
                                             ),
                                         ],
@@ -492,18 +492,18 @@ FragmentList(
         Command(
             start_pos=1228,
             end_pos=1261,
-            intro="statistics.mean",
-            intro_enclosing=EnclosingPattern(left="|", right="|"),
-            options=TokenList(
+            starter="statistics.mean",
+            starter_enclosing=EnclosingPattern(left="|", right="|"),
+            option=TokenList(
                 start_pos=1246,
                 end_pos=1260,
                 children=[
                     Command(
                         start_pos=1247,
                         end_pos=1260,
-                        intro="range(1, 7)",
-                        intro_enclosing=EnclosingPattern(left="|", right="|"),
-                        options=None,
+                        starter="range(1, 7)",
+                        starter_enclosing=EnclosingPattern(left="|", right="|"),
+                        option=None,
                         main_arg=None,
                     )
                 ],

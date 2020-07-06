@@ -25,17 +25,17 @@ Below are syntax diagrams for Paxter language.
      only if the next token does not match any other possible paths.
      Pursuing this ``else`` path does not consume anything.
 
-  There are 4 possible scenarios.
+  There are 2 possible scenarios.
 
   1. A normal :class:`Command <paxter.core.Command>` node consisting of 3 sections:
-     introduction, options, and main argument, respectively.
+     starter, options, and main argument, respectively.
 
-     The introduction section is resulted from parsing
+     The starter section is resulted from parsing
      either greedily for an identifier or non-greedily for a text
      enclosed by a pair of bars plus and an equal number of zero or more hashes
      at both ends.
 
-     Following the introduction section, if a left square bracket is found,
+     Following the starter section, if a left square bracket is found,
      then the option section as a list of tokens must be parsed
      and it will result in a :class:`TokenList <paxter.core.TokenList>` node.
      Otherwise (if the left square bracket is absent),
@@ -60,17 +60,8 @@ Below are syntax diagrams for Paxter language.
      Well, if both conditions (a) and (b) do not hold,
      then the main argument would be :const:`None`.
 
-  2. A :class:`FragmentList <paxter.core.FragmentList>` node
-     which begins with zero or more hashes followed by a left brace.
-     The **FragmentList** rule is followed similarly to scenario (a) from above.
-
-  3. A :class:`Text <paxter.core.Text>` node
-     which begins with zero or more hashes followed by a quotation mark.
-     The inner text is parsed the same way as scenario (b) from above.
-
-  4. A special :class:`Command <paxter.core.Command>` node where
-     the introduction section is a single symbol following the @-switch,
-     and the other sections (options and main argument) are both empty.
+  2. A special :class:`SingleSymbol <paxter.core.SingleSymbol>` node where
+     a single symbol follows the @-switch.
 
 - **FragmentList:** Consists of an interleaving of non-empty texts
   and results produced by **AtExpression** rule.
@@ -89,8 +80,8 @@ Below are syntax diagrams for Paxter language.
 - **TokenList:** A sequence of zero or more tokens
   Each token either a command, an identifier, an operator,
   a number following JSON specification,
-  or a nested token list enclosed by a pair of parentheses ``()``,
-  a pair of square brackets ``[]``, or a pair of pure braces ``{}``.
+  a wrapped fragment list, a wrapped text,
+  or a nested token list enclosed by a pair of square brackets ``[]``.
   The result is a :class:`TokenList <paxter.core.TokenList>` node type.
 
   .. image:: _static/TokenList.png

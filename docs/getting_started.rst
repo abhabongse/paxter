@@ -68,7 +68,7 @@ by printing out its content as shown below (output reformatted for clarify).
                end_pos=148,
                starter="python",
                starter_enclosing=EnclosingPattern(left="", right=""),
-               options=None,
+               option=None,
                main_arg=Text(
                    start_pos=10,
                    end_pos=145,
@@ -87,7 +87,7 @@ by printing out its content as shown below (output reformatted for clarify).
                end_pos=166,
                starter="name",
                starter_enclosing=EnclosingPattern(left="", right=""),
-               options=None,
+               option=None,
                main_arg=None,
            ),
            Text(
@@ -101,7 +101,7 @@ by printing out its content as shown below (output reformatted for clarify).
                end_pos=201,
                starter="current_age",
                starter_enclosing=EnclosingPattern(left="", right=""),
-               options=None,
+               option=None,
                main_arg=None,
            ),
            Text(

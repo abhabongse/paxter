@@ -17,7 +17,7 @@ def python_unsafe_exec(context: 'RenderContext', node: Command):
     """
     Unsafely executes pyauthor code within the main argument.
     """
-    if node.options:
+    if node.option:
         raise PaxterRenderError("expected empty option section")
     if not isinstance(node.main_arg, Text):
         raise PaxterRenderError("expected raw text")

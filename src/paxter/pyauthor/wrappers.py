@@ -58,8 +58,8 @@ class NormalApply(BaseApply):
         return self.wrapped(*args, **kwargs)
 
     def call(self, context: 'RenderContext', node: Command) -> Any:
-        if node.options:
-            args, kwargs = self.extract_args_and_kwargs(context, node.options)
+        if node.option:
+            args, kwargs = self.extract_args_and_kwargs(context, node.option)
         else:
             args, kwargs = [], {}
         if node.main_arg:

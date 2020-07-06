@@ -185,7 +185,7 @@ class Command(Fragment):
 
     #: A list of tokens for the option section enclosed by ``[]``,
     #: or :const:`None` if this section is not present.
-    options: Optional[TokenList]
+    option: Optional[TokenList]
 
     #: The main argument section at the end of expression,
     #: or :const:`None` if this section is not present.

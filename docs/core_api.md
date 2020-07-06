@@ -47,7 +47,7 @@ The result of the parsing yields the parsed tree consisting of the following cla
    :show-inheritance:
 
 .. autoclass:: paxter.core.Command
-   :members: intro, intro_enclosing, options, main_arg
+   :members: starter, starter_enclosing, option, main_arg
    :show-inheritance:
 ```
 

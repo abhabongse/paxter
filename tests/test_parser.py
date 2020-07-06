@@ -40,7 +40,7 @@ from paxter.core import (
                         start_pos=1, end_pos=6,
                         starter="hello",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=None,
+                        option=None,
                         main_arg=None,
                     ),
                 ],
@@ -61,7 +61,7 @@ from paxter.core import (
                         start_pos=19, end_pos=23,
                         starter="name",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=None,
+                        option=None,
                         main_arg=None,
                     ),
                     Text(
@@ -87,7 +87,7 @@ from paxter.core import (
                         start_pos=24, end_pos=31,
                         starter="1 + 1",
                         starter_enclosing=EnclosingPattern(left="|", right="|"),
-                        options=None,
+                        option=None,
                         main_arg=None,
                     ),
                     Text(
@@ -99,7 +99,7 @@ from paxter.core import (
                         start_pos=39, end_pos=50,
                         starter="1 + 1",
                         starter_enclosing=EnclosingPattern(left="##|", right="|##"),
-                        options=None,
+                        option=None,
                         main_arg=None,
                     ),
                 ],
@@ -115,7 +115,7 @@ from paxter.core import (
                         start_pos=1, end_pos=12,
                         starter="N @ M @ K",
                         starter_enclosing=EnclosingPattern(left="|", right="|"),
-                        options=None,
+                        option=None,
                         main_arg=None,
                     ),
                 ],
@@ -131,7 +131,7 @@ from paxter.core import (
                         start_pos=1, end_pos=12,
                         starter="#|#|#",
                         starter_enclosing=EnclosingPattern(left="##|", right="|##"),
-                        options=None,
+                        option=None,
                         main_arg=None,
                     ),
                     Text(
@@ -165,7 +165,7 @@ from paxter.core import (
                         start_pos=9, end_pos=16,
                         starter="em",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=None,
+                        option=None,
                         main_arg=FragmentList(
                             start_pos=12, end_pos=15,
                             children=[
@@ -196,7 +196,7 @@ from paxter.core import (
                         start_pos=1, end_pos=19,
                         starter="foo.process",
                         starter_enclosing=EnclosingPattern(left="|", right="|"),
-                        options=None,
+                        option=None,
                         main_arg=FragmentList(
                             start_pos=15, end_pos=18,
                             children=[
@@ -218,7 +218,7 @@ from paxter.core import (
                         start_pos=21, end_pos=47,
                         starter="foo#process",
                         starter_enclosing=EnclosingPattern(left="#|", right="|#"),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=37, end_pos=41,
                             children=[
                                 Text(
@@ -252,7 +252,7 @@ from paxter.core import (
                         start_pos=9, end_pos=37,
                         starter="level1",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=None,
+                        option=None,
                         main_arg=FragmentList(
                             start_pos=16, end_pos=36,
                             children=[
@@ -267,7 +267,7 @@ from paxter.core import (
                                     starter_enclosing=EnclosingPattern(
                                         left="", right="",
                                     ),
-                                    options=None,
+                                    option=None,
                                     main_arg=FragmentList(
                                         start_pos=25, end_pos=34,
                                         children=[
@@ -284,7 +284,7 @@ from paxter.core import (
                                                 starter_enclosing=EnclosingPattern(
                                                     left="", right="",
                                                 ),
-                                                options=None,
+                                                option=None,
                                                 main_arg=None,
                                             ),
                                             Text(
@@ -320,7 +320,7 @@ from paxter.core import (
                         start_pos=1, end_pos=29,
                         starter="say",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=5, end_pos=22,
                             children=[
                                 Identifier(start_pos=5, end_pos=10, name="greet"),
@@ -353,7 +353,7 @@ from paxter.core import (
                         start_pos=34, end_pos=61,
                         starter="email",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=None,
+                        option=None,
                         main_arg=Text(
                             start_pos=42, end_pos=58,
                             inner="john@example.com",
@@ -378,7 +378,7 @@ from paxter.core import (
                         start_pos=1, end_pos=19,
                         starter="state",
                         starter_enclosing=EnclosingPattern(left="###|", right="|###"),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=15, end_pos=18,
                             children=[
                                 Identifier(start_pos=15, end_pos=16, name="x"),
@@ -397,7 +397,7 @@ from paxter.core import (
                         start_pos=21, end_pos=31,
                         starter="state",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=27, end_pos=30,
                             children=[
                                 Identifier(start_pos=27, end_pos=28, name="x"),
@@ -420,7 +420,7 @@ from paxter.core import (
                         start_pos=1, end_pos=48,
                         starter="state",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=7, end_pos=18,
                             children=[
                                 Identifier(start_pos=7, end_pos=8, name="x"),
@@ -456,7 +456,7 @@ from paxter.core import (
                         start_pos=1, end_pos=3,
                         starter="",
                         starter_enclosing=EnclosingPattern(left="|", right="|"),
-                        options=None,
+                        option=None,
                         main_arg=None,
                     ),
                     Text(
@@ -468,7 +468,7 @@ from paxter.core import (
                         start_pos=5, end_pos=9,
                         starter="",
                         starter_enclosing=EnclosingPattern(left="#|", right="|#"),
-                        options=None,
+                        option=None,
                         main_arg=None,
                     ),
                     Text(
@@ -480,7 +480,7 @@ from paxter.core import (
                         start_pos=11, end_pos=38,
                         starter="foo",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=15, end_pos=37,
                             children=[
                                 FragmentList(
@@ -492,7 +492,7 @@ from paxter.core import (
                                             starter_enclosing=EnclosingPattern(
                                                 left="", right="",
                                             ),
-                                            options=None,
+                                            option=None,
                                             main_arg=None,
                                         ),
                                     ],
@@ -530,7 +530,7 @@ from paxter.core import (
                         start_pos=1, end_pos=38,
                         starter="foo",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=5, end_pos=37,
                             children=[
                                 Identifier(start_pos=5, end_pos=8, name="bar"),
@@ -547,7 +547,7 @@ from paxter.core import (
                                     starter_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
-                                    options=TokenList(
+                                    option=TokenList(
                                         start_pos=24, end_pos=36,
                                         children=[
                                             Identifier(
@@ -577,7 +577,7 @@ from paxter.core import (
                                                                     left="", right="",
                                                                 )
                                                         ),
-                                                        options=None,
+                                                        option=None,
                                                         main_arg=None,
                                                     ),
                                                 ],
@@ -613,7 +613,7 @@ from paxter.core import (
                         start_pos=5, end_pos=58,
                         starter="expand",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=12, end_pos=49,
                             children=[
                                 Number(start_pos=12, end_pos=13, value=1),
@@ -652,7 +652,7 @@ from paxter.core import (
                                     starter_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
-                                    options=None,
+                                    option=None,
                                     main_arg=None,
                                 ),
                             ],
@@ -666,7 +666,7 @@ from paxter.core import (
                                     starter_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
-                                    options=None,
+                                    option=None,
                                     main_arg=None,
                                 ),
                             ],
@@ -691,7 +691,7 @@ from paxter.core import (
                         start_pos=1, end_pos=23,
                         starter="foo",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=5, end_pos=22,
                             children=[
                                 TokenList(start_pos=6, end_pos=6, children=[]),
@@ -712,7 +712,7 @@ from paxter.core import (
                                     starter_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
-                                    options=None,
+                                    option=None,
                                     main_arg=None,
                                 ),
                             ],
@@ -732,7 +732,7 @@ from paxter.core import (
                         start_pos=1, end_pos=54,
                         starter="foo",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        options=TokenList(
+                        option=TokenList(
                             start_pos=5, end_pos=48,
                             children=[
                                 Identifier(start_pos=8, end_pos=9, name="a"),
@@ -769,7 +769,7 @@ from paxter.core import (
                                             starter_enclosing=EnclosingPattern(
                                                 left="", right="",
                                             ),
-                                            options=None,
+                                            option=None,
                                             main_arg=None,
                                         ),
                                     ],

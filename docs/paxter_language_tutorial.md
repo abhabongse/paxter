@@ -52,7 +52,7 @@ It consists of the following 3 sections of information:
 Among these 3 sections, only the starter section is mandatory;
 the other 2 sections are optional and can be omitted.
 Additionally, there should _not_ be any whitespace characters
-separating between the switch and the introduction section,
+separating between the switch and the starter section,
 nor between different sections of the same command.
 
 ### Starter section
@@ -256,7 +256,7 @@ Here are a couple of examples of commands which include the option section:
     2.  a left arrow operator `<-`
     3.  a nested sequence containing the number literal `2` as the only token within it
     4.  a semicolon operator `;`, and
-    5.  a nested command with `baz` as the introduction section
+    5.  a nested command with `baz` as the starter section
         and with all other sections omitted.
 
 Paxter language syntax gives a lot of freedom for what is allowed within

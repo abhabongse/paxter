@@ -20,26 +20,26 @@ def for_statement(context: 'RenderContext', node: Command):
     def raise_error(message):
         raise PaxterRenderError(
             f"{message} in for statement at %(pos)s",
-            pos=CharLoc(context.input_text, node.options.start_pos),
+            pos=CharLoc(context.input_text, node.option.start_pos),
         )
 
-    if not (node.options
-            and len(node.options.children) >= 1
-            and isinstance(node.options.children[0], Identifier)):
+    if not (node.option
+            and len(node.option.children) >= 1
+            and isinstance(node.option.children[0], Identifier)):
         raise_error("expected binding identifier declaration")
-    if not (len(node.options.children) >= 2
-            and node.options.children[1] == Identifier.without_pos(name='in')):
+    if not (len(node.option.children) >= 2
+            and node.option.children[1] == Identifier.without_pos(name='in')):
         raise_error("expected keyword 'in'")
-    if len(node.options.children) < 3:
+    if len(node.option.children) < 3:
         raise_error("expected iterable clause")
-    if len(node.options.children) > 3:
+    if len(node.option.children) > 3:
         raise_error("unexpected extra token")
     if node.main_arg is None:
         raise_error("expected main argument body")
 
     # Obtain sequence
-    id_name = node.options.children[0].name
-    seq = context.transform_token(node.options.children[2])
+    id_name = node.option.children[0].name
+    seq = context.transform_token(node.option.children[2])
 
     result = []
     for value in seq:
@@ -59,7 +59,7 @@ def if_statement(context: 'RenderContext', node: Command):  # noqa: C901
     def raise_error(message):
         raise PaxterRenderError(
             f"{message} in if statement at %(pos)s",
-            pos=CharLoc(context.input_text, node.options.start_pos),
+            pos=CharLoc(context.input_text, node.option.start_pos),
         )
 
     target_bool = True
@@ -67,31 +67,31 @@ def if_statement(context: 'RenderContext', node: Command):  # noqa: C901
     then_node = None
     else_node = None
 
-    if not (node.options and len(node.options.children) >= 1):
+    if not (node.option and len(node.option.children) >= 1):
         raise_error("expected condition clause")
-    if len(node.options.children) == 1:
+    if len(node.option.children) == 1:
         if node.main_arg is None:
             raise_error("expected main argument body")
-        cond_node = node.options.children[0]
+        cond_node = node.option.children[0]
         then_node = node.main_arg
-    elif len(node.options.children) == 2:
-        if node.options.children[0] != Identifier.without_pos(name='not'):
+    elif len(node.option.children) == 2:
+        if node.option.children[0] != Identifier.without_pos(name='not'):
             raise_error("expected first token to be 'not'")
         if node.main_arg is None:
             raise_error("expected main argument body")
         target_bool = False
-        cond_node = node.options.children[1]
+        cond_node = node.option.children[1]
         then_node = node.main_arg
-    elif len(node.options.children) == 5:
-        if node.options.children[1] != Identifier.without_pos(name='then'):
+    elif len(node.option.children) == 5:
+        if node.option.children[1] != Identifier.without_pos(name='then'):
             raise_error("expected keyword 'then'")
-        if node.options.children[3] != Identifier.without_pos(name='else'):
+        if node.option.children[3] != Identifier.without_pos(name='else'):
             raise_error("expected keyword 'else'")
         if node.main_arg:
             raise_error("unexpected main argument body")
-        cond_node = node.options.children[0]
-        then_node = node.options.children[2]
-        else_node = node.options.children[4]
+        cond_node = node.option.children[0]
+        then_node = node.option.children[2]
+        else_node = node.option.children[4]
     else:
         raise_error("ill-formed sequence of tokens")
 

@@ -116,8 +116,8 @@ class RenderContext:
         return text
 
     def transform_command(self, token: Command):
-        # Try to evaluate the intro section
-        # using the evaluator function from _intro_eval_
+        # Try to evaluate the starter section
+        # using the evaluator function from _starter_eval_
         try:
             starter_eval = self.env['_starter_eval_']
         except KeyError as exc:
@@ -131,13 +131,13 @@ class RenderContext:
             raise
         except Exception as exc:
             raise PaxterRenderError(
-                "paxter command intro evaluation error at %(pos)s: "
+                "paxter command starter evaluation error at %(pos)s: "
                 f"{token.starter!r}",
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
 
         # Bail out if option section and main arg section are empty
-        if token.options is None and token.main_arg is None:
+        if token.option is None and token.main_arg is None:
             return starter_value
 
         # Wrap the function if not yet wrapped
