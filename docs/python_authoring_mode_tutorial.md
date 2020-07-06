@@ -99,9 +99,9 @@ to option section of the command (similarly to Python function call syntax):
 "##\
 This is @surround[3]{sound}.
 This is @surround[n=3]{sound}.
-This is @surround[3,@"[",@"]"]{sound}.
-This is @surround[3,right=@""]{sound}.
-This is @surround[n=3,left=@"_",right=@"_"]{sound}.
+This is @surround[3, "[", "]"]{sound}.
+This is @surround[3, right=""]{sound}.
+This is @surround[n=3, left="_", right="_"]{sound}.
 ```
 
 Here is the result.
@@ -114,7 +114,7 @@ This is (((sound.
 This is ___sound___.
 ```
 
-Notice that we use wrapped text @-expression inside the option section
+Notice that we use wrapped text inside the option section
 in order to supply strings as arguments to the function `surround`.
 
 Additionally, we may also omit the main argument section,
@@ -125,8 +125,8 @@ and then the entire option section will all be the arguments to the function:
     def surround(text, n, left='(', right=')'):
         return flatten(left) * n + flatten(text) + flatten(right) * n
 "##\
-This is @surround[@"sound",3].
-This is @surround[@"sound",n=3].
+This is @surround["sound",3].
+This is @surround["sound",n=3].
 ```
 
 The above document will be rendered into
@@ -165,8 +165,8 @@ we may use the bar pattern in conjunction with main arguments and/or options.
         'median': statistics.median
     }
 "##\
-The average of first 4 primes is @|statistics.mean|[@|values|].
-The median of first 4 primes is @|funcs['median']|[@|values|].
+The average of first 4 primes is @|statistics.mean|[@values].
+The median of first 4 primes is @|funcs['median']|[@values].
 ```
 
 The above document returns the following.
@@ -230,7 +230,7 @@ Here is the document that illustrates how to use these special commands:
 "##\
 Odd digits are @flatten{@for[i in @|range(10)|]{@if[@|is_odd(i)|]{ @i}}}.
 Even digits are @flatten{@for[i in @|range(10)|]{@if[not @|is_odd(i)|]{ @i}}}.
-Digits are @flatten{@for[i in @|range(10)|]{@if[@|is_odd(i)| then @" odd" else @" even"]}} in this order.
+Digits are @flatten{@for[i in @|range(10)|]{@if[@|is_odd(i)| then " odd" else " even"]}} in this order.
 ```
 
 and the result would be
@@ -238,7 +238,7 @@ and the result would be
 ```text
 Odd digits are 1 3 5 7 9.
 Even digits are 0 2 4 6 8.
-Digits are even odd even odd even odd even odd even odd in this order.
+Digits are  even odd even odd even odd even odd even odd in this order.
 ```
 
 
@@ -264,4 +264,6 @@ from the function above
 
 ```eval_rst
 .. autofunction:: paxter.pyauthor.funcs.flatten
+
+.. autofunction:: paxter.pyauthor.funcs.verb
 ```

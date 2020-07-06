@@ -34,9 +34,14 @@ def starter_unsafe_eval(phrase: str, env: dict) -> Any:
     return eval(phrase, env)
 
 
-def verbatim(text: Any) -> str:
+def verb(text: Any) -> str:
     """
     Returns the main string argument as-is.
+
+    >>> verb("Hello")
+    "Hello"
+    >>> verb("me@example.com")
+    "me@example.com"
     """
     if not isinstance(text, str):
         raise TypeError("argument to verbatim must be string")

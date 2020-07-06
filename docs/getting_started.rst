@@ -66,8 +66,8 @@ by printing out its content as shown below (output reformatted for clarify).
            Command(
                start_pos=1,
                end_pos=148,
-               intro="python",
-               intro_enclosing=EnclosingPattern(left="", right=""),
+               starter="python",
+               starter_enclosing=EnclosingPattern(left="", right=""),
                options=None,
                main_arg=Text(
                    start_pos=10,
@@ -85,8 +85,8 @@ by printing out its content as shown below (output reformatted for clarify).
            Command(
                start_pos=162,
                end_pos=166,
-               intro="name",
-               intro_enclosing=EnclosingPattern(left="", right=""),
+               starter="name",
+               starter_enclosing=EnclosingPattern(left="", right=""),
                options=None,
                main_arg=None,
            ),
@@ -99,8 +99,8 @@ by printing out its content as shown below (output reformatted for clarify).
            Command(
                start_pos=190,
                end_pos=201,
-               intro="current_age",
-               intro_enclosing=EnclosingPattern(left="", right=""),
+               starter="current_age",
+               starter_enclosing=EnclosingPattern(left="", right=""),
                options=None,
                main_arg=None,
            ),
