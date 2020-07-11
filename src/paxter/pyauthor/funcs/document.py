@@ -2,202 +2,231 @@
 Collections of document-related data class to be used
 as functions to construct a document for web or print.
 """
-from abc import ABCMeta
-from dataclasses import dataclass
-from typing import List, Union
+from dataclasses import dataclass, field
+from typing import Iterator, List, Union
+
+from paxter.core.exceptions import PaxterRenderError
+from paxter.pyauthor.funcs.standards import flatten
 
 
 @dataclass
-class BaseNode(metaclass=ABCMeta):
+class Element:
     """
-    Base document element node.
+    Base element node for the document.
     """
 
-    def html(self) -> str:
+    def html(self) -> Iterator[str]:
         """
-        Rendered the node into HTML document.
+        Renders the element node into HTML document
+        as a sequence of strings.
         """
         raise NotImplementedError
 
-    @staticmethod
-    def render_fragments(fragments: List[Union[str, 'BaseNode']]) -> str:
-        return ''.join(
-            fragment.html() if isinstance(fragment, BaseNode) else fragment
-            for fragment in fragments
-        )
+    def tex(self) -> Iterator[str]:
+        """
+        Renders the element node into TeX document
+        as a sequence of strings.
+        """
+        raise NotImplementedError
 
 
 @dataclass
-class FragmentNode(BaseNode, metaclass=ABCMeta):
+class StaticElement(Element):
     """
-    Element node containing list of fragments.
+    Static element content without arguments.
     """
-    children: List[Union[str, BaseNode]]
-    HTML_TAG = 'div'
+    html_content: str = '<div />'
 
-    def html(self) -> str:
-        rendered = self.render_fragments(self.children)
-        return f'<{self.HTML_TAG}>{rendered}</{self.HTML_TAG}>'
+    def html(self) -> Iterator[str]:
+        yield self.html_content
 
 
-@dataclass
-class Paragraph(FragmentNode):
-    """
-    Paragraph node.
-    """
-    HTML_TAG = 'p'
+LineBreak = StaticElement('<br />')
+HorizontalRule = StaticElement('<hr />')
 
 
 @dataclass
-class Heading1(FragmentNode):
+class ChildrenFragmentElement(Element):
     """
-    First-level heading node.
+    Element nodes with list of fragments as children.
     """
-    HTML_TAG = 'h1'
+    children: List[Union[str, Element]]
+    html_tag: str = 'div'
+
+    def html(self) -> Iterator[str]:
+        yield f'<{self.html_tag}>'
+        for fragment in self.children:
+            if isinstance(fragment, str):
+                yield fragment
+            elif isinstance(fragment, Element):
+                yield from fragment.html()
+            else:
+                raise PaxterRenderError('malformed document')
+        yield f'</{self.html_tag}>'
 
 
 @dataclass
-class Heading2(FragmentNode):
+class Document(ChildrenFragmentElement):
     """
-    Second-level heading node.
+    Top-most data type for the entire document.
     """
-    HTML_TAG = 'h2'
+
+    def render_html(self) -> str:
+        """
+        Renders the document into HTML output.
+        """
+        return ''.join(self.html())
+
+    def render_tex(self) -> str:
+        """
+        Renders the document into TeX output.
+        """
+        return ''.join(self.tex())
 
 
 @dataclass
-class Heading3(FragmentNode):
-    """
-    Third-level heading node.
-    """
-    HTML_TAG = 'h3'
+class Paragraph(ChildrenFragmentElement):
+    html_tag: str = field(default='p', init=False)
 
 
 @dataclass
-class Heading4(FragmentNode):
-    """
-    Fourth-level heading node.
-    """
-    HTML_TAG = 'h4'
+class Heading1(ChildrenFragmentElement):
+    html_tag: str = field(default='h1', init=False)
 
 
 @dataclass
-class Heading5(FragmentNode):
-    """
-    Fifth-level heading node.
-    """
-    HTML_TAG = 'h5'
+class Heading2(ChildrenFragmentElement):
+    html_tag: str = field(default='h2', init=False)
 
 
 @dataclass
-class Heading6(FragmentNode):
-    """
-    Sixth-level heading node.
-    """
-    HTML_TAG = 'h6'
+class Heading3(ChildrenFragmentElement):
+    html_tag: str = field(default='h3', init=False)
 
 
 @dataclass
-class Blockquote(FragmentNode):
-    """
-    Blockquote node.
-    """
-    HTML_TAG = 'blockquote'
+class Heading4(ChildrenFragmentElement):
+    html_tag: str = field(default='h4', init=False)
 
 
 @dataclass
-class Bold(FragmentNode):
-    """
-    Bold text node.
-    """
-    HTML_TAG = 'strong'
+class Heading5(ChildrenFragmentElement):
+    html_tag: str = field(default='h5', init=False)
 
 
 @dataclass
-class Italic(FragmentNode):
-    """
-    Italic text node.
-    """
-    HTML_TAG = 'em'
+class Heading6(ChildrenFragmentElement):
+    html_tag: str = field(default='h6', init=False)
 
 
 @dataclass
-class Underline(FragmentNode):
-    """
-    Underline text node.
-    """
-    HTML_TAG = 'u'
+class Blockquote(ChildrenFragmentElement):
+    html_tag: str = field(default='blockquote', init=False)
 
 
 @dataclass
-class Code(FragmentNode):
-    """
-    Underline text node.
-    """
-    HTML_TAG = 'code'
+class Bold(ChildrenFragmentElement):
+    html_tag: str = field(default='strong', init=False)
 
 
 @dataclass
-class Link(FragmentNode):
+class Italic(ChildrenFragmentElement):
+    html_tag: str = field(default='em', init=False)
+
+
+@dataclass
+class Underline(ChildrenFragmentElement):
+    html_tag: str = field(default='u', init=False)
+
+
+@dataclass
+class Code(ChildrenFragmentElement):
+    html_tag: str = field(default='code', init=False)
+
+
+@dataclass
+class Link(Element):
     """
-    Url link node.
+    Hyperlink element.
     """
+    children: List[Union[str, Element]]
     href: str
 
     def html(self) -> str:
-        rendered = self.render_fragments(self.children)
-        return f'<a href="{self.href}">{rendered}</a>'
+        yield f'<a href="{self.href}">'
+        for fragment in self.children:
+            if isinstance(fragment, str):
+                yield fragment
+            elif isinstance(fragment, Element):
+                yield from fragment.html()
+            else:
+                raise PaxterRenderError('malformed document')
+        yield '</a>'
 
-
-class HorizontalRule(BaseNode):
-    """
-    Horizontal rule node.
-    """
-
-    def html(self) -> str:
-        return '<hr />'
+    def tex(self) -> Iterator[str]:
+        raise NotImplementedError
 
 
 @dataclass
-class Image(BaseNode):
+class Image(Element):
     """
-    Image node.
+    Image embedding element.
     """
     src: str
     alt: str = ""
 
-    def html(self) -> str:
-        return f'<img src="{self.src}" alt="{self.alt}" />'
+    def html(self) -> Iterator[str]:
+        src = flatten(self.src, is_joined=True)
+        yield f'<img src="{src}" alt="{self.alt}" />'
+
+    def tex(self) -> Iterator[str]:
+        raise NotImplementedError
 
 
-class NumberedList(BaseNode):
+class BareList(Element):
     """
-    Ordered list node.
+    Element containing a list of items without encapsulation.
     """
-    items: List[List[Union[str, BaseNode]]]
+    items: List[List[Union[str, Element]]]
 
     def __init__(self, *items):
         self.items = list(items)
 
-    def html(self) -> str:
-        rendered = '\n'.join(
-            f'<li>{self.render_fragments(item)}</li>'
-            for item in self.items
-        )
-        return f'<ol>\n{rendered}\n</ol>'
+    def html(self) -> Iterator[str]:
+        for item in self.items:
+            yield '<li>'
+            if isinstance(item, str):
+                yield item
+            elif isinstance(item, list):
+                for fragment in item:
+                    if isinstance(fragment, str):
+                        yield fragment
+                    elif isinstance(fragment, Element):
+                        yield from fragment.html()
+                    else:
+                        raise PaxterRenderError('malformed document')
+            else:
+                raise PaxterRenderError('malformed document')
+            yield '</li>'
 
 
-class BulletedList(BaseNode):
+class NumberedList(BareList):
     """
-    Unordered list node.
+    Element containing an ordered (numbered) list.
     """
-    items: List[List[Union[str, BaseNode]]]
 
-    def __init__(self, *items):
-        self.items = list(items)
+    def html(self) -> Iterator[str]:
+        yield '<ol>'
+        yield from super().html()
+        yield '</ol>'
 
-    def html(self) -> str:
-        rendered = '\n'.join(
-            f'<li>{self.render_fragments(item)}</li>'
-            for item in self.items
-        )
-        return f'<ul>\n{rendered}\n</ul>'
+
+class BulletedList(BareList):
+    """
+    Element containing an unordered (bulleted) list.
+    """
+
+    def html(self) -> Iterator[str]:
+        yield '<ul>'
+        yield from super().html()
+        yield '</ul>'

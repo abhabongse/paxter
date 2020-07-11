@@ -11,7 +11,7 @@ from paxter.core import (
     Operator, ShortSymbol, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
-from paxter.pyauthor.funcs.document import Paragraph
+from paxter.pyauthor.funcs.document import Document, Paragraph
 from paxter.pyauthor.funcs.standards import flatten
 from paxter.pyauthor.wrappers import BaseApply, NormalApply
 
@@ -195,6 +195,7 @@ class DocumentRenderContext(BaseRenderContext):
     Document-based variant of rendering class.
     This is for constructing HTML or LaTeX documents.
     """
+    rendered: Document = field(init=False)
 
     def render(self):
         # Top-level paragraph splitting
@@ -237,7 +238,7 @@ class DocumentRenderContext(BaseRenderContext):
             else:
                 rendered_document.append(Paragraph(rendered_paragraph))
 
-        return rendered_document
+        return Document(children=rendered_document)
 
     def transform_text(self, token: Text) -> str:
         text = super().transform_text(token)

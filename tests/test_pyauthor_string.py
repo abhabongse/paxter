@@ -8,7 +8,7 @@ from paxter.core.parser import ParseContext
 from paxter.pyauthor import StringRenderContext, create_unsafe_bare_env
 from paxter.pyauthor.funcs.standards import flatten
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "unsafe")
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "string")
 
 
 def get_test_files(stem: str) -> Tuple[str, str]:
