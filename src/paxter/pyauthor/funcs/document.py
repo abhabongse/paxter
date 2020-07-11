@@ -2,7 +2,7 @@
 Collections of document-related data class to be used
 as functions to construct a document for web or print.
 """
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Iterator, List, Union
 
 from paxter.core.exceptions import PaxterRenderError
@@ -51,10 +51,10 @@ class ChildrenFragmentElement(Element):
     Element nodes with list of fragments as children.
     """
     children: List[Union[str, Element]]
-    html_tag: str = 'div'
+    HTML_TAG = 'div'
 
     def html(self) -> Iterator[str]:
-        yield f'<{self.html_tag}>'
+        yield f'<{self.HTML_TAG}>'
         for fragment in self.children:
             if isinstance(fragment, str):
                 yield fragment
@@ -62,7 +62,7 @@ class ChildrenFragmentElement(Element):
                 yield from fragment.html()
             else:
                 raise PaxterRenderError('malformed document')
-        yield f'</{self.html_tag}>'
+        yield f'</{self.HTML_TAG}>'
 
 
 @dataclass
@@ -86,62 +86,62 @@ class Document(ChildrenFragmentElement):
 
 @dataclass
 class Paragraph(ChildrenFragmentElement):
-    html_tag: str = field(default='p', init=False)
+    HTML_TAG = 'p'
 
 
 @dataclass
 class Heading1(ChildrenFragmentElement):
-    html_tag: str = field(default='h1', init=False)
+    HTML_TAG = 'h1'
 
 
 @dataclass
 class Heading2(ChildrenFragmentElement):
-    html_tag: str = field(default='h2', init=False)
+    HTML_TAG = 'h2'
 
 
 @dataclass
 class Heading3(ChildrenFragmentElement):
-    html_tag: str = field(default='h3', init=False)
+    HTML_TAG = 'h3'
 
 
 @dataclass
 class Heading4(ChildrenFragmentElement):
-    html_tag: str = field(default='h4', init=False)
+    HTML_TAG = 'h4'
 
 
 @dataclass
 class Heading5(ChildrenFragmentElement):
-    html_tag: str = field(default='h5', init=False)
+    HTML_TAG = 'h5'
 
 
 @dataclass
 class Heading6(ChildrenFragmentElement):
-    html_tag: str = field(default='h6', init=False)
+    HTML_TAG = 'h6'
 
 
 @dataclass
 class Blockquote(ChildrenFragmentElement):
-    html_tag: str = field(default='blockquote', init=False)
+    HTML_TAG = 'blockquote'
 
 
 @dataclass
 class Bold(ChildrenFragmentElement):
-    html_tag: str = field(default='strong', init=False)
+    HTML_TAG = 'strong'
 
 
 @dataclass
 class Italic(ChildrenFragmentElement):
-    html_tag: str = field(default='em', init=False)
+    HTML_TAG = 'em'
 
 
 @dataclass
 class Underline(ChildrenFragmentElement):
-    html_tag: str = field(default='u', init=False)
+    HTML_TAG = 'u'
 
 
 @dataclass
 class Code(ChildrenFragmentElement):
-    html_tag: str = field(default='code', init=False)
+    HTML_TAG = 'code'
 
 
 @dataclass
