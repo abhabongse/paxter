@@ -1,6 +1,7 @@
 """
 Implementation of the renderer.
 """
+import html
 import re
 from dataclasses import dataclass, field
 from typing import Any, List, Union
@@ -11,15 +12,19 @@ from paxter.core import (
 )
 from paxter.core.exceptions import PaxterRenderError
 from paxter.pyauthor.funcs import flatten
+from paxter.pyauthor.funcs.document import Paragraph
 from paxter.pyauthor.wrappers import BaseApply, NormalApply
 
 BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
+PARAGRAPH_SPLIT_RE = re.compile(
+    r'(?:[ \t\r\f\v]+|(?<!\\))\n(?:[ \t\r\f\v]*\n)+[ \t\r\f\v]*',
+)
 
 
 @dataclass
-class RenderContext:
+class BaseRenderContext:
     """
-    A suite of Paxter document tree renderer.
+    Base rendering class for Paxter parsed document tree.
 
     Users of this renderer may embed and run pyauthor code
     directly from within the Paxter document source file.
@@ -33,17 +38,14 @@ class RenderContext:
     #: Parsed document tree
     tree: FragmentList
 
-    #: Whether the list should always be joined into string
-    #: whenever possible
-    is_joined: bool = True
-
     #: Result of the rendering
     rendered: Union[str, list] = field(init=False)
 
     def __post_init__(self):
-        self.rendered = self.transform_fragment_list(self.tree)
-        if self.is_joined:
-            self.rendered = flatten(self.rendered, is_joined=True)
+        self.rendered = self.render()
+
+    def render(self):
+        return self.transform_fragment_list(self.tree)
 
     def transform_token(self, token: Token) -> Any:
         if isinstance(token, Fragment):
@@ -105,8 +107,6 @@ class RenderContext:
             fragment for fragment in transformed_fragments
             if fragment is not None
         ]
-        if self.is_joined:
-            result = ''.join(str(fragment) for fragment in result)
         return result
 
     def transform_text(self, token: Text) -> str:
@@ -173,3 +173,73 @@ class RenderContext:
             ) from exc
         except Exception as exc:
             raise RuntimeError("unexpected error from within library") from exc
+
+
+@dataclass
+class StringRenderContext(BaseRenderContext):
+    """
+    String-based variant of rendering class.
+    Each fragment list will be flattened into a single string
+    each time it is evaluated.
+    """
+
+    def transform_fragment_list(self, seq: FragmentList) -> str:
+        result = super().transform_fragment_list(seq)
+        result = flatten(result, is_joined=True)
+        return result
+
+
+@dataclass
+class DocumentRenderContext(BaseRenderContext):
+    """
+    Document-based variant of rendering class.
+    This is for constructing HTML or LaTeX documents.
+    """
+
+    def render(self):
+        # Top-level paragraph splitting
+        document = []  # list of paragraphs
+        paragraph = []  # list of pieces
+        for fragment in self.tree.children:
+            if isinstance(fragment, Text):
+                text = fragment.inner
+                pieces = [
+                    html.escape(BACKSLASH_NEWLINE_RE.sub('', piece))
+                    for piece in PARAGRAPH_SPLIT_RE.split(text)
+                ]
+                if pieces[0]:
+                    paragraph.append(pieces[0])
+                if len(pieces) >= 2:
+                    document.append(paragraph)
+                    for piece in pieces[1:-1]:
+                        document.append([piece])
+                    paragraph = []
+                    if pieces[-1]:
+                        paragraph.append(pieces[-1])
+            else:
+                paragraph.append(fragment)
+        if paragraph:
+            document.append(paragraph)
+
+        # Re-iterate: for each paragraph in the document
+        # if it is not a list of one non-text token,
+        # then wrap it under paragraph data class.
+        rendered_document = []
+        for paragraph in document:
+            rendered_paragraph = [
+                self.transform_fragment(fragment)
+                if isinstance(fragment, Fragment)
+                else fragment
+                for fragment in paragraph
+            ]
+            if len(paragraph) == 1 and isinstance(paragraph[0], Fragment):
+                rendered_document.append(rendered_paragraph[0])
+            else:
+                rendered_document.append(Paragraph(fragments=rendered_paragraph))
+
+        return rendered_document
+
+    def transform_text(self, token: Text) -> str:
+        text = super().transform_text(token)
+        text = html.escape(text)
+        return text

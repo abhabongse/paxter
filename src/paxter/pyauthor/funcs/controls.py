@@ -8,11 +8,11 @@ from paxter.core.exceptions import PaxterRenderError
 from paxter.pyauthor.wrappers import DirectApply
 
 if TYPE_CHECKING:
-    from paxter.pyauthor.visitor import RenderContext
+    from paxter.pyauthor.visitor import BaseRenderContext
 
 
 @DirectApply
-def for_statement(context: 'RenderContext', node: Command):
+def for_statement(context: 'BaseRenderContext', node: Command):
     """
     Simulates simple for loops.
     """
@@ -51,7 +51,7 @@ def for_statement(context: 'RenderContext', node: Command):
 
 
 @DirectApply
-def if_statement(context: 'RenderContext', node: Command):  # noqa: C901
+def if_statement(context: 'BaseRenderContext', node: Command):  # noqa: C901
     """
     Simulates simple if statement.
     """

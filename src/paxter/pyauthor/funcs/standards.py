@@ -9,11 +9,11 @@ from paxter.core.exceptions import PaxterRenderError
 from paxter.pyauthor.wrappers import DirectApply
 
 if TYPE_CHECKING:
-    from paxter.pyauthor.visitor import RenderContext
+    from paxter.pyauthor.visitor import BaseRenderContext
 
 
 @DirectApply
-def python_unsafe_exec(context: 'RenderContext', node: Command):
+def python_unsafe_exec(context: 'BaseRenderContext', node: Command):
     """
     Unsafely executes pyauthor code within the main argument.
     """

@@ -55,7 +55,6 @@ setup(
     extras_require={
         'extras': [
             'click>=5.0',
-            'lxml>=4.5.0',
         ],
     },
     entry_points={
