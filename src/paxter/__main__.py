@@ -62,7 +62,6 @@ def pyauthor_string(input_file, output_file, env_file):
     env = create_unsafe_bare_env(runpy.run_path(env_file) if env_file else {})
     string_output = StringRenderContext(input_text, env, tree).rendered
     output_file.write(string_output)
-    output_file.write("\n")
 
 
 @program.command()

@@ -55,13 +55,13 @@ class ChildrenFragmentElement(Element):
 
     def html(self) -> Iterator[str]:
         yield f'<{self.HTML_TAG}>'
-        for fragment in self.children:
+        for fragment in flatten(self.children, is_joined=False):
             if isinstance(fragment, str):
                 yield fragment
             elif isinstance(fragment, Element):
                 yield from fragment.html()
             else:
-                raise PaxterRenderError('malformed document')
+                raise PaxterRenderError(f'malformed encounter: {fragment!r}')
         yield f'</{self.HTML_TAG}>'
 
 
@@ -154,13 +154,13 @@ class Link(Element):
 
     def html(self) -> str:
         yield f'<a href="{self.href}">'
-        for fragment in self.children:
+        for fragment in flatten(self.children, is_joined=False):
             if isinstance(fragment, str):
                 yield fragment
             elif isinstance(fragment, Element):
                 yield from fragment.html()
             else:
-                raise PaxterRenderError('malformed document')
+                raise PaxterRenderError(f'malformed document: {fragment!r}')
         yield '</a>'
 
     def tex(self) -> Iterator[str]:
@@ -176,8 +176,11 @@ class Image(Element):
     alt: str = ""
 
     def html(self) -> Iterator[str]:
-        src = flatten(self.src, is_joined=True)
-        yield f'<img src="{src}" alt="{self.alt}" />'
+        if not isinstance(self.src, str):
+            raise PaxterRenderError(f'image source must be string: {self.src!r}')
+        if not isinstance(self.alt, str):
+            raise PaxterRenderError(f'image alt text must be string: {self.alt!r}')
+        yield f'<img src="{self.src}" alt="{self.alt}" />'
 
     def tex(self) -> Iterator[str]:
         raise NotImplementedError
@@ -195,18 +198,13 @@ class BareList(Element):
     def html(self) -> Iterator[str]:
         for item in self.items:
             yield '<li>'
-            if isinstance(item, str):
-                yield item
-            elif isinstance(item, list):
-                for fragment in item:
-                    if isinstance(fragment, str):
-                        yield fragment
-                    elif isinstance(fragment, Element):
-                        yield from fragment.html()
-                    else:
-                        raise PaxterRenderError('malformed document')
-            else:
-                raise PaxterRenderError('malformed document')
+            for fragment in flatten(item, is_joined=False):
+                if isinstance(fragment, str):
+                    yield fragment
+                elif isinstance(fragment, Element):
+                    yield from fragment.html()
+                else:
+                    raise PaxterRenderError(f'malformed document: {fragment!r}')
             yield '</li>'
 
 
