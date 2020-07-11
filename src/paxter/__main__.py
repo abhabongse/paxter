@@ -77,8 +77,9 @@ def pyauthor_document(input_file, output_file, env_file):
     input_text = input_file.read()
     tree = ParseContext(input_text).tree
     env = create_unsafe_document_env(runpy.run_path(env_file) if env_file else {})
-    output = DocumentRenderContext(input_text, env, tree).rendered
-    output_file.write(str(output))
+    html_output = DocumentRenderContext(input_text, env, tree).rendered
+    rendered = '\n'.join(e.html() for e in html_output)
+    output_file.write(rendered)
 
 
 if __name__ == '__main__':

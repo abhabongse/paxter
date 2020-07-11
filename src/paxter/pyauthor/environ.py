@@ -3,9 +3,15 @@ A collection of pre-defined execution environment.
 """
 from typing import Optional
 
-from paxter.pyauthor.funcs import (
-    flatten, for_statement, H1, if_statement,
-    python_unsafe_exec, starter_unsafe_eval, verb,
+from paxter.pyauthor.funcs.controls import for_statement, if_statement
+from paxter.pyauthor.funcs.document import (
+    Blockquote, Bold, BulletedList, Code,
+    Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
+    HorizontalRule, Image, Italic, Link, NumberedList, Paragraph,
+    Underline,
+)
+from paxter.pyauthor.funcs.standards import (
+    flatten, python_unsafe_exec, starter_unsafe_eval, verb,
 )
 
 
@@ -38,6 +44,22 @@ def create_unsafe_document_env(data: Optional[dict] = None):
         'python': python_unsafe_exec,
         'verb': verb,
         'flatten': flatten,
-        'h1': H1,
+        'paragraph': Paragraph,
+        'h1': Heading1,
+        'h2': Heading2,
+        'h3': Heading3,
+        'h4': Heading4,
+        'h5': Heading5,
+        'h6': Heading6,
+        'blockquote': Blockquote,
+        'b': Bold,
+        'i': Italic,
+        'u': Underline,
+        'code': Code,
+        'link': Link,
+        'image': Image,
+        'hline': HorizontalRule(),
+        'numbered_list': NumberedList,
+        'bulleted_list': BulletedList,
         **data,
     }

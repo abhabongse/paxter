@@ -21,7 +21,7 @@ the @bold{source} code for this project.
     {This is the @italic{last} item.},
 ]
 
-@quoteblock{
+@blockquote{
     @unordered_list[
         ##{Left {word}}##,
         ##{Right {word}}##,

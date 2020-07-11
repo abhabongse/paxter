@@ -1,1 +1,30 @@
 @h1{My Blog!}
+
+Hello, World!
+
+@h2{Source Code}
+
+Please visit @link["https://github.com"]{GitHub} to see
+the @b{source} code for this project.
+
+@numbered_list[
+    {This is the first item.},
+    {This is the second item.},
+    {This is the third item.},
+    {This is the @i{last} item.},
+]
+
+@blockquote{
+    @bulleted_list[
+        ##{Left {word}}##,
+        ##{Right {word}}##,
+    ]
+}
+
+@hline
+
+Do you know that 2 > 1?
+
+@paragraph{@code{Wow}}
+
+@image["images/hello.png", alt="hello image"]

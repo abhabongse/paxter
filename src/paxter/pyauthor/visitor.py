@@ -11,8 +11,8 @@ from paxter.core import (
     Operator, ShortSymbol, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
-from paxter.pyauthor.funcs import flatten
 from paxter.pyauthor.funcs.document import Paragraph
+from paxter.pyauthor.funcs.standards import flatten
 from paxter.pyauthor.wrappers import BaseApply, NormalApply
 
 BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
@@ -207,14 +207,14 @@ class DocumentRenderContext(BaseRenderContext):
                     html.escape(BACKSLASH_NEWLINE_RE.sub('', piece))
                     for piece in PARAGRAPH_SPLIT_RE.split(text)
                 ]
-                if pieces[0]:
+                if pieces[0].strip():
                     paragraph.append(pieces[0])
                 if len(pieces) >= 2:
                     document.append(paragraph)
                     for piece in pieces[1:-1]:
                         document.append([piece])
                     paragraph = []
-                    if pieces[-1]:
+                    if pieces[-1].strip():
                         paragraph.append(pieces[-1])
             else:
                 paragraph.append(fragment)
@@ -235,7 +235,7 @@ class DocumentRenderContext(BaseRenderContext):
             if len(paragraph) == 1 and isinstance(paragraph[0], Fragment):
                 rendered_document.append(rendered_paragraph[0])
             else:
-                rendered_document.append(Paragraph(fragments=rendered_paragraph))
+                rendered_document.append(Paragraph(rendered_paragraph))
 
         return rendered_document
 
