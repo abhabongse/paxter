@@ -1,10 +1,35 @@
 # Changelog
 
+## 0.6.1 (15 July 2020)
+
+-   The function `paxter.pyauthor.create_unsafe_env` is renamed to
+    `paxter.pyauthor.create_unsafe_bare_env`.
+-   Introduce document python authoring mode
+    using `paxter.pyauthor.create_unsafe_document_env`.
+
+## 0.6.0 (6 July 2020)
+
+-   No longer allows @-expresion text and fragment list within fragment list itself.
+-   @-switch is no longer needed when embedding texts or fragment lists
+    within the option section of a command.
+-   Single symbol command (such as `@@` and `@,`) are now its own node type.
+    
+## 0.5.0 (14 June 2020)
+
+-   Once again, the entire Paxter language grammar is re-designed.
+    _No longer compatible with all previous versions._
+-   The identifier section of function-call @-expressions (called a “command”)
+    and the phrase expression in unified into the same pattern.
+    Now, it is possible to evaluate a phrase expression into a function
+    and use it in the function-call @-expression.
+
 ## 0.4.0 (7 May 2020)
 
--   The entire Paxter language grammar is re-designed from the ground up. _No longer compatible with all previous versions._
+-   The entire Paxter language grammar is re-designed from the ground up. 
+    _No longer compatible with all previous versions._
 -   Parsed tree transformers are now called renderers.
--   Simple Snake flavor of tree transformers (i.e. renderers) are removed and no longer exists.
+-   Simple Snake flavor of tree transformers (i.e. renderers) 
+    are removed and no longer exists.
 -   ReadTheDocs documentation is now set up.
 
 ## 0.3.0 (14 March 2020)
