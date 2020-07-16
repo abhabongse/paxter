@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.2 (17 July 2020)
+
+-   In both Python string authoring mode and Python document authoring mode,
+    by default `@!` and `@@` will be transformed into empty string and  `@`
+    respectively.
+
 ## 0.6.1 (15 July 2020)
 
 -   The function `paxter.pyauthor.create_unsafe_env` is renamed to
