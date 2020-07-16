@@ -19,6 +19,7 @@ BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
 PARAGRAPH_SPLIT_RE = re.compile(
     r'(?:[ \t\r\f\v]+|(?<!\\))\n(?:[ \t\r\f\v]*\n)+[ \t\r\f\v]*',
 )
+FALLBACK_SYMBOLS = {'!': '', '@': '@'}
 
 
 @dataclass
@@ -160,6 +161,8 @@ class BaseRenderContext:
         try:
             symbols = self.env['_symbols_']
         except KeyError as exc:
+            if token.symbol in FALLBACK_SYMBOLS:
+                return FALLBACK_SYMBOLS[token.symbol]
             raise PaxterRenderError(
                 "expected '_symbols_' to be defined at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
@@ -167,6 +170,8 @@ class BaseRenderContext:
         try:
             return symbols[token.symbol]
         except KeyError as exc:
+            if token.symbol in FALLBACK_SYMBOLS:
+                return FALLBACK_SYMBOLS[token.symbol]
             raise PaxterRenderError(
                 f"undefined symbol {token.symbol} within '_symbol_' at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),

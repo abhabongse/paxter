@@ -25,13 +25,13 @@ def python_unsafe_exec(context: 'BaseRenderContext', node: Command):
     exec(code, context.env)
 
 
-def starter_unsafe_eval(phrase: str, env: dict) -> Any:
+def starter_unsafe_eval(starter: str, env: dict) -> Any:
     """
     Unsafely evaluates the given paxter phrase.
     """
-    if phrase in env:
-        return env[phrase]
-    return eval(phrase, env)
+    if starter in env:
+        return env[starter]
+    return eval(starter, env)
 
 
 def verb(text: Any) -> str:

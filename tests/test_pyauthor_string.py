@@ -20,6 +20,7 @@ def get_test_files(stem: str) -> Tuple[str, str]:
 TESTS = [
     get_test_files("calls"),
     get_test_files("delimiters"),
+    get_test_files("empty_and_default"),
     get_test_files("greetings"),
     get_test_files("lookup_and_call"),
     get_test_files("loops_and_conds"),

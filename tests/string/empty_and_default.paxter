@@ -1,0 +1,6 @@
+@python##"
+    left = "ABC"
+    right = "XYZ"
+"##\
+@left@![and]@right
+login@@example.com
