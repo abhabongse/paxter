@@ -186,6 +186,7 @@ class Image(Element):
         raise NotImplementedError
 
 
+@dataclass(init=False)
 class BareList(Element):
     """
     Element containing a list of items without encapsulation.
@@ -208,6 +209,7 @@ class BareList(Element):
             yield '</li>'
 
 
+@dataclass(init=False)
 class NumberedList(BareList):
     """
     Element containing an ordered (numbered) list.
@@ -219,6 +221,7 @@ class NumberedList(BareList):
         yield '</ol>'
 
 
+@dataclass(init=False)
 class BulletedList(BareList):
     """
     Element containing an unordered (bulleted) list.

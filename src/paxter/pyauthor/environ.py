@@ -20,7 +20,7 @@ def create_unsafe_bare_env(data: Optional[dict] = None):
     Creates an string environment data for Paxter source code evaluation
     in Python authoring mode.
     """
-    data = data or {}
+    data = data if data is not None else {}
     return {
         '_starter_eval_': starter_unsafe_eval,
         'for': for_statement,
@@ -37,13 +37,8 @@ def create_unsafe_document_env(data: Optional[dict] = None):
     Creates an string environment data for Paxter source code evaluation
     in Python authoring mode, specializes in constructing documents.
     """
-    return {
-        '_starter_eval_': starter_unsafe_eval,
-        'for': for_statement,
-        'if': if_statement,
-        'python': python_unsafe_exec,
-        'verb': verb,
-        'flatten': flatten,
+    data = data if data is not None else {}
+    return create_unsafe_bare_env({
         'break': LineBreak,
         'hrule': HorizontalRule,
         'paragraph': Paragraph,
@@ -63,4 +58,4 @@ def create_unsafe_document_env(data: Optional[dict] = None):
         'numbered_list': NumberedList,
         'bulleted_list': BulletedList,
         **data,
-    }
+    })
