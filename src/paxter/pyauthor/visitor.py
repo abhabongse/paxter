@@ -1,7 +1,6 @@
 """
 Implementation of the renderer.
 """
-import html
 import re
 from dataclasses import dataclass, field
 from typing import Any, List, Union
@@ -210,7 +209,7 @@ class DocumentRenderContext(BaseRenderContext):
             if isinstance(fragment, Text):
                 text = fragment.inner
                 pieces = [
-                    html.escape(BACKSLASH_NEWLINE_RE.sub('', piece))
+                    BACKSLASH_NEWLINE_RE.sub('', piece)
                     for piece in PARAGRAPH_SPLIT_RE.split(text)
                 ]
                 if pieces[0].strip():
@@ -244,8 +243,3 @@ class DocumentRenderContext(BaseRenderContext):
                 rendered_document.append(Paragraph(rendered_paragraph))
 
         return Document(children=rendered_document)
-
-    def transform_text(self, token: Text) -> str:
-        text = super().transform_text(token)
-        text = html.escape(text)
-        return text

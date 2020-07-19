@@ -2,6 +2,7 @@
 Collections of document-related data class to be used
 as functions to construct a document for web or print.
 """
+import html
 from dataclasses import dataclass
 from typing import Iterator, List, Union
 
@@ -29,16 +30,28 @@ class Element:
         """
         raise NotImplementedError
 
+    def html_children(self, children) -> Iterator[str]:
+        """
+        Renders each child element into HTML.
+        """
+        for fragment in flatten(children, is_joined=False):
+            if isinstance(fragment, str):
+                yield html.escape(fragment)
+            elif isinstance(fragment, Element):
+                yield from fragment.html()
+            else:
+                raise PaxterRenderError(f'malformed encounter: {fragment!r}')
+
 
 @dataclass
 class StaticElement(Element):
     """
     Static element content without arguments.
     """
-    html_content: str = '<div />'
+    content: str = '<div />'
 
     def html(self) -> Iterator[str]:
-        yield self.html_content
+        yield self.content
 
 
 LineBreak = StaticElement('<br />')
@@ -46,7 +59,7 @@ HorizontalRule = StaticElement('<hr />')
 
 
 @dataclass
-class ChildrenFragmentElement(Element):
+class ElementWithChildren(Element):
     """
     Element nodes with list of fragments as children.
     """
@@ -55,18 +68,12 @@ class ChildrenFragmentElement(Element):
 
     def html(self) -> Iterator[str]:
         yield f'<{self.HTML_TAG}>'
-        for fragment in flatten(self.children, is_joined=False):
-            if isinstance(fragment, str):
-                yield fragment
-            elif isinstance(fragment, Element):
-                yield from fragment.html()
-            else:
-                raise PaxterRenderError(f'malformed encounter: {fragment!r}')
+        yield from self.html_children(self.children)
         yield f'</{self.HTML_TAG}>'
 
 
 @dataclass
-class Document(ChildrenFragmentElement):
+class Document(ElementWithChildren):
     """
     Top-most data type for the entire document.
     """
@@ -85,86 +92,76 @@ class Document(ChildrenFragmentElement):
 
 
 @dataclass
-class Paragraph(ChildrenFragmentElement):
+class Paragraph(ElementWithChildren):
     HTML_TAG = 'p'
 
 
 @dataclass
-class Heading1(ChildrenFragmentElement):
+class Heading1(ElementWithChildren):
     HTML_TAG = 'h1'
 
 
 @dataclass
-class Heading2(ChildrenFragmentElement):
+class Heading2(ElementWithChildren):
     HTML_TAG = 'h2'
 
 
 @dataclass
-class Heading3(ChildrenFragmentElement):
+class Heading3(ElementWithChildren):
     HTML_TAG = 'h3'
 
 
 @dataclass
-class Heading4(ChildrenFragmentElement):
+class Heading4(ElementWithChildren):
     HTML_TAG = 'h4'
 
 
 @dataclass
-class Heading5(ChildrenFragmentElement):
+class Heading5(ElementWithChildren):
     HTML_TAG = 'h5'
 
 
 @dataclass
-class Heading6(ChildrenFragmentElement):
+class Heading6(ElementWithChildren):
     HTML_TAG = 'h6'
 
 
 @dataclass
-class Blockquote(ChildrenFragmentElement):
+class Blockquote(ElementWithChildren):
     HTML_TAG = 'blockquote'
 
 
 @dataclass
-class Bold(ChildrenFragmentElement):
+class Bold(ElementWithChildren):
     HTML_TAG = 'strong'
 
 
 @dataclass
-class Italic(ChildrenFragmentElement):
+class Italic(ElementWithChildren):
     HTML_TAG = 'em'
 
 
 @dataclass
-class Underline(ChildrenFragmentElement):
+class Underline(ElementWithChildren):
     HTML_TAG = 'u'
 
 
 @dataclass
-class Code(ChildrenFragmentElement):
+class Code(ElementWithChildren):
     HTML_TAG = 'code'
 
 
 @dataclass
-class Link(Element):
+class Link(ElementWithChildren):
     """
     Hyperlink element.
     """
-    children: List[Union[str, Element]]
     href: str
 
     def html(self) -> str:
-        yield f'<a href="{self.href}">'
-        for fragment in flatten(self.children, is_joined=False):
-            if isinstance(fragment, str):
-                yield fragment
-            elif isinstance(fragment, Element):
-                yield from fragment.html()
-            else:
-                raise PaxterRenderError(f'malformed document: {fragment!r}')
+        yield f'<a href="{html.escape(self.href)}">'
+        yield from self.html_children(self.children)
         yield '</a>'
-
-    def tex(self) -> Iterator[str]:
-        raise NotImplementedError
 
 
 @dataclass
@@ -180,7 +177,7 @@ class Image(Element):
             raise PaxterRenderError(f'image source must be string: {self.src!r}')
         if not isinstance(self.alt, str):
             raise PaxterRenderError(f'image alt text must be string: {self.alt!r}')
-        yield f'<img src="{self.src}" alt="{self.alt}" />'
+        yield f'<img src="{html.escape(self.src)}" alt="{html.escape(self.alt)}" />'
 
     def tex(self) -> Iterator[str]:
         raise NotImplementedError
@@ -197,15 +194,12 @@ class BareList(Element):
         self.items = list(items)
 
     def html(self) -> Iterator[str]:
+        yield from self.html_list_items()
+
+    def html_list_items(self) -> Iterator[str]:
         for item in self.items:
             yield '<li>'
-            for fragment in flatten(item, is_joined=False):
-                if isinstance(fragment, str):
-                    yield fragment
-                elif isinstance(fragment, Element):
-                    yield from fragment.html()
-                else:
-                    raise PaxterRenderError(f'malformed document: {fragment!r}')
+            yield from self.html_children(item)
             yield '</li>'
 
 
@@ -217,7 +211,7 @@ class NumberedList(BareList):
 
     def html(self) -> Iterator[str]:
         yield '<ol>'
-        yield from super().html()
+        yield from self.html_list_items()
         yield '</ol>'
 
 
@@ -229,5 +223,5 @@ class BulletedList(BareList):
 
     def html(self) -> Iterator[str]:
         yield '<ul>'
-        yield from super().html()
+        yield from self.html_list_items()
         yield '</ul>'
