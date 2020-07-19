@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.3 (20 July 2020)
+
+-   Fixed bug where function `create_unsafe_document_env` breaks
+    when the input argument for outside environment is not supplied.
+-   Make all document element classes dataclasses.
+
 ## 0.6.2 (17 July 2020)
 
 -   In both Python string authoring mode and Python document authoring mode,
