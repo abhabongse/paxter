@@ -146,3 +146,20 @@ class NormalApply(BaseApply):
                         pos=CharLoc(context.input_text, end_token.start_pos),
                     )
                 remains = remains[1:]
+
+
+class NormalApplyWithEnv(NormalApply):
+    """
+    Just like normal apply, but the wrapped function will additionally
+    receive the environment dict as the very first argument.
+    """
+
+    def call(self, context: 'BaseRenderContext', node: Command) -> Any:
+        if node.option:
+            args, kwargs = self.extract_args_and_kwargs(context, node.option)
+        else:
+            args, kwargs = [], {}
+        if node.main_arg:
+            main_arg = context.transform_token(node.main_arg)
+            args = [main_arg] + args
+        return self.wrapped(context.env, *args, **kwargs)
