@@ -90,6 +90,9 @@ class Document(ElementWithChildren):
         """
         return ''.join(self.tex())
 
+    def html(self) -> Iterator[str]:
+        yield from self.html_children(self.children)
+
 
 @dataclass
 class Paragraph(ElementWithChildren):
