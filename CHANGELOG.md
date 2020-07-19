@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.4 (20 July 2020)
+
+-   Moved the HTML escape from the visitor into the document element renderers.
+
 ## 0.6.3 (20 July 2020)
 
 -   Fixed bug where function `create_unsafe_document_env` breaks
