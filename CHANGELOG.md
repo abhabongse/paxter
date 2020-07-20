@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.7 (21 July 2020)
+
+-   Changed behavior in document authoring mode so that `None`
+    will not be rendered in output result.
+-   Fixed bug where there were superfluous empty paragraphs
+    occurred during global-level paragraph splitting.
+
 ## 0.6.6 (20 July 2020)
 
 -   Removed bug where whitespaces between commands are missing
@@ -7,9 +14,9 @@
 
 ## 0.6.5 (20 July 2020)
 
--   Remove encapsulated outermost `<div>` tag from the HTML rendered result
+-   Removed encapsulated outermost `<div>` tag from the HTML rendered result
     of the Python document authoring mode.
--   Add `NormalApplyWithEnv` wrapper which will 
+-   Added `NormalApplyWithEnv` wrapper which will 
     additionally provides environment as the very first argument 
     before the all the positional and keyword arguments of the wrapped function.
 
@@ -21,7 +28,7 @@
 
 -   Fixed bug where function `create_unsafe_document_env` breaks
     when the input argument for outside environment is not supplied.
--   Make all document element classes dataclasses.
+-   Made all document element classes dataclasses.
 
 ## 0.6.2 (17 July 2020)
 
@@ -31,9 +38,9 @@
 
 ## 0.6.1 (15 July 2020)
 
--   The function `paxter.pyauthor.create_unsafe_env` is renamed to
+-   The function `paxter.pyauthor.create_unsafe_env` was renamed to
     `paxter.pyauthor.create_unsafe_bare_env`.
--   Introduce document python authoring mode
+-   Introduced document python authoring mode
     using `paxter.pyauthor.create_unsafe_document_env`.
 
 ## 0.6.0 (6 July 2020)
@@ -45,20 +52,20 @@
     
 ## 0.5.0 (14 June 2020)
 
--   Once again, the entire Paxter language grammar is re-designed.
+-   Once again, the entire Paxter language grammar was re-designed.
     _No longer compatible with all previous versions._
 -   The identifier section of function-call @-expressions (called a “command”)
-    and the phrase expression in unified into the same pattern.
+    and the phrase expression were unified into the same pattern.
     Now, it is possible to evaluate a phrase expression into a function
     and use it in the function-call @-expression.
 
 ## 0.4.0 (7 May 2020)
 
--   The entire Paxter language grammar is re-designed from the ground up. 
+-   The entire Paxter language grammar was re-designed from the ground up. 
     _No longer compatible with all previous versions._
 -   Parsed tree transformers are now called renderers.
 -   Simple Snake flavor of tree transformers (i.e. renderers) 
-    are removed and no longer exists.
+    were removed and no longer exists.
 -   ReadTheDocs documentation is now set up.
 
 ## 0.3.0 (14 March 2020)
