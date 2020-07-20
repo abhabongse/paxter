@@ -212,15 +212,12 @@ class DocumentRenderContext(BaseRenderContext):
                     BACKSLASH_NEWLINE_RE.sub('', piece)
                     for piece in PARAGRAPH_SPLIT_RE.split(text)
                 ]
-                if pieces[0].strip():
-                    paragraph.append(pieces[0])
+                paragraph.append(pieces[0])
                 if len(pieces) >= 2:
                     document.append(paragraph)
                     for piece in pieces[1:-1]:
                         document.append([piece])
-                    paragraph = []
-                    if pieces[-1].strip():
-                        paragraph.append(pieces[-1])
+                    paragraph = [pieces[-1]]
             else:
                 paragraph.append(fragment)
         if paragraph:
