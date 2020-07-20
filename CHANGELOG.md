@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.5 (20 July 2020)
+
+-   Remove encapsulated outermost `<div>` tag from the HTML rendered result
+    of the Python document authoring mode.
+-   Add `NormalApplyWithEnv` wrapper which will 
+    additionally provides environment as the very first argument 
+    before the all the positional and keyword arguments of the wrapped function.
+
 ## 0.6.4 (20 July 2020)
 
 -   Moved the HTML escape from the visitor into the document element renderers.
