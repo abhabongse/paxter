@@ -35,7 +35,9 @@ class Element:
         Renders each child element into HTML.
         """
         for fragment in flatten(children, is_joined=False):
-            if isinstance(fragment, str):
+            if fragment is None:
+                pass
+            elif isinstance(fragment, str):
                 yield html.escape(fragment)
             elif isinstance(fragment, Element):
                 yield from fragment.html()
