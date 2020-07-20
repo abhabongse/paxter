@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.6 (20 July 2020)
+
+-   Removed bug where whitespaces between commands are missing
+    in the Paxter document authoring mode.
+
 ## 0.6.5 (20 July 2020)
 
 -   Remove encapsulated outermost `<div>` tag from the HTML rendered result
