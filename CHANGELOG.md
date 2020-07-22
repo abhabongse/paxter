@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.8 (23 July 2020)
+
+-   Moved paragraph automatic splitting from the document element rendering step
+    to the HTML translation step.
+
 ## 0.6.7 (21 July 2020)
 
 -   Changed behavior in document authoring mode so that `None`
