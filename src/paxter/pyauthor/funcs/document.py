@@ -317,6 +317,7 @@ class BareList(Element):
     Element containing a list of items without encapsulation.
     """
     items: List[Union[str, ElementList]]
+    forced_paragraph: bool = False
 
     def __init__(self, *items):
         self.items = list(items)
@@ -327,7 +328,17 @@ class BareList(Element):
     def html_list_items(self) -> Iterator[str]:
         for item in self.items:
             yield '<li>'
-            yield from self.html_recursive(item)
+            collection = self.split_paragraph(item)
+            if len(collection) == 1 and not self.forced_paragraph:
+                yield from self.html_recursive(collection[0])
+            else:
+                for paragraph in collection:
+                    if len(paragraph) == 1 and isinstance(paragraph[0], Element):
+                        yield from self.html_recursive(paragraph)
+                    else:
+                        yield '<p>'
+                        yield from self.html_recursive(paragraph)
+                        yield '</p>'
             yield '</li>'
 
 

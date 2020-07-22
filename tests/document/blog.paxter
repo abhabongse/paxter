@@ -12,7 +12,13 @@ the @bold{source} @bold{code} for this project.
     {This is the first item.},
     {This is the second item.},
     {This is the third item.},
-    {This is the @italic{last} item.},
+    {
+        This is the @italic{last} item, first paragraph.
+
+        This is another paragraph within an item.
+
+        @blockquote{No way!}
+    },
 ]
 
 @blockquote{

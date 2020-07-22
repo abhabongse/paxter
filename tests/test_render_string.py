@@ -55,5 +55,5 @@ def test_cli_render(input_file, expected_file):
         expected_text = fobj.read()
 
     runner = CliRunner()
-    result = runner.invoke(program, ['pyauthor-string', '-i', input_file])
+    result = runner.invoke(program, ['string', '-i', input_file])
     assert result.output == expected_text

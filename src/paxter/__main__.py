@@ -46,7 +46,7 @@ def parse(input_file, output_file):
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
               help="Path to pyauthor file to extract the environment.")
-def pyauthor_string(input_file, output_file, env_file):
+def string(input_file, output_file, env_file):
     """
     Python string authoring mode: run the parser followed by a Python renderer.
     It reads input text from INPUT_FILE and pass it through the parser.
@@ -69,7 +69,7 @@ def pyauthor_string(input_file, output_file, env_file):
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
               help="Path to pyauthor file to extract the environment.")
-def pyauthor_document(input_file, output_file, env_file):
+def doc_html(input_file, output_file, env_file):
     """
     Python document authoring mode: run the parser followed by a Python renderer.
     It reads input text from INPUT_FILE and pass it through the parser.
