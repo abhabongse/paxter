@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.9 (23 July 2020)
+
+-   Enabled paragraph automatic splitting within list items.
+
 ## 0.6.8 (23 July 2020)
 
 -   Moved paragraph automatic splitting from the document element rendering step
