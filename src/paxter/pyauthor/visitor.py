@@ -10,15 +10,9 @@ from paxter.core import (
     Operator, ShortSymbol, Text, Token, TokenList,
 )
 from paxter.core.exceptions import PaxterRenderError
-from paxter.pyauthor.funcs.document import Document, Paragraph
+from paxter.pyauthor.funcs.document import Document
 from paxter.pyauthor.funcs.standards import flatten
 from paxter.pyauthor.wrappers import BaseApply, NormalApply
-
-BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
-PARAGRAPH_SPLIT_RE = re.compile(
-    r'(?:[ \t\r\f\v]+|(?<!\\))\n(?:[ \t\r\f\v]*\n)+[ \t\r\f\v]*',
-)
-FALLBACK_SYMBOLS = {'!': '', '@': '@'}
 
 
 @dataclass
@@ -40,6 +34,9 @@ class BaseRenderContext:
 
     #: Result of the rendering
     rendered: Union[str, list] = field(init=False)
+
+    BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
+    FALLBACK_SYMBOLS = {'!': '', '@': '@'}
 
     def __post_init__(self):
         self.rendered = self.render()
@@ -112,7 +109,7 @@ class BaseRenderContext:
     def transform_text(self, token: Text) -> str:
         text = token.inner
         if not token.enclosing.left:
-            text = BACKSLASH_NEWLINE_RE.sub('', text)
+            text = self.BACKSLASH_NEWLINE_RE.sub('', text)
         return text
 
     def transform_command(self, token: Command):
@@ -160,8 +157,8 @@ class BaseRenderContext:
         try:
             symbols = self.env['_symbols_']
         except KeyError as exc:
-            if token.symbol in FALLBACK_SYMBOLS:
-                return FALLBACK_SYMBOLS[token.symbol]
+            if token.symbol in self.FALLBACK_SYMBOLS:
+                return self.FALLBACK_SYMBOLS[token.symbol]
             raise PaxterRenderError(
                 "expected '_symbols_' to be defined at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
@@ -169,8 +166,8 @@ class BaseRenderContext:
         try:
             return symbols[token.symbol]
         except KeyError as exc:
-            if token.symbol in FALLBACK_SYMBOLS:
-                return FALLBACK_SYMBOLS[token.symbol]
+            if token.symbol in self.FALLBACK_SYMBOLS:
+                return self.FALLBACK_SYMBOLS[token.symbol]
             raise PaxterRenderError(
                 f"undefined symbol {token.symbol} within '_symbol_' at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
@@ -202,46 +199,5 @@ class DocumentRenderContext(BaseRenderContext):
     rendered: Document = field(init=False)
 
     def render(self):
-        # Top-level paragraph splitting
-        document = []  # list of paragraphs
-        paragraph = []  # list of pieces
-        for fragment in self.tree.children:
-            if isinstance(fragment, Text):
-                text = fragment.inner
-                pieces = [
-                    BACKSLASH_NEWLINE_RE.sub('', piece)
-                    for piece in PARAGRAPH_SPLIT_RE.split(text)
-                ]
-                if len(pieces) >= 2:
-                    if pieces[0].strip():
-                        paragraph.append(pieces[0])
-                    document.append(paragraph)
-                    for piece in pieces[1:-1]:
-                        document.append([piece])
-                    paragraph = []
-                    if pieces[-1].strip():
-                        paragraph.append(pieces[-1])
-                else:
-                    paragraph.append(pieces[0])
-            else:
-                paragraph.append(fragment)
-        if paragraph:
-            document.append(paragraph)
-
-        # Re-iterate: for each paragraph in the document
-        # if it is not a list of one non-text token,
-        # then wrap it under paragraph data class.
-        rendered_document = []
-        for paragraph in document:
-            rendered_paragraph = [
-                self.transform_fragment(fragment)
-                if isinstance(fragment, Fragment)
-                else fragment
-                for fragment in paragraph
-            ]
-            if len(paragraph) == 1 and isinstance(paragraph[0], Fragment):
-                rendered_document.append(rendered_paragraph[0])
-            else:
-                rendered_document.append(Paragraph(rendered_paragraph))
-
-        return Document(children=rendered_document)
+        result = self.transform_fragment_list(self.tree)
+        return Document(children=result)
