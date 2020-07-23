@@ -2,7 +2,7 @@
 Renderer for Paxter document tree with support for
 pyauthor pyauthor language within the input document text.
 """
-from paxter.pyauthor.environ import create_simple_env, create_document_env
+from paxter.pyauthor.environ import create_document_env, create_simple_env
 from paxter.pyauthor.visitor import DocumentRenderContext, StringRenderContext
 from paxter.pyauthor.wrappers import BaseApply, DirectApply, NormalApply
 

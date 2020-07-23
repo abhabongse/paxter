@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.10 (23 July 2020)
+
+-   Refactored paragraph automatic splitting.
+-   For python authoring mode, line ending with a single backslash
+    will strip the newline following it plus other whitespaces (Rust style).
+-   Change non-breaking space to `@%` in python document authoring mode.
+
 ## 0.6.9 (23 July 2020)
 
 -   Enabled paragraph automatic splitting within list items.
