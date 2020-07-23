@@ -1,3 +1,7 @@
+@python##"
+    def foo():
+        pass
+"##
 
 @h1{My Blog!}
 
@@ -49,6 +53,8 @@ Do you know that 2 > 1?
 
 @paragraph{@code{This paragraph is entirely in monospaced.}}
 
-See the lovely @underline{image} below.
+See the lovely @uline{image} below.
 
 @image["images/hello.png", alt="hello image"]
+
+@foo[]

@@ -5,7 +5,7 @@ import pytest
 from click.testing import CliRunner
 
 from paxter.core.parser import ParseContext
-from paxter.pyauthor import StringRenderContext, create_unsafe_bare_env
+from paxter.pyauthor import StringRenderContext, create_simple_env
 from paxter.pyauthor.funcs.standards import flatten
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "string")
@@ -40,7 +40,7 @@ def test_rendering(input_file, expected_file):
     tree = ParseContext(input_text).tree
 
     # Render into output using python authoring mode
-    env = create_unsafe_bare_env()
+    env = create_simple_env()
     output = StringRenderContext(input_text, env, tree).rendered
     output_text = flatten(output)
 

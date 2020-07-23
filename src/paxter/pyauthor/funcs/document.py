@@ -18,7 +18,6 @@ class Element:
     """
     Base element node type for a structured document.
     """
-    BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
     PARAGRAPH_SPLIT_RE = re.compile(
         r'(?:[ \t\r\f\v]+|(?<!\\))\n(?:[ \t\r\f\v]*\n)+[ \t\r\f\v]*',
     )
@@ -42,34 +41,37 @@ class Element:
         Recursively renders a sequence of string or elements as HTML output.
         """
         for fragment in flatten(data, is_joined=False):
-            if fragment is None:
-                pass
-            elif isinstance(fragment, str):
+            if isinstance(fragment, str):
                 yield html.escape(fragment)
             elif isinstance(fragment, Element):
                 yield from fragment.html()
             else:
                 raise PaxterRenderError(f'malformed encounter: {fragment!r}')
 
-    def split_paragraph(self, data: ElementList) -> List[ElementList]:
+    def split_paragraph(self, data: Union[str, ElementList]) -> List[ElementList]:
         """
         Attempts to split a sequence of string or elements
         into a list of paragraphs where each element is a sequence
         of string or elements within the same paragraph.
         """
-        if not isinstance(data, list):
-            return [data]
+        if isinstance(data, str):
+            return [[data]]
 
+        # Clean up element list sequence
+        fragments = []
+        for f in flatten(data, is_joined=False):
+            if fragments and isinstance(fragments[-1], str) and isinstance(f, str):
+                fragments[-1] = fragments[-1] + f
+            else:
+                fragments.append(f)
+        fragments = self._clean_paragraph(fragments)
+
+        # Split into a collection of paragraphs
         collection = []  # list of paragraphs
         paragraph = []  # list of string or element pieces
-        for fragment in data:
-            if fragment is None:
-                pass
-            elif isinstance(fragment, str):
-                pieces = [
-                    self.BACKSLASH_NEWLINE_RE.sub('', p)
-                    for p in self.PARAGRAPH_SPLIT_RE.split(fragment)
-                ]
+        for f in fragments:
+            if isinstance(f, str):
+                pieces = self.PARAGRAPH_SPLIT_RE.split(f)
                 if len(pieces) >= 2:
                     if pieces[0].strip():
                         paragraph.append(pieces[0])
@@ -81,10 +83,10 @@ class Element:
                         paragraph.append(pieces[-1])
                 else:
                     paragraph.append(pieces[0])
-            elif isinstance(fragment, Element):
-                paragraph.append(fragment)
+            elif isinstance(f, Element):
+                paragraph.append(f)
             else:
-                raise PaxterRenderError(f'malformed encounter: {fragment!r}')
+                raise PaxterRenderError(f'malformed encounter: {f!r}')
         if paragraph:
             collection.append(paragraph)
 
@@ -105,24 +107,6 @@ class Element:
             if not paragraph[-1]:
                 paragraph = paragraph[:-1]
         return paragraph
-
-        # # Re-iterate: for each paragraph in the document
-        # # if it is not a list of one non-text token,
-        # # then wrap it under paragraph data class.
-        # rendered_document = []
-        # for paragraph in document:
-        #     rendered_paragraph = [
-        #         self.transform_fragment(fragment)
-        #         if isinstance(fragment, Fragment)
-        #         else fragment
-        #         for fragment in paragraph
-        #     ]
-        #     if len(paragraph) == 1 and isinstance(paragraph[0], Fragment):
-        #         rendered_document.append(rendered_paragraph[0])
-        #     else:
-        #         rendered_document.append(Paragraph(rendered_paragraph))
-        #
-        # return Document(children=rendered_document)
 
 
 @dataclass
@@ -167,9 +151,7 @@ class RawElement(Element):
 
     def html_recursive(self, data: Union[str, ElementList]) -> Iterator[str]:
         for fragment in flatten(data, is_joined=False):
-            if fragment is None:
-                pass
-            elif isinstance(fragment, str):
+            if isinstance(fragment, str):
                 yield fragment
             elif isinstance(fragment, Element):
                 yield from fragment.html()

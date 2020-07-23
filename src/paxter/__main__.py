@@ -55,11 +55,11 @@ def string(input_file, output_file, env_file):
     """
     import runpy
     from paxter.core import ParseContext
-    from paxter.pyauthor import StringRenderContext, create_unsafe_bare_env
+    from paxter.pyauthor import StringRenderContext, create_simple_env
 
     input_text = input_file.read()
     tree = ParseContext(input_text).tree
-    env = create_unsafe_bare_env(runpy.run_path(env_file) if env_file else {})
+    env = create_simple_env(runpy.run_path(env_file) if env_file else {})
     string_output = StringRenderContext(input_text, env, tree).rendered
     output_file.write(string_output)
 
@@ -78,11 +78,11 @@ def doc_html(input_file, output_file, env_file):
     """
     import runpy
     from paxter.core import ParseContext
-    from paxter.pyauthor import DocumentRenderContext, create_unsafe_document_env
+    from paxter.pyauthor import DocumentRenderContext, create_document_env
 
     input_text = input_file.read()
     tree = ParseContext(input_text).tree
-    env = create_unsafe_document_env(runpy.run_path(env_file) if env_file else {})
+    env = create_document_env(runpy.run_path(env_file) if env_file else {})
     document_output = DocumentRenderContext(input_text, env, tree).rendered
     rendered_html = document_output.render_html()
     output_file.write(rendered_html)

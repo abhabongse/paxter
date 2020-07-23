@@ -15,7 +15,7 @@ from paxter.pyauthor.funcs.standards import (
 )
 
 
-def create_unsafe_bare_env(data: Optional[dict] = None):
+def create_simple_env(data: Optional[dict] = None):
     """
     Creates an string environment data for Paxter source code evaluation
     in Python authoring mode.
@@ -32,7 +32,7 @@ def create_unsafe_bare_env(data: Optional[dict] = None):
     }
 
 
-def create_unsafe_document_env(data: Optional[dict] = None):
+def create_document_env(data: Optional[dict] = None):
     """
     Creates an string environment data for Paxter source code evaluation
     in Python authoring mode, specializes in constructing documents.
@@ -45,7 +45,7 @@ def create_unsafe_document_env(data: Optional[dict] = None):
         '*': NonBreakingSpace,
         **symbols,
     }
-    return create_unsafe_bare_env({
+    return create_simple_env({
         '_symbols_': symbols,
         'raw': RawElement,
         'break': LineBreak,
@@ -62,7 +62,7 @@ def create_unsafe_document_env(data: Optional[dict] = None):
         'h6': Heading6,
         'bold': Bold,
         'italic': Italic,
-        'underline': Underline,
+        'uline': Underline,
         'code': Code,
         'blockquote': Blockquote,
         'link': Link,

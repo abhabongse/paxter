@@ -35,7 +35,7 @@ class BaseRenderContext:
     #: Result of the rendering
     rendered: Union[str, list] = field(init=False)
 
-    BACKSLASH_NEWLINE_RE = re.compile(r'\\\n')
+    BACKSLASH_NEWLINE_RE = re.compile(r'\\[ \t\r\f\v]*\n[ \t\r\f\v]*')
     FALLBACK_SYMBOLS = {'!': '', '@': '@'}
 
     def __post_init__(self):
