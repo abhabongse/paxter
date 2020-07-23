@@ -40,9 +40,11 @@ def create_document_env(data: Optional[dict] = None):
     data = data or {}
     symbols = data.pop('_symbols_', {})
     symbols = {
+        '!': '',
+        '@': '@',
         '.': HairSpace,
         ',': ThinSpace,
-        '*': NonBreakingSpace,
+        '%': NonBreakingSpace,
         **symbols,
     }
     return create_simple_env({
