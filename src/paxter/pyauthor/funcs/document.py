@@ -33,6 +33,9 @@ class Element:
         """
         Renders the element node into TeX document
         as a sequence of strings.
+
+        This method is here as an example
+        of what is possible with Paxter.
         """
         raise NotImplementedError
 
@@ -173,67 +176,79 @@ class SimpleElement(Element):
     <tag>{rendered content}</tag>.
     """
     children: Union[str, ElementList]
-    HTML_TAG = 'div'
+    HTML_OPENING = '<div>'
+    HTML_CLOSING = '</div>'
 
     def html(self) -> Iterator[str]:
-        yield f'<{self.HTML_TAG}>'
+        yield self.HTML_OPENING
         yield from self.html_recursive(self.children)
-        yield f'</{self.HTML_TAG}>'
+        yield self.HTML_CLOSING
 
 
 @dataclass
 class Paragraph(SimpleElement):
-    HTML_TAG = 'p'
+    HTML_OPENING = '<p>'
+    HTML_CLOSING = '</p>'
 
 
 @dataclass
 class Heading1(SimpleElement):
-    HTML_TAG = 'h1'
+    HTML_OPENING = '<h1>'
+    HTML_CLOSING = '</h1>'
 
 
 @dataclass
 class Heading2(SimpleElement):
-    HTML_TAG = 'h2'
+    HTML_OPENING = '<h2>'
+    HTML_CLOSING = '</h2>'
 
 
 @dataclass
 class Heading3(SimpleElement):
-    HTML_TAG = 'h3'
+    HTML_OPENING = '<h3>'
+    HTML_CLOSING = '</h3>'
 
 
 @dataclass
 class Heading4(SimpleElement):
-    HTML_TAG = 'h4'
+    HTML_OPENING = '<h4>'
+    HTML_CLOSING = '</h4>'
 
 
 @dataclass
 class Heading5(SimpleElement):
-    HTML_TAG = 'h5'
+    HTML_OPENING = '<h5>'
+    HTML_CLOSING = '</h5>'
 
 
 @dataclass
 class Heading6(SimpleElement):
-    HTML_TAG = 'h6'
+    HTML_OPENING = '<h6>'
+    HTML_CLOSING = '</h6>'
 
 
 @dataclass
 class Bold(SimpleElement):
-    HTML_TAG = 'strong'
+    HTML_OPENING = '<b>'
+    HTML_CLOSING = '</b>'
 
 
 @dataclass
 class Italic(SimpleElement):
-    HTML_TAG = 'em'
+    HTML_OPENING = '<i>'
+    HTML_CLOSING = '</i>'
 
 
 @dataclass
 class Underline(SimpleElement):
-    HTML_TAG = 'u'
+    HTML_OPENING = '<u>'
+    HTML_CLOSING = '</u>'
 
 
 @dataclass
 class Code(SimpleElement):
-    HTML_TAG = 'code'
+    HTML_OPENING = '<code>'
+    HTML_CLOSING = '</code>'
 
 
 @dataclass
@@ -289,9 +304,6 @@ class Image(Element):
             raise PaxterRenderError(f'image alt text must be string: {self.alt!r}')
         yield f'<img src="{html.escape(self.src)}" alt="{html.escape(self.alt)}" />'
 
-    def latex(self) -> Iterator[str]:
-        raise NotImplementedError
-
 
 @dataclass(init=False)
 class BareList(Element):
@@ -301,11 +313,16 @@ class BareList(Element):
     items: List[Union[str, ElementList]]
     forced_paragraph: bool = False
 
+    HTML_OPENING = ''
+    HTML_CLOSING = ''
+
     def __init__(self, *items):
         self.items = list(items)
 
     def html(self) -> Iterator[str]:
+        yield self.HTML_OPENING
         yield from self.html_list_items()
+        yield self.HTML_CLOSING
 
     def html_list_items(self) -> Iterator[str]:
         for item in self.items:
@@ -329,11 +346,8 @@ class NumberedList(BareList):
     """
     Element containing an ordered (numbered) list.
     """
-
-    def html(self) -> Iterator[str]:
-        yield '<ol>'
-        yield from self.html_list_items()
-        yield '</ol>'
+    HTML_OPENING = '<ol>'
+    HTML_CLOSING = '</ol>'
 
 
 @dataclass(init=False)
@@ -341,8 +355,5 @@ class BulletedList(BareList):
     """
     Element containing an unordered (bulleted) list.
     """
-
-    def html(self) -> Iterator[str]:
-        yield '<ul>'
-        yield from self.html_list_items()
-        yield '</ul>'
+    HTML_OPENING = '<ul>'
+    HTML_CLOSING = '</ul>'
