@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.11 (25 July 2020)
+
+-   Refactored document element nodes.
+
 ## 0.6.10 (23 July 2020)
 
 -   Refactored paragraph automatic splitting.
