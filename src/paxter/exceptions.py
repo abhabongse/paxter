@@ -1,9 +1,10 @@
 """
 Error classes specific to Paxter language ecosystem.
 """
-from typing import Dict
+from typing import Dict, TYPE_CHECKING
 
-from paxter.parser.charloc import CharLoc
+if TYPE_CHECKING:
+    from paxter.parser.charloc import CharLoc
 
 __all__ = [
     'PaxterBaseException',
@@ -18,15 +19,15 @@ class PaxterBaseException(Exception):
     #: Error message
     message: str
     #: A mapping from position name to :class:`LineCol` position data
-    positions: Dict[str, CharLoc]
+    positions: Dict[str, 'CharLoc']
 
-    def __init__(self, message: str, **positions: CharLoc):
+    def __init__(self, message: str, **positions: 'CharLoc'):
         self.positions = positions
         self.message = self.render(message, self.positions)
         self.args = (self.message,)  # this will make error stack more readable
 
     @staticmethod
-    def render(message: str, positions: Dict[str, CharLoc]) -> str:
+    def render(message: str, positions: Dict[str, 'CharLoc']) -> str:
         """
         Substitutes the position placeholder within the message
         with the provided positions data.

@@ -3,6 +3,8 @@ Running CLI commands.
 """
 import click
 
+from paxter.authoring import Document
+
 
 @click.group()
 def program():
@@ -36,8 +38,9 @@ def parse(input_file, output_file):
     from paxter.parser import ParseContext
 
     input_text = input_file.read()
-    tree = ParseContext(input_text).tree
-    output_file.write(repr(tree))
+    parse_context = ParseContext(input_text)
+
+    output_file.write(repr(parse_context.tree))
     output_file.write("\n")
 
 
@@ -46,46 +49,26 @@ def parse(input_file, output_file):
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
               help="Path to pyauthor file to extract the environment.")
-def string(input_file, output_file, env_file):
+def html(input_file, output_file, env_file):
     """
-    Python string authoring mode: run the parser followed by a Python renderer.
-    It reads input text from INPUT_FILE and pass it through the parser.
-    Then the parsed tree is transformed into the final string result
-    using the string Python renderer, and output to OUTPUT_FILE.
-    """
-    import runpy
-    from paxter.parser import ParseContext
-    from paxter.pyauthor import StringRenderContext, create_simple_env
-
-    input_text = input_file.read()
-    tree = ParseContext(input_text).tree
-    env = create_simple_env(runpy.run_path(env_file) if env_file else {})
-    string_output = StringRenderContext(input_text, env, tree).rendered
-    output_file.write(string_output)
-
-
-@program.command()
-@input_output_options
-@click.option('-e', '--env-file',
-              type=click.Path(exists=True, dir_okay=False, readable=True),
-              help="Path to pyauthor file to extract the environment.")
-def doc_html(input_file, output_file, env_file):
-    """
-    Python document authoring mode: run the parser followed by a Python renderer.
+    Parses and evaluates the input text as HTML document.
     It reads input text from INPUT_FILE and pass it through the parser.
     Then the parsed tree is transformed into the final HTML result
     using the string Python renderer, and output to OUTPUT_FILE.
     """
     import runpy
     from paxter.parser import ParseContext
-    from paxter.pyauthor import DocumentRenderContext, create_document_env
+    from paxter.evaluator import EvaluateContext
+    from paxter.authoring import create_document_env
 
     input_text = input_file.read()
-    tree = ParseContext(input_text).tree
+    parse_context = ParseContext(input_text)
+
     env = create_document_env(runpy.run_path(env_file) if env_file else {})
-    document_output = DocumentRenderContext(input_text, env, tree).rendered
-    rendered_html = document_output.render_html()
-    output_file.write(rendered_html)
+    evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
+    document = Document(evaluate_context.rendered)
+
+    output_file.write(document.render_html())
     output_file.write("\n")
 
 

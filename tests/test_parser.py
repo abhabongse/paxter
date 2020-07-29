@@ -806,5 +806,3 @@ def test_parser(input_text: str, expected: Token):
     assert tree == expected
     assert tree.start_pos == expected.start_pos
     assert tree.end_pos == expected.end_pos
-
-# TODO: need to add a lot more unit tests
