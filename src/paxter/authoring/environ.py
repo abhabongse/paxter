@@ -3,15 +3,15 @@ A collection of pre-defined execution environment.
 """
 from typing import Optional
 
-from paxter.pyauthor.funcs.controls import for_statement, if_statement
-from paxter.pyauthor.funcs.document import (
+from paxter.authoring.controls import for_statement, if_statement
+from paxter.authoring.document import (
     Blockquote, Bold, BulletedList, Code,
     HairSpace, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
     HorizontalRule, Image, Italic, LineBreak, Link, NonBreakingSpace, NumberedList,
     Paragraph, RawElement, ThinSpace, Underline,
 )
-from paxter.pyauthor.funcs.standards import (
-    flatten, python_unsafe_exec, starter_unsafe_eval, verb,
+from paxter.authoring.standards import (
+    flatten, python_unsafe_exec, starter_unsafe_eval, verbatim,
 )
 
 
@@ -26,7 +26,7 @@ def create_simple_env(data: Optional[dict] = None):
         'for': for_statement,
         'if': if_statement,
         'python': python_unsafe_exec,
-        'verb': verb,
+        'verb': verbatim,
         'flatten': flatten,
         **data,
     }

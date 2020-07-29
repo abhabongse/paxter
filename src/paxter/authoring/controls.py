@@ -3,16 +3,16 @@ Collection of control flow functions for Python authoring mode.
 """
 from typing import TYPE_CHECKING
 
-from paxter.core import CharLoc, Command, Identifier
-from paxter.core.exceptions import PaxterRenderError
-from paxter.pyauthor.wrappers import DirectApply
+from paxter.evaluator import DirectApply
+from paxter.exceptions import PaxterRenderError
+from paxter.parser import CharLoc, Command, Identifier
 
 if TYPE_CHECKING:
-    from paxter.pyauthor.visitor import BaseRenderContext
+    from paxter.evaluator.context import EvaluateContext
 
 
 @DirectApply
-def for_statement(context: 'BaseRenderContext', node: Command):
+def for_statement(context: 'EvaluateContext', node: Command):
     """
     Simulates simple for loops.
     """
@@ -51,7 +51,7 @@ def for_statement(context: 'BaseRenderContext', node: Command):
 
 
 @DirectApply
-def if_statement(context: 'BaseRenderContext', node: Command):  # noqa: C901
+def if_statement(context: 'EvaluateContext', node: Command):  # noqa: C901
     """
     Simulates simple if statement.
     """

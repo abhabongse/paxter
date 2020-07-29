@@ -5,11 +5,11 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple
 
-from paxter.core import CharLoc, Command, Identifier, Operator, Token, TokenList
-from paxter.core.exceptions import PaxterRenderError
+from paxter.exceptions import PaxterRenderError
+from paxter.parser import CharLoc, Command, Identifier, Operator, Token, TokenList
 
 if TYPE_CHECKING:
-    from paxter.pyauthor.visitor import BaseRenderContext
+    from paxter.evaluator.context import EvaluateContext
 
 
 @dataclass
@@ -19,7 +19,7 @@ class BaseApply(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def call(self, context: 'BaseRenderContext', node: Command) -> Any:
+    def call(self, context: 'EvaluateContext', node: Command) -> Any:
         """
         Performs the evaluation of the given `PaxterApply` node
         in any way desired (including macro expansion before evaluation).
@@ -33,12 +33,12 @@ class DirectApply(BaseApply):
     Special function call where the wrapped function handles
     the environment and the `PaxterApply` token directly.
     """
-    wrapped: Callable[['BaseRenderContext', Command], Any]
+    wrapped: Callable[['EvaluateContext', Command], Any]
 
     def __call__(self, *args, **kwargs):
         return self.wrapped(*args, **kwargs)
 
-    def call(self, context: 'BaseRenderContext', node: Command) -> Any:
+    def call(self, context: 'EvaluateContext', node: Command) -> Any:
         return self.wrapped(context, node)
 
 
@@ -57,7 +57,7 @@ class NormalApply(BaseApply):
     def __call__(self, *args, **kwargs):
         return self.wrapped(*args, **kwargs)
 
-    def call(self, context: 'BaseRenderContext', node: Command) -> Any:
+    def call(self, context: 'EvaluateContext', node: Command) -> Any:
         if node.option:
             args, kwargs = self.extract_args_and_kwargs(context, node.option)
         else:
@@ -68,7 +68,7 @@ class NormalApply(BaseApply):
         return self.wrapped(*args, **kwargs)
 
     def extract_args_and_kwargs(
-            self, context: 'BaseRenderContext',
+            self, context: 'EvaluateContext',
             options: TokenList,
     ) -> Tuple[list, dict]:
         """
@@ -99,7 +99,7 @@ class NormalApply(BaseApply):
 
     @staticmethod
     def tokenize_args(
-            context: 'BaseRenderContext',
+            context: 'EvaluateContext',
             options: TokenList,
     ) -> Tuple[Optional[str], Token]:
         """
@@ -154,7 +154,7 @@ class NormalApplyWithEnv(NormalApply):
     receive the environment dict as the very first argument.
     """
 
-    def call(self, context: 'BaseRenderContext', node: Command) -> Any:
+    def call(self, context: 'EvaluateContext', node: Command) -> Any:
         if node.option:
             args, kwargs = self.extract_args_and_kwargs(context, node.option)
         else:

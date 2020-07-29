@@ -11,7 +11,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Pattern
 
-from paxter.core.lexers import LEXER
+from paxter.parser.lexers import LEXER
 
 __all__ = ['EnclosingPattern', 'GlobalEnclosingPattern']
 

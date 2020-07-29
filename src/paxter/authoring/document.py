@@ -7,8 +7,8 @@ import re
 from dataclasses import dataclass
 from typing import Iterator, List, Union
 
-from paxter.core.exceptions import PaxterRenderError
-from paxter.pyauthor.funcs.standards import flatten
+from paxter.authoring.standards import flatten
+from paxter.exceptions import PaxterRenderError
 
 ElementList = List[Union[None, str, 'Element']]
 
@@ -43,7 +43,7 @@ class Element:
         """
         Recursively renders a sequence of string or elements as HTML output.
         """
-        for fragment in flatten(data, is_joined=False):
+        for fragment in flatten(data):
             if isinstance(fragment, str):
                 yield html.escape(fragment)
             elif isinstance(fragment, Element):
@@ -62,7 +62,7 @@ class Element:
 
         # Clean up element list sequence
         fragments = []
-        for f in flatten(data, is_joined=False):
+        for f in flatten(data):
             if fragments and isinstance(fragments[-1], str) and isinstance(f, str):
                 fragments[-1] = fragments[-1] + f
             else:
@@ -153,7 +153,7 @@ class RawElement(Element):
         yield from self.html_recursive(self.children)
 
     def html_recursive(self, data: Union[str, ElementList]) -> Iterator[str]:
-        for fragment in flatten(data, is_joined=False):
+        for fragment in flatten(data):
             if isinstance(fragment, str):
                 yield fragment
             elif isinstance(fragment, Element):
@@ -292,7 +292,7 @@ class Link(SimpleElement):
 @dataclass
 class Image(Element):
     """
-    Image embedding element.
+    Image embedding element., is_joined=False
     """
     src: str
     alt: str = ""

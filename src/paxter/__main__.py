@@ -33,7 +33,7 @@ def parse(input_file, output_file):
     It reads input text from INPUT_FILE
     and writes the parsed tree to OUTPUT_FILE.
     """
-    from paxter.core import ParseContext
+    from paxter.parser import ParseContext
 
     input_text = input_file.read()
     tree = ParseContext(input_text).tree
@@ -54,7 +54,7 @@ def string(input_file, output_file, env_file):
     using the string Python renderer, and output to OUTPUT_FILE.
     """
     import runpy
-    from paxter.core import ParseContext
+    from paxter.parser import ParseContext
     from paxter.pyauthor import StringRenderContext, create_simple_env
 
     input_text = input_file.read()
@@ -77,7 +77,7 @@ def doc_html(input_file, output_file, env_file):
     using the string Python renderer, and output to OUTPUT_FILE.
     """
     import runpy
-    from paxter.core import ParseContext
+    from paxter.parser import ParseContext
     from paxter.pyauthor import DocumentRenderContext, create_document_env
 
     input_text = input_file.read()

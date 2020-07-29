@@ -4,14 +4,14 @@ Recursive descent parser of Paxter language.
 from dataclasses import dataclass, field
 from typing import List, Match, Tuple
 
-from paxter.core.charloc import CharLoc
-from paxter.core.data import (
+from paxter.exceptions import PaxterSyntaxError
+from paxter.parser.charloc import CharLoc
+from paxter.parser.data import (
     Command, Fragment, FragmentList, Identifier, Number, Operator, ShortSymbol, Text,
     TokenList,
 )
-from paxter.core.enclosing import EnclosingPattern, GlobalEnclosingPattern
-from paxter.core.exceptions import PaxterSyntaxError
-from paxter.core.lexers import LEXER
+from paxter.parser.enclosing import EnclosingPattern, GlobalEnclosingPattern
+from paxter.parser.lexers import LEXER
 
 __all__ = ['ParseContext']
 
@@ -273,7 +273,7 @@ class ParseContext:
                 children.append(at_expr_node)
                 continue
 
-            # Attempts to parse a sub-level list of tokens
+            # Attempts to parser a sub-level list of tokens
             lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
             if lbracket_matchobj:
                 next_pos = lbracket_matchobj.end()
@@ -281,7 +281,7 @@ class ParseContext:
                 children.append(token_list_node)
                 continue
 
-            # Attempts to parse the end of token list
+            # Attempts to parser the end of token list
             # Return the token list if this is the case
             rbracket_matchobj = LEXER.rbracket_re.match(self.input_text, next_pos)
             if rbracket_matchobj:
@@ -316,7 +316,7 @@ class ParseContext:
 
     def _invalid_cmd(self, pos: int):
         """
-        Raises syntax error for failing to parse @-command.
+        Raises syntax error for failing to parser @-command.
         """
         raise PaxterSyntaxError(
             "invalid expression after @-command at %(pos)s",

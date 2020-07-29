@@ -3,7 +3,7 @@ Error classes specific to Paxter language ecosystem.
 """
 from typing import Dict
 
-from paxter.core.charloc import CharLoc
+from paxter.parser.charloc import CharLoc
 
 __all__ = [
     'PaxterBaseException',

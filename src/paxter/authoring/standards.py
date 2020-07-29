@@ -4,16 +4,16 @@ Collection of standard functions for Python authoring mode.
 import inspect
 from typing import Any, Iterator, List, TYPE_CHECKING, Union
 
-from paxter.core import Command, Text
-from paxter.core.exceptions import PaxterRenderError
-from paxter.pyauthor.wrappers import DirectApply
+from paxter.evaluator import DirectApply
+from paxter.exceptions import PaxterRenderError
+from paxter.parser import Command, Text
 
 if TYPE_CHECKING:
-    from paxter.pyauthor.visitor import BaseRenderContext
+    from paxter.evaluator.context import EvaluateContext
 
 
 @DirectApply
-def python_unsafe_exec(context: 'BaseRenderContext', node: Command):
+def python_unsafe_exec(context: 'EvaluateContext', node: Command):
     """
     Unsafely executes pyauthor code within the main argument.
     """
@@ -34,13 +34,13 @@ def starter_unsafe_eval(starter: str, env: dict) -> Any:
     return eval(starter, env)
 
 
-def verb(text: Any) -> str:
+def verbatim(text: Any) -> str:
     """
     Returns the main string argument as-is.
 
-    >>> verb("Hello")
+    >>> verbatim("Hello")
     "Hello"
-    >>> verb("me@example.com")
+    >>> verbatim("me@example.com")
     "me@example.com"
     """
     if not isinstance(text, str):
@@ -48,25 +48,25 @@ def verb(text: Any) -> str:
     return text
 
 
-def flatten(data, is_joined: bool = True) -> Union[List[str], str]:
+def flatten(data, join: bool = False) -> Union[List[str], str]:
     """
     Flattens the nested list of elements by unrolling them into a single list.
     Unless the ``is_joined`` option is disabled,
     all elements will be combined to a single string.
 
-    >>> flatten(["Hello", ",", " ", "World", "!"])
+    >>> flatten(["Hello", ",", " ", "World", "!"], join=True)
+    "Hello, World!"
+    >>> flatten(["Hello", [",", " "], ["World"], "!"], join=True)
     "Hello, World!"
     >>> flatten(["Hello", [",", " "], ["World"], "!"])
-    "Hello, World!"
-    >>> flatten(["Hello", [",", " "], ["World"], "!"], is_joined=False)
     ["Hello", ",", " ", "World", "!"]
-    >>> flatten("Hello, World!")
+    >>> flatten("Hello, World!", join=True)
     "Hello, World!"
-    >>> flatten("Hello, World!", is_joined=False)
+    >>> flatten("Hello, World!")
     ["Hello, World!"]
     """
     seq = _rec_flatten_tokenize(data)
-    if is_joined:
+    if join:
         return ''.join(str(element) for element in seq)
     else:
         return list(seq)

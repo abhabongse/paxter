@@ -5,18 +5,16 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, List, Union
 
-from paxter.core import (
+from paxter.evaluator.wrappers import BaseApply, NormalApply
+from paxter.exceptions import PaxterRenderError
+from paxter.parser import (
     CharLoc, Command, Fragment, FragmentList, Identifier, Number,
     Operator, ShortSymbol, Text, Token, TokenList,
 )
-from paxter.core.exceptions import PaxterRenderError
-from paxter.pyauthor.funcs.document import Document
-from paxter.pyauthor.funcs.standards import flatten
-from paxter.pyauthor.wrappers import BaseApply, NormalApply
 
 
 @dataclass
-class BaseRenderContext:
+class EvaluateContext:
     """
     Base rendering class for Paxter parsed document tree.
 
@@ -174,30 +172,3 @@ class BaseRenderContext:
             ) from exc
         except Exception as exc:
             raise RuntimeError("unexpected error from within library") from exc
-
-
-@dataclass
-class StringRenderContext(BaseRenderContext):
-    """
-    String-based variant of rendering class.
-    Each fragment list will be flattened into a single string
-    each time it is evaluated.
-    """
-
-    def transform_fragment_list(self, seq: FragmentList) -> str:
-        result = super().transform_fragment_list(seq)
-        result = flatten(result, is_joined=True)
-        return result
-
-
-@dataclass
-class DocumentRenderContext(BaseRenderContext):
-    """
-    Document-based variant of rendering class.
-    This is for constructing HTML or LaTeX documents.
-    """
-    rendered: Document = field(init=False)
-
-    def render(self):
-        result = self.transform_fragment_list(self.tree)
-        return Document(children=result)
