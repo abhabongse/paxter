@@ -1,6 +1,5 @@
 """
-Implements parser functionality of Paxter language,
-mostly consisting of the parser and related tools.
+This subpackage implements parser functionality for Paxter language.
 """
 from paxter.parser.charloc import CharLoc
 from paxter.parser.context import ParseContext

@@ -39,7 +39,7 @@ def test_evaluator_document(input_file, expected_file):
     evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
     document = Document(evaluate_context.rendered)
 
-    assert document.render_html() == expected_text
+    assert document.html() == expected_text
 
 
 @pytest.mark.parametrize(("input_file", "expected_file"), TESTS)

@@ -143,7 +143,7 @@ It is important to remember that
 **the semantics of the documents depends on which renderer we are choosing**.
 
 We will adopt the **Python authoring mode** whose renderer
-(implemented by :class:`RenderContext <paxter.pyauthor.RenderContext>`)
+(implemented by :class:`EvaluateContext <paxter.evaluator.EvaluateContext>`)
 is already pre-defined by the Paxter library package
 to transform the parsed tree into the desired final form.
 One of its very useful features is that it will execute python code
@@ -151,15 +151,16 @@ under the ``@python`` command.
 
 .. code-block:: python
 
-   from paxter.pyauthor import RenderContext, create_unsafe_env
+   from paxter.authoring import create_simple_env
+   from paxter.evaluator import EvaluateContext
 
    # This dictionary data represents the initial global dict state
    # for the interpretation the document tree in python authoring mode.
-   env = create_unsafe_env({
+   env = create_simple_env({
        '_symbols_': {',': '&thinsp;'},
    })
 
-   result = RenderContext(source_text, env, parsed_tree).rendered
+   result = EvaluateContext(source_text, env, parsed_tree).rendered
    print(result)  # or write to a file, etc.
 
 The above code will output the following.

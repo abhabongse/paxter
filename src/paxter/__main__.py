@@ -68,7 +68,7 @@ def html(input_file, output_file, env_file):
     evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
     document = Document(evaluate_context.rendered)
 
-    output_file.write(document.render_html())
+    output_file.write(document.html())
     output_file.write("\n")
 
 

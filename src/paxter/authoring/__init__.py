@@ -8,6 +8,8 @@ from paxter.authoring.document import (
     Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
     Image, Italic, Link, NumberedList, Paragraph,
     RawElement, SimpleElement, Underline,
+    hair_space, horizontal_rule, line_break,
+    non_breaking_space, thin_space,
 )
 from paxter.authoring.environ import create_document_env, create_simple_env
 from paxter.authoring.standards import flatten
@@ -19,6 +21,8 @@ __all__ = [
     'Heading1', 'Heading2', 'Heading3', 'Heading4', 'Heading5', 'Heading6',
     'Image', 'Italic', 'Link', 'NumberedList', 'Paragraph',
     'RawElement', 'SimpleElement', 'Underline',
+    'hair_space', 'horizontal_rule', 'line_break',
+    'non_breaking_space', 'thin_space',
     'create_document_env', 'create_simple_env',
     'flatten',
 ]

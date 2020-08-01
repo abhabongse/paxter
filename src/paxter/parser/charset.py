@@ -1,5 +1,6 @@
 """
-Collection of character sets used in text parsing.
+Variable collection of character sets as defined by Paxter language.
+They are used to construct tokenizers for language parsing.
 """
 import re
 import sys

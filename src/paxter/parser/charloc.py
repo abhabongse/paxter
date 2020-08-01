@@ -10,8 +10,9 @@ __all__ = ['CharLoc']
 @dataclass
 class CharLoc:
     """
-    The position (starting or ending) of a token within the input text
-    useful for line and column information in error messages.
+    Represents the position (starting or ending) of a token
+    within the input text as a 1-indexed line and column value
+    which is useful in understanding where an error occurs.
     """
     input_text: InitVar[str]
     pos: InitVar[int]
@@ -32,6 +33,7 @@ class CharLoc:
     @property
     def rendered(self) -> str:
         """
-        The rendered string containing the line and column integer values.
+        Rendered string containing the information of
+        line and column integer values.
         """
         return f"line {self.line} col {self.col}"

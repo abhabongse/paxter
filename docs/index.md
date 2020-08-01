@@ -1,29 +1,28 @@
-# Welcome to Paxter's documentation!
+# Paxter’s documentation!
 
-**Paxter** is a document-first, text pre-processing mini-language toolchain,
-_loosely_ inspired by [@-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).
+**Paxter language** helps users write rich-formatting documents
+with simple and easy-to-understand syntax.
+Nevertheless, users still have access to the python environment:
+they can call python functions and evaluate python expressions
+right inside the document itself,
+giving users flexibility and power to customize 
+their approach to writing documents.
 
--   The Paxter library package defines the syntax for **Paxter language**
-    and provides a toolchain for parsing input texts
-    written in Paxter language into _an intermediate parsed tree_.
--   However, the semantics of Paxter language is left unspecified,
-    meaning that users of the library have all the freedom to do
-    whatever they like to render or transform the intermediate parsed tree
-    into a final output they wish to achieve.  
--   Alternatively, instead of implementing an interpreter 
-    for intermediate parsed tree by themselves,
-    users may opt-in to utilize a preset _parsed tree renderers_,
-    also provided by this library package.
-
+**Paxter package** is a document-first, text processing language toolchain,
+inspired by [@-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).
+Users of the package also has the access to the Paxter language parser API
+which allows them to implement new interpreters on top of the Paxter language
+if they so wish.
 
 ## Contents
 
+- [First Tutorial](tutorial.md)
 - [Getting Started](getting_started.rst)
 - [Paxter Language Tutorial](paxter_language_tutorial.md)
 - [Python Authoring Mode Tutorial](python_authoring_mode_tutorial.md)
 - [Custom Renderer Tutorial](custom_renderer_tutorial.md)
-- [Syntax Reference](syntax.rst)
 - [Core API Reference](core_api.md)
+- [Syntax Reference](syntax.rst)
 
 
 ## Indices and tables

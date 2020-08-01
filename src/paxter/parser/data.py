@@ -60,7 +60,8 @@ class Token(metaclass=ABCMeta):
     @classmethod
     def without_pos(cls, *args, **kwargs):
         """
-        Creates a new node but specifying the position with null data.
+        Creates a new node but using null data
+        to specify the starting and ending positions of a token.
         """
         return cls(None, None, *args, **kwargs)
 

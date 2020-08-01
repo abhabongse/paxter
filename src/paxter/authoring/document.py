@@ -1,6 +1,6 @@
 """
-Collections of document-related data class to be used
-as functions to construct a document for web or print.
+Collections of data classes representing document elements
+which may be used to construct a document for web, print, etc.
 """
 import html
 import re
@@ -22,47 +22,62 @@ class Element:
         r'(?:[ \t\r\f\v]+|(?<!\\))\n(?:[ \t\r\f\v]*\n)+[ \t\r\f\v]*',
     )
 
-    def html(self) -> Iterator[str]:
+    def html(self) -> str:
         """
-        Renders the element node into HTML document
-        as a sequence of strings.
+        Renders the element into HTML string output.
+        """
+        return ''.join(self.html_token_stream())
+
+    def latex(self) -> str:
+        """
+        Renders the element into LaTeX string output.
+        This method is presented here as an example of
+        what is possible with Paxter package.
+        """
+        return ''.join(self.latex_token_stream())
+
+    def html_token_stream(self) -> Iterator[str]:
+        """
+        Produces a sequence of string tokens which is needed to be joined
+        in order to produce the final HTML string output.
         """
         raise NotImplementedError
 
-    def latex(self) -> Iterator[str]:
+    def latex_token_stream(self) -> Iterator[str]:
         """
-        Renders the element node into TeX document
-        as a sequence of strings.
-
-        This method is here as an example
-        of what is possible with Paxter.
+        Produces a sequence of string tokens which is needed to be joined
+        in order to produce the final LaTeX string output.
+        This method is presented here as an example of
+        what is possible with Paxter package.
         """
         raise NotImplementedError
 
-    def html_recursive(self, data: Union[str, ElementList]) -> Iterator[str]:
+    def html_rec_token_stream(self, elements: Union[str, ElementList]) -> Iterator[str]:
         """
-        Recursively renders a sequence of string or elements as HTML output.
+        Recursively produces a sequence of HTML string tokens
+        from the given input sequence of string or elements.
         """
-        for fragment in flatten(data):
+        for fragment in flatten(elements):
             if isinstance(fragment, str):
                 yield html.escape(fragment)
             elif isinstance(fragment, Element):
-                yield from fragment.html()
+                yield from fragment.html_token_stream()
             else:
                 raise PaxterRenderError(f'malformed encounter: {fragment!r}')
 
-    def split_paragraph(self, data: Union[str, ElementList]) -> List[ElementList]:
+    def split_paragraph(self, elements: Union[str, ElementList]) -> List[ElementList]:
         """
         Attempts to split a sequence of string or elements
-        into a list of paragraphs where each element is a sequence
-        of string or elements within the same paragraph.
+        using a double newline into a list of paragraphs
+        where each paragraph is a sequence of string or elements
+        within the same paragraph.
         """
-        if isinstance(data, str):
-            return [[data]]
+        if isinstance(elements, str):
+            return [[elements]]
 
         # Clean up element list sequence
         fragments = []
-        for f in flatten(data):
+        for f in flatten(elements):
             if fragments and isinstance(fragments[-1], str) and isinstance(f, str):
                 fragments[-1] = fragments[-1] + f
             else:
@@ -119,26 +134,14 @@ class Document(Element):
     """
     children: ElementList
 
-    def render_html(self) -> str:
-        """
-        Renders the document into HTML output.
-        """
-        return ''.join(self.html())
-
-    def render_tex(self) -> str:
-        """
-        Renders the document into TeX output.
-        """
-        return ''.join(self.latex())
-
-    def html(self) -> Iterator[str]:
+    def html_token_stream(self) -> Iterator[str]:
         collection = self.split_paragraph(self.children)
         for paragraph in collection:
             if len(paragraph) == 1 and isinstance(paragraph[0], Element):
-                yield from paragraph[0].html()
+                yield from paragraph[0].html_token_stream()
             else:
                 yield '<p>'
-                yield from self.html_recursive(paragraph)
+                yield from self.html_rec_token_stream(paragraph)
                 yield '</p>'
 
 
@@ -149,24 +152,24 @@ class RawElement(Element):
     """
     children: Union[str, ElementList]
 
-    def html(self) -> Iterator[str]:
-        yield from self.html_recursive(self.children)
+    def html_token_stream(self) -> Iterator[str]:
+        yield from self.html_rec_token_stream(self.children)
 
-    def html_recursive(self, data: Union[str, ElementList]) -> Iterator[str]:
-        for fragment in flatten(data):
+    def html_rec_token_stream(self, elements: Union[str, ElementList]) -> Iterator[str]:
+        for fragment in flatten(elements):
             if isinstance(fragment, str):
                 yield fragment
             elif isinstance(fragment, Element):
-                yield from fragment.html()
+                yield from fragment.html_token_stream()
             else:
                 raise PaxterRenderError(f'malformed encounter: {fragment!r}')
 
 
-LineBreak = RawElement(children='<br />')
-HorizontalRule = RawElement(children='<hr />')
-NonBreakingSpace = RawElement(children='&nbsp;')
-HairSpace = RawElement(children='&hairsp;')
-ThinSpace = RawElement(children='&thinsp;')
+line_break = RawElement(children='<br />')
+horizontal_rule = RawElement(children='<hr />')
+non_breaking_space = RawElement(children='&nbsp;')
+hair_space = RawElement(children='&hairsp;')
+thin_space = RawElement(children='&thinsp;')
 
 
 @dataclass
@@ -179,9 +182,9 @@ class SimpleElement(Element):
     HTML_OPENING = '<div>'
     HTML_CLOSING = '</div>'
 
-    def html(self) -> Iterator[str]:
+    def html_token_stream(self) -> Iterator[str]:
         yield self.HTML_OPENING
-        yield from self.html_recursive(self.children)
+        yield from self.html_rec_token_stream(self.children)
         yield self.HTML_CLOSING
 
 
@@ -259,18 +262,18 @@ class Blockquote(Element):
     children: Union[str, ElementList]
     forced_paragraph: bool = False
 
-    def html(self) -> Iterator[str]:
+    def html_token_stream(self) -> Iterator[str]:
         yield '<blockquote>'
         collection = self.split_paragraph(self.children)
         if len(collection) == 1 and not self.forced_paragraph:
-            yield from self.html_recursive(collection[0])
+            yield from self.html_rec_token_stream(collection[0])
         else:
             for paragraph in collection:
                 if len(paragraph) == 1 and isinstance(paragraph[0], Element):
-                    yield from self.html_recursive(paragraph)
+                    yield from self.html_rec_token_stream(paragraph)
                 else:
                     yield '<p>'
-                    yield from self.html_recursive(paragraph)
+                    yield from self.html_rec_token_stream(paragraph)
                     yield '</p>'
         yield '</blockquote>'
 
@@ -283,9 +286,9 @@ class Link(SimpleElement):
     children: Union[str, ElementList]
     href: str
 
-    def html(self) -> str:
+    def html_token_stream(self) -> str:
         yield f'<a href="{html.escape(self.href)}">'
-        yield from self.html_recursive(self.children)
+        yield from self.html_rec_token_stream(self.children)
         yield '</a>'
 
 
@@ -297,7 +300,7 @@ class Image(Element):
     src: str
     alt: str = ""
 
-    def html(self) -> Iterator[str]:
+    def html_token_stream(self) -> Iterator[str]:
         if not isinstance(self.src, str):
             raise PaxterRenderError(f'image source must be string: {self.src!r}')
         if not isinstance(self.alt, str):
@@ -319,7 +322,7 @@ class BareList(Element):
     def __init__(self, *items):
         self.items = list(items)
 
-    def html(self) -> Iterator[str]:
+    def html_token_stream(self) -> Iterator[str]:
         yield self.HTML_OPENING
         yield from self.html_list_items()
         yield self.HTML_CLOSING
@@ -329,14 +332,14 @@ class BareList(Element):
             yield '<li>'
             collection = self.split_paragraph(item)
             if len(collection) == 1 and not self.forced_paragraph:
-                yield from self.html_recursive(collection[0])
+                yield from self.html_rec_token_stream(collection[0])
             else:
                 for paragraph in collection:
                     if len(paragraph) == 1 and isinstance(paragraph[0], Element):
-                        yield from self.html_recursive(paragraph)
+                        yield from self.html_rec_token_stream(paragraph)
                     else:
                         yield '<p>'
-                        yield from self.html_recursive(paragraph)
+                        yield from self.html_rec_token_stream(paragraph)
                         yield '</p>'
             yield '</li>'
 
