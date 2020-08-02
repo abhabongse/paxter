@@ -6,9 +6,11 @@ from typing import Optional
 from paxter.authoring.controls import for_statement, if_statement
 from paxter.authoring.document import (
     Blockquote, Bold, BulletedList, Code,
-    hair_space, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
-    horizontal_rule, Image, Italic, line_break, Link, non_breaking_space, NumberedList,
-    Paragraph, RawElement, thin_space, Underline,
+    Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
+    Image, Italic, Link, NumberedList,
+    Paragraph, RawElement, Underline,
+    hair_space, horizontal_rule, line_break,
+    non_breaking_space, thin_space,
 )
 from paxter.authoring.standards import (
     flatten, python_unsafe_exec, starter_unsafe_eval, verbatim,
