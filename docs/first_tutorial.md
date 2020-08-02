@@ -37,7 +37,7 @@ So we have an alternative way to construct the exact same document.
 
 ```python
 from paxter.authoring import create_document_env
-from paxter.common import run_paxter
+from paxter.preset import run_paxter
 
 input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
 and my blog is located at @link["https://ashley.example.com"]{ashley.example.com}}'''
@@ -195,7 +195,7 @@ There is nothing preventing you from creating different environment mapping like
 ```python
 from paxter import authoring
 from paxter.authoring.standards import starter_unsafe_eval
-from paxter.common import run_paxter
+from paxter.preset import run_paxter
 
 alternative_env = {
     # _starter_eval_ is required, but ignore this part for now
@@ -225,7 +225,7 @@ So we will add another one.
 
 ```python
 from paxter.authoring import create_document_env
-from paxter.common import run_paxter
+from paxter.preset import run_paxter
 
 input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
 and my blog is located at @link["https://ashley.example.com"]{ashley.example.com}}
@@ -377,12 +377,12 @@ That is, whenever an `@` command character is immediately followed by
 another symbol character, then this symbolic replacement occurs.
 For example, `@!` inside the input text will be replaced by `env['_symbols_']['!']`
 and `@@` will be replaced by `env['_symbols_']['@']`, etc.
-Therefore, Paxter uses `@@` to mimics the escaping of `@` symbol
+Therefore, Paxter uses `@@` to mimic the escaping of `@` symbol
 though the mechanisms of symbolic replacements.
 
 ```python
 from paxter.authoring import Document, create_document_env
-from paxter.common import run_paxter
+from paxter.preset import run_paxter
 
 input_text = '''Hi, my name is @bold{Ashley}@break
 and my blog is located at @link["https://ashley.example.com"]{ashley.example.com}
@@ -397,6 +397,9 @@ document = Document(run_paxter(input_text, env))
 <p>Hi, my name is <b>Ashley</b><br />
 and my blog is located at <a href="https://ashley.example.com">ashley.example.com</a></p><p>To reach me directly, send email to ashley@example.com</p>
 ```
+
+Of course, you can modify this behavior as well by customizing
+`env['_symbols_']` to suit your needs.
 
 
 ## Define common constants

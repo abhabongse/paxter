@@ -2,9 +2,22 @@
 
 Paxter language package provides the following core functionality.
 
+## Preset Functions
+
+The following function combines Paxter language parsing
+together with parsed tree evaluation.
+Please read the source of the function implementation
+to see how it pieces together other API functions and classes.
+
+```eval_rst
+.. autofunction:: paxter.preset.run_paxter
+```
+
+---
+
 ## Exceptions
 
-Here are the list of exceptions raised from this library.
+These are all the exception classes raised from this library package.
 
 ```eval_rst
 .. autoclass:: paxter.exceptions.PaxterBaseException
@@ -19,14 +32,13 @@ Here are the list of exceptions raised from this library.
 
 .. autoclass:: paxter.exceptions.PaxterRenderError
    :show-inheritance:
-
 ```
 
 ---
 
 ## Parsing
 
-This class implements the parser for Paxter language.
+The following class is where the main Paxter language parsing logic happens.
 
 ```eval_rst
 .. autoclass:: paxter.parser.ParseContext
@@ -35,7 +47,8 @@ This class implements the parser for Paxter language.
 
 ### Data Definitions
 
-The result of the parsing yields the parsed tree consisting of the following classes.
+Results of the Paxter language parsing yields parsed trees
+which consist of instances of the following data classes.
 
 ```eval_rst
 .. autoclass:: paxter.parser.Token
@@ -61,11 +74,11 @@ The result of the parsing yields the parsed tree consisting of the following cla
    :show-inheritance:
 
 .. autoclass:: paxter.parser.FragmentList
-   :members: children, enclosing, at_prefix
+   :members: children, enclosing
    :show-inheritance:
 
 .. autoclass:: paxter.parser.Text
-   :members: inner, enclosing, at_prefix
+   :members: inner, enclosing
    :show-inheritance:
 
 .. autoclass:: paxter.parser.Command
@@ -75,28 +88,30 @@ The result of the parsing yields the parsed tree consisting of the following cla
 
 ### Other Utility Classes
 
-Classes in this subsection is for reference only.
+Other classes related to parsing,
+presented here for reference only.
 
 ```eval_rst
+.. autoclass:: paxter.parser.CharLoc
+   :members: line, col
+
 .. autoclass:: paxter.parser.EnclosingPattern
    :members: left, right
 
 .. autoclass:: paxter.parser.GlobalEnclosingPattern
    :members: left, right
-
-.. autoclass:: paxter.parser.CharLoc
-   :members: line, col
 ```
 
 ---
 
 ## Evaluation
 
-This class implements the basic evaluator for Paxter language.
+The following class implements the basic tree evaluation in Paxter language.
+Users may want to extend this class to customize the tree evaluation.
 
 ```eval_rst
 .. autoclass:: paxter.evaluator.EvaluateContext
-   :members: input_text, env, tree
+   :members:
 ```
 
 ### Function decorators
@@ -115,5 +130,4 @@ to be used as function decorators.
 
 .. autoclass:: paxter.evaluator.NormalApplyWithEnv
    :members: wrapped
-
 ```

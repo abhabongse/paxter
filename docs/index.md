@@ -16,12 +16,13 @@ if they so wish.
 
 ## Contents
 
-- [First Tutorial](tutorial.md)
+- [First Tutorial](first_tutorial.md)
 - [Getting Started](getting_started.rst)
 - [Paxter Language Tutorial](paxter_language_tutorial.md)
 - [Python Authoring Mode Tutorial](python_authoring_mode_tutorial.md)
 - [Custom Renderer Tutorial](custom_renderer_tutorial.md)
 - [Core API Reference](core_api.md)
+- [Authoring API Reference](authoring_api.md)
 - [Syntax Reference](syntax.rst)
 
 

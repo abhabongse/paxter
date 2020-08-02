@@ -15,13 +15,14 @@ if TYPE_CHECKING:
 @dataclass
 class BaseApply(metaclass=ABCMeta):
     """
-    Base class for `PaxterApply` function wrapper.
+    Base class for :class:`Command` function wrapper
+    which is intended to be used as a function decorator.
     """
 
     @abstractmethod
     def call(self, context: 'EvaluateContext', node: Command) -> Any:
         """
-        Performs the evaluation of the given `PaxterApply` node
+        Performs the evaluation of the given :class:`Command` node
         in any way desired (including macro expansion before evaluation).
         """
         raise NotImplementedError
@@ -31,7 +32,11 @@ class BaseApply(metaclass=ABCMeta):
 class DirectApply(BaseApply):
     """
     Special function call where the wrapped function handles
-    the environment and the `PaxterApply` token directly.
+    the environment and the :class:`Command` token directly.
+    See the implementation of
+    :func:`if_statement <paxter.authoring.controls.if_statement>` and
+    :func:`for_statement <paxter.authoring.controls.for_statement>` and
+    to see how this decorator is used.
     """
     wrapped: Callable[['EvaluateContext', Command], Any]
 

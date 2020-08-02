@@ -43,6 +43,9 @@ class EvaluateContext:
         return self.transform_fragment_list(self.tree)
 
     def transform_token(self, token: Token) -> Any:
+        """
+        Transforms a given parsed token.
+        """
         if isinstance(token, Fragment):
             return self.transform_fragment(token)
         if isinstance(token, TokenList):
@@ -61,6 +64,9 @@ class EvaluateContext:
         )
 
     def transform_fragment(self, fragment: Fragment) -> Any:
+        """
+        Transforms a given parsed fragment.
+        """
         if isinstance(fragment, Text):
             return self.transform_text(fragment)
         if isinstance(fragment, Command):
@@ -73,27 +79,42 @@ class EvaluateContext:
         )
 
     def transform_token_list(self, seq: TokenList):
+        """
+        Transforms a given parsed token list.
+        """
         raise PaxterRenderError(
             "token list not expected at %(pos)s",
             pos=CharLoc(self.input_text, seq.start_pos),
         )
 
     def transform_identifier(self, token: Identifier):
+        """
+        Transforms a given parsed identifier.
+        """
         raise PaxterRenderError(
             "identifier not expected at %(pos)",
             pos=CharLoc(self.input_text, token.start_pos),
         )
 
     def transform_operator(self, token: Operator):
+        """
+        Transforms a given parsed operator.
+        """
         raise PaxterRenderError(
             "operator not expected at %(pos)",
             pos=CharLoc(self.input_text, token.start_pos),
         )
 
     def transform_number(self, token: Number) -> Union[int, float]:
+        """
+        Transforms a given parsed number.
+        """
         return token.value
 
     def transform_fragment_list(self, seq: FragmentList) -> List[Any]:
+        """
+        Transforms a given parsed fragment list.
+        """
         transformed_fragments = (
             self.transform_fragment(fragment)
             for fragment in seq.children
@@ -105,12 +126,18 @@ class EvaluateContext:
         return result
 
     def transform_text(self, token: Text) -> str:
+        """
+        Transforms a given parsed text fragment.
+        """
         text = token.inner
         if not token.enclosing.left:
             text = self.BACKSLASH_NEWLINE_RE.sub('', text)
         return text
 
     def transform_command(self, token: Command):
+        """
+        Transforms a given parsed command.
+        """
         # Try to evaluate the starter section
         # using the evaluator function from _starter_eval_
         try:
@@ -151,6 +178,9 @@ class EvaluateContext:
             ) from exc
 
     def transform_symbol_command(self, token: ShortSymbol):
+        """
+        Transforms a given parsed symbol command.
+        """
         # Lookup _symbols_ for the desired symbol
         try:
             symbols = self.env['_symbols_']

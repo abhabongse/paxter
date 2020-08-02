@@ -11,7 +11,8 @@ def run_paxter(input_text: str, env: Optional[dict] = None) -> Any:
     """
     Parses the input source text written in Paxter language
     and evaluates it using standard python environment.
-    The given environment may be modified in-place during evaluation.
+    This function returns the result of evaluation
+    and may modify the given environment in-place as well.
     """
     parse_context = ParseContext(input_text)
     env = env or {}

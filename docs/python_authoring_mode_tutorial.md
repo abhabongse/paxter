@@ -240,30 +240,3 @@ Odd digits are 1 3 5 7 9.
 Even digits are 0 2 4 6 8.
 Digits are  even odd even odd even odd even odd even odd in this order.
 ```
-
-
-## API Reference
-
-The following class implements a standard parser which
-comes with Paxter package library.
-
-```eval_rst
-.. autoclass:: paxter.pyauthor.RenderContext
-   :members: input_text, env, tree, is_joined
-```
-
-The following function creates a pre-defined unsafe Python environment dictionary 
-to be used with the rendering context class.
-
-```eval_rst
-.. autofunction:: paxter.pyauthor.create_unsafe_env
-```
-
-Here are the functions readily available within the default environment
-from the function above
-
-```eval_rst
-.. autofunction:: paxter.pyauthor.funcs.flatten
-
-.. autofunction:: paxter.pyauthor.funcs.verb
-```
