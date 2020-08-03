@@ -165,6 +165,7 @@ class RawElement(Element):
                 raise PaxterRenderError(f'malformed encounter: {fragment!r}')
 
 
+#: Line break raw element
 line_break = RawElement(children='<br />')
 horizontal_rule = RawElement(children='<hr />')
 non_breaking_space = RawElement(children='&nbsp;')
@@ -176,10 +177,14 @@ thin_space = RawElement(children='&thinsp;')
 class SimpleElement(Element):
     """
     Simple element node type in the form of
-    <tag>{rendered content}</tag>.
+    ``{HTML_OPENING}{rendered content}{HTML_CLOSING}``.
     """
     children: Union[str, ElementList]
+
+    #: Opening part of the element
     HTML_OPENING = '<div>'
+
+    #: Closing part of the element
     HTML_CLOSING = '</div>'
 
     def html_token_stream(self) -> Iterator[str]:
@@ -190,6 +195,7 @@ class SimpleElement(Element):
 
 @dataclass
 class Paragraph(SimpleElement):
+    """"""
     HTML_OPENING = '<p>'
     HTML_CLOSING = '</p>'
 

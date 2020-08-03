@@ -37,12 +37,12 @@ So we have an alternative way to construct the exact same document.
 
 ```python
 from paxter.authoring import create_document_env
-from paxter.preset import run_paxter
+from paxter.preset import run_simple_paxter
 
 input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
 and my blog is located at @link["https://ashley.example.com"]{ashley.example.com}}'''
 env = create_document_env()
-document = run_paxter(input_text, env)
+document = run_simple_paxter(input_text, env)
 ```
 
 ```pycon
@@ -195,7 +195,7 @@ There is nothing preventing you from creating different environment mapping like
 ```python
 from paxter import authoring
 from paxter.authoring.standards import starter_unsafe_eval
-from paxter.preset import run_paxter
+from paxter.preset import run_simple_paxter
 
 alternative_env = {
     # _starter_eval_ is required, but ignore this part for now
@@ -208,7 +208,7 @@ alternative_env = {
 
 input_text = '''@p{Hi, my name is @b{Ashley}@br
 and my blog is located at @a["https://ashley.example.com"]{ashley.example.com}}'''
-document = run_paxter(input_text, alternative_env)
+document = run_simple_paxter(input_text, alternative_env)
 ```
 
 ```pycon
@@ -225,14 +225,14 @@ So we will add another one.
 
 ```python
 from paxter.authoring import create_document_env
-from paxter.preset import run_paxter
+from paxter.preset import run_simple_paxter
 
 input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
 and my blog is located at @link["https://ashley.example.com"]{ashley.example.com}}
 
 @paragraph{This is another paragraph.}'''
 env = create_document_env()
-document = run_paxter(input_text, env)
+document = run_simple_paxter(input_text, env)
 ```
 
 ```pycon
@@ -382,14 +382,14 @@ though the mechanisms of symbolic replacements.
 
 ```python
 from paxter.authoring import Document, create_document_env
-from paxter.preset import run_paxter
+from paxter.preset import run_simple_paxter
 
 input_text = '''Hi, my name is @bold{Ashley}@break
 and my blog is located at @link["https://ashley.example.com"]{ashley.example.com}
 
 To reach me directly, send email to ashley@@example.com'''
 env = create_document_env()
-document = Document(run_paxter(input_text, env))
+document = Document(run_simple_paxter(input_text, env))
 ```
 
 ```pycon

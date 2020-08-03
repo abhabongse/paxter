@@ -2,19 +2,6 @@
 
 Paxter language package provides the following core functionality.
 
-## Preset Functions
-
-The following function combines Paxter language parsing
-together with parsed tree evaluation.
-Please read the source of the function implementation
-to see how it pieces together other API functions and classes.
-
-```eval_rst
-.. autofunction:: paxter.preset.run_paxter
-```
-
----
-
 ## Exceptions
 
 These are all the exception classes raised from this library package.
