@@ -1,0 +1,482 @@
+First Tutorial
+==============
+
+Installation
+------------
+
+Paxter python package can be installed from PyPI via `pip` command
+(or any other methods of your choice):
+
+.. code-block:: bash
+
+   $ pip install paxter
+
+
+Write a first blog entry
+------------------------
+
+While not required, Paxter package provides a set of data classes
+that users can use to construct a rich document.
+Here suppose that we are going to write a simple blog entry.
+
+.. code-block:: python
+
+   from paxter.authoring import Bold, Link, Paragraph, line_break
+
+   paragraph = Paragraph([
+       "Hi, my name is ",
+       Bold(["Ashley"]),
+       line_break,
+       "\nand my blog is located ",
+       Link(["here"], "https://example.com"),
+       ".",
+   ])
+
+.. code-block:: pycon
+
+   >>> print(paragraph.html())
+   <p>Hi, my name is <b>Ashley</b><br />
+   and my blog is located <a href="https://example.com">here</a>.</p>
+
+
+Of course, this method of writing documents inside python code would be very cumbersome.
+So we have an alternative way to construct the exact same document.
+
+.. code-block:: python
+
+   from paxter.authoring import create_document_env
+   from paxter.preset import run_simple_paxter
+
+   # The following input text is written in-code for a simpler example.
+   # However in reality, input text may be read from other sources
+   # such as text files, some databases, or even some API.
+
+   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
+   and my blog is located @link["https://example.com"]{here}.}'''
+   env = create_document_env()
+   document = run_simple_paxter(input_text, env)
+
+.. code-block:: pycon
+
+   >>> document
+   [
+       Paragraph(children=[
+           'Hi, my name is ',
+           Bold(children=['Ashley']),
+           RawElement(children='<br />'),
+           '\nand my blog is located ',
+           Link(children=['here'], href='https://example.com'),
+           '.',
+       ]),
+   ]
+   >>> document[0] == paragraph
+   True
+   >>> print(document[0].html())
+   <p>Hi, my name is <b>Ashley</b><br />
+   and my blog is located <a href="https://example.com">here</a>.</p>
+
+(**Note:** If you are wondering why the resulting document is 
+a list of :class:`Paragraph <paxter.authoring.document.Paragraph>`
+instance instead of just the object itself,
+just be patient and we will discuss this in a later section.)
+
+
+Understanding commands
+~~~~~~~~~~~~~~~~~~~~~~
+
+In Paxter input text, parts that being with an ‘**@**’ symbol
+(namely ``@paragraph``, ``@bold``, ``@break``, and ``@link``)
+are known as Paxter **commands**.
+Commands can either be in standalone form (like ``@break``)
+or, when followed by at least one of ``[options]`` or ``{main argument}``,
+it simulates a function call over such object.
+
+For example, ``@bold{Ashley}`` in Paxter language
+is roughly equivalent to the python code ``bold(["Ashley"])``
+before it is evaluated into ``Bold(children=["Ashley"])`` as a final result.
+Similarly, 
+
+.. code-block:: paxter
+
+   @link["https://example.com"]{here}
+
+is roughly translated into the following python code
+
+.. code-block:: python
+
+   link(["here"], "https://example.com")
+
+and then it is evaluated into
+
+.. code-block:: python
+
+   Link(children=['here'], href='https://example.com')
+
+Notice that the textual content surrounded by *a pair of curly braces*
+is always parsed into the list of values 
+and always becomes the very first argument of function calls.
+We call this part the **main argument** of a command.
+
+Moreover, if we look at how the outermost ``@paragraph`` command is constructed,
+we would see that the main argument is also 
+always *recursively parsed* into a list of values.
+Hence, this paragraph command is in fact roughly parsed
+into an equivalent python code as follows.
+
+.. code-block:: python
+
+   paragraph([
+       "Hi, my name is ",
+       bold(["Ashley"]),
+       break_,
+       "\nand my blog is located ",
+       link(["here"], "https://example.com"),
+       ".",
+   ])
+
+Now let’s revisit the ``@link`` command once again.
+The part between *a pair of square brackets*
+becomes the second argument of the ``link`` function call.
+This part is called the **options** of a command.
+In fact, we can specify more than one value inside the options,
+and all of these values will become the subsequent arguments
+after the first argument of the function call.
+
+For example, the Paxter command ``@foo["bar", 3]{main argument}``
+would turn into the following equivalent python code:
+
+.. code-block:: python
+
+   foo(["main argument"], "bar", 3)
+
+Python style keyword arguments are also supported inside options.
+So the Paxter command `@foo["bar", n=3]{main argument}` gets turned into:
+
+.. code-block:: python
+
+   foo(["main argument"], "bar", n=3)
+
+Alternatively, the main argument is actually not mandatory.
+When this happens, all values within the options become 
+sole arguments of the function call.
+For instance, ``@foo["bar", n=3]`` would be tranformed into
+
+.. code-block:: python
+
+   foo("bar", n=3)
+
+Of course, to make a function call with zero arguments,
+simply write a pair of brackets without anything inside it 
+(e.g. ``@foo[]``).
+
+Finally, do take note that options of a command 
+only mimics Python function call pattern;
+it does not support full python syntax inside it. 
+The full description of what is supported in a command in general
+is discussed in :doc:`Paxter Language Tutorial <paxter_language_tutorial>` page.
+
+
+Understanding environments
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+At this point, please note that ``@paragraph``, ``@bold``, and ``@link``
+are merely aliases to the constructors of actual data classes
+:class:`Paragraph <paxter.authoring.document.Paragraph`,
+:class:`Bold <paxter.authoring.document.Bold`,
+and :class:`Link <paxter.authoring.document.Link` respectively.
+This linkage is evident when we inspect the content
+of the environment dictionary ``env`` (shown below).
+Also, ``@break`` simply maps to the value ``RawElement(children='<br />')``.
+
+.. code-block:: pycon
+
+   >>> env
+   {'_starter_eval_': <function paxter.authoring.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
+    'for': DirectApply(wrapped=<function for_statement at 0x7ff5ca9ff700>),
+    'if': DirectApply(wrapped=<function if_statement at 0x7ff5ca9ff820>),
+    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7ff5bbf40040>),
+    'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
+    'flatten': <function paxter.authoring.standards.flatten(data, join: bool = False) -> Union[List[str], str]>,
+    '_symbols_': {'!': '',
+     '@': '@',
+     '.': RawElement(children='&hairsp;'),
+     ',': RawElement(children='&thinsp;'),
+     '%': RawElement(children='&nbsp;')},
+    'raw': paxter.authoring.document.RawElement,
+    'break': RawElement(children='<br />'),
+    'hrule': RawElement(children='<hr />'),
+    'nbsp': RawElement(children='&nbsp;'),
+    'hairsp': RawElement(children='&hairsp;'),
+    'thinsp': RawElement(children='&thinsp;'),
+    'paragraph': paxter.authoring.document.Paragraph,
+    'h1': paxter.authoring.document.Heading1,
+    'h2': paxter.authoring.document.Heading2,
+    'h3': paxter.authoring.document.Heading3,
+    'h4': paxter.authoring.document.Heading4,
+    'h5': paxter.authoring.document.Heading5,
+    'h6': paxter.authoring.document.Heading6,
+    'bold': paxter.authoring.document.Bold,
+    'italic': paxter.authoring.document.Italic,
+    'uline': paxter.authoring.document.Underline,
+    'code': paxter.authoring.document.Code,
+    'blockquote': paxter.authoring.document.Blockquote,
+    'link': paxter.authoring.document.Link,
+    'image': paxter.authoring.document.Image,
+    'numbered_list': paxter.authoring.document.NumberedList,
+    'bulleted_list': paxter.authoring.document.BulletedList}
+
+There is nothing preventing you from creating different environment mapping like so.
+
+.. code-block:: python
+
+   from paxter import authoring
+   from paxter.authoring.standards import starter_unsafe_eval
+   from paxter.preset import run_simple_paxter
+
+   alternative_env = {
+       # _starter_eval_ is required, but ignore this part for now
+       '_starter_eval_': starter_unsafe_eval,
+       'p': authoring.Paragraph,
+       'b': authoring.Bold,
+       'a': authoring.Link,
+       'br': authoring.line_break
+   }
+
+   input_text = '''@p{Hi, my name is @b{Ashley}@br
+   and my blog is located @a["https://example.com"]{here}.}'''
+   document = run_simple_paxter(input_text, alternative_env)
+
+.. code-block:: pycon
+
+   >>> print(document[0].html())
+   <p>Hi, my name is <b>Ashley</b><br />
+   and my blog is located <a href="https://example.com">here</a>.</p>
+
+
+Add a second paragraph
+----------------------
+
+The blog entry with a single paragraph is way too short.
+So we will add another one.
+
+.. code-block:: python
+
+   from paxter.authoring import create_document_env
+   from paxter.preset import run_simple_paxter
+
+   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
+   and my blog is located @link["https://example.com"]{here}.}
+
+   @paragraph{This is another paragraph.}'''
+   env = create_document_env()
+   document = run_simple_paxter(input_text, env)
+
+.. code-block:: pycon
+
+   >>> document
+   [
+       Paragraph(children=[
+           'Hi, my name is ',
+           Bold(children=['Ashley']),
+           RawElement(children='<br />'),
+           '\nand my blog is located ',
+           Link(children=['here'], href='https://example.com'),
+           '.',
+       ]),
+       '\n\n',
+       Paragraph(children=['This is another paragraph.']),
+   ]
+
+In order to render the ``document``, iterating over each element of the list
+in order to call `html()` rendering method would be annoying
+(not to mention that some elements are just plain strings).
+
+Paxter authoring toolchain mitigates this problem by providing
+a convenient data class called
+:class:`Document <paxter.authoring.document.Document>`.
+We will wrap the result from `run_paxter` under
+:class:`Document <paxter.authoring.document.Document>`
+data class.
+
+.. code-block:: python
+
+   from paxter.authoring import Document
+
+   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
+   and my blog is located @link["https://example.com"]{here}.}
+
+   @paragraph{This is another paragraph.}'''
+   env = create_document_env()
+   document = Document(run_simple_paxter(input_text, env))
+
+.. code-block:: pycon
+
+   >>> print(document.html())
+   <p>Hi, my name is <b>Ashley</b><br />
+   and my blog is located <a href="https://example.com">here</a>.</p><p>This is another paragraph.</p>
+
+Better yet, because writing multiple paragraphs in a single document
+is a very common task, so :class:`Document <paxter.authoring.document.Document>`
+would automatically split its content into paragraphs
+separated by two or more newline characters,
+and each resulting paragraph will receive a wrapping under
+:class:`Paragraph <paxter.authoring.document.Paragraph>` data class
+unless its entirely is a single document element of other kind.
+
+.. code-block:: python
+
+   input_text = '''Hi, my name is @bold{Ashley}@break
+   and my blog is located @link["https://example.com"]{here}.
+
+   This is another paragraph.
+
+   @bold{This is a third paragraph.}'''
+   env = create_document_env()
+   document = Document(run_simple_paxter(input_text, env))
+
+.. code-block:: pycon
+
+   >>> print(document.html())
+   <p>Hi, my name is <b>Ashley</b><br />
+   and my blog is located <a href="https://example.com">here</a>.</p><p>This is another paragraph.</p><b>This is a third paragraph.</b>
+
+Watch out for the third paragraph above!
+They are surrounded by `<b>` tag in the result,
+but the enclosing `<p>` tag is missing.
+In this case, the explicit `@paragraph` marking is required.
+
+.. code-block:: python
+
+   input_text = '''Hi, my name is @bold{Ashley}@break
+   and my blog is located @link["https://example.com"]{here}.
+
+   This is another paragraph.
+
+   @paragraph{@bold{This is a third paragraph.}}'''
+   env = create_document_env()
+   document = Document(run_simple_paxter(input_text, env))
+
+.. code-block:: pycon
+
+   >>> print(document.html())
+   <p>Hi, my name is <b>Ashley</b><br />
+   and my blog is located <a href="https://example.com">here</a>.</p><p>This is another paragraph.</p><p><b>This is a third paragraph.</b></p>
+
+
+Include an email address
+------------------------
+
+You might already have noticed that ‘**@**’ symbol has special meaning in Paxter language;
+it acts as a switch which turns the subsequent piece of input into a command.
+Therefore, if you wish to include ‘**@**’ string literal as-is
+in the final output, an escape of some sort is required.
+
+Except that Paxter language actually does *not* provide a way
+to *escape* ‘**@**’ symbols per se.
+However, there is a way around this.
+
+But first, let’s revisit the content of the environment dictionary.
+
+.. code-block:: pycon
+
+   >>> from paxter.authoring import create_document_env
+   >>> env = create_document_env()
+   >>> env
+   {'_starter_eval_': <function paxter.authoring.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
+    'for': DirectApply(wrapped=<function for_statement at 0x7f7d6ecb0700>),
+    'if': DirectApply(wrapped=<function if_statement at 0x7f7d6ecb0820>),
+    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f7d5fa3e040>),
+    'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
+    'flatten': <function paxter.authoring.standards.flatten(data, join: bool = False) -> Union[List[str], str]>,
+    '_symbols_': {'!': '',
+     '@': '@',
+     '.': RawElement(children='&hairsp;'),
+     ',': RawElement(children='&thinsp;'),
+     '%': RawElement(children='&nbsp;')},
+    'raw': paxter.authoring.document.RawElement,
+    'break': RawElement(children='<br />'),
+    'hrule': RawElement(children='<hr />'),
+    'nbsp': RawElement(children='&nbsp;'),
+    'hairsp': RawElement(children='&hairsp;'),
+    'thinsp': RawElement(children='&thinsp;'),
+    'paragraph': paxter.authoring.document.Paragraph,
+    'h1': paxter.authoring.document.Heading1,
+    'h2': paxter.authoring.document.Heading2,
+    'h3': paxter.authoring.document.Heading3,
+    'h4': paxter.authoring.document.Heading4,
+    'h5': paxter.authoring.document.Heading5,
+    'h6': paxter.authoring.document.Heading6,
+    'bold': paxter.authoring.document.Bold,
+    'italic': paxter.authoring.document.Italic,
+    'uline': paxter.authoring.document.Underline,
+    'code': paxter.authoring.document.Code,
+    'blockquote': paxter.authoring.document.Blockquote,
+    'link': paxter.authoring.document.Link,
+    'image': paxter.authoring.document.Image,
+    'numbered_list': paxter.authoring.document.NumberedList,
+    'bulleted_list': paxter.authoring.document.BulletedList}
+
+Let’s focus on ``env['_symbols_']`` which seems to be
+a mapping from single symbol characters to some values.
+Paxter uses this information to perform what is called
+**symbolic replacements** of a special kind of command.
+That is, whenever an ‘**@**’ command character is immediately followed by
+another symbol character, then this symbolic replacement occurs.
+
+For example, ‘**@!**’ inside the input text will be replaced by ``env['_symbols_']['!']``
+and ‘**@@**’ will be replaced by ``env['_symbols_']['@']``, etc.
+Therefore, Paxter lets users use ‘**@@**’ to mimic the escaping of ‘**@**’ symbol
+though the mechanisms of symbolic replacements.
+
+.. code-block:: python
+
+   from paxter.authoring import Document, create_document_env
+   from paxter.preset import run_simple_paxter
+
+   input_text = '''Hi, my name is @bold{Ashley}@break
+   and my blog is located @link["https://example.com"]{here}.
+
+   To reach me directly, send email to ashley@@example.com'''
+   env = create_document_env()
+   document = Document(run_simple_paxter(input_text, env))
+
+.. code-block:: pycon
+
+   >>> print(document.html())
+   <p>Hi, my name is <b>Ashley</b><br />
+   and my blog is located <a href="https://example.com">here</a>.</p><p>To reach me directly, send email to ashley@example.com</p>
+
+Of course, you can modify this behavior as well by customizing
+``env['_symbols_']`` to suit your needs.
+
+
+Document shortcut
+~~~~~~~~~~~~~~~~~
+
+By the way, the following python code seems to be a recurring pattern.
+
+.. code-block:: python
+
+   from paxter.authoring import Document, create_document_env
+   from paxter.preset import run_simple_paxter
+
+   input_text = "..."
+   env = create_document_env()
+   document = Document(run_simple_paxter(input_text, env))
+
+Hence, there is even a neater shortcut as follows
+
+.. code-block:: python
+
+   from paxter.preset import run_document_paxter
+
+   input_text = "..."
+   document = run_document_paxter(input_text)
+
+
+Define common constants
+-----------------------
+
+.. todo::
+
+   More stuff coming soon (under construction).

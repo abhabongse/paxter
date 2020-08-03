@@ -93,19 +93,78 @@ The following functions and classes are available in preset environments.
      - **thinsp** (@,)
      - \-
      - Yes
-   * - Empty string (``""``)
+   * - Empty string: ‘’
      - @!
      - \-
      - Yes
-   * - @-symbol (``"@"``)
+   * - @-symbol: ‘@’
      - @@
      - \-
      - Yes
-
-
-.. todo::
-
-   Add more contents.
+   * - :class:`Paragraph <paxter.authoring.document.Paragraph>`
+     - **paragraph**
+     - \-
+     - Yes
+   * - :class:`Heading1 <paxter.authoring.document.Heading1>`
+     - **h1**
+     - \-
+     - Yes
+   * - :class:`Heading2 <paxter.authoring.document.Heading2>`
+     - **h2**
+     - \-
+     - Yes
+   * - :class:`Heading3 <paxter.authoring.document.Heading3>`
+     - **h3**
+     - \-
+     - Yes
+   * - :class:`Heading4 <paxter.authoring.document.Heading4>`
+     - **h4**
+     - \-
+     - Yes
+   * - :class:`Heading5 <paxter.authoring.document.Heading5>`
+     - **h5**
+     - \-
+     - Yes
+   * - :class:`Heading6 <paxter.authoring.document.Heading6>`
+     - **h6**
+     - \-
+     - Yes
+   * - :class:`Bold <paxter.authoring.document.Bold>`
+     - **bold**
+     - \-
+     - Yes
+   * - :class:`Heading6 <paxter.authoring.document.Italic>`
+     - **italic**
+     - \-
+     - Yes
+   * - :class:`Underline <paxter.authoring.document.Underline>`
+     - **uline**
+     - \-
+     - Yes
+   * - :class:`Code <paxter.authoring.document.Code>`
+     - **code**
+     - \-
+     - Yes
+   * - :class:`Blockquote <paxter.authoring.document.Blockquote>`
+     - **blockquote**
+     - \-
+     - Yes
+   * - :class:`Link <paxter.authoring.document.Link>`
+     - **link**
+     - \-
+     - Yes
+   * - :class:`Image <paxter.authoring.document.Image>`
+     - **image**
+     - \-
+     - Yes
+   * - :class:`NumberedList <paxter.authoring.document.NumberedList>`
+     - **numbered_list**
+     - \-
+     - Yes
+   * - :class:`BulletedList <paxter.authoring.document.BulletedList>`
+     - **bulleted_list**
+     - \-
+     - Yes
 ```
 
 ### Standard Functions

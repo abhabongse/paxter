@@ -33,20 +33,19 @@
     </tbody>
 </table>
 
-**Paxter** is a document-first, text pre-processing mini-language toolchain,
-_loosely_ inspired by [@-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).
+**Paxter language** helps users write rich-formatting documents
+with simple and easy-to-understand syntax.
+Nevertheless, users still have access to the python environment:
+they can call python functions and evaluate python expressions
+right inside the document itself,
+giving users flexibility and power to customize 
+their approach to writing documents.
 
--   The Paxter library package defines the syntax for **Paxter language**
-    and provides a toolchain for parsing input texts
-    written in Paxter language into _an intermediate parsed tree_.
--   However, the semantics of Paxter language is left unspecified,
-    meaning that users of the library have all the freedom to do
-    whatever they like to render or transform the intermediate parsed tree
-    into a final output they wish to achieve.  
--   Alternatively, instead of implementing an interpreter 
-    for intermediate parsed tree by themselves,
-    users may opt-in to utilize a preset _parsed tree renderers_,
-    also provided by this library package.
+**Paxter package** is a document-first, text processing language toolchain,
+inspired by [@-expressions in Racket](https://docs.racket-lang.org/scribble/reader.html).
+Users of the package also has the access to the Paxter language parser API
+which allows them to implement new interpreters on top of the Paxter language
+if they so wish.
 
 
 ## Example
@@ -553,12 +552,13 @@ Expected outcome for rolling a die is 3.5.
 Learn more about Paxter via the following links from
 [ReadTheDocs documentation](https://paxter.readthedocs.io/) website:
  
--   [Installation and Getting Started](https://paxter.readthedocs.io/en/latest/getting_started.html)
--   [Paxter Language Tutorial](https://paxter.readthedocs.io/en/latest/paxter_language_tutorial.html)
--   [Python Authoring Mode Tutorial](https://paxter.readthedocs.io/en/latest/python_authoring_mode_tutorial.html)
--   [Custom Renderer Tutorial](https://paxter.readthedocs.io/en/latest/custom_renderer_tutorial.html)
--   [Syntax Reference](https://paxter.readthedocs.io/en/latest/syntax.html)
--   [Core API Reference](https://paxter.readthedocs.io/en/latest/core_api.html)
+-   [First Tutorial](first_tutorial.md)
+-   [Getting Started](getting_started.rst)
+-   [Paxter Language Tutorial](paxter_language_tutorial.md)
+-   [Python Authoring Mode Tutorial](python_authoring_mode_tutorial.md)
+-   [Core API Reference](core_api.md)
+-   [Authoring API Reference](authoring_api.md)
+-   [Syntax Reference](syntax.rst)
 -   and more coming soon!
 
 
