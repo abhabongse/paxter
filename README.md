@@ -552,13 +552,10 @@ Expected outcome for rolling a die is 3.5.
 Learn more about Paxter via the following links from
 [ReadTheDocs documentation](https://paxter.readthedocs.io/) website:
  
--   [First Tutorial](first_tutorial.md)
--   [Getting Started](getting_started.rst)
--   [Paxter Language Tutorial](paxter_language_tutorial.md)
--   [Python Authoring Mode Tutorial](python_authoring_mode_tutorial.md)
--   [Core API Reference](core_api.md)
--   [Authoring API Reference](authoring_api.md)
--   [Syntax Reference](syntax.rst)
+-   [First Tutorial](https://paxter.readthedocs.io/en/latest/first_tutorial.html)
+-   [Core API Reference](https://paxter.readthedocs.io/en/latest/core_api.html)
+-   [Authoring API Reference](https://paxter.readthedocs.io/en/latest/authoring_api.html)
+-   [Syntax Reference](https://paxter.readthedocs.io/en/latest/syntax.html)
 -   and more coming soon!
 
 

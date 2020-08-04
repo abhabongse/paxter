@@ -16,7 +16,7 @@ def run_simple_paxter(input_text: str, env: Optional[dict] = None) -> Any:
     and may modify the given environment in-place as well.
     """
     parse_context = ParseContext(input_text)
-    env = create_simple_env(env)
+    env = env or create_simple_env()
     evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
     return evaluate_context.rendered
 
@@ -28,6 +28,6 @@ def run_document_paxter(input_text: str, env: Optional[dict] = None) -> Document
     The result is wrapped under Document data class.
     """
     parse_context = ParseContext(input_text)
-    env = create_document_env(env)
+    env = env or create_document_env()
     evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
     return Document(evaluate_context.rendered)

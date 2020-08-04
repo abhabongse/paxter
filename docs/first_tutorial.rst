@@ -159,7 +159,7 @@ So the Paxter command `@foo["bar", n=3]{main argument}` gets turned into:
 Alternatively, the main argument is actually not mandatory.
 When this happens, all values within the options become 
 sole arguments of the function call.
-For instance, ``@foo["bar", n=3]`` would be tranformed into
+For instance, ``@foo["bar", n=3]`` would be transformed into
 
 .. code-block:: python
 
@@ -181,9 +181,9 @@ Understanding environments
 
 At this point, please note that ``@paragraph``, ``@bold``, and ``@link``
 are merely aliases to the constructors of actual data classes
-:class:`Paragraph <paxter.authoring.document.Paragraph`,
-:class:`Bold <paxter.authoring.document.Bold`,
-and :class:`Link <paxter.authoring.document.Link` respectively.
+:class:`Paragraph <paxter.authoring.document.Paragraph>`,
+:class:`Bold <paxter.authoring.document.Bold>`,
+and :class:`Link <paxter.authoring.document.Link>` respectively.
 This linkage is evident when we inspect the content
 of the environment dictionary ``env`` (shown below).
 Also, ``@break`` simply maps to the value ``RawElement(children='<br />')``.
@@ -460,7 +460,7 @@ By the way, the following python code seems to be a recurring pattern.
    from paxter.authoring import Document, create_document_env
    from paxter.preset import run_simple_paxter
 
-   input_text = "..."
+   input_text = ...
    env = create_document_env()
    document = Document(run_simple_paxter(input_text, env))
 
@@ -470,12 +470,200 @@ Hence, there is even a neater shortcut as follows
 
    from paxter.preset import run_document_paxter
 
-   input_text = "..."
+   input_text = ...
    document = run_document_paxter(input_text)
 
 
 Define common constants
 -----------------------
+
+While you are writing a document,
+you might end up writing the same phrase over-and-over again.
+You wish that you could define that constant once and reuse it over-and-over again.li
+Well you can, in a lot of different ways.
+
+
+First method
+~~~~~~~~~~~~
+
+The first method we are going to demonstrate to you
+is to prepare the evaluation environment dictionary
+so that it also includes information about additional aliases.
+Luckily, this is as simple as create a custom dictionary
+using :func:`create_document_env <paxter.authoring.environ.create_document_env>`
+and supply it as the second optional argument of the function
+:func:`run_document_paxter <paxter.preset.run_document_paxter>`.
+
+.. code-block:: python
+
+   from paxter.authoring import create_document_env
+   from paxter.preset import run_document_paxter
+
+   env = create_document_env({
+       'yaa': "Yet Another Acronym",
+   })
+   input_text = '''
+   YAA is @yaa and it stands for @yaa.
+   '''
+   document = run_document_paxter(input_text, env)
+
+.. code-block:: pycon
+
+   >>> print(document.html())
+   <p>YAA is Yet Another Acronym and it stands for Yet Another Acronym.</p>
+   >>> env
+   {'_starter_eval_': <function paxter.authoring.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
+    'for': DirectApply(wrapped=<function for_statement at 0x7f6a4e396ca0>),
+    'if': DirectApply(wrapped=<function if_statement at 0x7f6a4e396dc0>),
+    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f6a4e361550>),
+    'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
+    'flatten': <function paxter.authoring.standards.flatten(data, join: bool = False) -> Union[List[str], str]>,
+    'raw': paxter.authoring.document.RawElement,
+    'break': RawElement(children='<br />'),
+    'hrule': RawElement(children='<hr />'),
+    'nbsp': RawElement(children='&nbsp;'),
+    'hairsp': RawElement(children='&hairsp;'),
+    'thinsp': RawElement(children='&thinsp;'),
+    'paragraph': paxter.authoring.document.Paragraph,
+    'h1': paxter.authoring.document.Heading1,
+    'h2': paxter.authoring.document.Heading2,
+    'h3': paxter.authoring.document.Heading3,
+    'h4': paxter.authoring.document.Heading4,
+    'h5': paxter.authoring.document.Heading5,
+    'h6': paxter.authoring.document.Heading6,
+    'bold': paxter.authoring.document.Bold,
+    'italic': paxter.authoring.document.Italic,
+    'uline': paxter.authoring.document.Underline,
+    'code': paxter.authoring.document.Code,
+    'blockquote': paxter.authoring.document.Blockquote,
+    'link': paxter.authoring.document.Link,
+    'image': paxter.authoring.document.Image,
+    'numbered_list': paxter.authoring.document.NumberedList,
+    'bulleted_list': paxter.authoring.document.BulletedList,
+    'yaa': 'Yet Another Acronym'}
+
+Observe that the command ``@yaa`` could be referred to inside input text
+because the alias ``yaa`` maps to the string ``"Yet Another Acronym"``
+inside the evaluation environment (as shown above).
+
+
+Second method
+~~~~~~~~~~~~~
+
+Another method we are going to show you is to directly define
+a new python variable right within the document itself.
+
+You can embed any python code for execution right inside the input text
+by wrapping python code with the ``@python`` command.
+However, instead of putting your python code between a pair of braces,
+replace those pair of braces with a pair of quotation marks instead.
+
+.. code-block:: python
+
+   from paxter.preset import run_document_paxter
+
+   input_text = '''
+   @python"yaa = 'Yet Another Acronym'"
+   YAA is @yaa and it stands for @yaa.
+   '''
+   document = run_document_paxter(input_text)
+
+.. code-block:: pycon
+
+   >>> print(document.html())
+   <p>YAA is Yet Another Acronym and it stands for Yet Another Acronym.</p>
+
+It might seem crazy at first,
+but this is one of very powerful features of Paxter package.
+
+And suppose that you manually create the environment dictionary by yourself.
+Below is what happens to the environment after execution.
+
+.. code-block:: python
+
+   from paxter.authoring import create_document_env
+   from paxter.preset import run_document_paxter
+
+   input_text = '''
+   @python"yaa = 'Yet Another Acronym'"
+   YAA is @yaa and it stands for @yaa.
+   '''
+   env = create_document_env()
+   document = run_document_paxter(input_text, env)
+
+.. code-block:: pycon
+
+   >>> print(document.html())
+   <p>YAA is Yet Another Acronym and it stands for Yet Another Acronym.</p>
+   >>> env
+   {'_starter_eval_': <function paxter.authoring.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
+    'for': DirectApply(wrapped=<function for_statement at 0x7f9c76ea3af0>),
+    'if': DirectApply(wrapped=<function if_statement at 0x7f9c76ea3c10>),
+    ...
+    'yaa': 'Yet Another Acronym'}
+
+The mapping of ``yaa`` gets entered into the environment dictionary!
+This happened because the command ``@python`` called
+``exec()`` built-in function behind the scenes
+with ``env`` as the global dictionary.
+
+
+Quoted main argument
+~~~~~~~~~~~~~~~~~~~~
+
+You might have asked,
+*why wrapping the main argument of a command with a pair of a quotation mark instead of a pair of curly braces? Is this a totally new syntax I have to remember?*
+
+Not quite. By using quotation marks instead of curly braces,
+we merely modifies the parsing behavior of the main argument.
+To highlight the difference between two parsing modes,
+let’s look at how the above ``@python`` command got parsed.
+
+Specifically, ``@python"yaa = 'Yet Another Acronym'"``
+will be equivalent to the following python code.
+
+.. code-block:: python
+
+   python("yaa = 'Yet Another Acronym")
+
+Here, the main argument no longer gets parsed into a list.
+It is just a plain string!
+This also has some quirky implications as well:
+it is *impossible* to nest a command with the *quoted* main argument
+(which also means that you also do not need to escape ‘**@**’
+like what we have done to email address previously).
+
+But what if we wish to include quotation marks as
+part of the textual content of the quoted main argument?
+How do we *escape* quotation marks?
+As you might have learned so far,
+Paxter does not implement character escaping mechanism of any sorts.
+Instead we adopted Rust raw-string syntax in Paxter:
+by enclosing the string literal with an equal number of hash characters!
+
+.. code-block:: python
+
+   from paxter.preset import run_document_paxter
+
+   input_text = '''
+   @python##"yaa = "Yet Another Acronym""##
+   YAA is @yaa and it stands for @yaa.
+   '''
+   document = run_document_paxter(input_text)
+
+.. code-block:: pycon
+
+   >>> print(document.html())
+   <p>YAA is Yet Another Acronym and it stands for Yet Another Acronym.</p>
+
+We have not told you earlier that this hash-enclosing mechanisms
+works with main argument surrounded by curly braces as well!
+For example, ``@foo##{Natural numbers are {0, 1, 2, ...}.}##``
+will be parsed roughly to the following python code.
+
+.. code-block:: python
+
+   foo(["Natural numbers are {0, 1, 2, ...}."])
 
 .. todo::
 
