@@ -1,12 +1,14 @@
-# Core API Reference
+##################
+Core API Reference
+##################
 
 Paxter language package provides the following core functionality.
 
-## Exceptions
+Exceptions
+==========
 
 These are all the exception classes raised from this library package.
 
-```eval_rst
 .. autoclass:: paxter.exceptions.PaxterBaseException
    :members: message, positions
    :show-inheritance:
@@ -19,25 +21,25 @@ These are all the exception classes raised from this library package.
 
 .. autoclass:: paxter.exceptions.PaxterRenderError
    :show-inheritance:
-```
 
----
+----
 
-## Parsing
+
+Parsing
+=======
 
 The following class is where the main Paxter language parsing logic happens.
 
-```eval_rst
 .. autoclass:: paxter.parser.ParseContext
    :members: input_text, tree
-```
 
-### Data Definitions
+
+Data Definitions
+----------------
 
 Results of the Paxter language parsing yields parsed trees
 which consist of instances of the following data classes.
 
-```eval_rst
 .. autoclass:: paxter.parser.Token
    :members: start_pos, end_pos
  
@@ -71,14 +73,14 @@ which consist of instances of the following data classes.
 .. autoclass:: paxter.parser.Command
    :members: starter, starter_enclosing, option, main_arg
    :show-inheritance:
-```
 
-### Other Utility Classes
+
+Other Utility Classes
+---------------------
 
 Other classes related to parsing,
 presented here for reference only.
 
-```eval_rst
 .. autoclass:: paxter.parser.CharLoc
    :members: line, col
 
@@ -87,26 +89,26 @@ presented here for reference only.
 
 .. autoclass:: paxter.parser.GlobalEnclosingPattern
    :members: left, right
-```
 
----
+----
 
-## Evaluation
+
+Evaluation
+==========
 
 The following class implements the basic tree evaluation in Paxter language.
 Users may want to extend this class to customize the tree evaluation.
 
-```eval_rst
 .. autoclass:: paxter.evaluator.EvaluateContext
    :members:
-```
 
-### Function decorators
+
+Function decorators
+-------------------
 
 Wrappers for functions in python environments
 to be used as function decorators.
 
-```eval_rst
 .. autoclass:: paxter.evaluator.BaseApply
 
 .. autoclass:: paxter.evaluator.DirectApply
@@ -117,4 +119,3 @@ to be used as function decorators.
 
 .. autoclass:: paxter.evaluator.NormalApplyWithEnv
    :members: wrapped
-```

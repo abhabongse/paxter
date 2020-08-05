@@ -1,8 +1,9 @@
+###############
 Getting Started
-===============
+###############
 
 Installation
-------------
+============
 
 Paxter language package can be installed from PyPI via ``pip`` command
 (or any other methods of your choice):
@@ -13,7 +14,7 @@ Paxter language package can be installed from PyPI via ``pip`` command
 
 
 Programmatic Usage
-------------------
+==================
 
 This package is *mainly* intended to be utilized as a library.
 To get started, let’s assume that we have a document source text
@@ -41,7 +42,7 @@ written using **Paxter language syntax**.
    Learn more about :doc:`Paxter language grammar and features <paxter_language_tutorial>`.
 
 Parsing
-~~~~~~~
+-------
 
 First and foremost, we use a **parser**
 (implemented by the class :class:`ParseContext <paxter.core.ParseContext>`)
@@ -135,7 +136,7 @@ it simply uses the Paxter *command* syntax to *embed* Python code
 to which we will give a meaningful interpretation later.
 
 Rendering
-~~~~~~~~~
+---------
 
 Next step, we use a built-in **renderer**
 to transform the intermediate parsed tree into its final output.
@@ -176,7 +177,7 @@ The above code will output the following.
    and :doc:`how to write custom renderer <custom_renderer_tutorial>`.
 
 Create your own function
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 We recommend Paxter library users to by themselves write a utility function
 to connect all of the toolchains provided Paxter package.
@@ -194,7 +195,7 @@ This is the minimal example of a function to get you started.
 
 
 Command-Line Usage
-------------------
+==================
 
 As a shortcut, Paxter library package also provided some utilities
 via command-line program.

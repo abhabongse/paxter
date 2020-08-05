@@ -1,23 +1,26 @@
-First Tutorial
-==============
+##################
+One Giant Tutorial
+##################
 
 Installation
-------------
+============
 
-Paxter python package can be installed from PyPI via `pip` command
+Paxter python package can be installed from PyPI via ``pip`` command
 (or any other methods of your choice):
 
 .. code-block:: bash
 
    $ pip install paxter
 
+----
 
-Write a first blog entry
-------------------------
+Write a First Blog Entry
+========================
 
 While not required, Paxter package provides a set of data classes
 that users can use to construct a rich document.
-Here suppose that we are going to write a simple blog entry.
+Here suppose that we are going to write a simple blog entry
+using a few data classes from :mod:`paxter.authoring` subpackage.
 
 .. code-block:: python
 
@@ -38,9 +41,14 @@ Here suppose that we are going to write a simple blog entry.
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p>
 
+.. important::
 
-Of course, this method of writing documents inside python code would be very cumbersome.
-So we have an alternative way to construct the exact same document.
+   Everything located under the subpackage :mod:`paxter.authoring`
+   are supplementary to but independent of the core Paxter library package.
+
+Of course, this approach to writing documents
+right inside python code space would be very cumbersome.
+So Paxter library provides an alternative way to construct the exact same document.
 
 .. code-block:: python
 
@@ -49,7 +57,7 @@ So we have an alternative way to construct the exact same document.
 
    # The following input text is written in-code for a simpler example.
    # However in reality, input text may be read from other sources
-   # such as text files, some databases, or even some API.
+   # such as text files, some databases, or even fetched via some API.
 
    input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
    and my blog is located @link["https://example.com"]{here}.}'''
@@ -75,53 +83,56 @@ So we have an alternative way to construct the exact same document.
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p>
 
-(**Note:** If you are wondering why the resulting document is 
-a list of :class:`Paragraph <paxter.authoring.document.Paragraph>`
-instance instead of just the object itself,
-just be patient and we will discuss this in a later section.)
+.. note::
+
+   If readers are wondering why the resulting document
+   is a list of :class:`Paragraph <paxter.authoring.document.Paragraph>`
+   instance rather than just the instance itself,
+   just be patient; we will discuss about this in upcoming sections.
 
 
 Understanding commands
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
-In Paxter input text, parts that being with an ‘**@**’ symbol
-(namely ``@paragraph``, ``@bold``, ``@break``, and ``@link``)
-are known as Paxter **commands**.
-Commands can either be in standalone form (like ``@break``)
+Parts that begin with an ‘**@**’ symbol in Paxter input text
+(e.g. ``@paragraph``, ``@bold``, ``@break``, and ``@link``)
+are known as **commands** in Paxter language.
+Commands can either be in the standalone form (like how ``@break`` appears)
 or, when followed by at least one of ``[options]`` or ``{main argument}``,
 it simulates a function call over such object.
 
-For example, ``@bold{Ashley}`` in Paxter language
+For example, ``@bold{Ashley}`` in Paxter input text
 is roughly equivalent to the python code ``bold(["Ashley"])``
-before it is evaluated into ``Bold(children=["Ashley"])`` as a final result.
+which would be evaluated into ``Bold(children=["Ashley"])`` in the final result.
 Similarly, 
 
 .. code-block:: paxter
 
    @link["https://example.com"]{here}
 
-is roughly translated into the following python code
+would roughly be parsed into the following python code
 
 .. code-block:: python
 
    link(["here"], "https://example.com")
 
-and then it is evaluated into
+which would then be evaluated into
 
 .. code-block:: python
 
    Link(children=['here'], href='https://example.com')
 
-Notice that the textual content surrounded by *a pair of curly braces*
-is always parsed into the list of values 
-and always becomes the very first argument of function calls.
+Notice that the textual content
+that is surrounded by *a matching pair of curly braces*
+is always parsed into a list of values
+and it always becomes the very first argument of translated function calls.
 We call this part the **main argument** of a command.
 
 Moreover, if we look at how the outermost ``@paragraph`` command is constructed,
-we would see that the main argument is also 
-always *recursively parsed* into a list of values.
-Hence, this paragraph command is in fact roughly parsed
-into an equivalent python code as follows.
+we would see that the content of main argument
+would always be *recursively parsed* into a list of values.
+Hence, the above particular ``@paragraph`` command is in fact
+roughly parsed into an equivalent python code as follows.
 
 .. code-block:: python
 
@@ -134,59 +145,67 @@ into an equivalent python code as follows.
        ".",
    ])
 
-Now let’s revisit the ``@link`` command once again.
-The part between *a pair of square brackets*
-becomes the second argument of the ``link`` function call.
-This part is called the **options** of a command.
-In fact, we can specify more than one value inside the options,
-and all of these values will become the subsequent arguments
-after the first argument of the function call.
+Now let us revisit the ``@link`` command from above once again.
 
-For example, the Paxter command ``@foo["bar", 3]{main argument}``
-would turn into the following equivalent python code:
+.. code-block:: paxter
+
+   @link["https://example.com"]{here}
+
+Part of the command between *a matching pair of square brackets*
+becomes the subsequent arguments of the ``link`` function call after the first.
+This part is called the **options** of a command.
+In fact, we can specify more than one value (argument) inside the options,
+and all of these values will become the second argument, the third argument,
+and so on.
+
+For example, a Paxter command ``@foo["bar", 3]{main argument}``
+would turn into the following equivalent python code.
 
 .. code-block:: python
 
    foo(["main argument"], "bar", 3)
 
-Python style keyword arguments are also supported inside options.
-So the Paxter command `@foo["bar", n=3]{main argument}` gets turned into:
+Python-style keyword arguments are also supported within the options.
+For instance, a Paxter command ``@foo["bar", n=3]{main argument}`` gets turned into:
 
 .. code-block:: python
 
    foo(["main argument"], "bar", n=3)
 
-Alternatively, the main argument is actually not mandatory.
-When this happens, all values within the options become 
-sole arguments of the function call.
-For instance, ``@foo["bar", n=3]`` would be transformed into
+In addition, the main argument discussed earlier is actually *not* mandatory.
+When it goes missing, all values with the options then
+become sole arguments of the function call.
+Therefore, this command ``@foo["bar", n=3]`` would simply be parsed into
 
 .. code-block:: python
 
    foo("bar", n=3)
 
-Of course, to make a function call with zero arguments,
-simply write a pair of brackets without anything inside it 
+As a special case, to make a function call to a command with zero arguments,
+simply write a pair of square brackets without anything inside it
 (e.g. ``@foo[]``).
 
-Finally, do take note that options of a command 
-only mimics Python function call pattern;
-it does not support full python syntax inside it. 
-The full description of what is supported in a command in general
-is discussed in :doc:`Paxter Language Tutorial <paxter_language_tutorial>` page.
+.. important::
+
+   Finally, do take note that the main argument and the options of a command
+   only try to mimic function call patterns in python;
+   it actually does *not* fully support python syntax inside it.
+   The full description of what is supported by Paxter language
+   is discussed in :doc:`Paxter Language Tutorial <paxter_language_tutorial>` page.
 
 
 Understanding environments
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 At this point, please note that ``@paragraph``, ``@bold``, and ``@link``
 are merely aliases to the constructors of actual data classes
 :class:`Paragraph <paxter.authoring.document.Paragraph>`,
 :class:`Bold <paxter.authoring.document.Bold>`,
 and :class:`Link <paxter.authoring.document.Link>` respectively.
-This linkage is evident when we inspect the content
-of the environment dictionary ``env`` (shown below).
-Also, ``@break`` simply maps to the value ``RawElement(children='<br />')``.
+These relationships are evident once we inspect
+the content of the environment dictionary ``env`` (shown below).
+Additionally, ``@break`` simply maps to the value
+``RawElement(children='<br />')``.
 
 .. code-block:: pycon
 
@@ -252,11 +271,19 @@ There is nothing preventing you from creating different environment mapping like
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p>
 
+----
 
-Add a second paragraph
-----------------------
+.. todo::
 
-The blog entry with a single paragraph is way too short.
+   Continue here.
+
+
+Add a Second Paragraph
+======================
+
+In the previous demonstration,
+we have written a blog entry with a single paragraph,
+but it was way too short.
 So we will add another one.
 
 .. code-block:: python
@@ -288,13 +315,13 @@ So we will add another one.
    ]
 
 In order to render the ``document``, iterating over each element of the list
-in order to call `html()` rendering method would be annoying
+in order to call :meth:`html() <paxter.authoring.document.Element.html>` rendering method would be annoying
 (not to mention that some elements are just plain strings).
 
 Paxter authoring toolchain mitigates this problem by providing
 a convenient data class called
 :class:`Document <paxter.authoring.document.Document>`.
-We will wrap the result from `run_paxter` under
+We will wrap the result from :func:`run_simple_paxter <paxter.preset.run_simple_paxter>` under
 :class:`Document <paxter.authoring.document.Document>`
 data class.
 
@@ -314,6 +341,9 @@ data class.
    >>> print(document.html())
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p><p>This is another paragraph.</p>
+
+Document helper class
+---------------------
 
 Better yet, because writing multiple paragraphs in a single document
 is a very common task, so :class:`Document <paxter.authoring.document.Document>`
@@ -341,9 +371,9 @@ unless its entirely is a single document element of other kind.
    and my blog is located <a href="https://example.com">here</a>.</p><p>This is another paragraph.</p><b>This is a third paragraph.</b>
 
 Watch out for the third paragraph above!
-They are surrounded by `<b>` tag in the result,
-but the enclosing `<p>` tag is missing.
-In this case, the explicit `@paragraph` marking is required.
+They are surrounded by ``<b>`` tag in the result,
+but the enclosing ``<p>`` tag is missing.
+In this case, the explicit ``@paragraph`` marking is required.
 
 .. code-block:: python
 
@@ -362,9 +392,10 @@ In this case, the explicit `@paragraph` marking is required.
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p><p>This is another paragraph.</p><p><b>This is a third paragraph.</b></p>
 
+----
 
 Include an email address
-------------------------
+========================
 
 You might already have noticed that ‘**@**’ symbol has special meaning in Paxter language;
 it acts as a switch which turns the subsequent piece of input into a command.
@@ -451,7 +482,7 @@ Of course, you can modify this behavior as well by customizing
 
 
 Document shortcut
-~~~~~~~~~~~~~~~~~
+-----------------
 
 By the way, the following python code seems to be a recurring pattern.
 
@@ -473,9 +504,10 @@ Hence, there is even a neater shortcut as follows
    input_text = ...
    document = run_document_paxter(input_text)
 
+----
 
 Define common constants
------------------------
+=======================
 
 While you are writing a document,
 you might end up writing the same phrase over-and-over again.
@@ -483,8 +515,8 @@ You wish that you could define that constant once and reuse it over-and-over aga
 Well you can, in a lot of different ways.
 
 
-First method
-~~~~~~~~~~~~
+First method: prepare in advance
+--------------------------------
 
 The first method we are going to demonstrate to you
 is to prepare the evaluation environment dictionary
@@ -547,8 +579,8 @@ because the alias ``yaa`` maps to the string ``"Yet Another Acronym"``
 inside the evaluation environment (as shown above).
 
 
-Second method
-~~~~~~~~~~~~~
+Second method: inject python code
+---------------------------------
 
 Another method we are going to show you is to directly define
 a new python variable right within the document itself.
@@ -608,8 +640,8 @@ This happened because the command ``@python`` called
 with ``env`` as the global dictionary.
 
 
-Quoted main argument
-~~~~~~~~~~~~~~~~~~~~
+Quoted main argument?
+~~~~~~~~~~~~~~~~~~~~~
 
 You might have asked,
 *why wrapping the main argument of a command with a pair of a quotation mark instead of a pair of curly braces? Is this a totally new syntax I have to remember?*

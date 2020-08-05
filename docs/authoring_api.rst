@@ -1,4 +1,6 @@
-# Authoring API Reference
+#######################
+Authoring API Reference
+#######################
 
 All of the following functions and classes 
 are not part of the core Paxter language.
@@ -8,38 +10,37 @@ without using any of the following functions.
 Users are encouraged to read source code of these functions
 to learn how to reassemble core APIs to suit their needs.
 
-## Preset Functions
+Preset Functions
+================
 
 The following function combines Paxter language parsing
 together with parsed tree evaluation.
 
-```eval_rst
 .. autofunction:: paxter.preset.run_simple_paxter
 
 .. autofunction:: paxter.preset.run_document_paxter
-```
 
----
+----
 
-## Environment Creations
 
-The following function creates a pre-defined unsafe Python environment dictionary 
+Environment Creations
+=====================
+
+The following function creates a pre-defined unsafe Python environment dictionary
 to be used with the evaluation context class.
 
-```eval_rst
 .. autofunction:: paxter.authoring.environ.create_simple_env
 
 .. autofunction:: paxter.authoring.environ.create_document_env
-```
 
----
+----
 
-## Evaluation Context Functions and Classes
+
+Evaluation Context Functions and Classes
+========================================
 
 The following functions and classes are available in preset environments.
 
-
-```eval_rst
 .. list-table::
    :widths: auto
    :header-rows: 1
@@ -165,11 +166,11 @@ The following functions and classes are available in preset environments.
      - **bulleted_list**
      - \-
      - Yes
-```
 
-### Standard Functions
 
-```eval_rst
+Standard Functions
+------------------
+
 .. autofunction:: paxter.authoring.standards.starter_unsafe_eval
 
 .. autofunction:: paxter.authoring.standards.python_unsafe_exec
@@ -177,19 +178,19 @@ The following functions and classes are available in preset environments.
 .. autofunction:: paxter.authoring.standards.flatten
 
 .. autofunction:: paxter.authoring.standards.verbatim
-```
 
-### Control Functions
 
-```eval_rst
+Control Functions
+-----------------
+
 .. autofunction:: paxter.authoring.controls.if_statement
 
 .. autofunction:: paxter.authoring.controls.for_statement
-```
 
-### Document Data Classes
 
-```eval_rst
+Document Data Classes
+---------------------
+
 .. autoclass:: paxter.authoring.document.Element
    :members:
 
@@ -263,4 +264,3 @@ The following functions and classes are available in preset environments.
 
 .. autoclass:: paxter.authoring.document.BulletedList
    :show-inheritance:
-```

@@ -1,5 +1,6 @@
+#######################
 Paxter’s documentation!
-=======================
+#######################
 
 **Paxter language** helps users write rich-formatting documents
 with simple and easy-to-understand syntax.
@@ -19,17 +20,17 @@ if they so wish.
 .. toctree::
    :maxdepth: 1
 
-   First Tutorial <first_tutorial>
-   Getting Started <getting_started>
-   Paxter Language Tutorial <paxter_language_tutorial>
-   Python Authoring Mode Tutorial <python_authoring_mode_tutorial>
-   Core API Reference <core_api>
-   Authoring API Reference <authoring_api>
-   Syntax Reference <syntax>
+   one_giant_tutorial
+   getting_started
+   paxter_language_tutorial
+   python_authoring_mode_tutorial
+   core_api
+   authoring_api
+   syntax
 
 
 Indices and tables
-------------------
+==================
 
 - :ref:`genindex`
 - :ref:`search`
