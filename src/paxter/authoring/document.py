@@ -324,7 +324,7 @@ class BareList(Element):
     HTML_OPENING = ''
     HTML_CLOSING = ''
 
-    def __init__(self, *items, forced_paragraph: bool):
+    def __init__(self, *items, forced_paragraph: bool = False):
         self.items = [
             self.split_paragraphs(item, forced_paragraph)
             for item in items

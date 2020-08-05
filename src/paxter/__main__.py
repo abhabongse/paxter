@@ -3,8 +3,6 @@ Running CLI commands.
 """
 import click
 
-from paxter.authoring import Document
-
 
 @click.group()
 def program():
@@ -57,16 +55,11 @@ def html(input_file, output_file, env_file):
     using the string Python renderer, and output to OUTPUT_FILE.
     """
     import runpy
-    from paxter.parser import ParseContext
-    from paxter.evaluator import EvaluateContext
-    from paxter.authoring import create_document_env
+    from paxter.authoring import run_document_paxter, create_document_env
 
     input_text = input_file.read()
-    parse_context = ParseContext(input_text)
-
     env = create_document_env(runpy.run_path(env_file) if env_file else {})
-    evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
-    document = Document(evaluate_context.rendered)
+    document = run_document_paxter(input_text, env)
 
     output_file.write(document.html())
     output_file.write("\n")

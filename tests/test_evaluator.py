@@ -4,7 +4,8 @@ from typing import Tuple
 import pytest
 from click.testing import CliRunner
 
-from paxter.authoring import Document, create_document_env
+from paxter.authoring import create_document_env
+from paxter.authoring.document import Document
 from paxter.evaluator import EvaluateContext
 from paxter.parser import (
     ParseContext,
