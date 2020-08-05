@@ -24,7 +24,7 @@ using a few data classes from :mod:`paxter.authoring` subpackage.
 
 .. code-block:: python
 
-   from paxter.authoring import Bold, Link, Paragraph, line_break
+   from paxter.authoring.document import Bold, Link, Paragraph, line_break
 
    paragraph = Paragraph([
        "Hi, my name is ",
@@ -52,8 +52,7 @@ So Paxter library provides an alternative way to construct the exact same docume
 
 .. code-block:: python
 
-   from paxter.authoring import create_document_env
-   from paxter.preset import run_simple_paxter
+   from paxter.authoring import create_document_env, run_simple_paxter
 
    # The following input text is written in-code for a simpler example.
    # However in reality, input text may be read from other sources
@@ -104,9 +103,9 @@ it simulates a function call over such object.
 For example, ``@bold{Ashley}`` in Paxter input text
 is roughly equivalent to the python code ``bold(["Ashley"])``
 which would be evaluated into ``Bold(children=["Ashley"])`` in the final result.
-Similarly, 
+Similarly,
 
-.. code-block:: paxter
+.. code-block:: text
 
    @link["https://example.com"]{here}
 
@@ -122,10 +121,11 @@ which would then be evaluated into
 
    Link(children=['here'], href='https://example.com')
 
-Notice that the textual content
-that is surrounded by *a matching pair of curly braces*
-is always parsed into a list of values
-and it always becomes the very first argument of translated function calls.
+Notice that the textual content,
+surrounded by *a matching pair of curly braces*,
+is always parsed into a list of values.
+Moreover, the parsed list would always be positioned
+as the very first argument of translated function calls.
 We call this part the **main argument** of a command.
 
 Moreover, if we look at how the outermost ``@paragraph`` command is constructed,
@@ -147,7 +147,7 @@ roughly parsed into an equivalent python code as follows.
 
 Now let us revisit the ``@link`` command from above once again.
 
-.. code-block:: paxter
+.. code-block:: text
 
    @link["https://example.com"]{here}
 
@@ -158,7 +158,7 @@ In fact, we can specify more than one value (argument) inside the options,
 and all of these values will become the second argument, the third argument,
 and so on.
 
-For example, a Paxter command ``@foo["bar", 3]{main argument}``
+For example, the Paxter command ``@foo["bar", 3]{main argument}``
 would turn into the following equivalent python code.
 
 .. code-block:: python
@@ -166,22 +166,22 @@ would turn into the following equivalent python code.
    foo(["main argument"], "bar", 3)
 
 Python-style keyword arguments are also supported within the options.
-For instance, a Paxter command ``@foo["bar", n=3]{main argument}`` gets turned into:
+For instance, the Paxter command ``@foo["bar", n=3]{main argument}`` gets turned into:
 
 .. code-block:: python
 
    foo(["main argument"], "bar", n=3)
 
 In addition, the main argument discussed earlier is actually *not* mandatory.
-When it goes missing, all values with the options then
+When it is absent, all values within the options then
 become sole arguments of the function call.
-Therefore, this command ``@foo["bar", n=3]`` would simply be parsed into
+Therefore, the command ``@foo["bar", n=3]`` would simply be parsed into
 
 .. code-block:: python
 
    foo("bar", n=3)
 
-As a special case, to make a function call to a command with zero arguments,
+As a special case, to make a function call with zero arguments from a command,
 simply write a pair of square brackets without anything inside it
 (e.g. ``@foo[]``).
 
@@ -248,17 +248,15 @@ There is nothing preventing you from creating different environment mapping like
 
 .. code-block:: python
 
-   from paxter import authoring
-   from paxter.authoring.standards import starter_unsafe_eval
-   from paxter.preset import run_simple_paxter
+   from paxter.authoring import document, run_simple_paxter, standards
 
    alternative_env = {
        # _starter_eval_ is required, but ignore this part for now
-       '_starter_eval_': starter_unsafe_eval,
-       'p': authoring.Paragraph,
-       'b': authoring.Bold,
-       'a': authoring.Link,
-       'br': authoring.line_break
+       '_starter_eval_': standards.starter_unsafe_eval,
+       'p': document.Paragraph,
+       'b': document.Bold,
+       'a': document.Link,
+       'br': document.line_break
    }
 
    input_text = '''@p{Hi, my name is @b{Ashley}@br
@@ -273,23 +271,18 @@ There is nothing preventing you from creating different environment mapping like
 
 ----
 
-.. todo::
-
-   Continue here.
-
 
 Add a Second Paragraph
 ======================
 
-In the previous demonstration,
+In the previous section,
 we have written a blog entry with a single paragraph,
 but it was way too short.
 So we will add another one.
 
 .. code-block:: python
 
-   from paxter.authoring import create_document_env
-   from paxter.preset import run_simple_paxter
+   from paxter.authoring import create_document_env, run_simple_paxter
 
    input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
    and my blog is located @link["https://example.com"]{here}.}
@@ -314,20 +307,25 @@ So we will add another one.
        Paragraph(children=['This is another paragraph.']),
    ]
 
-In order to render the ``document``, iterating over each element of the list
-in order to call :meth:`html() <paxter.authoring.document.Element.html>` rendering method would be annoying
-(not to mention that some elements are just plain strings).
+Because the resulting ``document`` (shown above)
+is a list of :class:`str` or :class:`Element <paxter.authoring.document.Element>` instances
+(from which :class:`Paragraph <paxter.authoring.document.Paragraph>` is derived),
+in order to render the final HTML result,
+we have to take the effort to iterate over each member of the list.
+Fortunately, there is a better way.
 
-Paxter authoring toolchain mitigates this problem by providing
-a convenient data class called
-:class:`Document <paxter.authoring.document.Document>`.
-We will wrap the result from :func:`run_simple_paxter <paxter.preset.run_simple_paxter>` under
+
+Document helper class
+---------------------
+
+Subpackage :mod:`paxter.authoring.document` provides a convenient data class called
 :class:`Document <paxter.authoring.document.Document>`
-data class.
+to wrap over the list returned by :func:`run_simple_paxter <paxter.authoring.preset.run_simple_paxter>`.
 
 .. code-block:: python
 
-   from paxter.authoring import Document
+   from paxter.authoring import create_document_env, run_simple_paxter
+   from paxter.authoring.document import Document
 
    input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
    and my blog is located @link["https://example.com"]{here}.}
@@ -342,16 +340,14 @@ data class.
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p><p>This is another paragraph.</p>
 
-Document helper class
----------------------
-
-Better yet, because writing multiple paragraphs in a single document
-is a very common task, so :class:`Document <paxter.authoring.document.Document>`
-would automatically split its content into paragraphs
+Better yet, because writing multiple paragraphs in a single document is too common,
+we do *not* need to explicitly annotate each paragraph with ``@paragraph`` command;
+the :class:`Document <paxter.authoring.document.Document>` class
+will automatically split its content into paragraphs
 separated by two or more newline characters,
 and each resulting paragraph will receive a wrapping under
 :class:`Paragraph <paxter.authoring.document.Paragraph>` data class
-unless its entirely is a single document element of other kind.
+unless its entirely is a single :class:`Element <paxter.authoring.document.Element>` of other kinds.
 
 .. code-block:: python
 
@@ -394,10 +390,14 @@ In this case, the explicit ``@paragraph`` marking is required.
 
 ----
 
+.. todo::
+
+   Continue from here
+
 Include an email address
 ========================
 
-You might already have noticed that ‘**@**’ symbol has special meaning in Paxter language;
+You might already have noticed that ‘**@**’ symbol has special meaning in Paxter language:
 it acts as a switch which turns the subsequent piece of input into a command.
 Therefore, if you wish to include ‘**@**’ string literal as-is
 in the final output, an escape of some sort is required.

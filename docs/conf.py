@@ -40,6 +40,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
+    'sphinx.ext.intersphinx',
     'recommonmark',
 ]
 
@@ -73,6 +74,7 @@ html_static_path = ['_static']
 # -- Extension configuration -------------------------------------------------
 
 autodoc_member_order = 'bysource'
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 # -- Options for todo extension ----------------------------------------------
 

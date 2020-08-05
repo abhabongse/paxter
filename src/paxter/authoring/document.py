@@ -4,7 +4,7 @@ which may be used to construct a document for web, print, etc.
 """
 import html
 import re
-from dataclasses import dataclass
+from dataclasses import InitVar, dataclass
 from typing import Iterator, List, Union
 
 from paxter.authoring.standards import flatten
@@ -65,13 +65,25 @@ class Element:
             else:
                 raise PaxterRenderError(f'malformed encounter: {fragment!r}')
 
-    def split_paragraph(self, elements: Union[str, ElementList]) -> List[ElementList]:
+    def split_paragraphs(self, elements: Union[str, ElementList], forced_paragraph: bool) -> ElementList:
         """
         Attempts to split a sequence of string or elements
         using a double newline into a list of paragraphs
         where each paragraph is a sequence of string or elements
         within the same paragraph.
         """
+        collection = self._divide_paragraphs(elements)
+        if len(collection) == 1 and not forced_paragraph:
+            return collection[0]
+        children = []
+        for paragraph in collection:
+            if len(paragraph) == 1 and isinstance(paragraph[0], Element):
+                children.append(paragraph[0])
+            else:
+                children.append(Paragraph(children=paragraph))
+        return children
+
+    def _divide_paragraphs(self, elements: Union[str, ElementList]) -> List[ElementList]:
         if isinstance(elements, str):
             return [[elements]]
 
@@ -112,7 +124,6 @@ class Element:
             self._clean_paragraph(paragraph)
             for paragraph in collection
         ]
-
         return collection
 
     def _clean_paragraph(self, paragraph: ElementList) -> ElementList:
@@ -134,15 +145,11 @@ class Document(Element):
     """
     children: ElementList
 
+    def __post_init__(self):
+        self.children = self.split_paragraphs(self.children, forced_paragraph=True)
+
     def html_token_stream(self) -> Iterator[str]:
-        collection = self.split_paragraph(self.children)
-        for paragraph in collection:
-            if len(paragraph) == 1 and isinstance(paragraph[0], Element):
-                yield from paragraph[0].html_token_stream()
-            else:
-                yield '<p>'
-                yield from self.html_rec_token_stream(paragraph)
-                yield '</p>'
+        yield from self.html_rec_token_stream(self.children)
 
 
 @dataclass
@@ -266,21 +273,14 @@ class Blockquote(Element):
     Renders the blockquote which may contain multiple paragraphs.
     """
     children: Union[str, ElementList]
-    forced_paragraph: bool = False
+    forced_paragraph: InitVar[bool] = False
+
+    def __post_init__(self, forced_paragraph: bool):
+        self.children = self.split_paragraphs(self.children, forced_paragraph)
 
     def html_token_stream(self) -> Iterator[str]:
         yield '<blockquote>'
-        collection = self.split_paragraph(self.children)
-        if len(collection) == 1 and not self.forced_paragraph:
-            yield from self.html_rec_token_stream(collection[0])
-        else:
-            for paragraph in collection:
-                if len(paragraph) == 1 and isinstance(paragraph[0], Element):
-                    yield from self.html_rec_token_stream(paragraph)
-                else:
-                    yield '<p>'
-                    yield from self.html_rec_token_stream(paragraph)
-                    yield '</p>'
+        yield from self.html_rec_token_stream(self.children)
         yield '</blockquote>'
 
 
@@ -320,34 +320,23 @@ class BareList(Element):
     Element containing a list of items without encapsulation.
     """
     items: List[Union[str, ElementList]]
-    forced_paragraph: bool = False
 
     HTML_OPENING = ''
     HTML_CLOSING = ''
 
-    def __init__(self, *items):
-        self.items = list(items)
+    def __init__(self, *items, forced_paragraph: bool):
+        self.items = [
+            self.split_paragraphs(item, forced_paragraph)
+            for item in items
+        ]
 
     def html_token_stream(self) -> Iterator[str]:
         yield self.HTML_OPENING
-        yield from self.html_list_items()
-        yield self.HTML_CLOSING
-
-    def html_list_items(self) -> Iterator[str]:
         for item in self.items:
             yield '<li>'
-            collection = self.split_paragraph(item)
-            if len(collection) == 1 and not self.forced_paragraph:
-                yield from self.html_rec_token_stream(collection[0])
-            else:
-                for paragraph in collection:
-                    if len(paragraph) == 1 and isinstance(paragraph[0], Element):
-                        yield from self.html_rec_token_stream(paragraph)
-                    else:
-                        yield '<p>'
-                        yield from self.html_rec_token_stream(paragraph)
-                        yield '</p>'
+            yield from self.html_rec_token_stream(item)
             yield '</li>'
+        yield self.HTML_CLOSING
 
 
 @dataclass(init=False)

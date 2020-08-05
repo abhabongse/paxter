@@ -16,9 +16,9 @@ Preset Functions
 The following function combines Paxter language parsing
 together with parsed tree evaluation.
 
-.. autofunction:: paxter.preset.run_simple_paxter
+.. autofunction:: paxter.authoring.preset.run_simple_paxter
 
-.. autofunction:: paxter.preset.run_document_paxter
+.. autofunction:: paxter.authoring.preset.run_document_paxter
 
 ----
 

@@ -173,8 +173,8 @@ The above code will output the following.
 
 .. note::
 
-   Learn more about :doc:`how to use Python authoring mode <python_authoring_mode_tutorial>`
-   and :doc:`how to write custom renderer <custom_renderer_tutorial>`.
+   Learn more about how to use Python authoring mode
+   and how to write custom renderer.
 
 Create your own function
 ------------------------

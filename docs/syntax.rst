@@ -5,8 +5,8 @@ Below are syntax diagrams for Paxter language.
 
 - **Document:** Starting rule of Paxter language grammar.
   It is a special case of **FragmentList** rule, and thus
-  the result is always a :class:`FragmentList <paxter.core.FragmentList>` node
-  whose children are non-empty :class:`Text <paxter.core.Text>`
+  the result is always a :class:`FragmentList <paxter.parser.FragmentList>` node
+  whose children are non-empty :class:`Text <paxter.parser.Text>`
   interleaving with the result produced by **AtExpression** rule.
 
   .. image:: _static/Document.png
@@ -27,7 +27,7 @@ Below are syntax diagrams for Paxter language.
 
   There are 2 possible scenarios.
 
-  1. A normal :class:`Command <paxter.core.Command>` node consisting of 3 sections:
+  1. A normal :class:`Command <paxter.parser.Command>` node consisting of 3 sections:
      starter, options, and main argument, respectively.
 
      The starter section is resulted from parsing
@@ -37,14 +37,14 @@ Below are syntax diagrams for Paxter language.
 
      Following the starter section, if a left square bracket is found,
      then the option section as a list of tokens must be parsed
-     and it will result in a :class:`TokenList <paxter.core.TokenList>` node.
+     and it will result in a :class:`TokenList <paxter.parser.TokenList>` node.
      Otherwise (if the left square bracket is absent),
      this option section will be represented by :const:`None`.
 
      Finally, the main argument section.
      (a) If there is zero or more hashes followed by a left brace,
      then the **FragmentList** parse rule must be followed
-     and thus yields :class:`FragmentList <paxter.core.FragmentList>` as the result.
+     and thus yields :class:`FragmentList <paxter.parser.FragmentList>` as the result.
 
      .. warning::
 
@@ -60,16 +60,16 @@ Below are syntax diagrams for Paxter language.
      Well, if both conditions (a) and (b) do not hold,
      then the main argument would be :const:`None`.
 
-  2. A special :class:`SingleSymbol <paxter.core.SingleSymbol>` node where
+  2. A special :class:`SingleSymbol <paxter.parser.SingleSymbol>` node where
      a single symbol follows the @-switch.
 
 - **FragmentList:** Consists of an interleaving of non-empty texts
   and results produced by **AtExpression** rule.
 
   Note that the parsing of **AtExpression** rule at the *previous level*
-  may put some restriction on the parsing of :class:`Text <paxter.core.Text>` nodes.
+  may put some restriction on the parsing of :class:`Text <paxter.parser.Text>` nodes.
   For example, if preceding the fragment list is an opening brace pattern ``###{``,
-  then each :class:`Text <paxter.core.Text>` node may contain ``}###``.
+  then each :class:`Text <paxter.parser.Text>` node may contain ``}###``.
 
   In other words, we *non-greedily* parses text within the fragment list.
 
@@ -82,7 +82,7 @@ Below are syntax diagrams for Paxter language.
   a number following JSON specification,
   a wrapped fragment list, a wrapped text,
   or a nested token list enclosed by a pair of square brackets ``[]``.
-  The result is a :class:`TokenList <paxter.core.TokenList>` node type.
+  The result is a :class:`TokenList <paxter.parser.TokenList>` node type.
 
   .. image:: _static/TokenList.png
 
@@ -97,7 +97,7 @@ Below are syntax diagrams for Paxter language.
 
 - **Identifier:** Generally follows Python rules for greedily parsing
   an identifier token (with some extreme exceptions).
-  The result is an :class:`Identifier <paxter.core.Identifier>` node type.
+  The result is an :class:`Identifier <paxter.parser.Identifier>` node type.
 
   .. image:: _static/Identifier.png
 
@@ -106,7 +106,7 @@ Below are syntax diagrams for Paxter language.
 - **Operator:** Greedily consumes as many operator character as possible
   (with two notable exceptions: a comma and a semicolon, which has to appear on their own).
   A whitespace may be needed to separate two consecutive, multi-character operator tokens.
-  The result is an :class:`Operator <paxter.core.Operator>` node type.
+  The result is an :class:`Operator <paxter.parser.Operator>` node type.
 
   .. image:: _static/Operator.png
 
