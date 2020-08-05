@@ -13,7 +13,9 @@
 import os
 import sys
 
+from pygments.lexers.special import  TextLexer
 from recommonmark.transform import AutoStructify
+from sphinx.highlighting import lexers
 
 sys.path.insert(
     0,
@@ -75,6 +77,7 @@ html_static_path = ['_static']
 
 autodoc_member_order = 'bysource'
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
+lexers['paxter'] = TextLexer()  # TODO: implement lexer and replace this
 
 # -- Options for todo extension ----------------------------------------------
 

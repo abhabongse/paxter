@@ -105,7 +105,7 @@ is roughly equivalent to the python code ``bold(["Ashley"])``
 which would be evaluated into ``Bold(children=["Ashley"])`` in the final result.
 Similarly,
 
-.. code-block:: text
+.. code-block:: paxter
 
    @link["https://example.com"]{here}
 
@@ -147,7 +147,7 @@ roughly parsed into an equivalent python code as follows.
 
 Now let us revisit the ``@link`` command from above once again.
 
-.. code-block:: text
+.. code-block:: paxter
 
    @link["https://example.com"]{here}
 
@@ -394,10 +394,10 @@ In this case, the explicit ``@paragraph`` marking is required.
 
    Continue from here
 
-Include an email address
+Include an Email Address
 ========================
 
-You might already have noticed that ‘**@**’ symbol has special meaning in Paxter language:
+As you have already noticed that ‘**@**’ symbol has special meaning in Paxter language:
 it acts as a switch which turns the subsequent piece of input into a command.
 Therefore, if you wish to include ‘**@**’ string literal as-is
 in the final output, an escape of some sort is required.
@@ -406,7 +406,7 @@ Except that Paxter language actually does *not* provide a way
 to *escape* ‘**@**’ symbols per se.
 However, there is a way around this.
 
-But first, let’s revisit the content of the environment dictionary.
+But first, let us revisit the content of the environment dictionary once again.
 
 .. code-block:: pycon
 
@@ -447,22 +447,22 @@ But first, let’s revisit the content of the environment dictionary.
     'numbered_list': paxter.authoring.document.NumberedList,
     'bulleted_list': paxter.authoring.document.BulletedList}
 
-Let’s focus on ``env['_symbols_']`` which seems to be
+Let us focus on ``env['_symbols_']`` which seems to be
 a mapping from single symbol characters to some values.
-Paxter uses this information to perform what is called
-**symbolic replacements** of a special kind of command.
-That is, whenever an ‘**@**’ command character is immediately followed by
-another symbol character, then this symbolic replacement occurs.
+Paxter uses this information to perform what is called **symbolic replacements**.
+That is, whenever an ‘**@**’ character
+is immediately followed by *another symbol character*,
+then this symbolic replacement occurs.
 
-For example, ‘**@!**’ inside the input text will be replaced by ``env['_symbols_']['!']``
-and ‘**@@**’ will be replaced by ``env['_symbols_']['@']``, etc.
-Therefore, Paxter lets users use ‘**@@**’ to mimic the escaping of ‘**@**’ symbol
+For example, ``@!`` inside the input text will be replaced by ``env['_symbols_']['!']``
+whereas ``@@`` will be replaced by ``env['_symbols_']['@']``, etc.
+Therefore, Paxter lets users use ``@@`` to mimic the escaping of ‘**@**’ symbol
 though the mechanisms of symbolic replacements.
 
 .. code-block:: python
 
-   from paxter.authoring import Document, create_document_env
-   from paxter.preset import run_simple_paxter
+   from paxter.authoring import create_document_env, run_simple_paxter
+   from paxter.authoring.document import Document
 
    input_text = '''Hi, my name is @bold{Ashley}@break
    and my blog is located @link["https://example.com"]{here}.
@@ -477,34 +477,38 @@ though the mechanisms of symbolic replacements.
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p><p>To reach me directly, send email to ashley@example.com</p>
 
-Of course, you can modify this behavior as well by customizing
-``env['_symbols_']`` to suit your needs.
+Of course, the behavior of symbolic replacements can be fully customized
+by modifying the content of ``env['_symbols_']`` dictionary to suit your needs.
 
 
-Document shortcut
------------------
+Stop repeating yourself: document shortcut
+------------------------------------------
 
 By the way, the following python code seems to be a recurring pattern.
 
 .. code-block:: python
 
-   from paxter.authoring import Document, create_document_env
-   from paxter.preset import run_simple_paxter
+   from paxter.authoring import create_document_env, run_simple_paxter
+   from paxter.authoring.document import Document
 
    input_text = ...
    env = create_document_env()
    document = Document(run_simple_paxter(input_text, env))
 
-Hence, there is even a neater shortcut as follows
+We will use the following shortcut from now on.
 
 .. code-block:: python
 
-   from paxter.preset import run_document_paxter
+   from paxter.authoring import run_document_paxter
 
    input_text = ...
    document = run_document_paxter(input_text)
 
 ----
+
+.. todo::
+
+   Clean up from this point on.
 
 Define common constants
 =======================
