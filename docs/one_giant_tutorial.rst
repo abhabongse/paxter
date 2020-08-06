@@ -737,53 +737,52 @@ If hash characters were not used,
 it would have resulted in an error since the source code
 for python would have been ``yaa =`` which is incomplete.
 
-.. code-block:: python
+.. code-block:: pycon
 
-   from paxter.authoring import run_document_paxter
+   >>> from paxter.authoring import run_document_paxter
+   >>> input_text = '''
+   ... @python"yaa = "Yet Another Acronym""
+   ... YAA is @yaa and it stands for @yaa.
+   ... '''
+   >>> document = run_document_paxter(input_text)
 
-   input_text = '''
-   @python"yaa = "Yet Another Acronym""
-   YAA is @yaa and it stands for @yaa.
-   '''
-   document = run_document_paxter(input_text)
-
-.. code-block:: py3tb
+.. code-block:: pytb
 
    Traceback (most recent call last):
-     File ".../site-packages/paxter/evaluator/context.py", line 171, in transform_command
+     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 171, in transform_command
        return starter_value.call(self, token)
-     File ".../site-packages/paxter/evaluator/wrappers.py", line 47, in call
+     File ".../site-packages/paxter/src/paxter/evaluator/wrappers.py", line 47, in call
        return self.wrapped(context, node)
-     File ".../site-packages/paxter/authoring/standards.py", line 25, in python_unsafe_exec
+     File ".../site-packages/paxter/src/paxter/authoring/standards.py", line 25, in python_unsafe_exec
        exec(code, context.env)
      File "<string>", line 1
        yaa =
             ^
    SyntaxError: invalid syntax
+
    The above exception was the direct cause of the following exception:
+
    Traceback (most recent call last):
-     File ".../site-packages/IPython/core/interactiveshell.py", line 3331, in run_code
-       exec(code_obj, self.user_global_ns, self.user_ns)
-     File "<ipython-input-2-3a9b9b17345f>", line 7, in <module>
-       document = run_document_paxter(input_text)
-     File ".../site-packages/paxter/authoring/preset.py", line 33, in run_document_paxter
+     File "<stdin>", line 1, in <module>
+     File ".../site-packages/paxter/src/paxter/authoring/preset.py", line 33, in run_document_paxter
        evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
      File "<string>", line 6, in __init__
-     File ".../site-packages/paxter/evaluator/context.py", line 40, in __post_init__
+     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 40, in __post_init__
        self.rendered = self.render()
-     File ".../site-packages/paxter/evaluator/context.py", line 43, in render
+     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 43, in render
        return self.transform_fragment_list(self.tree)
-     File ".../site-packages/paxter/evaluator/context.py", line 122, in transform_fragment_list
+     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 122, in transform_fragment_list
        result = [
-     File ".../site-packages/paxter/evaluator/context.py", line 122, in <listcomp>
+     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 122, in <listcomp>
        result = [
-     File ".../site-packages/paxter/evaluator/context.py", line 119, in <genexpr>
+     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 119, in <genexpr>
        self.transform_fragment(fragment)
-     File ".../site-packages/paxter/evaluator/context.py", line 73, in transform_fragment
+     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 73, in transform_fragment
        return self.transform_command(fragment)
-     File ".../site-packages/paxter/evaluator/context.py", line 175, in transform_command
+     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 175, in transform_command
        raise PaxterRenderError(
    paxter.exceptions.PaxterRenderError: paxter apply evaluation error at line 2 col 2
+
 
 
 Escaping curly braces
