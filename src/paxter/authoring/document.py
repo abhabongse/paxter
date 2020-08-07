@@ -58,14 +58,13 @@ class Element:
         from the given input sequence of string or elements.
         """
         for fragment in flatten(elements):
-            if isinstance(fragment, str):
-                yield html.escape(fragment)
-            elif isinstance(fragment, Element):
+            if isinstance(fragment, Element):
                 yield from fragment.html_token_stream()
             else:
-                raise PaxterRenderError(f'malformed encounter: {fragment!r}')
+                yield html.escape(str(fragment))
 
-    def split_paragraphs(self, elements: Union[str, ElementList], forced_paragraph: bool) -> ElementList:
+    def split_paragraphs(self, elements: Union[str, ElementList],
+                         forced_paragraph: bool) -> ElementList:
         """
         Attempts to split a sequence of string or elements
         using a double newline into a list of paragraphs
@@ -83,7 +82,10 @@ class Element:
                 children.append(Paragraph(children=paragraph))
         return children
 
-    def _divide_paragraphs(self, elements: Union[str, ElementList]) -> List[ElementList]:
+    def _divide_paragraphs(
+            self,
+            elements: Union[str, ElementList],
+    ) -> List[ElementList]:
         if isinstance(elements, str):
             return [[elements]]
 
@@ -113,10 +115,8 @@ class Element:
                         paragraph.append(pieces[-1])
                 else:
                     paragraph.append(pieces[0])
-            elif isinstance(f, Element):
-                paragraph.append(f)
             else:
-                raise PaxterRenderError(f'malformed encounter: {f!r}')
+                paragraph.append(f)
         if paragraph:
             collection.append(paragraph)
 
@@ -164,12 +164,10 @@ class RawElement(Element):
 
     def html_rec_token_stream(self, elements: Union[str, ElementList]) -> Iterator[str]:
         for fragment in flatten(elements):
-            if isinstance(fragment, str):
-                yield fragment
-            elif isinstance(fragment, Element):
+            if isinstance(fragment, Element):
                 yield from fragment.html_token_stream()
             else:
-                raise PaxterRenderError(f'malformed encounter: {fragment!r}')
+                yield str(fragment)
 
 
 #: Line break raw element
