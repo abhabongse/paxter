@@ -10,11 +10,11 @@ from paxter.parser.enclosing import EnclosingPattern
 
 __all__ = [
     'Token', 'Fragment',
-    'TokenList', 'Identifier', 'Operator', 'Number',
-    'FragmentList', 'Text', 'Command', 'ShortSymbol',
+    'TokenSeq', 'Identifier', 'Operator', 'Number',
+    'FragmentSeq', 'Text', 'Command', 'SingleSymbol',
 ]
 
-MainArgument = Union['FragmentList', 'Text']
+MainArgument = Union['FragmentSeq', 'Text']
 T = TypeVar('T', bound='Token')
 
 
@@ -70,19 +70,19 @@ class Token(metaclass=ABCMeta):
 class Fragment(Token, metaclass=ABCMeta):
     """
     Subtypes of nodes in Paxter document tree that is allowed
-    to appear as direct members of :class:`FragmentList`.
+    to appear as direct members of :class:`FragmentSeq`.
     """
     pass
 
 
 @dataclass
-class TokenList(Token):
+class TokenSeq(Token):
     """
     Node type which represents a sequence of tokens
     wrapped under a matching pair of brackets ``[]``,
     all of which appears only within the option section of :class:`Command`.
     """
-    #: List of :class:`Token` instances
+    #: Sequence of :class:`Token` instances
     children: List[Token]
 
     sanitize = None
@@ -123,9 +123,9 @@ class Number(Token):
 
 
 @dataclass
-class FragmentList(Token):
+class FragmentSeq(Token):
     """
-    Special intermediate node maintaining a list of fragment children nodes.
+    Special intermediate node maintaining a sequence of fragment children nodes.
     Nodes of this type usually correspond to either the global-level fragments
     or fragments nested within enclosing brace pattern.
 
@@ -133,7 +133,7 @@ class FragmentList(Token):
     as the main argument of a :class:`Command` node
     or as a token within the option section of a :class:`Command` node.
     """
-    #: List of :class:`Fragment` instances
+    #: Sequence of :class:`Fragment` instances
     children: List[Fragment]
 
     #: Information of the enclosing braces pattern
@@ -146,13 +146,13 @@ class FragmentList(Token):
 class Text(Fragment):
     """
     Text node type which does not contain nested @-expressions.
-    Nodes of this type usually be presented as an element of :class:`FragmentList`
+    Nodes of this type usually be presented as an element of :class:`FragmentSeq`
     or as text wrapped within enclosing quoted pattern.
 
     The enclosing quote pattern may appear
     as the main argument of a :class:`Command` node,
     as a token within the option section of a :class:`Command` node,
-    or as a fragment element of a :class:`FragmentList` node.
+    or as a fragment element of a :class:`FragmentSeq` node.
     """
     #: Inner string content
     inner: str
@@ -176,7 +176,7 @@ class Command(Fragment):
       which is a sequence of :class:`Token` nodes.
 
     - Finally, it may optionally be followed by a main argument section
-      which can either be a :class:`FragmentList` or a :class:`Text`.
+      which can either be a :class:`FragmentSeq` or a :class:`Text`.
     """
     #: Command starter section
     starter: str
@@ -184,9 +184,9 @@ class Command(Fragment):
     #: Information of the enclosing bar pattern over the starter section
     starter_enclosing: EnclosingPattern
 
-    #: A list of tokens for the option section enclosed by ``[]``,
+    #: A sequence of tokens for the option section enclosed by ``[]``,
     #: or :const:`None` if this section is not present.
-    option: Optional[TokenList]
+    option: Optional[TokenSeq]
 
     #: The main argument section at the end of expression,
     #: or :const:`None` if this section is not present.
@@ -194,9 +194,9 @@ class Command(Fragment):
 
 
 @dataclass
-class ShortSymbol(Fragment):
+class SingleSymbol(Fragment):
     """
-    Node type which represents a special @-command
+    Node type which represents an @-prepended single symbol character
     which is the @-switch character followed by a single symbol character
     such as ``@@``, ``@;``, ``@!``, etc.
     """

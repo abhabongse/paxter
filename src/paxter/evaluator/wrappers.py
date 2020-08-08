@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple
 
 from paxter.exceptions import PaxterRenderError
-from paxter.parser import CharLoc, Command, Identifier, Operator, Token, TokenList
+from paxter.parser import CharLoc, Command, Identifier, Operator, Token, TokenSeq
 
 if TYPE_CHECKING:
     from paxter.evaluator.context import EvaluateContext
@@ -74,7 +74,7 @@ class NormalApply(BaseApply):
 
     def extract_args_and_kwargs(
             self, context: 'EvaluateContext',
-            options: TokenList,
+            options: TokenSeq,
     ) -> Tuple[list, dict]:
         """
         Returns a pair of positional argument list and keyword argument dict.
@@ -105,7 +105,7 @@ class NormalApply(BaseApply):
     @staticmethod
     def tokenize_args(
             context: 'EvaluateContext',
-            options: TokenList,
+            options: TokenSeq,
     ) -> Tuple[Optional[str], Token]:
         """
         Generates a sequence of arguments, each of which

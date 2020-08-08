@@ -1,8 +1,8 @@
 import pytest
 
 from paxter.parser import (
-    Command, EnclosingPattern, FragmentList, GlobalEnclosingPattern, Identifier,
-    Number, Operator, ParseContext, ShortSymbol, Text, Token, TokenList,
+    Command, EnclosingPattern, FragmentSeq, GlobalEnclosingPattern, Identifier,
+    Number, Operator, ParseContext, SingleSymbol, Text, Token, TokenSeq,
 )
 
 
@@ -11,7 +11,7 @@ from paxter.parser import (
     [
         pytest.param(
             '',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=0,
                 children=[],
                 enclosing=GlobalEnclosingPattern(),
@@ -19,7 +19,7 @@ from paxter.parser import (
         ),
         pytest.param(
             '1',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=1,
                 children=[
                     Text(
@@ -33,7 +33,7 @@ from paxter.parser import (
         ),
         pytest.param(
             '@hello',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=6,
                 children=[
                     Command(
@@ -49,7 +49,7 @@ from paxter.parser import (
         ),
         pytest.param(
             'Hello, my name is @name.',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=24,
                 children=[
                     Text(
@@ -75,7 +75,7 @@ from paxter.parser import (
         ),
         pytest.param(
             'The result of 1 + 1 is @|1 + 1|. Yes! @##|1 + 1|##',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=50,
                 children=[
                     Text(
@@ -108,7 +108,7 @@ from paxter.parser import (
         ),
         pytest.param(
             '@|N @ M @ K|',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=12,
                 children=[
                     Command(
@@ -124,7 +124,7 @@ from paxter.parser import (
         ),
         pytest.param(
             '@##|#|#|#|##, @@@,@;@#@@@"@{@}',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=30,
                 children=[
                     Command(
@@ -139,21 +139,21 @@ from paxter.parser import (
                         inner=", ",
                         enclosing=EnclosingPattern(left="", right=""),
                     ),
-                    ShortSymbol(start_pos=15, end_pos=16, symbol="@"),
-                    ShortSymbol(start_pos=17, end_pos=18, symbol=","),
-                    ShortSymbol(start_pos=19, end_pos=20, symbol=";"),
-                    ShortSymbol(start_pos=21, end_pos=22, symbol="#"),
-                    ShortSymbol(start_pos=23, end_pos=24, symbol="@"),
-                    ShortSymbol(start_pos=25, end_pos=26, symbol='"'),
-                    ShortSymbol(start_pos=27, end_pos=28, symbol="{"),
-                    ShortSymbol(start_pos=29, end_pos=30, symbol="}"),
+                    SingleSymbol(start_pos=15, end_pos=16, symbol="@"),
+                    SingleSymbol(start_pos=17, end_pos=18, symbol=","),
+                    SingleSymbol(start_pos=19, end_pos=20, symbol=";"),
+                    SingleSymbol(start_pos=21, end_pos=22, symbol="#"),
+                    SingleSymbol(start_pos=23, end_pos=24, symbol="@"),
+                    SingleSymbol(start_pos=25, end_pos=26, symbol='"'),
+                    SingleSymbol(start_pos=27, end_pos=28, symbol="{"),
+                    SingleSymbol(start_pos=29, end_pos=30, symbol="}"),
                 ],
                 enclosing=GlobalEnclosingPattern(),
             ),
         ),
         pytest.param(
             'This is @em{not} a drill!',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=25,
                 children=[
                     Text(
@@ -166,7 +166,7 @@ from paxter.parser import (
                         starter="em",
                         starter_enclosing=EnclosingPattern(left="", right=""),
                         option=None,
-                        main_arg=FragmentList(
+                        main_arg=FragmentSeq(
                             start_pos=12, end_pos=15,
                             children=[
                                 Text(
@@ -189,7 +189,7 @@ from paxter.parser import (
         ),
         pytest.param(
             '@|foo.process|{yes} @#|foo#process|#["no"]#"#"#',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=47,
                 children=[
                     Command(
@@ -197,7 +197,7 @@ from paxter.parser import (
                         starter="foo.process",
                         starter_enclosing=EnclosingPattern(left="|", right="|"),
                         option=None,
-                        main_arg=FragmentList(
+                        main_arg=FragmentSeq(
                             start_pos=15, end_pos=18,
                             children=[
                                 Text(
@@ -218,7 +218,7 @@ from paxter.parser import (
                         start_pos=21, end_pos=47,
                         starter="foo#process",
                         starter_enclosing=EnclosingPattern(left="#|", right="|#"),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=37, end_pos=41,
                             children=[
                                 Text(
@@ -240,7 +240,7 @@ from paxter.parser import (
         ),
         pytest.param(
             "Level 0 @level1{ @level2{ @level3 } }",
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=37,
                 children=[
                     Text(
@@ -253,7 +253,7 @@ from paxter.parser import (
                         starter="level1",
                         starter_enclosing=EnclosingPattern(left="", right=""),
                         option=None,
-                        main_arg=FragmentList(
+                        main_arg=FragmentSeq(
                             start_pos=16, end_pos=36,
                             children=[
                                 Text(
@@ -268,7 +268,7 @@ from paxter.parser import (
                                         left="", right="",
                                     ),
                                     option=None,
-                                    main_arg=FragmentList(
+                                    main_arg=FragmentSeq(
                                         start_pos=25, end_pos=34,
                                         children=[
                                             Text(
@@ -313,14 +313,14 @@ from paxter.parser import (
         ),
         pytest.param(
             '@say[greet=##"hello"##]{John} at @email##"john@example.com"##!',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=62,
                 children=[
                     Command(
                         start_pos=1, end_pos=29,
                         starter="say",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=5, end_pos=22,
                             children=[
                                 Identifier(start_pos=5, end_pos=10, name="greet"),
@@ -332,7 +332,7 @@ from paxter.parser import (
                                 ),
                             ],
                         ),
-                        main_arg=FragmentList(
+                        main_arg=FragmentSeq(
                             start_pos=24, end_pos=28,
                             children=[
                                 Text(
@@ -371,14 +371,14 @@ from paxter.parser import (
         ),
         pytest.param(
             '@###|state|###[x=1] @state[x=2]',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=31,
                 children=[
                     Command(
                         start_pos=1, end_pos=19,
                         starter="state",
                         starter_enclosing=EnclosingPattern(left="###|", right="|###"),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=15, end_pos=18,
                             children=[
                                 Identifier(start_pos=15, end_pos=16, name="x"),
@@ -397,7 +397,7 @@ from paxter.parser import (
                         start_pos=21, end_pos=31,
                         starter="state",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=27, end_pos=30,
                             children=[
                                 Identifier(start_pos=27, end_pos=28, name="x"),
@@ -413,14 +413,14 @@ from paxter.parser import (
         ),
         pytest.param(
             '@state[x=1,y=2,z=3]#"This symbol " is a quote!"#',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=48,
                 children=[
                     Command(
                         start_pos=1, end_pos=48,
                         starter="state",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=7, end_pos=18,
                             children=[
                                 Identifier(start_pos=7, end_pos=8, name="x"),
@@ -448,7 +448,7 @@ from paxter.parser import (
         ),
         pytest.param(
             '@|| @#||# @foo[{@bar}"@baz"##{}###""#]',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0,
                 end_pos=38,
                 children=[
@@ -480,10 +480,10 @@ from paxter.parser import (
                         start_pos=11, end_pos=38,
                         starter="foo",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=15, end_pos=37,
                             children=[
-                                FragmentList(
+                                FragmentSeq(
                                     start_pos=16, end_pos=20,
                                     children=[
                                         Command(
@@ -503,7 +503,7 @@ from paxter.parser import (
                                     inner="@baz",
                                     enclosing=EnclosingPattern(left='"', right='"'),
                                 ),
-                                FragmentList(
+                                FragmentSeq(
                                     start_pos=30, end_pos=30,
                                     children=[],
                                     enclosing=EnclosingPattern(left="##{", right="}##"),
@@ -523,14 +523,14 @@ from paxter.parser import (
         ),
         pytest.param(
             '@foo[bar = "x" + @|foo|[bar={x@x}|>3]]',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=38,
                 children=[
                     Command(
                         start_pos=1, end_pos=38,
                         starter="foo",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=5, end_pos=37,
                             children=[
                                 Identifier(start_pos=5, end_pos=8, name="bar"),
@@ -547,7 +547,7 @@ from paxter.parser import (
                                     starter_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
-                                    option=TokenList(
+                                    option=TokenSeq(
                                         start_pos=24, end_pos=36,
                                         children=[
                                             Identifier(
@@ -558,7 +558,7 @@ from paxter.parser import (
                                                 start_pos=27, end_pos=28,
                                                 symbols="=",
                                             ),
-                                            FragmentList(
+                                            FragmentSeq(
                                                 start_pos=29,
                                                 end_pos=32,
                                                 children=[
@@ -604,16 +604,16 @@ from paxter.parser import (
         ),
         pytest.param(
             '@{@{@expand[1->2,<-3,stop,"foo",{bar},,@|cool.fm|]{@|4+4|}}}',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=60,
                 children=[
-                    ShortSymbol(start_pos=1, end_pos=2, symbol="{"),
-                    ShortSymbol(start_pos=3, end_pos=4, symbol="{"),
+                    SingleSymbol(start_pos=1, end_pos=2, symbol="{"),
+                    SingleSymbol(start_pos=3, end_pos=4, symbol="{"),
                     Command(
                         start_pos=5, end_pos=58,
                         starter="expand",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=12, end_pos=49,
                             children=[
                                 Number(start_pos=12, end_pos=13, value=1),
@@ -631,7 +631,7 @@ from paxter.parser import (
                                     enclosing=EnclosingPattern(left='"', right='"'),
                                 ),
                                 Operator(start_pos=31, end_pos=32, symbols=","),
-                                FragmentList(
+                                FragmentSeq(
                                     start_pos=33, end_pos=36,
                                     children=[
                                         Text(
@@ -657,7 +657,7 @@ from paxter.parser import (
                                 ),
                             ],
                         ),
-                        main_arg=FragmentList(
+                        main_arg=FragmentSeq(
                             start_pos=51, end_pos=57,
                             children=[
                                 Command(
@@ -684,27 +684,27 @@ from paxter.parser import (
         ),
         pytest.param(
             '@foo[[]->[],{}->[],@||]',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=23,
                 children=[
                     Command(
                         start_pos=1, end_pos=23,
                         starter="foo",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=5, end_pos=22,
                             children=[
-                                TokenList(start_pos=6, end_pos=6, children=[]),
+                                TokenSeq(start_pos=6, end_pos=6, children=[]),
                                 Operator(start_pos=7, end_pos=9, symbols="->"),
-                                TokenList(start_pos=10, end_pos=10, children=[]),
+                                TokenSeq(start_pos=10, end_pos=10, children=[]),
                                 Operator(start_pos=11, end_pos=12, symbols=","),
-                                FragmentList(
+                                FragmentSeq(
                                     start_pos=13, end_pos=13,
                                     children=[],
                                     enclosing=EnclosingPattern(left="{", right="}"),
                                 ),
                                 Operator(start_pos=14, end_pos=16, symbols="->"),
-                                TokenList(start_pos=17, end_pos=17, children=[]),
+                                TokenSeq(start_pos=17, end_pos=17, children=[]),
                                 Operator(start_pos=18, end_pos=19, symbols=","),
                                 Command(
                                     start_pos=20, end_pos=22,
@@ -725,19 +725,19 @@ from paxter.parser import (
         ),
         pytest.param(
             '@foo[\n  a = {1 -> 2},\n  b = {My name is @name},\n]{bar}\n',
-            FragmentList(
+            FragmentSeq(
                 start_pos=0, end_pos=55,
                 children=[
                     Command(
                         start_pos=1, end_pos=54,
                         starter="foo",
                         starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenList(
+                        option=TokenSeq(
                             start_pos=5, end_pos=48,
                             children=[
                                 Identifier(start_pos=8, end_pos=9, name="a"),
                                 Operator(start_pos=10, end_pos=11, symbols="="),
-                                FragmentList(
+                                FragmentSeq(
                                     start_pos=13, end_pos=19,
                                     children=[
                                         Text(
@@ -753,7 +753,7 @@ from paxter.parser import (
                                 Operator(start_pos=20, end_pos=21, symbols=","),
                                 Identifier(start_pos=24, end_pos=25, name="b"),
                                 Operator(start_pos=26, end_pos=27, symbols="="),
-                                FragmentList(
+                                FragmentSeq(
                                     start_pos=29, end_pos=45,
                                     children=[
                                         Text(
@@ -778,7 +778,7 @@ from paxter.parser import (
                                 Operator(start_pos=46, end_pos=47, symbols=","),
                             ],
                         ),
-                        main_arg=FragmentList(
+                        main_arg=FragmentSeq(
                             start_pos=50, end_pos=53,
                             children=[
                                 Text(

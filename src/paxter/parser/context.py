@@ -7,8 +7,8 @@ from typing import List, Match, Tuple
 from paxter.exceptions import PaxterSyntaxError
 from paxter.parser.charloc import CharLoc
 from paxter.parser.data import (
-    Command, Fragment, FragmentList, Identifier, Number, Operator, ShortSymbol, Text,
-    TokenList,
+    Command, Fragment, FragmentSeq, Identifier, Number, Operator, SingleSymbol, Text,
+    TokenSeq,
 )
 from paxter.parser.enclosing import EnclosingPattern, GlobalEnclosingPattern
 from paxter.parser.lexers import LEXER
@@ -30,26 +30,26 @@ class ParseContext:
     input_text: str
 
     #: Root node of the parsed tree
-    tree: FragmentList = field(init=False)
+    tree: FragmentSeq = field(init=False)
 
     def __post_init__(self):
-        self.tree = self._parse_global_fragment_list()
+        self.tree = self._parse_global_fragment_seq()
 
-    def _parse_global_fragment_list(self) -> FragmentList:
+    def _parse_global_fragment_seq(self) -> FragmentSeq:
         """
         Parses the entirety of the already provided input text
-        for the global-level fragment list from the very beginning.
+        for the global-level fragment sequence from the very beginning.
         """
-        end_pos, node = self._inner_parse_fragment_list(0, GlobalEnclosingPattern())
+        end_pos, node = self._inner_parse_fragment_seq(0, GlobalEnclosingPattern())
         if end_pos != len(self.input_text):  # pragma: no cover
             raise RuntimeError("unexpected error; input text not fully consumed")
         return node
 
-    def _inner_parse_fragment_list(
+    def _inner_parse_fragment_seq(
             self, next_pos: int, enclosing: EnclosingPattern,
-    ) -> Tuple[int, FragmentList]:
+    ) -> Tuple[int, FragmentSeq]:
         """
-        Subroutinely parses the input expecting a list of fragment nodes
+        Subroutinely parses the input expecting a sequence of fragment nodes
         starting from the given position indicated by ``next_pos``.
         This method is called when parsing the global-level input
         or when parsing under a scope enclosed by braces pattern.
@@ -81,8 +81,8 @@ class ParseContext:
                 break
 
         end_pos = break_matchobj.end('inner')
-        fragment_list_node = FragmentList(start_pos, end_pos, children, enclosing)
-        return next_pos, fragment_list_node
+        fragment_seq_node = FragmentSeq(start_pos, end_pos, children, enclosing)
+        return next_pos, fragment_seq_node
 
     def _parse_at_expr(self, next_pos: int) -> Tuple[int, Fragment]:
         """
@@ -157,7 +157,7 @@ class ParseContext:
         # Parses for main argument
         lbrace_matchobj = LEXER.lbrace_re.match(self.input_text, next_pos)
         if lbrace_matchobj:
-            next_pos, main_arg_node = self._parse_fragment_list(lbrace_matchobj)
+            next_pos, main_arg_node = self._parse_fragment_seq(lbrace_matchobj)
         else:
             lquote_matchobj = LEXER.lquote_re.match(self.input_text, next_pos)
             if lquote_matchobj:
@@ -172,9 +172,9 @@ class ParseContext:
         )
         return next_pos, cmd_node
 
-    def _parse_fragment_list(
+    def _parse_fragment_seq(
             self, lbrace_matchobj: Match[str],
-    ) -> Tuple[int, FragmentList]:
+    ) -> Tuple[int, FragmentSeq]:
         """
         Recursively parses the input until the enclosing right pattern
         corresponding to the enclosing left pattern
@@ -182,7 +182,7 @@ class ParseContext:
         """
         next_pos = lbrace_matchobj.end()
         enclosing = EnclosingPattern(left=lbrace_matchobj.group('left'))
-        return self._inner_parse_fragment_list(next_pos, enclosing)
+        return self._inner_parse_fragment_seq(next_pos, enclosing)
 
     def _parse_text(self, lquote_matchobj: Match[str]) -> Tuple[int, Text]:
         """
@@ -204,16 +204,16 @@ class ParseContext:
 
     def _parse_short_symbol(
             self, symbol_matchobj: Match[str],
-    ) -> Tuple[int, ShortSymbol]:
+    ) -> Tuple[int, SingleSymbol]:
         """
         A special case of @-expression (called a "short symbol")
         where a single-character symbol follows the @-switch character.
         """
         next_pos = symbol_matchobj.end()
-        command_node = ShortSymbol.from_matchobj(symbol_matchobj, 'symbol')
+        command_node = SingleSymbol.from_matchobj(symbol_matchobj, 'symbol')
         return next_pos, command_node
 
-    def _parse_option(self, next_pos: int) -> Tuple[int, TokenList]:
+    def _parse_option(self, next_pos: int) -> Tuple[int, TokenSeq]:
         """
         Parses the option section until reaching the right square brackets.
         """
@@ -249,13 +249,13 @@ class ParseContext:
                 children.append(num_node)
                 continue
 
-            # Attempts to extract fragment list node
+            # Attempts to extract fragment sequence node
             lbrace_matchobj = LEXER.lbrace_re.match(self.input_text, next_pos)
             if lbrace_matchobj:
-                next_pos, fragment_list_node = (
-                    self._parse_fragment_list(lbrace_matchobj)
+                next_pos, fragment_seq_node = (
+                    self._parse_fragment_seq(lbrace_matchobj)
                 )
-                children.append(fragment_list_node)
+                children.append(fragment_seq_node)
                 continue
 
             # Attempts to extract text node
@@ -273,20 +273,20 @@ class ParseContext:
                 children.append(at_expr_node)
                 continue
 
-            # Attempts to parser a sub-level list of tokens
+            # Attempts to parser a sub-level sequence of tokens
             lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
             if lbracket_matchobj:
                 next_pos = lbracket_matchobj.end()
-                next_pos, token_list_node = self._parse_option(next_pos)
-                children.append(token_list_node)
+                next_pos, token_seq_node = self._parse_option(next_pos)
+                children.append(token_seq_node)
                 continue
 
-            # Attempts to parser the end of token list
-            # Return the token list if this is the case
+            # Attempts to parser the end of token sequence
+            # Return the token sequence if this is the case
             rbracket_matchobj = LEXER.rbracket_re.match(self.input_text, next_pos)
             if rbracket_matchobj:
                 end_pos, next_pos = rbracket_matchobj.span()
-                return next_pos, TokenList(start_pos, end_pos, children)
+                return next_pos, TokenSeq(start_pos, end_pos, children)
 
             # Else, something was wrong at the parsing,
             # perhaps reaching the end of text or found unmatched parenthesis.

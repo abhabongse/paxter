@@ -8,8 +8,8 @@ from typing import Any, List, Union
 from paxter.evaluator.wrappers import BaseApply, NormalApply
 from paxter.exceptions import PaxterRenderError
 from paxter.parser import (
-    CharLoc, Command, Fragment, FragmentList, Identifier, Number,
-    Operator, ShortSymbol, Text, Token, TokenList,
+    CharLoc, Command, Fragment, FragmentSeq, Identifier, Number,
+    Operator, SingleSymbol, Text, Token, TokenSeq,
 )
 
 
@@ -28,7 +28,7 @@ class EvaluateContext:
     env: dict
 
     #: Parsed document tree
-    tree: FragmentList
+    tree: FragmentSeq
 
     #: Result of the rendering
     rendered: Union[str, list] = field(init=False)
@@ -48,7 +48,7 @@ class EvaluateContext:
         """
         if isinstance(token, Fragment):
             return self.transform_fragment(token)
-        if isinstance(token, TokenList):
+        if isinstance(token, TokenSeq):
             return self.transform_token_list(token)
         if isinstance(token, Identifier):
             return self.transform_identifier(token)
@@ -56,7 +56,7 @@ class EvaluateContext:
             return self.transform_operator(token)
         if isinstance(token, Number):
             return self.transform_number(token)
-        if isinstance(token, FragmentList):
+        if isinstance(token, FragmentSeq):
             return self.transform_fragment_list(token)
         raise PaxterRenderError(
             "unrecognized token at %(pos)s",
@@ -71,14 +71,14 @@ class EvaluateContext:
             return self.transform_text(fragment)
         if isinstance(fragment, Command):
             return self.transform_command(fragment)
-        if isinstance(fragment, ShortSymbol):
+        if isinstance(fragment, SingleSymbol):
             return self.transform_symbol_command(fragment)
         raise PaxterRenderError(
             "unrecognized fragment at %(pos)s",
             pos=CharLoc(self.input_text, fragment.start_pos),
         )
 
-    def transform_token_list(self, seq: TokenList):
+    def transform_token_list(self, seq: TokenSeq):
         """
         Transforms a given parsed token list.
         """
@@ -111,7 +111,7 @@ class EvaluateContext:
         """
         return token.value
 
-    def transform_fragment_list(self, seq: FragmentList) -> List[Any]:
+    def transform_fragment_list(self, seq: FragmentSeq) -> List[Any]:
         """
         Transforms a given parsed fragment list.
         """
@@ -177,7 +177,7 @@ class EvaluateContext:
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
 
-    def transform_symbol_command(self, token: ShortSymbol):
+    def transform_symbol_command(self, token: SingleSymbol):
         """
         Transforms a given parsed symbol command.
         """

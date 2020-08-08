@@ -3,9 +3,9 @@ Utility class for textual enclosing (left and right) patterns
 which surrounds a particular scope of string data.
 It is used in the following scenarios:
 
-- Brace pattern for FragmentList nodes
-- Quoted pattern for Text nodes
-- Bar pattern for the starter part of Command nodes
+- Brace pattern for :class:`FragmentSeq <paxter.parser.data.FragmentSeq>` nodes
+- Quoted pattern for :class:`Text <paxter.parser.data.Text>` nodes
+- Bar pattern for the starter of :class:`Command <paxter.parser.data.Command>` nodes
 """
 import re
 from dataclasses import dataclass, field
@@ -71,7 +71,7 @@ class EnclosingPattern:
 @dataclass
 class GlobalEnclosingPattern(EnclosingPattern):
     """
-    Specialized scope pattern just for global-level fragment list.
+    Specialized scope pattern just for global-level fragment sequence.
     """
     left: str = field(default=None, init=False, repr=False)
     right: str = field(default=None, init=False, repr=False)

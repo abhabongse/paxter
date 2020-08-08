@@ -46,7 +46,7 @@ which consist of instances of the following data classes.
 .. autoclass:: paxter.parser.Fragment
    :show-inheritance:
 
-.. autoclass:: paxter.parser.TokenList
+.. autoclass:: paxter.parser.TokenSeq
    :members: children
    :show-inheritance:
 
@@ -62,7 +62,7 @@ which consist of instances of the following data classes.
    :members: value
    :show-inheritance:
 
-.. autoclass:: paxter.parser.FragmentList
+.. autoclass:: paxter.parser.FragmentSeq
    :members: children, enclosing
    :show-inheritance:
 
