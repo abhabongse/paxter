@@ -21,25 +21,31 @@ So we will add another one.
 .. code-block:: pycon
 
    >>> document
-   [
-       Paragraph(children=[
-           'Hi, my name is ',
-           Bold(children=['Ashley']),
-           RawElement(children='<br />'),
-           '\nand my blog is located ',
-           Link(children=['here'], href='https://example.com'),
-           '.',
-       ]),
-       '\n\n',
-       Paragraph(children=['This is another paragraph.']),
-   ]
+   Fragments([
+       Paragraph(
+           blob=Fragments([
+               "Hi, my name is ",
+               Bold(blob=Fragments(["Ashley"])),
+               RawElement(blob="<br />"),
+               "\nand my blog is located ",
+               Link(blob=Fragments(["here"]), href="https://example.com"),
+               ".",
+           ])
+       ),
+       "\n\n",
+       Paragraph(blob=Fragments(["This is another paragraph."])),
+   ])
 
-Because the resulting ``document`` (shown above)
-is a list of :class:`str` or :class:`Element <paxter.authoring.document.Element>` instances
-(from which :class:`Paragraph <paxter.authoring.document.Paragraph>` is derived),
-in order to render the final HTML result,
-we have to take the effort to iterate over each member of the list.
-Fortunately, there is a better way.
+The resulting ``document`` (shown above)
+is a :class:`Fragments <paxter.evaluator.Fragments>` of
+:class:`str` or :class:`Element <paxter.authoring.document.Element>` instances
+(from which :class:`Paragraph <paxter.authoring.document.Paragraph>` is derived).
+Unfortunately, the :class:`Fragments <paxter.evaluator.Fragments>` class
+does not provide a method to render itself into a final output *by design*
+as it is merely part of the result of parsing and evaluate
+input text in Paxter language.
+We need another utility from the :mod:`paxter.authoring`
+domain to help us render it.
 
 
 Document Helper Class
@@ -89,6 +95,23 @@ unless its entirely is a single :class:`Element <paxter.authoring.document.Eleme
 
 .. code-block:: pycon
 
+   >>> document
+   Document(
+       blob=Fragments([
+           Paragraph(
+               blob=Fragments([
+                   "Hi, my name is ",
+                   Bold(blob=Fragments(["Ashley"])),
+                   RawElement(blob="<br />"),
+                   "\nand my blog is located ",
+                   Link(blob=Fragments(["here"]), href="https://example.com"),
+                   ".",
+               ])
+           ),
+           Paragraph(blob=Fragments(["This is another paragraph."])),
+           Bold(blob=Fragments(["This is a third paragraph."])),
+       ])
+   )
    >>> print(document.html())
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p><p>This is another paragraph.</p><b>This is a third paragraph.</b>
