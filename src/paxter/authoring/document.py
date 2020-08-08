@@ -5,9 +5,8 @@ which may be used to construct a document for web, print, etc.
 import html
 import re
 from dataclasses import InitVar, dataclass
-from typing import Iterator, List, Union
+from typing import Iterator, List, Sequence, Union
 
-from paxter.authoring.standards import flatten
 from paxter.evaluator import FragmentList
 from paxter.exceptions import PaxterRenderError
 
@@ -59,11 +58,13 @@ class Element:
         Recursively produces a stream of HTML string tokens
         from the given blob which may be a string or a fragment list.
         """
-        for fragment in flatten(blob):
-            if isinstance(fragment, Element):
-                yield from fragment.html_token_stream()
+        for frag in FragmentList.flatten(blob):
+            if isinstance(frag, Element):
+                yield from frag.html_token_stream()
+            elif hasattr(frag, '_html_'):
+                yield frag._html_()  # noqa
             else:
-                yield html.escape(str(fragment))
+                yield html.escape(str(frag))
 
     def split_paragraphs(
             self,
@@ -79,22 +80,24 @@ class Element:
         paragraphs = self._inner_split_paragraphs(blob)
         if len(paragraphs) == 1 and not forced_paragraph:
             return paragraphs[0]
-        updated_paragraphs = []
+        fragments = []
         for para in paragraphs:
             if len(para) == 1 and isinstance(para[0], Element):
-                updated_paragraphs.append(para[0])
+                fragments.append(para[0])
             else:
-                updated_paragraphs.append(Paragraph(blob=para))
-        return FragmentList(updated_paragraphs)
+                fragments.append(Paragraph(blob=para))
+        return FragmentList(fragments)
 
     def _inner_split_paragraphs(
             self,
             blob: Union[str, FragmentList],
-    ) -> FragmentList[FragmentList]:
+    ) -> List[FragmentList]:
         # Special case: when the blob is just a string
         # then we treat them as a single element in paragraph.
         if isinstance(blob, str):
-            return FragmentList([FragmentList(blob)])
+            return [FragmentList(blob)]
+        if not isinstance(blob, FragmentList):
+            raise PaxterRenderError("expected string or fragment list")
 
         # Clean up fragment list blob by merging consecutive strings
         blob = self._merge_strings(blob)
@@ -126,11 +129,12 @@ class Element:
             self._strip_paragraph(paragraph)
             for paragraph in paragraphs
         ]
-        return FragmentList(paragraphs)
+        return paragraphs
 
     def _merge_strings(self, fragments: FragmentList) -> FragmentList:
+        # First pass: group consecutive strings together
         groups = []
-        for frag in flatten(fragments):
+        for frag in fragments.flatten():
             if isinstance(frag, str):
                 if groups and isinstance(groups[-1], FragmentList):
                     groups[-1].append(frag)
@@ -138,6 +142,7 @@ class Element:
                     groups.append(FragmentList([frag]))
             else:
                 groups.append(frag)
+        # Second pass: merge each group consecutive strings into one string
         fragments = []
         for grp in groups:
             if isinstance(grp, FragmentList):
@@ -146,11 +151,14 @@ class Element:
                 fragments.append(grp)
         return FragmentList(fragments)
 
-    def _strip_paragraph(self, paragraph: List) -> FragmentList:
+    def _strip_paragraph(self, paragraph: Sequence) -> FragmentList:
+        paragraph = list(paragraph)
+        # Left-strip first paragraph
         if paragraph and isinstance(paragraph[0], str):
             paragraph[0] = paragraph[0].lstrip()
             if not paragraph[0]:
                 paragraph = paragraph[1:]
+        # Right-strip last paragraph
         if paragraph and isinstance(paragraph[-1], str):
             paragraph[-1] = paragraph[-1].rstrip()
             if not paragraph[-1]:
@@ -182,12 +190,14 @@ class RawElement(Element):
     def html_token_stream(self) -> Iterator[str]:
         yield from self.html_rec_token_stream(self.blob)
 
-    def html_rec_token_stream(self, elements: Union[str, FragmentList]) -> Iterator[str]:
-        for fragment in flatten(elements):
-            if isinstance(fragment, Element):
-                yield from fragment.html_token_stream()
+    def html_rec_token_stream(self, blob: Union[str, FragmentList]) -> Iterator[str]:
+        for frag in FragmentList.flatten(blob):
+            if isinstance(frag, Element):
+                yield from frag.html_token_stream()
+            elif hasattr(frag, '_html_'):
+                yield frag._html_()  # noqa
             else:
-                yield str(fragment)
+                yield str(frag)
 
 
 #: Line break raw element

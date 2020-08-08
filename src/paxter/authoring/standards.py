@@ -2,9 +2,9 @@
 Collection of standard functions for Python authoring mode.
 """
 import inspect
-from typing import Any, Iterator, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
-from paxter.evaluator import DirectApply, FragmentList
+from paxter.evaluator import DirectApply
 from paxter.exceptions import PaxterRenderError
 from paxter.parser import Command, Text
 
@@ -46,24 +46,3 @@ def verbatim(text: Any) -> str:
     if not isinstance(text, str):
         raise TypeError("argument to verbatim must be string")
     return text
-
-
-def flatten(seq) -> FragmentList:
-    """
-    Flattens the nested fragment list of elements
-    by unrolling them into a single list.
-
-    >>> flatten(["Hello", [",", " "], ["World"], "!"])
-    ["Hello", ",", " ", "World", "!"]
-    >>> flatten("Hello, World!")
-    ["Hello, World!"]
-    """
-    return FragmentList(_rec_flatten_tokenize(seq))
-
-
-def _rec_flatten_tokenize(data) -> Iterator:
-    if isinstance(data, FragmentList):
-        for element in data:
-            yield from _rec_flatten_tokenize(element)
-    else:
-        yield data

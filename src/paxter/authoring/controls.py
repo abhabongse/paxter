@@ -41,13 +41,13 @@ def for_statement(context: 'EvaluateContext', node: Command):
     id_name = node.option.children[0].name
     seq = context.transform_token(node.option.children[2])
 
-    result = []
+    fragments = []
     for value in seq:
         context.env[id_name] = value
         rendered = context.transform_token(node.main_arg)
-        result.append(rendered)
+        fragments.append(rendered)
 
-    return FragmentList(result)
+    return FragmentList(fragments)
 
 
 @DirectApply

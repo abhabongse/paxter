@@ -12,9 +12,7 @@ from paxter.authoring.document import (
     hair_space, horizontal_rule, line_break,
     non_breaking_space, thin_space,
 )
-from paxter.authoring.standards import (
-    flatten, python_unsafe_exec, starter_unsafe_eval, verbatim,
-)
+from paxter.authoring.standards import python_unsafe_exec, starter_unsafe_eval, verbatim
 
 
 def create_simple_env(data: Optional[dict] = None):
@@ -29,7 +27,6 @@ def create_simple_env(data: Optional[dict] = None):
         'if': if_statement,
         'python': python_unsafe_exec,
         'verb': verbatim,
-        'flatten': flatten,
         **data,
     }
 
