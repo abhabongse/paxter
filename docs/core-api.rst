@@ -104,7 +104,8 @@ Users may want to extend this class to customize the tree evaluation.
 
 The evaluated list of fragments will be of the following type
 
-.. autoclass:: paxter.evaluator.FragmentList
+.. autoclass:: paxter.evaluator.Fragments
+   :members:
    :show-inheritance:
 
 

@@ -6,19 +6,23 @@ While not required, Paxter package provides a set of data classes
 that users can use to construct a rich document.
 Here suppose that we are going to write a simple blog entry
 using a few data classes from :mod:`paxter.authoring` subpackage.
+Please ignore :class:`Fragments <paxter.evaluator.Fragments>` for now.
 
 .. code-block:: python
 
    from paxter.authoring.document import Bold, Link, Paragraph, line_break
+   from paxter.evaluator import Fragments
 
-   paragraph = Paragraph([
-       "Hi, my name is ",
-       Bold(["Ashley"]),
-       line_break,
-       "\nand my blog is located ",
-       Link(["here"], "https://example.com"),
-       ".",
-   ])
+   paragraph = Paragraph(
+       Fragments([
+           "Hi, my name is ",
+           Bold(Fragments(["Ashley"])),
+           line_break,
+           "\nand my blog is located ",
+           Link(Fragments(["here"]), "https://example.com"),
+           ".",
+       ])
+   )
 
 .. code-block:: pycon
 
@@ -30,6 +34,7 @@ using a few data classes from :mod:`paxter.authoring` subpackage.
 
    Everything located under the subpackage :mod:`paxter.authoring`
    are supplementary to but independent of the core Paxter library package.
+   They are provided only for convenience.
 
 Of course, this approach to writing documents
 right inside python code space would be very cumbersome.
@@ -51,28 +56,33 @@ So Paxter library provides an alternative way to construct the exact same docume
 .. code-block:: pycon
 
    >>> document
-   [
-       Paragraph(children=[
-           'Hi, my name is ',
-           Bold(children=['Ashley']),
-           RawElement(children='<br />'),
-           '\nand my blog is located ',
-           Link(children=['here'], href='https://example.com'),
-           '.',
-       ]),
-   ]
-   >>> document[0] == paragraph
+   Fragments([
+       Paragraph(
+           blob=Fragments([
+               "Hi, my name is ",
+               Bold(blob=Fragments(["Ashley"])),
+               RawElement(blob="<br />"),
+               "\nand my blog is located ",
+               Link(blob=Fragments(["here"]), href="https://example.com"),
+               ".",
+           ])
+       )
+   ])
+   >>> document[0] == paragraph  # paragraph from the previous example
    True
    >>> print(document[0].html())
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p>
 
-.. note::
+An important point demonstrated in the above example is that
+we write a document through an intuitive language
+and then use Paxter library package to help us and parse and transform
+the input text we wrote into the final document object.
+Paxter library is designed to be flexible and customizable
+to help us achieve the desired output document.
 
-   If readers are wondering why the resulting document
-   is a list of :class:`Paragraph <paxter.authoring.document.Paragraph>`
-   instance rather than just the instance itself,
-   just be patient; we will discuss about this in upcoming sections.
+Next we are going to walk though a few concepts
+we have seen in the input text from the above example.
 
 
 Understanding Commands
@@ -86,8 +96,8 @@ or, when followed by at least one of ``[options]`` or ``{main argument}``,
 it simulates a function call over such object.
 
 For example, ``@bold{Ashley}`` in Paxter input text
-is roughly equivalent to the python code ``bold(["Ashley"])``
-which would be evaluated into ``Bold(children=["Ashley"])`` in the final result.
+is roughly equivalent to the python code ``bold(Fragments(["Ashley"]))``
+which would be evaluated into ``Bold(blob=Fragments(["Ashley"]))`` in the final result.
 Similarly,
 
 .. code-block:: paxter
@@ -98,37 +108,42 @@ would roughly be parsed into the following python code
 
 .. code-block:: python
 
-   link(["here"], "https://example.com")
+   link(Fragments(["here"]), "https://example.com")
 
 which would then be evaluated into
 
 .. code-block:: python
 
-   Link(children=['here'], href='https://example.com')
+   Link(blob=Fragments(['here']), href='https://example.com')
 
-Notice that the textual content,
-surrounded by *a matching pair of curly braces*,
-is always parsed into a list of values.
-Moreover, the parsed list would always be positioned
+Notice that the textual content
+that is surrounded by *a matching pair of curly braces*
+is always parsed into an instance of
+:class:`Fragments <paxter.evaluator.Fragments>`,
+containing a list of values.
+Moreover, it would always be positioned
 as the very first argument of translated function calls.
 We call this part the **main argument** of a command.
 
 Moreover, if we look at how the outermost ``@paragraph`` command is constructed,
 we would see that the content of main argument
-would always be *recursively parsed* into a list of values.
+would always be *recursively parsed* into
+a :class:`Fragments <paxter.evaluator.Fragments>` instance with nested values.
 Hence, the above particular ``@paragraph`` command is in fact
 roughly parsed into an equivalent python code as follows.
 
 .. code-block:: python
 
-   paragraph([
-       "Hi, my name is ",
-       bold(["Ashley"]),
-       break_,
-       "\nand my blog is located ",
-       link(["here"], "https://example.com"),
-       ".",
-   ])
+   paragraph(
+       Fragments([
+           "Hi, my name is ",
+           bold(Fragments(["Ashley"])),
+           break_,
+           "\nand my blog is located ",
+           link(Fragments(["here"]), "https://example.com"),
+           ".",
+       ]),
+   )
 
 Now let us revisit the ``@link`` command from above once again.
 
@@ -148,14 +163,14 @@ would turn into the following equivalent python code.
 
 .. code-block:: python
 
-   foo(["main argument"], "bar", 3)
+   foo(Fragments(["main argument"]), "bar", 3)
 
 Python-style keyword arguments are also supported within the options.
 For instance, the Paxter command ``@foo["bar", n=3]{main argument}`` gets turned into:
 
 .. code-block:: python
 
-   foo(["main argument"], "bar", n=3)
+   foo(Fragments(["main argument"]), "bar", n=3)
 
 In addition, the main argument discussed earlier is actually *not* mandatory.
 When it is absent, all values within the options then
@@ -200,7 +215,6 @@ Additionally, ``@break`` simply maps to the value
     'if': DirectApply(wrapped=<function if_statement at 0x7ff5ca9ff820>),
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7ff5bbf40040>),
     'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
-    'flatten': <function paxter.authoring.standards.flatten(data, join: bool = False) -> Union[List[str], str]>,
     '_symbols_': {'!': '',
      '@': '@',
      '.': RawElement(children='&hairsp;'),

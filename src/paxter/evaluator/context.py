@@ -5,7 +5,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Union
 
-from paxter.evaluator.data import FragmentList
+from paxter.evaluator.data import Fragments
 from paxter.evaluator.wrappers import BaseApply, NormalApply
 from paxter.exceptions import PaxterRenderError
 from paxter.parser import (
@@ -112,7 +112,7 @@ class EvaluateContext:
         """
         return token.value
 
-    def transform_fragment_list(self, seq: FragmentSeq) -> FragmentList:
+    def transform_fragment_list(self, seq: FragmentSeq) -> Fragments:
         """
         Transforms a given parsed fragment list.
         """
@@ -124,7 +124,7 @@ class EvaluateContext:
             fragment for fragment in transformed_fragments
             if fragment is not None
         ]
-        return FragmentList(result)
+        return Fragments(result)
 
     def transform_text(self, token: Text) -> str:
         """

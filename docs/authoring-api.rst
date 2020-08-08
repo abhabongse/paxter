@@ -54,10 +54,6 @@ The following functions and classes are available in preset environments.
      - **python**
      - Yes
      - Yes
-   * - :func:`flatten <paxter.authoring.standards.flatten>`
-     - **flatten**
-     - Yes
-     - Yes
    * - :func:`verbatim <paxter.authoring.standards.verbatim>`
      - **verbatim**
      - Yes
@@ -174,8 +170,6 @@ Standard Functions
 .. autofunction:: paxter.authoring.standards.starter_unsafe_eval
 
 .. autofunction:: paxter.authoring.standards.python_unsafe_exec
-
-.. autofunction:: paxter.authoring.standards.flatten
 
 .. autofunction:: paxter.authoring.standards.verbatim
 

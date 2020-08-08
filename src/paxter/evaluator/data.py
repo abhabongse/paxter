@@ -7,7 +7,7 @@ from typing import MutableSequence, TypeVar
 T = TypeVar('T')
 
 
-class FragmentList(UserList, MutableSequence[T]):
+class Fragments(UserList, MutableSequence[T]):
     """
     Special subclass of built-in list class
     to store a list of fragments.
@@ -15,19 +15,19 @@ class FragmentList(UserList, MutableSequence[T]):
 
     def __repr__(self):
         content = super().__repr__()
-        return f"FragmentList({content})"
+        return f"Fragments({content})"
 
     def flatten(self):
         """
         Flattens out the members of fragment list
         but without nested fragment list.
         """
-        return FragmentList(FragmentList.__flatten_tokenize(self))
+        return Fragments(Fragments.__flatten_tokenize(self))
 
     @staticmethod
     def __flatten_tokenize(data):
-        if isinstance(data, FragmentList):
+        if isinstance(data, Fragments):
             for element in data:
-                yield from FragmentList.__flatten_tokenize(element)
+                yield from Fragments.__flatten_tokenize(element)
         else:
             yield data
