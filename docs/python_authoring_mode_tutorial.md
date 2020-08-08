@@ -1,5 +1,11 @@
 # Python Authoring Mode Tutorial
 
+```eval_rst
+.. todo::
+
+   This page requires revision.
+```
+
 ## Block Python Code Execution
 
 In Python authoring mode,

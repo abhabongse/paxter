@@ -1,5 +1,10 @@
+################
 Syntax Reference
-================
+################
+
+.. todo::
+
+   This page requires revision.
 
 Below are syntax diagrams for Paxter language. 
 

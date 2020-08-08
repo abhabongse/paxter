@@ -1,6 +1,10 @@
 # Paxter Language Tutorial
 
 ```eval_rst
+.. todo::
+
+   This page requires revision.
+
 .. note:: 
 
    This is a tutotrial for *bare* Paxter language specification.

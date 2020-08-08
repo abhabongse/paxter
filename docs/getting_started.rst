@@ -2,6 +2,10 @@
 Getting Started
 ###############
 
+.. todo::
+
+   This page is due for removal.
+
 Installation
 ============
 

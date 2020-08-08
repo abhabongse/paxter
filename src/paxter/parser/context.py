@@ -141,24 +141,29 @@ class ParseContext:
         """
         Continues parsing the Command after the phrase section.
         """
-        # Parses for option section (square brackets)
-        lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
-        if lbracket_matchobj:
-            next_pos = lbracket_matchobj.end()
-            next_pos, option = self._parse_option(next_pos)
-        else:
+        # If phrase is empty, stop parsing for option or main argument
+        if not phrase:
             option = None
-
-        # Parses for main argument
-        lbrace_matchobj = LEXER.lbrace_re.match(self.input_text, next_pos)
-        if lbrace_matchobj:
-            next_pos, main_arg = self._parse_fragment_seq(lbrace_matchobj)
+            main_arg = None
         else:
-            lquote_matchobj = LEXER.lquote_re.match(self.input_text, next_pos)
-            if lquote_matchobj:
-                next_pos, main_arg = self._parse_text(lquote_matchobj)
+            # Parses for option section (square brackets)
+            lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
+            if lbracket_matchobj:
+                next_pos = lbracket_matchobj.end()
+                next_pos, option = self._parse_option(next_pos)
             else:
-                main_arg = None
+                option = None
+
+            # Parses for main argument
+            lbrace_matchobj = LEXER.lbrace_re.match(self.input_text, next_pos)
+            if lbrace_matchobj:
+                next_pos, main_arg = self._parse_fragment_seq(lbrace_matchobj)
+            else:
+                lquote_matchobj = LEXER.lquote_re.match(self.input_text, next_pos)
+                if lquote_matchobj:
+                    next_pos, main_arg = self._parse_text(lquote_matchobj)
+                else:
+                    main_arg = None
 
         # Construct Command node
         cmd_node = Command(
