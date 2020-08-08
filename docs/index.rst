@@ -16,16 +16,26 @@ Users of the package also has the access to the Paxter language parser API
 which allows them to implement new interpreters on top of the Paxter language
 if they so wish.
 
+Installation
+============
+
+Paxter python package can be installed from PyPI via the fullowing ``pip`` command.
+
+.. code-block:: bash
+
+   $ pip install paxter
+
 
 .. toctree::
+   :caption: Table of Contents
    :maxdepth: 1
 
-   one_giant_tutorial
+   tutorial/index
    getting_started
    paxter_language_tutorial
    python_authoring_mode_tutorial
-   core_api
-   authoring_api
+   core-api
+   authoring-api
    syntax
 
 

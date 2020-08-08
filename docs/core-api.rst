@@ -102,6 +102,11 @@ Users may want to extend this class to customize the tree evaluation.
 .. autoclass:: paxter.evaluator.EvaluateContext
    :members:
 
+The evaluated list of fragments will be of the following type
+
+.. autoclass:: paxter.evaluator.FragmentList
+   :show-inheritance:
+
 
 Function decorators
 -------------------
