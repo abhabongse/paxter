@@ -3,8 +3,9 @@ Implementation of the renderer.
 """
 import re
 from dataclasses import dataclass, field
-from typing import Any, List, Union
+from typing import Any, Union
 
+from paxter.evaluator.data import FragmentList
 from paxter.evaluator.wrappers import BaseApply, NormalApply
 from paxter.exceptions import PaxterRenderError
 from paxter.parser import (
@@ -111,7 +112,7 @@ class EvaluateContext:
         """
         return token.value
 
-    def transform_fragment_list(self, seq: FragmentSeq) -> List[Any]:
+    def transform_fragment_list(self, seq: FragmentSeq) -> FragmentList:
         """
         Transforms a given parsed fragment list.
         """
@@ -123,7 +124,7 @@ class EvaluateContext:
             fragment for fragment in transformed_fragments
             if fragment is not None
         ]
-        return result
+        return FragmentList(result)
 
     def transform_text(self, token: Text) -> str:
         """
@@ -134,7 +135,7 @@ class EvaluateContext:
             text = self.BACKSLASH_NEWLINE_RE.sub('', text)
         return text
 
-    def transform_command(self, token: Command):
+    def transform_command(self, token: Command) -> Any:
         """
         Transforms a given parsed command.
         """
@@ -177,7 +178,7 @@ class EvaluateContext:
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
 
-    def transform_symbol_command(self, token: SingleSymbol):
+    def transform_symbol_command(self, token: SingleSymbol) -> Any:
         """
         Transforms a given parsed symbol command.
         """

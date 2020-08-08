@@ -8,9 +8,8 @@ from dataclasses import InitVar, dataclass
 from typing import Iterator, List, Union
 
 from paxter.authoring.standards import flatten
+from paxter.evaluator import FragmentList
 from paxter.exceptions import PaxterRenderError
-
-ElementList = List[Union[None, str, 'Element']]
 
 
 @dataclass
@@ -52,81 +51,102 @@ class Element:
         """
         raise NotImplementedError
 
-    def html_rec_token_stream(self, elements: Union[str, ElementList]) -> Iterator[str]:
+    def html_rec_token_stream(
+            self,
+            blob: Union[str, FragmentList],
+    ) -> Iterator[str]:
         """
-        Recursively produces a sequence of HTML string tokens
-        from the given input sequence of string or elements.
+        Recursively produces a stream of HTML string tokens
+        from the given blob which may be a string or a fragment list.
         """
-        for fragment in flatten(elements):
+        for fragment in flatten(blob):
             if isinstance(fragment, Element):
                 yield from fragment.html_token_stream()
             else:
                 yield html.escape(str(fragment))
 
-    def split_paragraphs(self, elements: Union[str, ElementList],
-                         forced_paragraph: bool) -> ElementList:
-        """
-        Attempts to split a sequence of string or elements
-        using a double newline into a list of paragraphs
-        where each paragraph is a sequence of string or elements
-        within the same paragraph.
-        """
-        collection = self._divide_paragraphs(elements)
-        if len(collection) == 1 and not forced_paragraph:
-            return collection[0]
-        children = []
-        for paragraph in collection:
-            if len(paragraph) == 1 and isinstance(paragraph[0], Element):
-                children.append(paragraph[0])
-            else:
-                children.append(Paragraph(children=paragraph))
-        return children
-
-    def _divide_paragraphs(
+    def split_paragraphs(
             self,
-            elements: Union[str, ElementList],
-    ) -> List[ElementList]:
-        if isinstance(elements, str):
-            return [[elements]]
-
-        # Clean up element list sequence
-        fragments = []
-        for f in flatten(elements):
-            if fragments and isinstance(fragments[-1], str) and isinstance(f, str):
-                fragments[-1] = fragments[-1] + f
+            blob: Union[str, FragmentList],
+            forced_paragraph: bool,
+    ) -> FragmentList:
+        """
+        Attempts to split the given blob
+        (which may be a string or a fragment list)
+        into a list of paragraphs where each paragraph is
+        a list of string or elements within the same paragraph.
+        """
+        paragraphs = self._inner_split_paragraphs(blob)
+        if len(paragraphs) == 1 and not forced_paragraph:
+            return paragraphs[0]
+        updated_paragraphs = []
+        for para in paragraphs:
+            if len(para) == 1 and isinstance(para[0], Element):
+                updated_paragraphs.append(para[0])
             else:
-                fragments.append(f)
-        fragments = self._clean_paragraph(fragments)
+                updated_paragraphs.append(Paragraph(blob=para))
+        return FragmentList(updated_paragraphs)
+
+    def _inner_split_paragraphs(
+            self,
+            blob: Union[str, FragmentList],
+    ) -> FragmentList[FragmentList]:
+        # Special case: when the blob is just a string
+        # then we treat them as a single element in paragraph.
+        if isinstance(blob, str):
+            return FragmentList([FragmentList(blob)])
+
+        # Clean up fragment list blob by merging consecutive strings
+        blob = self._merge_strings(blob)
+        blob = self._strip_paragraph(blob)
 
         # Split into a collection of paragraphs
-        collection = []  # list of paragraphs
-        paragraph = []  # list of string or element pieces
-        for f in fragments:
-            if isinstance(f, str):
-                pieces = self.PARAGRAPH_SPLIT_RE.split(f)
-                if len(pieces) >= 2:
-                    if pieces[0].strip():
-                        paragraph.append(pieces[0])
-                    collection.append(paragraph)
-                    for p in pieces[1:-1]:
-                        collection.append([p])
-                    paragraph = []
-                    if pieces[-1].strip():
-                        paragraph.append(pieces[-1])
+        paragraphs = []  # list of paragraphs
+        para = []  # list of string or element pieces
+        for piece in blob:
+            if isinstance(piece, str):
+                particles = self.PARAGRAPH_SPLIT_RE.split(piece)
+                if len(particles) >= 2:
+                    if particles[0].strip():
+                        para.append(particles[0])
+                    paragraphs.append(para)
+                    for p in particles[1:-1]:
+                        paragraphs.append([p])
+                    para = []
+                    if particles[-1].strip():
+                        para.append(particles[-1])
                 else:
-                    paragraph.append(pieces[0])
+                    para.append(particles[0])
             else:
-                paragraph.append(f)
-        if paragraph:
-            collection.append(paragraph)
+                para.append(piece)
+        if para:
+            paragraphs.append(para)
 
-        collection = [
-            self._clean_paragraph(paragraph)
-            for paragraph in collection
+        paragraphs = [
+            self._strip_paragraph(paragraph)
+            for paragraph in paragraphs
         ]
-        return collection
+        return FragmentList(paragraphs)
 
-    def _clean_paragraph(self, paragraph: ElementList) -> ElementList:
+    def _merge_strings(self, fragments: FragmentList) -> FragmentList:
+        groups = []
+        for frag in flatten(fragments):
+            if isinstance(frag, str):
+                if groups and isinstance(groups[-1], FragmentList):
+                    groups[-1].append(frag)
+                else:
+                    groups.append(FragmentList([frag]))
+            else:
+                groups.append(frag)
+        fragments = []
+        for grp in groups:
+            if isinstance(grp, FragmentList):
+                fragments.append(''.join(grp))
+            else:
+                fragments.append(grp)
+        return FragmentList(fragments)
+
+    def _strip_paragraph(self, paragraph: List) -> FragmentList:
         if paragraph and isinstance(paragraph[0], str):
             paragraph[0] = paragraph[0].lstrip()
             if not paragraph[0]:
@@ -135,7 +155,7 @@ class Element:
             paragraph[-1] = paragraph[-1].rstrip()
             if not paragraph[-1]:
                 paragraph = paragraph[:-1]
-        return paragraph
+        return FragmentList(paragraph)
 
 
 @dataclass
@@ -143,13 +163,13 @@ class Document(Element):
     """
     Topmost-level element for the entire document itself.
     """
-    children: ElementList
+    blob: FragmentList
 
     def __post_init__(self):
-        self.children = self.split_paragraphs(self.children, forced_paragraph=True)
+        self.blob = self.split_paragraphs(self.blob, forced_paragraph=True)
 
     def html_token_stream(self) -> Iterator[str]:
-        yield from self.html_rec_token_stream(self.children)
+        yield from self.html_rec_token_stream(self.blob)
 
 
 @dataclass
@@ -157,12 +177,12 @@ class RawElement(Element):
     """
     Renders stored string without escaping.
     """
-    children: Union[str, ElementList]
+    blob: Union[str, FragmentList]
 
     def html_token_stream(self) -> Iterator[str]:
-        yield from self.html_rec_token_stream(self.children)
+        yield from self.html_rec_token_stream(self.blob)
 
-    def html_rec_token_stream(self, elements: Union[str, ElementList]) -> Iterator[str]:
+    def html_rec_token_stream(self, elements: Union[str, FragmentList]) -> Iterator[str]:
         for fragment in flatten(elements):
             if isinstance(fragment, Element):
                 yield from fragment.html_token_stream()
@@ -171,11 +191,11 @@ class RawElement(Element):
 
 
 #: Line break raw element
-line_break = RawElement(children='<br />')
-horizontal_rule = RawElement(children='<hr />')
-non_breaking_space = RawElement(children='&nbsp;')
-hair_space = RawElement(children='&hairsp;')
-thin_space = RawElement(children='&thinsp;')
+line_break = RawElement(blob='<br />')
+horizontal_rule = RawElement(blob='<hr />')
+non_breaking_space = RawElement(blob='&nbsp;')
+hair_space = RawElement(blob='&hairsp;')
+thin_space = RawElement(blob='&thinsp;')
 
 
 @dataclass
@@ -184,7 +204,7 @@ class SimpleElement(Element):
     Simple element node type in the form of
     ``{HTML_OPENING}{rendered content}{HTML_CLOSING}``.
     """
-    children: Union[str, ElementList]
+    blob: Union[str, FragmentList]
 
     #: Opening part of the element
     HTML_OPENING = '<div>'
@@ -194,13 +214,12 @@ class SimpleElement(Element):
 
     def html_token_stream(self) -> Iterator[str]:
         yield self.HTML_OPENING
-        yield from self.html_rec_token_stream(self.children)
+        yield from self.html_rec_token_stream(self.blob)
         yield self.HTML_CLOSING
 
 
 @dataclass
 class Paragraph(SimpleElement):
-    """"""
     HTML_OPENING = '<p>'
     HTML_CLOSING = '</p>'
 
@@ -270,15 +289,15 @@ class Blockquote(Element):
     """
     Renders the blockquote which may contain multiple paragraphs.
     """
-    children: Union[str, ElementList]
+    blob: Union[str, FragmentList]
     forced_paragraph: InitVar[bool] = False
 
     def __post_init__(self, forced_paragraph: bool):
-        self.children = self.split_paragraphs(self.children, forced_paragraph)
+        self.blob = self.split_paragraphs(self.blob, forced_paragraph)
 
     def html_token_stream(self) -> Iterator[str]:
         yield '<blockquote>'
-        yield from self.html_rec_token_stream(self.children)
+        yield from self.html_rec_token_stream(self.blob)
         yield '</blockquote>'
 
 
@@ -287,12 +306,12 @@ class Link(SimpleElement):
     """
     Hyperlink element.
     """
-    children: Union[str, ElementList]
+    blob: Union[str, FragmentList]
     href: str
 
     def html_token_stream(self) -> str:
         yield f'<a href="{html.escape(self.href)}">'
-        yield from self.html_rec_token_stream(self.children)
+        yield from self.html_rec_token_stream(self.blob)
         yield '</a>'
 
 
@@ -317,7 +336,7 @@ class BareList(Element):
     """
     Element containing a list of items without encapsulation.
     """
-    items: List[Union[str, ElementList]]
+    items: List[Union[str, FragmentList]]
 
     HTML_OPENING = ''
     HTML_CLOSING = ''

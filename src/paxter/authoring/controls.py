@@ -3,7 +3,7 @@ Collection of control flow functions for Python authoring mode.
 """
 from typing import TYPE_CHECKING
 
-from paxter.evaluator import DirectApply
+from paxter.evaluator import DirectApply, FragmentList
 from paxter.exceptions import PaxterRenderError
 from paxter.parser import CharLoc, Command, Identifier
 
@@ -47,7 +47,7 @@ def for_statement(context: 'EvaluateContext', node: Command):
         rendered = context.transform_token(node.main_arg)
         result.append(rendered)
 
-    return result
+    return FragmentList(result)
 
 
 @DirectApply

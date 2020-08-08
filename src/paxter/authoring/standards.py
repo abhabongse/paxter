@@ -2,9 +2,9 @@
 Collection of standard functions for Python authoring mode.
 """
 import inspect
-from typing import Any, Iterator, List, TYPE_CHECKING, Union
+from typing import Any, Iterator, TYPE_CHECKING
 
-from paxter.evaluator import DirectApply
+from paxter.evaluator import DirectApply, FragmentList
 from paxter.exceptions import PaxterRenderError
 from paxter.parser import Command, Text
 
@@ -48,32 +48,21 @@ def verbatim(text: Any) -> str:
     return text
 
 
-def flatten(data, join: bool = False) -> Union[List[str], str]:
+def flatten(seq) -> FragmentList:
     """
-    Flattens the nested list of elements by unrolling them into a single list.
-    Unless the ``is_joined`` option is disabled,
-    all elements will be combined to a single string.
+    Flattens the nested fragment list of elements
+    by unrolling them into a single list.
 
-    >>> flatten(["Hello", ",", " ", "World", "!"], join=True)
-    "Hello, World!"
-    >>> flatten(["Hello", [",", " "], ["World"], "!"], join=True)
-    "Hello, World!"
     >>> flatten(["Hello", [",", " "], ["World"], "!"])
     ["Hello", ",", " ", "World", "!"]
-    >>> flatten("Hello, World!", join=True)
-    "Hello, World!"
     >>> flatten("Hello, World!")
     ["Hello, World!"]
     """
-    seq = _rec_flatten_tokenize(data)
-    if join:
-        return ''.join(str(element) for element in seq)
-    else:
-        return list(seq)
+    return FragmentList(_rec_flatten_tokenize(seq))
 
 
 def _rec_flatten_tokenize(data) -> Iterator:
-    if isinstance(data, list):
+    if isinstance(data, FragmentList):
         for element in data:
             yield from _rec_flatten_tokenize(element)
     else:
