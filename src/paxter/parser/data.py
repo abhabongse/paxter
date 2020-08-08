@@ -11,7 +11,7 @@ from paxter.parser.enclosing import EnclosingPattern
 __all__ = [
     'Token', 'Fragment',
     'TokenSeq', 'Identifier', 'Operator', 'Number',
-    'FragmentSeq', 'Text', 'Command', 'SingleSymbol',
+    'FragmentSeq', 'Text', 'Command',
 ]
 
 MainArgument = Union['FragmentSeq', 'Text']
@@ -168,7 +168,7 @@ class Command(Fragment):
 
     - It begins with an ``@`` switch character.
 
-    - Then, it is immediately followed by a section called a starter
+    - Then, it is immediately followed by a section called a phrase
       which is simply a string in valid Python identifier form
       or a string surrounded by enclosing bar pattern: ``|...|``.
 
@@ -178,11 +178,11 @@ class Command(Fragment):
     - Finally, it may optionally be followed by a main argument section
       which can either be a :class:`FragmentSeq` or a :class:`Text`.
     """
-    #: Command starter section
-    starter: str
+    #: Phrase section
+    phrase: str
 
-    #: Information of the enclosing bar pattern over the starter section
-    starter_enclosing: EnclosingPattern
+    #: Information of the enclosing bar pattern over the phrase section
+    phrase_enclosing: EnclosingPattern
 
     #: A sequence of tokens for the option section enclosed by ``[]``,
     #: or :const:`None` if this section is not present.
@@ -191,14 +191,3 @@ class Command(Fragment):
     #: The main argument section at the end of expression,
     #: or :const:`None` if this section is not present.
     main_arg: Optional[MainArgument]
-
-
-@dataclass
-class SingleSymbol(Fragment):
-    """
-    Node type which represents an @-prepended single symbol character
-    which is the @-switch character followed by a single symbol character
-    such as ``@@``, ``@;``, ``@!``, etc.
-    """
-    #: Symbol character appeared after the @-switch.
-    symbol: str

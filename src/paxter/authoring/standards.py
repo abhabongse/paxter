@@ -25,23 +25,28 @@ def python_unsafe_exec(context: 'EvaluateContext', node: Command):
     exec(code, context.env)
 
 
-def starter_unsafe_eval(starter: str, env: dict) -> Any:
+def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
     """
-    Unsafely evaluates the given paxter phrase.
+    Unsafely evaluates the given phrase of a command.
+    If the input phrase is a valid python identifier,
+    the env dict lookup using phrase as the key will be performed.
+    Otherwise, the dict lookup with be done on the value of ``env['_others_']``.
+    As a fallback when dict lookup was failed (key is missing),
+    python's eval() built-in function will be invoked.
     """
-    if starter in env:
-        return env[starter]
-    return eval(starter, env)
+    if phrase.isidentifier():
+        source = env
+    else:
+        source = env.get('_others_', {})
+    if phrase in source:
+        return source[phrase]
+    return eval(phrase, env)
 
 
 def verbatim(text: Any) -> str:
     """
     Returns the main string argument as-is.
-
-    >>> verbatim("Hello")
-    "Hello"
-    >>> verbatim("me@example.com")
-    "me@example.com"
+    It produces a TypeError if input text is not a string.
     """
     if not isinstance(text, str):
         raise TypeError("argument to verbatim must be string")

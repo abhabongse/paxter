@@ -210,22 +210,21 @@ Additionally, ``@break`` simply maps to the value
 .. code-block:: pycon
 
    >>> env
-   {'_starter_eval_': <function paxter.authoring.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
-    'for': DirectApply(wrapped=<function for_statement at 0x7ff5ca9ff700>),
-    'if': DirectApply(wrapped=<function if_statement at 0x7ff5ca9ff820>),
-    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7ff5bbf40040>),
+   {'_phrase_eval_': <function paxter.authoring.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
+    'for': DirectApply(wrapped=<function for_statement at 0x7fdfe8f15dc0>),
+    'if': DirectApply(wrapped=<function if_statement at 0x7fdfe8f15ee0>),
+    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7fdfe86d0f70>),
     'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
-    '_symbols_': {'!': '',
-     '@': '@',
-     '.': RawElement(children='&hairsp;'),
-     ',': RawElement(children='&thinsp;'),
-     '%': RawElement(children='&nbsp;')},
+    '_others_': {'@': '@',
+     '.': RawElement(blob='&hairsp;'),
+     ',': RawElement(blob='&thinsp;'),
+     '%': RawElement(blob='&nbsp;')},
     'raw': paxter.authoring.document.RawElement,
-    'break': RawElement(children='<br />'),
-    'hrule': RawElement(children='<hr />'),
-    'nbsp': RawElement(children='&nbsp;'),
-    'hairsp': RawElement(children='&hairsp;'),
-    'thinsp': RawElement(children='&thinsp;'),
+    'break': RawElement(blob='<br />'),
+    'hrule': RawElement(blob='<hr />'),
+    'nbsp': RawElement(blob='&nbsp;'),
+    'hairsp': RawElement(blob='&hairsp;'),
+    'thinsp': RawElement(blob='&thinsp;'),
     'paragraph': paxter.authoring.document.Paragraph,
     'h1': paxter.authoring.document.Heading1,
     'h2': paxter.authoring.document.Heading2,
@@ -251,8 +250,8 @@ from creating different environment mapping like so.
    from paxter.authoring import document, run_simple_paxter, standards
 
    alternative_env = {
-       # _starter_eval_ is required, but ignore this part for now
-       '_starter_eval_': standards.starter_unsafe_eval,
+       # _phrase_eval_ is required, but ignore this part for now
+       '_phrase_eval_': standards.phrase_unsafe_eval,
        'p': document.Paragraph,
        'b': document.Bold,
        'a': document.Link,

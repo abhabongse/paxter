@@ -23,7 +23,6 @@ But first, let us revisit the content of the environment dictionary once again.
     'if': DirectApply(wrapped=<function if_statement at 0x7f7d6ecb0820>),
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f7d5fa3e040>),
     'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
-    'flatten': <function paxter.authoring.standards.flatten(data, join: bool = False) -> Union[List[str], str]>,
     '_symbols_': {'!': '',
      '@': '@',
      '.': RawElement(children='&hairsp;'),

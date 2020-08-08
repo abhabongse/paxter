@@ -2,7 +2,7 @@ import pytest
 
 from paxter.parser import (
     Command, EnclosingPattern, FragmentSeq, GlobalEnclosingPattern, Identifier,
-    Number, Operator, ParseContext, SingleSymbol, Text, Token, TokenSeq,
+    Number, Operator, ParseContext, Text, Token, TokenSeq,
 )
 
 
@@ -38,8 +38,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=6,
-                        starter="hello",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="hello",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=None,
                         main_arg=None,
                     ),
@@ -59,8 +59,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=19, end_pos=23,
-                        starter="name",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="name",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=None,
                         main_arg=None,
                     ),
@@ -85,8 +85,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=24, end_pos=31,
-                        starter="1 + 1",
-                        starter_enclosing=EnclosingPattern(left="|", right="|"),
+                        phrase="1 + 1",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
                         option=None,
                         main_arg=None,
                     ),
@@ -97,8 +97,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=39, end_pos=50,
-                        starter="1 + 1",
-                        starter_enclosing=EnclosingPattern(left="##|", right="|##"),
+                        phrase="1 + 1",
+                        phrase_enclosing=EnclosingPattern(left="##|", right="|##"),
                         option=None,
                         main_arg=None,
                     ),
@@ -113,8 +113,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=12,
-                        starter="N @ M @ K",
-                        starter_enclosing=EnclosingPattern(left="|", right="|"),
+                        phrase="N @ M @ K",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
                         option=None,
                         main_arg=None,
                     ),
@@ -123,30 +123,125 @@ from paxter.parser import (
             ),
         ),
         pytest.param(
-            '@##|#|#|#|##, @@@,@;@#@@@"@{@}',
+            '@##|#|#|#|## @||@|@|@|,|@|;|@|#|@#|||#  @@@,@;@#@@@"@{@}',
             FragmentSeq(
-                start_pos=0, end_pos=30,
+                start_pos=0, end_pos=56,
                 children=[
                     Command(
                         start_pos=1, end_pos=12,
-                        starter="#|#|#",
-                        starter_enclosing=EnclosingPattern(left="##|", right="|##"),
+                        phrase="#|#|#",
+                        phrase_enclosing=EnclosingPattern(left="##|", right="|##"),
                         option=None,
                         main_arg=None,
                     ),
                     Text(
-                        start_pos=12, end_pos=14,
-                        inner=", ",
+                        start_pos=12, end_pos=13,
+                        inner=" ",
                         enclosing=EnclosingPattern(left="", right=""),
                     ),
-                    SingleSymbol(start_pos=15, end_pos=16, symbol="@"),
-                    SingleSymbol(start_pos=17, end_pos=18, symbol=","),
-                    SingleSymbol(start_pos=19, end_pos=20, symbol=";"),
-                    SingleSymbol(start_pos=21, end_pos=22, symbol="#"),
-                    SingleSymbol(start_pos=23, end_pos=24, symbol="@"),
-                    SingleSymbol(start_pos=25, end_pos=26, symbol='"'),
-                    SingleSymbol(start_pos=27, end_pos=28, symbol="{"),
-                    SingleSymbol(start_pos=29, end_pos=30, symbol="}"),
+                    Command(
+                        start_pos=14, end_pos=16,
+                        phrase="",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=17, end_pos=20,
+                        phrase="@",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=21, end_pos=24,
+                        phrase=",",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=25, end_pos=28,
+                        phrase=";",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=29, end_pos=32,
+                        phrase="#",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=33, end_pos=38,
+                        phrase="|",
+                        phrase_enclosing=EnclosingPattern(left="#|", right="|#"),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Text(
+                        start_pos=38, end_pos=40,
+                        inner="  ",
+                        enclosing=EnclosingPattern(left="", right=""),
+                    ),
+                    Command(
+                        start_pos=41, end_pos=42,
+                        phrase="@",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=43, end_pos=44,
+                        phrase=",",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=45, end_pos=46,
+                        phrase=";",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=47, end_pos=48,
+                        phrase="#",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=49, end_pos=50,
+                        phrase="@",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=51, end_pos=52,
+                        phrase='"',
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=53, end_pos=54,
+                        phrase="{",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
+                        main_arg=None,
+                    ),
+                    Command(
+                        start_pos=55, end_pos=56,
+                        phrase="}",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
+                        main_arg=None,
+                    ),
                 ],
                 enclosing=GlobalEnclosingPattern(),
             ),
@@ -163,8 +258,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=9, end_pos=16,
-                        starter="em",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="em",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=None,
                         main_arg=FragmentSeq(
                             start_pos=12, end_pos=15,
@@ -194,8 +289,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=19,
-                        starter="foo.process",
-                        starter_enclosing=EnclosingPattern(left="|", right="|"),
+                        phrase="foo.process",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
                         option=None,
                         main_arg=FragmentSeq(
                             start_pos=15, end_pos=18,
@@ -216,8 +311,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=21, end_pos=47,
-                        starter="foo#process",
-                        starter_enclosing=EnclosingPattern(left="#|", right="|#"),
+                        phrase="foo#process",
+                        phrase_enclosing=EnclosingPattern(left="#|", right="|#"),
                         option=TokenSeq(
                             start_pos=37, end_pos=41,
                             children=[
@@ -250,8 +345,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=9, end_pos=37,
-                        starter="level1",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="level1",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=None,
                         main_arg=FragmentSeq(
                             start_pos=16, end_pos=36,
@@ -263,8 +358,8 @@ from paxter.parser import (
                                 ),
                                 Command(
                                     start_pos=18, end_pos=35,
-                                    starter="level2",
-                                    starter_enclosing=EnclosingPattern(
+                                    phrase="level2",
+                                    phrase_enclosing=EnclosingPattern(
                                         left="", right="",
                                     ),
                                     option=None,
@@ -280,8 +375,8 @@ from paxter.parser import (
                                             ),
                                             Command(
                                                 start_pos=27, end_pos=33,
-                                                starter="level3",
-                                                starter_enclosing=EnclosingPattern(
+                                                phrase="level3",
+                                                phrase_enclosing=EnclosingPattern(
                                                     left="", right="",
                                                 ),
                                                 option=None,
@@ -318,8 +413,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=29,
-                        starter="say",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="say",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=TokenSeq(
                             start_pos=5, end_pos=22,
                             children=[
@@ -351,8 +446,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=34, end_pos=61,
-                        starter="email",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="email",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=None,
                         main_arg=Text(
                             start_pos=42, end_pos=58,
@@ -376,8 +471,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=19,
-                        starter="state",
-                        starter_enclosing=EnclosingPattern(left="###|", right="|###"),
+                        phrase="state",
+                        phrase_enclosing=EnclosingPattern(left="###|", right="|###"),
                         option=TokenSeq(
                             start_pos=15, end_pos=18,
                             children=[
@@ -395,8 +490,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=21, end_pos=31,
-                        starter="state",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="state",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=TokenSeq(
                             start_pos=27, end_pos=30,
                             children=[
@@ -418,8 +513,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=48,
-                        starter="state",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="state",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=TokenSeq(
                             start_pos=7, end_pos=18,
                             children=[
@@ -454,8 +549,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=3,
-                        starter="",
-                        starter_enclosing=EnclosingPattern(left="|", right="|"),
+                        phrase="",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
                         option=None,
                         main_arg=None,
                     ),
@@ -466,8 +561,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=5, end_pos=9,
-                        starter="",
-                        starter_enclosing=EnclosingPattern(left="#|", right="|#"),
+                        phrase="",
+                        phrase_enclosing=EnclosingPattern(left="#|", right="|#"),
                         option=None,
                         main_arg=None,
                     ),
@@ -478,8 +573,8 @@ from paxter.parser import (
                     ),
                     Command(
                         start_pos=11, end_pos=38,
-                        starter="foo",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="foo",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=TokenSeq(
                             start_pos=15, end_pos=37,
                             children=[
@@ -488,8 +583,8 @@ from paxter.parser import (
                                     children=[
                                         Command(
                                             start_pos=17, end_pos=20,
-                                            starter="bar",
-                                            starter_enclosing=EnclosingPattern(
+                                            phrase="bar",
+                                            phrase_enclosing=EnclosingPattern(
                                                 left="", right="",
                                             ),
                                             option=None,
@@ -528,8 +623,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=38,
-                        starter="foo",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="foo",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=TokenSeq(
                             start_pos=5, end_pos=37,
                             children=[
@@ -543,8 +638,8 @@ from paxter.parser import (
                                 Operator(start_pos=15, end_pos=16, symbols="+"),
                                 Command(
                                     start_pos=18, end_pos=37,
-                                    starter="foo",
-                                    starter_enclosing=EnclosingPattern(
+                                    phrase="foo",
+                                    phrase_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
                                     option=TokenSeq(
@@ -571,8 +666,8 @@ from paxter.parser import (
                                                     ),
                                                     Command(
                                                         start_pos=31, end_pos=32,
-                                                        starter="x",
-                                                        starter_enclosing=(
+                                                        phrase="x",
+                                                        phrase_enclosing=(
                                                                 EnclosingPattern(
                                                                     left="", right="",
                                                                 )
@@ -603,80 +698,119 @@ from paxter.parser import (
             ),
         ),
         pytest.param(
-            '@{@{@expand[1->2,<-3,stop,"foo",{bar},,@|cool.fm|]{@|4+4|}}}',
+            '@x{@expand[1->2,<-3,stop,"foo",{bar},,@|cool.fm|]{@|4+4|}}',
             FragmentSeq(
-                start_pos=0, end_pos=60,
+                start_pos=0, end_pos=58,
                 children=[
-                    SingleSymbol(start_pos=1, end_pos=2, symbol="{"),
-                    SingleSymbol(start_pos=3, end_pos=4, symbol="{"),
                     Command(
-                        start_pos=5, end_pos=58,
-                        starter="expand",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenSeq(
-                            start_pos=12, end_pos=49,
-                            children=[
-                                Number(start_pos=12, end_pos=13, value=1),
-                                Operator(start_pos=13, end_pos=15, symbols="->"),
-                                Number(start_pos=15, end_pos=16, value=2),
-                                Operator(start_pos=16, end_pos=17, symbols=","),
-                                Operator(start_pos=17, end_pos=19, symbols="<-"),
-                                Number(start_pos=19, end_pos=20, value=3),
-                                Operator(start_pos=20, end_pos=21, symbols=","),
-                                Identifier(start_pos=21, end_pos=25, name="stop"),
-                                Operator(start_pos=25, end_pos=26, symbols=","),
-                                Text(
-                                    start_pos=27, end_pos=30,
-                                    inner="foo",
-                                    enclosing=EnclosingPattern(left='"', right='"'),
-                                ),
-                                Operator(start_pos=31, end_pos=32, symbols=","),
-                                FragmentSeq(
-                                    start_pos=33, end_pos=36,
-                                    children=[
-                                        Text(
-                                            start_pos=33, end_pos=36,
-                                            inner="bar",
-                                            enclosing=EnclosingPattern(
-                                                left="", right="",
-                                            ),
-                                        ),
-                                    ],
-                                    enclosing=EnclosingPattern(left="{", right="}"),
-                                ),
-                                Operator(start_pos=37, end_pos=38, symbols=","),
-                                Operator(start_pos=38, end_pos=39, symbols=","),
-                                Command(
-                                    start_pos=40, end_pos=49,
-                                    starter="cool.fm",
-                                    starter_enclosing=EnclosingPattern(
-                                        left="|", right="|",
-                                    ),
-                                    option=None,
-                                    main_arg=None,
-                                ),
-                            ],
-                        ),
+                        start_pos=1, end_pos=58,
+                        phrase="x",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        option=None,
                         main_arg=FragmentSeq(
-                            start_pos=51, end_pos=57,
+                            start_pos=3, end_pos=57,
                             children=[
                                 Command(
-                                    start_pos=52, end_pos=57,
-                                    starter="4+4",
-                                    starter_enclosing=EnclosingPattern(
-                                        left="|", right="|",
+                                    start_pos=4, end_pos=57,
+                                    phrase="expand",
+                                    phrase_enclosing=EnclosingPattern(
+                                        left="", right="",
                                     ),
-                                    option=None,
-                                    main_arg=None,
+                                    option=TokenSeq(
+                                        start_pos=11, end_pos=48,
+                                        children=[
+                                            Number(start_pos=11, end_pos=12, value=1),
+                                            Operator(
+                                                start_pos=12, end_pos=14,
+                                                symbols="->",
+                                            ),
+                                            Number(start_pos=14, end_pos=15, value=2),
+                                            Operator(
+                                                start_pos=15, end_pos=16,
+                                                symbols=",",
+                                            ),
+                                            Operator(
+                                                start_pos=16, end_pos=18,
+                                                symbols="<-",
+                                            ),
+                                            Number(start_pos=18, end_pos=19, value=3),
+                                            Operator(
+                                                start_pos=19, end_pos=20,
+                                                symbols=",",
+                                            ),
+                                            Identifier(
+                                                start_pos=20, end_pos=24,
+                                                name="stop",
+                                            ),
+                                            Operator(
+                                                start_pos=24, end_pos=25,
+                                                symbols=",",
+                                            ),
+                                            Text(
+                                                start_pos=26,
+                                                end_pos=29,
+                                                inner="foo",
+                                                enclosing=EnclosingPattern(
+                                                    left='"', right='"',
+                                                ),
+                                            ),
+                                            Operator(
+                                                start_pos=30, end_pos=31,
+                                                symbols=",",
+                                            ),
+                                            FragmentSeq(
+                                                start_pos=32, end_pos=35,
+                                                children=[
+                                                    Text(
+                                                        start_pos=32, end_pos=35,
+                                                        inner="bar",
+                                                        enclosing=EnclosingPattern(
+                                                            left="", right="",
+                                                        ),
+                                                    ),
+                                                ],
+                                                enclosing=EnclosingPattern(
+                                                    left="{", right="}",
+                                                ),
+                                            ),
+                                            Operator(
+                                                start_pos=36, end_pos=37,
+                                                symbols=",",
+                                            ),
+                                            Operator(
+                                                start_pos=37, end_pos=38,
+                                                symbols=",",
+                                            ),
+                                            Command(
+                                                start_pos=39, end_pos=48,
+                                                phrase="cool.fm",
+                                                phrase_enclosing=EnclosingPattern(
+                                                    left="|", right="|",
+                                                ),
+                                                option=None,
+                                                main_arg=None,
+                                            ),
+                                        ],
+                                    ),
+                                    main_arg=FragmentSeq(
+                                        start_pos=50, end_pos=56,
+                                        children=[
+                                            Command(
+                                                start_pos=51, end_pos=56,
+                                                phrase="4+4",
+                                                phrase_enclosing=EnclosingPattern(
+                                                    left="|", right="|",
+                                                ),
+                                                option=None,
+                                                main_arg=None,
+                                            ),
+                                        ],
+                                        enclosing=EnclosingPattern(left="{", right="}"),
+                                    ),
                                 ),
                             ],
                             enclosing=EnclosingPattern(left="{", right="}"),
                         ),
-                    ),
-                    Text(
-                        start_pos=58, end_pos=60,
-                        inner="}}",
-                        enclosing=EnclosingPattern(left="", right=""),
                     ),
                 ],
                 enclosing=GlobalEnclosingPattern(),
@@ -689,8 +823,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=23,
-                        starter="foo",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="foo",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=TokenSeq(
                             start_pos=5, end_pos=22,
                             children=[
@@ -708,8 +842,8 @@ from paxter.parser import (
                                 Operator(start_pos=18, end_pos=19, symbols=","),
                                 Command(
                                     start_pos=20, end_pos=22,
-                                    starter="",
-                                    starter_enclosing=EnclosingPattern(
+                                    phrase="",
+                                    phrase_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
                                     option=None,
@@ -730,8 +864,8 @@ from paxter.parser import (
                 children=[
                     Command(
                         start_pos=1, end_pos=54,
-                        starter="foo",
-                        starter_enclosing=EnclosingPattern(left="", right=""),
+                        phrase="foo",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
                         option=TokenSeq(
                             start_pos=5, end_pos=48,
                             children=[
@@ -765,8 +899,8 @@ from paxter.parser import (
                                         ),
                                         Command(
                                             start_pos=41, end_pos=45,
-                                            starter="name",
-                                            starter_enclosing=EnclosingPattern(
+                                            phrase="name",
+                                            phrase_enclosing=EnclosingPattern(
                                                 left="", right="",
                                             ),
                                             option=None,

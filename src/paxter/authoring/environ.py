@@ -12,7 +12,7 @@ from paxter.authoring.document import (
     hair_space, horizontal_rule, line_break,
     non_breaking_space, thin_space,
 )
-from paxter.authoring.standards import python_unsafe_exec, starter_unsafe_eval, verbatim
+from paxter.authoring.standards import phrase_unsafe_eval, python_unsafe_exec, verbatim
 
 
 def create_simple_env(data: Optional[dict] = None):
@@ -22,7 +22,7 @@ def create_simple_env(data: Optional[dict] = None):
     """
     data = data or {}
     return {
-        '_starter_eval_': starter_unsafe_eval,
+        '_phrase_eval_': phrase_unsafe_eval,
         'for': for_statement,
         'if': if_statement,
         'python': python_unsafe_exec,
@@ -37,17 +37,16 @@ def create_document_env(data: Optional[dict] = None):
     in Python authoring mode, specializes in constructing documents.
     """
     data = data or {}
-    symbols = data.pop('_symbols_', {})
-    symbols = {
-        '!': '',
+    others = data.pop('_others_', {})
+    others = {
         '@': '@',
         '.': hair_space,
         ',': thin_space,
         '%': non_breaking_space,
-        **symbols,
+        **others,
     }
     return create_simple_env({
-        '_symbols_': symbols,
+        '_others_': others,
         'raw': RawElement,
         'break': line_break,
         'hrule': horizontal_rule,

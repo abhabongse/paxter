@@ -5,7 +5,7 @@ It is used in the following scenarios:
 
 - Brace pattern for :class:`FragmentSeq <paxter.parser.data.FragmentSeq>` nodes
 - Quoted pattern for :class:`Text <paxter.parser.data.Text>` nodes
-- Bar pattern for the starter of :class:`Command <paxter.parser.data.Command>` nodes
+- Bar pattern for the phrase of :class:`Command <paxter.parser.data.Command>` nodes
 """
 import re
 from dataclasses import dataclass, field

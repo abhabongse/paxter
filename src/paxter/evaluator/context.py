@@ -10,7 +10,7 @@ from paxter.evaluator.wrappers import BaseApply, NormalApply
 from paxter.exceptions import PaxterRenderError
 from paxter.parser import (
     CharLoc, Command, Fragment, FragmentSeq, Identifier, Number,
-    Operator, SingleSymbol, Text, Token, TokenSeq,
+    Operator, Text, Token, TokenSeq,
 )
 
 
@@ -32,10 +32,9 @@ class EvaluateContext:
     tree: FragmentSeq
 
     #: Result of the rendering
-    rendered: Union[str, list] = field(init=False)
+    rendered: Fragments = field(init=False)
 
     BACKSLASH_NEWLINE_RE = re.compile(r'\\[ \t\r\f\v]*\n[ \t\r\f\v]*')
-    FALLBACK_SYMBOLS = {'!': '', '@': '@'}
 
     def __post_init__(self):
         self.rendered = self.render()
@@ -72,8 +71,6 @@ class EvaluateContext:
             return self.transform_text(fragment)
         if isinstance(fragment, Command):
             return self.transform_command(fragment)
-        if isinstance(fragment, SingleSymbol):
-            return self.transform_symbol_command(fragment)
         raise PaxterRenderError(
             "unrecognized fragment at %(pos)s",
             pos=CharLoc(self.input_text, fragment.start_pos),
@@ -139,37 +136,37 @@ class EvaluateContext:
         """
         Transforms a given parsed command.
         """
-        # Try to evaluate the starter section
-        # using the evaluator function from _starter_eval_
+        # Try to evaluate the phrase section
+        # using the evaluator function from _phrase_eval_
         try:
-            starter_eval = self.env['_starter_eval_']
+            phrase_eval = self.env['_phrase_eval_']
         except KeyError as exc:
             raise PaxterRenderError(
-                "expected '_starter_eval_' to be defined at %(pos)s",
+                "expected '_phrase_eval_' to be defined at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
         try:
-            starter_value = starter_eval(token.starter, self.env)
+            phrase_value = phrase_eval(token.phrase, self.env)
         except PaxterRenderError:
             raise
         except Exception as exc:
             raise PaxterRenderError(
-                "paxter command starter evaluation error at %(pos)s: "
-                f"{token.starter!r}",
+                "paxter command phrase evaluation error at %(pos)s: "
+                f"{token.phrase!r}",
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
 
         # Bail out if option section and main arg section are empty
         if token.option is None and token.main_arg is None:
-            return starter_value
+            return phrase_value
 
         # Wrap the function if not yet wrapped
-        if not isinstance(starter_value, BaseApply):
-            starter_value = NormalApply(starter_value)
+        if not isinstance(phrase_value, BaseApply):
+            phrase_value = NormalApply(phrase_value)
 
         # Make the call to the wrapped function
         try:
-            return starter_value.call(self, token)
+            return phrase_value.call(self, token)
         except PaxterRenderError:
             raise
         except Exception as exc:
@@ -177,29 +174,3 @@ class EvaluateContext:
                 "paxter apply evaluation error at %(pos)s",
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
-
-    def transform_symbol_command(self, token: SingleSymbol) -> Any:
-        """
-        Transforms a given parsed symbol command.
-        """
-        # Lookup _symbols_ for the desired symbol
-        try:
-            symbols = self.env['_symbols_']
-        except KeyError as exc:
-            if token.symbol in self.FALLBACK_SYMBOLS:
-                return self.FALLBACK_SYMBOLS[token.symbol]
-            raise PaxterRenderError(
-                "expected '_symbols_' to be defined at %(pos)s",
-                pos=CharLoc(self.input_text, token.start_pos),
-            ) from exc
-        try:
-            return symbols[token.symbol]
-        except KeyError as exc:
-            if token.symbol in self.FALLBACK_SYMBOLS:
-                return self.FALLBACK_SYMBOLS[token.symbol]
-            raise PaxterRenderError(
-                f"undefined symbol {token.symbol} within '_symbol_' at %(pos)s",
-                pos=CharLoc(self.input_text, token.start_pos),
-            ) from exc
-        except Exception as exc:
-            raise RuntimeError("unexpected error from within library") from exc

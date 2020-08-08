@@ -167,7 +167,7 @@ The following functions and classes are available in preset environments.
 Standard Functions
 ------------------
 
-.. autofunction:: paxter.authoring.standards.starter_unsafe_eval
+.. autofunction:: paxter.authoring.standards.phrase_unsafe_eval
 
 .. autofunction:: paxter.authoring.standards.python_unsafe_exec
 
