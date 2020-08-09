@@ -50,7 +50,7 @@ class DirectApply(BaseApply):
 @dataclass
 class NormalApply(BaseApply):
     """
-    Normal function call, assuming that the option section
+    Normal function call, assuming that the options section
     is a sequence of positional and keyword arguments
     in addition to the main argument section to the function.
 
@@ -63,8 +63,8 @@ class NormalApply(BaseApply):
         return self.wrapped(*args, **kwargs)
 
     def call(self, context: 'EvaluateContext', node: Command) -> Any:
-        if node.option:
-            args, kwargs = self.extract_args_and_kwargs(context, node.option)
+        if node.options:
+            args, kwargs = self.extract_args_and_kwargs(context, node.options)
         else:
             args, kwargs = [], {}
         if node.main_arg:
@@ -160,8 +160,8 @@ class NormalApplyWithEnv(NormalApply):
     """
 
     def call(self, context: 'EvaluateContext', node: Command) -> Any:
-        if node.option:
-            args, kwargs = self.extract_args_and_kwargs(context, node.option)
+        if node.options:
+            args, kwargs = self.extract_args_and_kwargs(context, node.options)
         else:
             args, kwargs = [], {}
         if node.main_arg:

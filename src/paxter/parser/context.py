@@ -141,18 +141,18 @@ class ParseContext:
         """
         Continues parsing the Command after the phrase section.
         """
-        # If phrase is empty, stop parsing for option or main argument
+        # If phrase is empty, stop parsing for options or main argument
         if not phrase:
-            option = None
+            options = None
             main_arg = None
         else:
-            # Parses for option section (square brackets)
+            # Parses for options section (square brackets)
             lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
             if lbracket_matchobj:
                 next_pos = lbracket_matchobj.end()
-                next_pos, option = self._parse_option(next_pos)
+                next_pos, options = self._parse_options(next_pos)
             else:
-                option = None
+                options = None
 
             # Parses for main argument
             lbrace_matchobj = LEXER.lbrace_re.match(self.input_text, next_pos)
@@ -168,7 +168,7 @@ class ParseContext:
         # Construct Command node
         cmd_node = Command(
             cmd_start_pos, next_pos, phrase, phrase_enclosing,
-            option, main_arg,
+            options, main_arg,
         )
         return next_pos, cmd_node
 
@@ -214,13 +214,13 @@ class ParseContext:
         phrase_enclosing = EnclosingPattern(left='')
         command_node = Command(
             cmd_start_pos, next_pos, phrase, phrase_enclosing,
-            option=None, main_arg=None,
+            options=None, main_arg=None,
         )
         return next_pos, command_node
 
-    def _parse_option(self, next_pos: int) -> Tuple[int, TokenSeq]:
+    def _parse_options(self, next_pos: int) -> Tuple[int, TokenSeq]:
         """
-        Parses the option section until reaching the right square brackets.
+        Parses the options section until reaching the right square brackets.
         """
         start_pos = next_pos
         children = []
@@ -282,7 +282,7 @@ class ParseContext:
             lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
             if lbracket_matchobj:
                 next_pos = lbracket_matchobj.end()
-                next_pos, token_seq_node = self._parse_option(next_pos)
+                next_pos, token_seq_node = self._parse_options(next_pos)
                 children.append(token_seq_node)
                 continue
 

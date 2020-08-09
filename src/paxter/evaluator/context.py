@@ -156,8 +156,8 @@ class EvaluateContext:
                 pos=CharLoc(self.input_text, token.start_pos),
             ) from exc
 
-        # Bail out if option section and main arg section are empty
-        if token.option is None and token.main_arg is None:
+        # Bail out if options section and main arg section are empty
+        if token.options is None and token.main_arg is None:
             return phrase_value
 
         # Wrap the function if not yet wrapped

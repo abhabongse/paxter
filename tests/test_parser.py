@@ -40,7 +40,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=6,
                         phrase="hello",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                 ],
@@ -61,7 +61,7 @@ from paxter.parser import (
                         start_pos=19, end_pos=23,
                         phrase="name",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Text(
@@ -87,7 +87,7 @@ from paxter.parser import (
                         start_pos=24, end_pos=31,
                         phrase="1 + 1",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Text(
@@ -99,7 +99,7 @@ from paxter.parser import (
                         start_pos=39, end_pos=50,
                         phrase="1 + 1",
                         phrase_enclosing=EnclosingPattern(left="##|", right="|##"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                 ],
@@ -115,7 +115,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=12,
                         phrase="N @ M @ K",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                 ],
@@ -131,7 +131,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=12,
                         phrase="#|#|#",
                         phrase_enclosing=EnclosingPattern(left="##|", right="|##"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Text(
@@ -143,42 +143,42 @@ from paxter.parser import (
                         start_pos=14, end_pos=16,
                         phrase="",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=17, end_pos=20,
                         phrase="@",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=21, end_pos=24,
                         phrase=",",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=25, end_pos=28,
                         phrase=";",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=29, end_pos=32,
                         phrase="#",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=33, end_pos=38,
                         phrase="|",
                         phrase_enclosing=EnclosingPattern(left="#|", right="|#"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Text(
@@ -190,56 +190,56 @@ from paxter.parser import (
                         start_pos=41, end_pos=42,
                         phrase="@",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=43, end_pos=44,
                         phrase=",",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=45, end_pos=46,
                         phrase=";",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=47, end_pos=48,
                         phrase="#",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=49, end_pos=50,
                         phrase="@",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=51, end_pos=52,
                         phrase='"',
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=53, end_pos=54,
                         phrase="{",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Command(
                         start_pos=55, end_pos=56,
                         phrase="}",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                 ],
@@ -248,7 +248,68 @@ from paxter.parser import (
         ),
         pytest.param(
             '@||["foo"]{bar} @|@|["foo"]{bar} @@["foo"]{bar}',
-            None,
+            FragmentSeq(
+                start_pos=0, end_pos=47,
+                children=[
+                    Command(
+                        start_pos=1, end_pos=3,
+                        phrase="",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
+                        options=None,
+                        main_arg=None,
+                    ),
+                    Text(
+                        start_pos=3, end_pos=16,
+                        inner='["foo"]{bar} ',
+                        enclosing=EnclosingPattern(left="", right=""),
+                    ),
+                    Command(
+                        start_pos=17, end_pos=32,
+                        phrase="@",
+                        phrase_enclosing=EnclosingPattern(left="|", right="|"),
+                        options=TokenSeq(
+                            start_pos=21, end_pos=26,
+                            children=[
+                                Text(
+                                    start_pos=22,
+                                    end_pos=25,
+                                    inner="foo",
+                                    enclosing=EnclosingPattern(left='"', right='"'),
+                                ),
+                            ],
+                        ),
+                        main_arg=FragmentSeq(
+                            start_pos=28, end_pos=31,
+                            children=[
+                                Text(
+                                    start_pos=28, end_pos=31,
+                                    inner="bar",
+                                    enclosing=EnclosingPattern(left="", right=""),
+                                ),
+                            ],
+                            enclosing=EnclosingPattern(left="{", right="}"),
+                        ),
+                    ),
+                    Text(
+                        start_pos=32, end_pos=33,
+                        inner=" ",
+                        enclosing=EnclosingPattern(left="", right=""),
+                    ),
+                    Command(
+                        start_pos=34, end_pos=35,
+                        phrase="@",
+                        phrase_enclosing=EnclosingPattern(left="", right=""),
+                        options=None,
+                        main_arg=None,
+                    ),
+                    Text(
+                        start_pos=35, end_pos=47,
+                        inner='["foo"]{bar}',
+                        enclosing=EnclosingPattern(left="", right=""),
+                    ),
+                ],
+                enclosing=GlobalEnclosingPattern(),
+            ),
         ),
         pytest.param(
             'This is @em{not} a drill!',
@@ -264,7 +325,7 @@ from paxter.parser import (
                         start_pos=9, end_pos=16,
                         phrase="em",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=FragmentSeq(
                             start_pos=12, end_pos=15,
                             children=[
@@ -295,7 +356,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=19,
                         phrase="foo.process",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=FragmentSeq(
                             start_pos=15, end_pos=18,
                             children=[
@@ -317,7 +378,7 @@ from paxter.parser import (
                         start_pos=21, end_pos=47,
                         phrase="foo#process",
                         phrase_enclosing=EnclosingPattern(left="#|", right="|#"),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=37, end_pos=41,
                             children=[
                                 Text(
@@ -351,7 +412,7 @@ from paxter.parser import (
                         start_pos=9, end_pos=37,
                         phrase="level1",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=FragmentSeq(
                             start_pos=16, end_pos=36,
                             children=[
@@ -366,7 +427,7 @@ from paxter.parser import (
                                     phrase_enclosing=EnclosingPattern(
                                         left="", right="",
                                     ),
-                                    option=None,
+                                    options=None,
                                     main_arg=FragmentSeq(
                                         start_pos=25, end_pos=34,
                                         children=[
@@ -383,7 +444,7 @@ from paxter.parser import (
                                                 phrase_enclosing=EnclosingPattern(
                                                     left="", right="",
                                                 ),
-                                                option=None,
+                                                options=None,
                                                 main_arg=None,
                                             ),
                                             Text(
@@ -419,7 +480,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=29,
                         phrase="say",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=5, end_pos=22,
                             children=[
                                 Identifier(start_pos=5, end_pos=10, name="greet"),
@@ -452,7 +513,7 @@ from paxter.parser import (
                         start_pos=34, end_pos=61,
                         phrase="email",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=Text(
                             start_pos=42, end_pos=58,
                             inner="john@example.com",
@@ -477,7 +538,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=19,
                         phrase="state",
                         phrase_enclosing=EnclosingPattern(left="###|", right="|###"),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=15, end_pos=18,
                             children=[
                                 Identifier(start_pos=15, end_pos=16, name="x"),
@@ -496,7 +557,7 @@ from paxter.parser import (
                         start_pos=21, end_pos=31,
                         phrase="state",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=27, end_pos=30,
                             children=[
                                 Identifier(start_pos=27, end_pos=28, name="x"),
@@ -519,7 +580,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=48,
                         phrase="state",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=7, end_pos=18,
                             children=[
                                 Identifier(start_pos=7, end_pos=8, name="x"),
@@ -555,7 +616,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=3,
                         phrase="",
                         phrase_enclosing=EnclosingPattern(left="|", right="|"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Text(
@@ -567,7 +628,7 @@ from paxter.parser import (
                         start_pos=5, end_pos=9,
                         phrase="",
                         phrase_enclosing=EnclosingPattern(left="#|", right="|#"),
-                        option=None,
+                        options=None,
                         main_arg=None,
                     ),
                     Text(
@@ -579,7 +640,7 @@ from paxter.parser import (
                         start_pos=11, end_pos=38,
                         phrase="foo",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=15, end_pos=37,
                             children=[
                                 FragmentSeq(
@@ -591,7 +652,7 @@ from paxter.parser import (
                                             phrase_enclosing=EnclosingPattern(
                                                 left="", right="",
                                             ),
-                                            option=None,
+                                            options=None,
                                             main_arg=None,
                                         ),
                                     ],
@@ -629,7 +690,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=38,
                         phrase="foo",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=5, end_pos=37,
                             children=[
                                 Identifier(start_pos=5, end_pos=8, name="bar"),
@@ -646,7 +707,7 @@ from paxter.parser import (
                                     phrase_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
-                                    option=TokenSeq(
+                                    options=TokenSeq(
                                         start_pos=24, end_pos=36,
                                         children=[
                                             Identifier(
@@ -676,7 +737,7 @@ from paxter.parser import (
                                                                     left="", right="",
                                                                 )
                                                         ),
-                                                        option=None,
+                                                        options=None,
                                                         main_arg=None,
                                                     ),
                                                 ],
@@ -710,7 +771,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=58,
                         phrase="x",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=None,
+                        options=None,
                         main_arg=FragmentSeq(
                             start_pos=3, end_pos=57,
                             children=[
@@ -720,7 +781,7 @@ from paxter.parser import (
                                     phrase_enclosing=EnclosingPattern(
                                         left="", right="",
                                     ),
-                                    option=TokenSeq(
+                                    options=TokenSeq(
                                         start_pos=11, end_pos=48,
                                         children=[
                                             Number(start_pos=11, end_pos=12, value=1),
@@ -791,7 +852,7 @@ from paxter.parser import (
                                                 phrase_enclosing=EnclosingPattern(
                                                     left="|", right="|",
                                                 ),
-                                                option=None,
+                                                options=None,
                                                 main_arg=None,
                                             ),
                                         ],
@@ -805,7 +866,7 @@ from paxter.parser import (
                                                 phrase_enclosing=EnclosingPattern(
                                                     left="|", right="|",
                                                 ),
-                                                option=None,
+                                                options=None,
                                                 main_arg=None,
                                             ),
                                         ],
@@ -829,7 +890,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=23,
                         phrase="foo",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=5, end_pos=22,
                             children=[
                                 TokenSeq(start_pos=6, end_pos=6, children=[]),
@@ -850,7 +911,7 @@ from paxter.parser import (
                                     phrase_enclosing=EnclosingPattern(
                                         left="|", right="|",
                                     ),
-                                    option=None,
+                                    options=None,
                                     main_arg=None,
                                 ),
                             ],
@@ -870,7 +931,7 @@ from paxter.parser import (
                         start_pos=1, end_pos=54,
                         phrase="foo",
                         phrase_enclosing=EnclosingPattern(left="", right=""),
-                        option=TokenSeq(
+                        options=TokenSeq(
                             start_pos=5, end_pos=48,
                             children=[
                                 Identifier(start_pos=8, end_pos=9, name="a"),
@@ -907,7 +968,7 @@ from paxter.parser import (
                                             phrase_enclosing=EnclosingPattern(
                                                 left="", right="",
                                             ),
-                                            option=None,
+                                            options=None,
                                             main_arg=None,
                                         ),
                                     ],

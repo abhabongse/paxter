@@ -15,6 +15,8 @@ __all__ = [
 class PaxterBaseException(Exception):
     """
     Base exception specific to Paxter language ecosystem.
+    Positional index parameters indicates a mapping from position name
+    to its indexing inside the input text.
     """
     #: Error message
     message: str
@@ -48,8 +50,6 @@ class PaxterConfigError(PaxterBaseException):
 class PaxterSyntaxError(PaxterBaseException):
     """
     Exception for syntax error raised while parsing input text in Paxter language.
-    Positional index parameters indicates a mapping from position name
-    to its indexing inside the input text.
     """
     pass
 

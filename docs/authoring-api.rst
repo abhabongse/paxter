@@ -36,20 +36,24 @@ to be used with the evaluation context class.
 ----
 
 
-Evaluation Context Functions and Classes
-========================================
+Evaluation Context Objects
+==========================
 
-The following functions and classes are available in preset environments.
+The following instances are available in preset environments.
 
 .. list-table::
    :widths: auto
    :header-rows: 1
    :align: center
 
-   * - Function or Class
+   * - Object
      - Alias
      - Simple Env
      - Document Env
+   * - ``"@"``
+     - ‘**@**’
+     - Yes
+     - Yes
    * - :func:`python_unsafe_exec <paxter.authoring.standards.python_unsafe_exec>`
      - **python**
      - Yes
@@ -79,23 +83,15 @@ The following functions and classes are available in preset environments.
      - \-
      - Yes
    * - :data:`non_breaking_space <paxter.authoring.document.non_breaking_space>`
-     - **nbsp** (@%)
+     - **nbsp**, ‘**%**’
      - \-
      - Yes
    * - :data:`hair_space <paxter.authoring.document.hair_space>`
-     - **hairsp** (@.)
+     - **hairsp**, ‘**.**’
      - \-
      - Yes
    * - :data:`thin_space <paxter.authoring.document.thin_space>`
-     - **thinsp** (@,)
-     - \-
-     - Yes
-   * - Empty string: ‘’
-     - @!
-     - \-
-     - Yes
-   * - @-symbol: ‘@’
-     - @@
+     - **thinsp**, ‘**,**’
      - \-
      - Yes
    * - :class:`Paragraph <paxter.authoring.document.Paragraph>`

@@ -23,6 +23,8 @@ def create_simple_env(data: Optional[dict] = None):
     data = data or {}
     return {
         '_phrase_eval_': phrase_unsafe_eval,
+        '_extras_': {},
+        '@': '@',
         'for': for_statement,
         'if': if_statement,
         'python': python_unsafe_exec,
@@ -37,22 +39,16 @@ def create_document_env(data: Optional[dict] = None):
     in Python authoring mode, specializes in constructing documents.
     """
     data = data or {}
-    others = data.pop('_others_', {})
-    others = {
-        '@': '@',
-        '.': hair_space,
-        ',': thin_space,
-        '%': non_breaking_space,
-        **others,
-    }
     return create_simple_env({
-        '_others_': others,
         'raw': RawElement,
         'break': line_break,
         'hrule': horizontal_rule,
         'nbsp': non_breaking_space,
+        '%': non_breaking_space,
         'hairsp': hair_space,
+        '.': hair_space,
         'thinsp': thin_space,
+        ',': thin_space,
         'paragraph': Paragraph,
         'h1': Heading1,
         'h2': Heading2,
