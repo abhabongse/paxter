@@ -2,116 +2,143 @@
 Syntax Reference
 ################
 
-Below are syntax diagrams for Paxter language. 
+Below are syntax descriptions of Paxter language.
 
-- **Document:** Starting rule of Paxter language grammar.
-  It is a special case of **FragmentList** rule, and thus
-  the result is always a :class:`FragmentList <paxter.parser.FragmentList>` node
-  whose children are non-empty :class:`Text <paxter.parser.Text>`
-  interleaving with the result produced by **AtExpression** rule.
 
-  .. image:: _static/Document.png
+Document Rule
+=============
 
-  |nbsp|
+The **starting rule** of Paxter language grammar
+which is a special case of `FragmentSeq rule`_.
+The result of parsing this rule is always
+a :class:`FragmentSeq <paxter.parser.data.FragmentSeq>` node
+whose children includes non-empty strings (as :class:`Text <paxter.parser.data.Text>`)
+interleaving with the result produced by `Command rule`_.
 
-- **AtExpression:** Rule for parsing right after encountering @-switch symbol.
+.. image:: _static/Document.png
 
-  .. image:: _static/Command.png
+|nbsp|
 
-  |nbsp|
 
-  .. note::
+Command Rule
+============
 
-     The red ``else`` box in this diagram indicates that such path can be followed
-     only if the next token does not match any other possible paths.
-     Pursuing this ``else`` path does not consume anything.
+Rule for parsing the textual content after
+encountering the @-switch symbol character.
 
-  There are 2 possible scenarios.
+.. image:: _static/Command.png
 
-  1. A normal :class:`Command <paxter.parser.Command>` node consisting of 3 sections:
-     starter, options, and main argument, respectively.
+.. important::
 
-     The starter section is resulted from parsing
-     either greedily for an identifier or non-greedily for a text
-     enclosed by a pair of bars plus and an equal number of zero or more hashes
-     at both ends.
+   Red shapes appeared in the above diagram indicates a branching path
+   of parsing depending on conditions specified with the shapes.
 
-     Following the starter section, if a left square bracket is found,
-     then the option section as a list of tokens must be parsed
-     and it will result in a :class:`TokenList <paxter.parser.TokenList>` node.
-     Otherwise (if the left square bracket is absent),
-     this option section will be represented by :const:`None`.
+There are a few possible scenarios.
 
-     Finally, the main argument section.
-     (a) If there is zero or more hashes followed by a left brace,
-     then the **FragmentList** parse rule must be followed
-     and thus yields :class:`FragmentList <paxter.parser.FragmentList>` as the result.
+1. The first token is an identifier.
+   The parsed identifier becomes the phrase part of the
+   :class:`Command <paxter.parser.Command>`.
+   Then the parser would attempt to parse the options section
+   and the main argument section if they exist.
+2. The first token is :math:`n` hash characters followed by a bar character.
+   Then the parser will attempt to parse for the phrase part non-greedily
+   until a bar character followed by :math:`n` hash characters are found.
+   If the parsing result of the phrase is not empty,
+   then the parser would continue on trying to parse for the options section
+   and the main argument section.
 
-     .. warning::
+   However, if the phrase is empty, then the options section
+   as well as the main argument section are assumed to be empty.
 
-        There is a restriction imposed on parsing the **FragmentList** rule,
-        which is that the child text node may not contain a right brace
-        followed by the same number of hashes as the preceding part.
-        Otherwise, the parsing of **FragmentList** rule would have terminated earlier.
+3. The first token is a single symbol character.
+   This would result in such symbol becoming the sole content of the phrase section,
+   while other sections (i.e. options and main argument) are empty.
 
-     However, (b) if there is zero or more hashes followed by a quotation mark,
-     then the text is parsed non-greedily until the another quotation mark
-     followed by the same number of hashes is found.
 
-     Well, if both conditions (a) and (b) do not hold,
-     then the main argument would be :const:`None`.
+FragmentSeq Rule
+================
 
-  2. A special :class:`SingleSymbol <paxter.parser.SingleSymbol>` node where
-     a single symbol follows the @-switch.
+This rule always begins with :math:`n` hash characters followed by a left brace
+and ends with a right brace followed by :math:`n` hash characters,
+for some non-negative integer :math:`n`.
+Between this pair of curly braces is an interleaving of strings
+(as :class:`Text <paxter.parser.data.Text>`)
+and :class:`Command <paxter.parser.data.Command>`,
+all of which are children of :class:`FragmentSeq <paxter.parser.data.FragmentSeq>` instance.
 
-- **FragmentList:** Consists of an interleaving of non-empty texts
-  and results produced by **AtExpression** rule.
+One important point to note is that each string is parsed non-greedily;
+each resulting string would never contain a right brace
+followed by :math:`n` or more hash characters.
 
-  Note that the parsing of **AtExpression** rule at the *previous level*
-  may put some restriction on the parsing of :class:`Text <paxter.parser.Text>` nodes.
-  For example, if preceding the fragment list is an opening brace pattern ``###{``,
-  then each :class:`Text <paxter.parser.Text>` node may contain ``}###``.
+.. image:: _static/FragmentSeq.png
 
-  In other words, we *non-greedily* parses text within the fragment list.
+|nbsp|
 
-  .. image:: _static/FragmentList.png
 
-  |nbsp|
+Text Rule
+=========
 
-- **TokenList:** A sequence of zero or more tokens
-  Each token either a command, an identifier, an operator,
-  a number following JSON specification,
-  a wrapped fragment list, a wrapped text,
-  or a nested token list enclosed by a pair of square brackets ``[]``.
-  The result is a :class:`TokenList <paxter.parser.TokenList>` node type.
+This rule is similar to `FragmentSeq rule` except for two main reasons.
+The first reason is that nested :class:`Command <paxter.parser.data.Command>`
+will not be parsed (i.e. ``@`` is not a special character in this scope).
+Another reason is that, instead of having a matching pair of curly braces
+indicate the beginning and the ending of the rule,
+quotation marks are used instead.
 
-  .. image:: _static/TokenList.png
+.. image:: _static/Text.png
 
-  |nbsp|
+|nbsp|
 
-  .. note::
 
-     The option section (or the token list) is the only place where whitespaces
-     are ignored (when they appear between tokens).
+TokenSeq Rule
+=============
 
-  |nbsp|
+Following this parsing rule results in a sequence of zero or more tokens,
+possibly separated by whitespaces.
+Each token may be a :class:`Command <paxter.parser.data.Command>`,
+an :class:`Identifier <paxter.parser.data.Identifier>`,
+an :class:`Operator <paxter.parser.data.Operator>`,
+a :class:`Number <paxter.parser.data.Number>`,
+a :class:`FragmentSeq <paxter.parser.data.FragmentSeq>`,
+a :class:`Text <paxter.parser.data.Text>`,
+or a nested :class:`TokenSeq <paxter.parser.data.TokenSeq>`.
+This resulting sequence of tokens are children of
+:class:`TokenSeq <paxter.parser.data.TokenSeq>` node type.
 
-- **Identifier:** Generally follows Python rules for greedily parsing
-  an identifier token (with some extreme exceptions).
-  The result is an :class:`Identifier <paxter.parser.Identifier>` node type.
+.. image:: _static/TokenSeq.png
 
-  .. image:: _static/Identifier.png
+.. note::
 
-  |nbsp|
+   The option section (or the token list) is the only place where whitespaces
+   are ignored (when they appear between tokens).
 
-- **Operator:** Greedily consumes as many operator character as possible
-  (with two notable exceptions: a comma and a semicolon, which has to appear on their own).
-  A whitespace may be needed to separate two consecutive, multi-character operator tokens.
-  The result is an :class:`Operator <paxter.parser.Operator>` node type.
 
-  .. image:: _static/Operator.png
+Identifier Rule
+===============
 
-  |nbsp|
+This rule generally follows python rules for greedily parsing
+an identifier token (with some extreme exceptions).
+The result is an :class:`Identifier <paxter.parser.data.Identifier>` node type.
+
+.. image:: _static/Identifier.png
+
+|nbsp|
+
+
+Operator Rule
+=============
+
+Greedily consumes as many operator characters as possible
+(with two notable exceptions: a common and a semicolon,
+each of which has to appear on its own).
+Whitespace characters may be needed to separate two consecutive,
+multi-character operator tokens.
+The result is an :class:`Operator <paxter.parser.data.Operator>` node type.
+
+.. image:: _static/Operator.png
+
+|nbsp|
+
 
 .. |nbsp| unicode:: 0xA0
    :trim:
