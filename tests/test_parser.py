@@ -247,6 +247,10 @@ from paxter.parser import (
             ),
         ),
         pytest.param(
+            '@||["foo"]{bar} @|@|["foo"]{bar} @@["foo"]{bar}',
+            None,
+        ),
+        pytest.param(
             'This is @em{not} a drill!',
             FragmentSeq(
                 start_pos=0, end_pos=25,
