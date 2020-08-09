@@ -25,9 +25,9 @@ def input_output_options(func):
     return func
 
 
-@program.command()
+@program.command(name='parse')
 @input_output_options
-def parse(input_file, output_file):
+def run_parse(input_file, output_file):
     """
     Parses the input text into Paxter parsed tree.
 
@@ -45,12 +45,12 @@ def parse(input_file, output_file):
     output_file.write("\n")
 
 
-@program.command()
+@program.command(name='document')
 @input_output_options
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
               help="Path to pyauthor file to extract the environment.")
-def document(input_file, output_file, env_file):
+def run_document(input_file, output_file, env_file):
     """
     Evaluates the input text into the document object.
 
@@ -73,12 +73,12 @@ def document(input_file, output_file, env_file):
     output_file.write("\n")
 
 
-@program.command()
+@program.command(name='html')
 @input_output_options
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
               help="Path to pyauthor file to extract the environment.")
-def html(input_file, output_file, env_file):
+def run_html(input_file, output_file, env_file):
     """
     Parses, evaluates, and renders the final HTML output.
 
