@@ -2,10 +2,6 @@
 Syntax Reference
 ################
 
-.. todo::
-
-   This page requires revision.
-
 Below are syntax diagrams for Paxter language. 
 
 - **Document:** Starting rule of Paxter language grammar.
@@ -20,7 +16,7 @@ Below are syntax diagrams for Paxter language.
 
 - **AtExpression:** Rule for parsing right after encountering @-switch symbol.
 
-  .. image:: _static/AtExpression.png
+  .. image:: _static/Command.png
 
   |nbsp|
 

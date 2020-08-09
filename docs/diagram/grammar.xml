@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.20">
-<info created="D:20200504013612" modified="D:20200706203705" tex="xetex"/>
+<info created="D:20200504013612" modified="D:20200810004556" tex="xetex"/>
 <preamble>\usepackage[MnSymbol]{mathspec}
         \usepackage{xunicode}
         \usepackage{xltxtra}
@@ -336,455 +336,522 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="165.669" height="7.603" depth="2.01" valign="baseline">\textbf{Document} (special case of \textbf{FragmentList})</text>
+<text layer="alpha" matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="208.419" height="7.603" depth="2.01" valign="baseline">\textbf{Top-Level Document} (special case of \textbf{FragmentList})</text>
 <path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
 52 808 l
 h
 </path>
-<path matrix="1 0 0 1 64 3.998" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<path matrix="0.714286 0 0 0.666667 288.571 261.333" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<path matrix="1 0 0 1 460 -8" stroke="black" fill="black" pen="fat">
+<path matrix="1 0 0 1 396 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
 52 808 l
 h
 </path>
-<path matrix="1 0 0 1 220 84" stroke="black" fill="lightyellow" pen="heavier">
-8 0 0 8 96 692 e
-</path>
-<text matrix="1 0 0 1 188 8" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="6.273" depth="0.81" halign="center" valign="center">\texttt{@}</text>
-<text matrix="1 0 0 1 64.1124 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="61.47" height="6.439" depth="1.99" halign="center" valign="baseline">non-empty \textbf{text}</text>
-<text matrix="1 0 0 1 252.112 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="53.559" height="7.276" depth="1.85" halign="center" valign="baseline">\textbf{AtExpression}</text>
-<text matrix="1 0 0 1 64.1124 0.965" transformations="translations" pos="128 768" stroke="black" type="label" width="63.811" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">not containing \texttt{\textquotedbl@\textquotedbl} symbol</text>
-<path matrix="2.14286 0 0 1 -36.5715 48" stroke="black" fill="lightyellow" pen="fat">
+<path matrix="1.85715 0 0 1 -27.4286 48" stroke="black" fill="lightyellow" pen="fat">
 32 752 m
 256 752 l
 </path>
-<path matrix="1 0 0 1 72 52" stroke="black" pen="fat">
+<path matrix="1 0 0 1.00001 40 3.9945" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<path matrix="0.714286 0 0 0.666667 264.571 261.333" stroke="black" fill="lightgreen" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<path matrix="1 0 0 1 196 84" stroke="black" fill="lightyellow" pen="heavier">
+8 0 0 8 96 692 e
+</path>
+<text matrix="1 0 0 1 164 8" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="6.273" depth="0.81" halign="center" valign="center">\texttt{@}</text>
+<text matrix="1 0 0 1 40.112 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="68.872" height="7.275" depth="2.01" halign="center" valign="baseline">non-empty \textbf{string}</text>
+<text matrix="1 0 0 1 228.112 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" halign="center" valign="baseline">\textbf{Command}</text>
+<text matrix="1 0 0 1 40.112 0.965" transformations="translations" pos="128 768" stroke="black" type="label" width="63.811" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">not containing \texttt{\textquotedbl@\textquotedbl} symbol</text>
+<path matrix="1 0 0 1 48 52" stroke="black" pen="fat">
 252 724 m
 268 724 l
 </path>
 <path stroke="black" pen="fat">
-248 776 m
-260 776
-264 776
-268 780
-268 784
-268 792
-268 796
-272 800
-276 800
-280 800
-284 800
-288 796
-288 792
-288 784
-288 780
-292 776
-296 776
-308 776 c
+224 776 m
+236 776
+240 776
+244 780
+244 784
+244 792
+244 796
+248 800
+252 800
+256 800
+260 800
+264 796
+264 792
+264 784
+264 780
+268 776
+272 776
+284 776 c
 </path>
+<text matrix="1 0 0 1 92.112 -11.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.602" height="4.252" depth="0.04" halign="right" valign="baseline" size="6">one element of children</text>
+<text matrix="1 0 0 1 264.112 -7.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.602" height="4.252" depth="0.04" halign="right" valign="baseline" size="6">one element of children</text>
 <path stroke="black" pen="fat">
-420 776 m
-432 776
-436 776
-440 772
-440 768
-440 760
-440 756
-436 752
-432 752
-104 752
-100 752
-96 756
-96 760
-96 792
-96 796
-100 800
-104 800
-108 800
-112 800
-116 796
-116 792
-116 784
-116 780
-120 776
-124 776
-136 776 c
+396 776 m
+408 776
+412 776
+416 772
+416 768
+416 756
+416 752
+412 748
+408 748
+80 748
+76 748
+72 752
+72 756
+72 792
+72 796
+76 800
+80 800
+84 800
+88 800
+92 796
+92 792
+92 784
+92 780
+96 776
+100 776
+112 776 c
 </path>
 </page>
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<path layer="alpha" matrix="0.97619 0 0 1.2 -13.9048 -161.6" fill="0.827 0.843 0.812">
+<path layer="alpha" matrix="1 0 0 1 -104 -24" stroke="black" fill="pink" pen="heavier">
+200 592 m
+208 608 l
+252 608 l
+260 600 l
+252 592 l
+260 584 l
+252 576 l
+208 576 l
+h
+</path>
+<path matrix="1 0 0 1 -52 0" stroke="black" fill="pink" pen="heavier">
+364 720 m
+372 736 l
+424 736 l
+432 728 l
+424 720 l
+432 712 l
+424 704 l
+372 704 l
+h
+</path>
+<path stroke="black" fill="pink" pen="heavier">
+72 780 m
+80 796 l
+168 796 l
+176 788 l
+168 780 l
+176 772 l
+168 764 l
+80 764 l
+h
+</path>
+<path matrix="0.642857 0 0 2.4 23.4285 -1151.2" fill="0.827 0.843 0.812">
 88 788 m
 88 748 l
 424 748 l
 424 788 l
 h
 </path>
-<path matrix="0.571429 0 0 0.666667 162.857 285.333" stroke="black" fill="lightgreen" pen="heavier">
+<path matrix="0.571429 0 0 0.666667 46.857 109.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 108.112 28.965" transformations="translations" pos="128 768" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
+<text matrix="1 0 0 1 -7.888 -147.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
 <path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
 52 808 l
 h
 </path>
-<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="53.559" height="7.276" depth="1.85" valign="baseline">\textbf{AtExpression}</text>
-<path matrix="0.5 0 0 0.666667 108 193.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" valign="baseline">\textbf{Command}</text>
+<path matrix="0.5 0 0 0.666667 168 45.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 44.112 -63.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1.21429 0 0 1 152.571 -248.002" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 104.112 -211.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.104" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
+<path matrix="1 0 0 1.33336 136 -245.357" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 180.112 -243.035" transformations="translations" pos="128 768" stroke="black" type="label" width="96.657" height="7.075" depth="2.11" halign="center" valign="baseline">single \textbf{symbol} codepoint</text>
-<text matrix="1 0 0 1 456 -284" transformations="translations" pos="48 816" stroke="black" type="label" width="84.515" height="5.659" depth="1.69" halign="right" valign="baseline" size="footnote">“Single-Symbol Expression”</text>
-<text matrix="1 0 0 1 180.112 -251.035" transformations="translations" pos="128 768" stroke="black" type="label" width="127.555" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Ps}, \textit{Pe}, \textit{Pi}, \textit{Pf}, \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So})</text>
-<path matrix="1 0 0 1 24 16" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 136.112 20.965" transformations="translations" pos="128 768" stroke="black" type="label" width="96.657" height="7.075" depth="2.11" halign="center" valign="baseline">single \textbf{symbol} codepoint</text>
+<text matrix="1 0 0 1 136.112 12.965" transformations="translations" pos="128 768" stroke="black" type="label" width="72.604" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Ps}, \textit{Pe}, \textit{Pi}, \textit{Pf},</text>
+<path matrix="1 0 0 1 84 -132" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 -8 -60" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
-<path matrix="1 0 0 1 128 16" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 52 -208" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
+<path matrix="1 0 0 1 188 -132" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 96 -60" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{]}</text>
-<path matrix="1 0 0 1 -68 -20" stroke="black" pen="fat">
+<text matrix="1 0 0 1 156 -208" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{]}</text>
+<path matrix="1 0 0 1 -8 -168" stroke="black" pen="fat">
 196 728 m
 212 728 l
 </path>
-<path matrix="1 0 0 1 -68 -20" stroke="black" pen="fat">
+<path matrix="1 0 0 1 -8 -168" stroke="black" pen="fat">
 268 728 m
 284 728 l
 </path>
-<path matrix="0.181818 0 0 1 299.273 16" stroke="black" fill="pink" pen="heavier">
-180 652 m
-180 660 l
-268 660 l
-268 652 l
+<path matrix="1.07143 0 0 1 50.857 -100.002" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
 h
 </path>
-<text matrix="1 0 0 1 164 10.467" transformations="translations" pos="176 660" stroke="black" type="label" width="7.841" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
-<path matrix="0.181818 0 0 1 135.273 -132" stroke="black" fill="pink" pen="heavier">
-180 652 m
-180 660 l
-268 660 l
-268 652 l
+<text matrix="1 0 0 1 60.112 -95.035" transformations="translations" pos="128 768" stroke="black" type="label" width="23.681" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{string}</text>
+<text matrix="1 0 0 1 60.112 -103.035" transformations="translations" pos="128 768" stroke="black" type="label" width="104.207" height="4.634" depth="1.26" halign="center" valign="baseline" size="6">not containing [a bar followed by \texttt{n} hashes]</text>
+<path matrix="0.642857 0 0 1 41.7143 -52.002" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
 h
 </path>
-<text matrix="1 0 0 1 0 -137.533" transformations="translations" pos="176 660" stroke="black" type="label" width="7.841" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
-<path matrix="1.55555 0 0 1 3.55585 104" stroke="black" pen="fat">
-116 420 m
-152 420 l
+<text matrix="1 0 0 1 -3.888 -47.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.388" depth="0.91" halign="center" valign="baseline">\texttt{\#}$^\text{\textit{n}}$\texttt{|}</text>
+<text matrix="1 0 0 1 -3.888 -55.035" transformations="translations" pos="128 768" stroke="black" type="label" width="63.763" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">\textit{n} hashes followed by a bar</text>
+<path matrix="0.642856 0 0 1 169.715 -52.002" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
 </path>
-<path matrix="1.17241 0 0 1 61.7929 -36" stroke="black" pen="fat">
-268 560 m
-384 560 l
-</path>
-<path matrix="1 0 0 1 460 -284" stroke="black" fill="black" pen="fat">
+<text matrix="1 0 0 1 124.112 -47.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.514" height="7.388" depth="0.91" halign="center" valign="baseline">\texttt{|\#}$^\text{\textit{n}}$</text>
+<text matrix="1 0 0 1 124.112 -55.035" transformations="translations" pos="128 768" stroke="black" type="label" width="63.763" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">a bar followed by \textit{n} hashes</text>
+<text matrix="1 0 0 1 -39.888 -119.035" transformations="translations" pos="128 768" stroke="black" type="label" width="80.327" height="4.251" depth="1.26" valign="baseline" size="6">where \textit{n} is a non-negative integer</text>
+<path matrix="1 0 0 1 396 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
 52 808 l
 h
 </path>
-<path matrix="1.07143 0 0 1 98.857 -8.002" stroke="black" fill="lightyellow" pen="heavier">
+<path matrix="0.785716 0 0 0.666622 247.428 -18.635" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 108.112 -3.035" transformations="translations" pos="128 768" stroke="black" type="label" width="16.279" height="6.446" depth="0.07" halign="center" valign="baseline">\textbf{text}</text>
-<text matrix="1 0 0 1 108.112 -11.035" transformations="translations" pos="128 768" stroke="black" type="label" width="104.207" height="4.634" depth="1.26" halign="center" valign="baseline" size="6">not containing [a bar followed by \texttt{n} hashes]</text>
-<path matrix="0.785714 0 0 1 23.4286 -8.002" stroke="black" fill="lightcyan" pen="heavier">
+<text matrix="1 0 0 1 220.112 -275.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.769" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
+<path matrix="0.785716 0 0 0.666622 247.428 -50.635" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 -3.888 -3.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.388" depth="0.91" halign="center" valign="baseline">\texttt{\#}$^\text{\textit{n}}$\texttt{|}</text>
-<text matrix="1 0 0 1 -3.888 -11.035" transformations="translations" pos="128 768" stroke="black" type="label" width="63.763" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">\textit{n} hashes followed by a bar</text>
-<path matrix="0.785714 0 0 1 247.429 -8.002" stroke="black" fill="lightcyan" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 220.112 -3.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.388" depth="0.91" halign="center" valign="baseline">\texttt{|\#}$^\text{\textit{n}}$</text>
-<text matrix="1 0 0 1 220.112 -11.035" transformations="translations" pos="128 768" stroke="black" type="label" width="63.763" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">a bar followed by \textit{n} hashes</text>
-<text matrix="1 0 0 1 -47.888 -27.035" transformations="translations" pos="128 768" stroke="black" type="label" width="80.327" height="4.251" depth="1.26" valign="baseline" size="6">where \textit{n} is a non-negative integer</text>
-<path stroke="black" pen="fat">
-168 764 m
-176 764 l
-</path>
-<path matrix="1 0 0 1 -40 0" stroke="black" pen="fat">
-336 764 m
-344 764 l
-</path>
-<path matrix="0.97619 0 0 1.2 18.0952 -345.6" fill="0.827 0.843 0.812">
-88 788 m
-88 748 l
-424 748 l
-424 788 l
-h
-</path>
-<path matrix="1.07143 0 0 1 130.857 -192.002" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 140.112 -187.035" transformations="translations" pos="128 768" stroke="black" type="label" width="16.279" height="6.446" depth="0.07" halign="center" valign="baseline">\textbf{text}</text>
-<text matrix="1 0 0 1 140.112 -195.035" transformations="translations" pos="128 768" stroke="black" type="label" width="109.886" height="4.634" depth="1.26" halign="center" valign="baseline" size="6">not containing [a quote followed by \texttt{n} hashes]</text>
-<path matrix="0.785714 0 0 1 55.4286 -192.002" stroke="black" fill="lightcyan" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 28.112 -187.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.514" height="7.388" depth="0" halign="center" valign="baseline">\texttt{\#}$^\text{\textit{n}}$\texttt{&quot;}</text>
-<text matrix="1 0 0 1 28.112 -195.035" transformations="translations" pos="128 768" stroke="black" type="label" width="69.441" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">\textit{n} hashes followed by a quote</text>
-<path matrix="0.785714 0 0 1 279.429 -192.002" stroke="black" fill="lightcyan" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 252.112 -187.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.388" depth="0" halign="center" valign="baseline">\texttt{&quot;\#}$^\text{\textit{n}}$</text>
-<text matrix="1 0 0 1 252.112 -195.035" transformations="translations" pos="128 768" stroke="black" type="label" width="69.442" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">a quote followed by \textit{n} hashes</text>
-<text matrix="1 0 0 1 -15.888 -211.035" transformations="translations" pos="128 768" stroke="black" type="label" width="80.327" height="4.251" depth="1.26" valign="baseline" size="6">where \textit{n} is a non-negative integer</text>
-<path matrix="1 0 0 1 32 -184" stroke="black" pen="fat">
-168 764 m
-176 764 l
-</path>
-<path matrix="1 0 0 1 -8 -184" stroke="black" pen="fat">
-336 764 m
-344 764 l
-</path>
-<path matrix="0.97619 0 0 1.3 18.0952 -364.4" fill="0.827 0.843 0.812">
-88 788 m
-88 748 l
-424 748 l
-424 788 l
-h
-</path>
-<path matrix="1.07143 0 0 1.33336 130.857 -393.357" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 140.112 -127.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.768" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
-<text matrix="1 0 0 1 140.112 -135.035" transformations="translations" pos="128 768" stroke="black" type="label" width="78.384" height="4.252" depth="0.04" halign="center" valign="baseline" size="6">each \textbf{text} child must not contain</text>
-<path matrix="0.785714 0 0 1 55.4286 -136.002" stroke="black" fill="lightcyan" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 28.112 -131.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.514" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{\#}$^\text{\textit{n}}$\texttt{\{}</text>
-<text matrix="1 0 0 1 28.112 -139.035" transformations="translations" pos="128 768" stroke="black" type="label" width="79.012" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">\textit{n} hashes followed by a left brace</text>
-<path matrix="0.785714 0 0 1 279.429 -136.002" stroke="black" fill="lightcyan" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 252.112 -131.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{\}\#}$^\text{\textit{n}}$</text>
-<text matrix="1 0 0 1 252.112 -139.035" transformations="translations" pos="128 768" stroke="black" type="label" width="82.174" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">a right brace followed by \textit{n} hashes</text>
-<text matrix="1 0 0 1 -15.888 -155.035" transformations="translations" pos="128 768" stroke="black" type="label" width="80.327" height="4.251" depth="1.26" valign="baseline" size="6">where \textit{n} is a non-negative integer</text>
-<path matrix="1 0 0 1 32 -128" stroke="black" pen="fat">
-168 764 m
-176 764 l
-</path>
-<path matrix="1 0 0 1 -8 -128" stroke="black" pen="fat">
-336 764 m
-344 764 l
-</path>
-<text matrix="1 0 0 1 140.112 -143.035" transformations="translations" pos="128 768" stroke="black" type="label" width="86.687" height="4.634" depth="1.26" halign="center" valign="baseline" size="6">[a right brace followed by \texttt{n} hashes]</text>
-<path matrix="0.181818 0 0 1 407.273 72" stroke="black" fill="pink" pen="heavier">
-180 652 m
-180 660 l
-268 660 l
-268 652 l
-h
-</path>
-<text matrix="1 0 0 1 272 66.467" transformations="translations" pos="176 660" stroke="black" type="label" width="7.84" height="3.497" depth="0.03" halign="center" valign="baseline" size="tiny">else</text>
+<text matrix="1 0 0 1 220.112 -307.035" transformations="translations" pos="128 768" stroke="black" type="label" width="17.455" height="6.984" depth="0.07" halign="center" valign="baseline">\textbf{Text}</text>
+<text matrix="1 0 0 1 -8.04755 18.3283" transformations="translations" pos="128 768" stroke="black" type="label" width="54.133" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">next token begins with</text>
+<text matrix="1 0 0 1 -8.04755 10.3283" transformations="translations" pos="128 768" stroke="black" type="label" width="72.741" height="4.63" depth="0.72" halign="center" valign="baseline" size="6">\textit{either} an identifier \textit{or} [at least</text>
+<text matrix="1 0 0 1 -8.04755 2.32829" transformations="translations" pos="128 768" stroke="black" type="label" width="75.889" height="4.632" depth="1.19" halign="center" valign="baseline" size="6">zero hashes followed by a bar]\hrsp?</text>
 <path stroke="black" pen="fat">
 32 800 m
+44 800
 48 800
-52 800
-56 796
-56 792
-56 772
-56 768
-60 764
-64 764
-80 764 c
+52 796
+52 792
+52 788
+52 784
+56 780
+60 780
+72 780 c
+</path>
+<text matrix="1 0 0 1 39.9524 18.3283" transformations="translations" pos="128 768" stroke="black" type="label" width="3.527" height="4.184" depth="0" valign="baseline" size="6">\textbf{N}</text>
+<text matrix="1 0 0 1 39.9524 2.3283" transformations="translations" pos="128 768" stroke="black" type="label" width="3.263" height="4.184" depth="0" valign="baseline" size="6">\textbf{Y}</text>
+<path matrix="2 0 0 1 -328 64" stroke="black" pen="fat">
+252 724 m
+268 724 l
+</path>
+<text matrix="1 0 0 1 215.952 -41.6717" transformations="translations" pos="128 768" stroke="black" type="label" width="39.302" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">in previous step,</text>
+<text matrix="1 0 0 1 215.952 -49.6717" transformations="translations" pos="128 768" stroke="black" type="label" width="37.05" height="4.184" depth="1.16" halign="center" valign="baseline" size="6">the parsed \textbf{text}</text>
+<text matrix="1 0 0 1 215.952 -57.6717" transformations="translations" pos="128 768" stroke="black" type="label" width="23.214" height="4.249" depth="1.19" halign="center" valign="baseline" size="6">is empty\hrsp?</text>
+<text matrix="1 0 0 1 243.952 -41.6717" transformations="translations" pos="128 768" stroke="black" type="label" width="3.264" height="4.184" depth="0" valign="baseline" size="6">\textbf{Y}</text>
+<text matrix="1 0 0 1 243.952 -57.6717" transformations="translations" pos="128 768" stroke="black" type="label" width="3.527" height="4.184" depth="0" valign="baseline" size="6">\textbf{N}</text>
+<path matrix="1.5 0 0 1 -90 -4" stroke="black" pen="fat">
+252 724 m
+268 724 l
 </path>
 <path stroke="black" pen="fat">
-32 800 m
-204 800 l
+176 772 m
+188 772
+192 772
+196 768
+196 764
+196 760
+196 756
+192 752
+188 752
+68 752
+64 752
+60 748
+60 744
+60 728
+60 724
+64 720
+68 720
+88 720 c
 </path>
 <path stroke="black" pen="fat">
-268 800 m
-408 800
-412 800
-416 796
-416 792
-416 736
-416 732
-420 728
-424 728
-440 728 c
+60 744 m
+60 632
+60 628
+64 624
+68 624
+88 624 c
 </path>
-<path matrix="1 0 0 1 460 -136" stroke="black" fill="black" pen="fat">
-48 812 m
-48 804 l
-52 808 l
+<text matrix="1 0 0 1 136.112 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="53.039" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">\textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So})</text>
+<path stroke="black" pen="fat">
+160 720 m
+172 720
+176 720
+180 716
+180 712
+180 704
+180 700
+176 696
+172 696
+116 696
+112 696
+108 692
+108 688
+108 680
+108 676
+112 672
+116 672
+128 672 c
+</path>
+<path stroke="black" pen="fat">
+248 672 m
+260 672
+264 672
+268 676
+268 680
+268 688
+268 692
+264 696
+260 696
+204 696
+200 696
+196 700
+196 704
+196 712
+196 716
+200 720
+204 720
+216 720 c
+</path>
+<path stroke="black" pen="fat">
+380 728 m
+392 728
+396 728
+400 732
+400 736
+400 752
+400 756
+396 760
+392 760
+348 760
+344 760
+340 764
+340 768
+340 772
+340 776
+344 780
+348 780
+368 780 c
+</path>
+<text matrix="1 0 0 1 252.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="41.466" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">options := EMPTY</text>
+<text matrix="1 0 0 1 252.112 16.965" transformations="translations" pos="128 768" stroke="black" type="label" width="45.609" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">main\_arg := EMPTY</text>
+<text matrix="1 0 0 1 188.112 -7.035" transformations="translations" pos="128 768" stroke="black" type="label" width="59.214" height="4.184" depth="1.19" halign="right" valign="baseline" size="6">phrase := parsed \textbf{symbol}</text>
+<text matrix="1 0 0 1 116.112 -115.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.201" height="4.371" depth="1.2" halign="right" valign="baseline" size="6">phrase := parsed \textbf{string}</text>
+<text matrix="1 0 0 1 -4.048 -193.672" transformations="translations" pos="128 768" stroke="black" type="label" width="30.845" height="4.252" depth="0.04" halign="center" valign="baseline" size="6">next token is</text>
+<text matrix="1 0 0 1 -4.048 -201.672" transformations="translations" pos="128 768" stroke="black" type="label" width="36.798" height="3.072" depth="1.16" halign="center" valign="baseline" size="6">an open square</text>
+<text matrix="1 0 0 1 -4.048 -209.672" transformations="translations" pos="128 768" stroke="black" type="label" width="20.5" height="4.246" depth="0.04" halign="center" valign="baseline" size="6">bracket\hrsp?</text>
+<text matrix="1 0 0 1 19.952 -193.672" transformations="translations" pos="128 768" stroke="black" type="label" width="3.527" height="4.184" depth="0" valign="baseline" size="6">\textbf{N}</text>
+<text matrix="1 0 0 1 19.952 -209.672" transformations="translations" pos="128 768" stroke="black" type="label" width="3.264" height="4.184" depth="0" valign="baseline" size="6">\textbf{Y}</text>
+<text matrix="0.572513 0 0 1 46.7222 -159.074" transformations="translations" pos="128 768" stroke="black" type="label" width="64.325" height="4.364" depth="1.16" halign="center" valign="baseline" size="6">phrase := parsed \textbf{Identifier}</text>
+<text matrix="1 0 0 1 104.112 -187.035" transformations="translations" pos="128 768" stroke="black" type="label" width="41.467" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">options := EMPTY</text>
+<path matrix="1 0 0 1 -40 -168" stroke="black" pen="fat">
+196 728 m
+212 728 l
+</path>
+<text matrix="0.572513 0 0 1 158.722 -223.074" transformations="translations" pos="128 768" stroke="black" type="label" width="66.943" height="4.364" depth="1.16" halign="center" valign="baseline" size="6">options := parsed \textbf{TokenList}</text>
+<path matrix="1 0 0 1 56 -276" stroke="black" fill="pink" pen="heavier">
+72 780 m
+80 796 l
+168 796 l
+176 788 l
+168 780 l
+176 772 l
+168 764 l
+80 764 l
 h
 </path>
+<text matrix="1 0 0 1 47.9524 -257.672" transformations="translations" pos="128 768" stroke="black" type="label" width="73.811" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">next token begins with at least</text>
+<text matrix="1 0 0 1 47.9524 -265.672" transformations="translations" pos="128 768" stroke="black" type="label" width="71.163" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">zero hashes followed by a left</text>
+<text matrix="1 0 0 1 47.9524 -273.672" transformations="translations" pos="128 768" stroke="black" type="label" width="65.415" height="4.244" depth="1.16" halign="center" valign="baseline" size="6">brace or a quotation mark\hrsp?</text>
+<text matrix="1 0 0 1 95.9524 -257.672" transformations="translations" pos="128 768" stroke="black" type="label" width="3.527" height="4.184" depth="0" valign="baseline" size="6">\textbf{N}</text>
+<text matrix="1 0 0 1 95.9524 -273.672" transformations="translations" pos="128 768" stroke="black" type="label" width="3.264" height="4.184" depth="0" valign="baseline" size="6">\textbf{Y}</text>
 <path stroke="black" pen="fat">
-392 764 m
-408 764
-412 764
-416 760
-416 756
-416 736
-416 732
-412 728
-408 728
-80 728
-76 728
-72 724
-72 720
-72 716
-72 712
-76 708
-80 708
-112 708 c
+152 624 m
+164 624
+168 624
+172 620
+172 616
+172 608
+172 604
+168 600
+164 600
+84 600
+80 600
+76 596
+76 592
+76 576
+76 572
+80 568
+84 568
+96 568 c
 </path>
 <path stroke="black" pen="fat">
-232 708 m
-272 708
-276 708
-280 704
-280 700
-280 680
-280 676
-276 672
-272 672
-96 672
-92 672
-88 668
-88 664
-88 588
-88 584
-92 580
-96 580
-112 580 c
+380 712 m
+392 712
+396 712
+400 708
+400 704
+400 632
+400 628
+396 624
+392 624
+180 624
+176 624
+172 620
+172 616
+172 612
+172 608 c
 </path>
 <path stroke="black" pen="fat">
-456 728 m
-472 728
-476 728
-480 724
-480 720
-480 716
-480 712
-476 708
-472 708
-288 708
-284 708
-280 704
-280 700
-280 680
-280 676
-284 672
-288 672
-332 672 c
+156 576 m
+304 576
+308 576
+312 572
+312 568
+312 544 c
+</path>
+<text matrix="1 0 0 1 220.112 -251.035" transformations="translations" pos="128 768" stroke="black" type="label" width="45.609" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">main\_arg := EMPTY</text>
+<path matrix="4.5 0 0 1 -650 -232" stroke="black" pen="fat">
+196 728 m
+212 728 l
+</path>
+<text matrix="0.572513 0 0 1 274.722 -287.074" transformations="translations" pos="128 768" stroke="black" type="label" width="79.885" height="4.371" depth="1.26" halign="center" valign="baseline" size="6">main\_arg := parsed \textbf{FragmentList}</text>
+<text matrix="0.572513 0 0 1 274.722 -319.074" transformations="translations" pos="128 768" stroke="black" type="label" width="58.096" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">main\_arg := parsed \textbf{Text}</text>
+<path stroke="black" pen="fat">
+292 560 m
+304 560
+308 560
+312 556
+312 552
+312 544
+312 540
+308 536
+304 536
+116 536
+112 536
+108 532
+108 528
+108 512
+108 508
+112 504
+116 504
+128 504 c
 </path>
 <path stroke="black" pen="fat">
-348 672 m
-512 672 l
+392 464 m
+420 464
+424 464
+428 468
+428 472
+428 792
+428 796
+432 800
+436 800
+448 800 c
 </path>
 <path stroke="black" pen="fat">
-88 664 m
-88 644
-88 640
-92 636
-96 636
-112 636 c
+232 496 m
+260 496
+264 496
+268 492
+268 488
+268 472
+268 468
+272 464
+276 464
+304 464 c
 </path>
 <path stroke="black" pen="fat">
-424 636 m
-440 636
-444 636
-448 640
-448 644
-448 664
-448 668
-452 672
-456 672
-512 672 c
+320 780 m
+420 780
+424 780
+428 784
+428 788
+428 792
+428 796
+432 800
+436 800
+448 800 c
 </path>
 <path stroke="black" pen="fat">
-424 580 m
-440 580
-444 580
-448 584
-448 588
-448 664 c
+232 512 m
+420 512
+424 512
+428 516
+428 520
+428 792
+428 796
+432 800
+436 800
+448 800 c
 </path>
-<text matrix="1 0 0 1 456 -136" transformations="translations" pos="48 816" stroke="black" type="label" width="71.571" height="5.665" depth="1.54" halign="right" valign="baseline" size="footnote">“Command Expression”</text>
 <path stroke="black" pen="fat">
-32 800 m
-48 800
-52 800
-56 796
-56 792
-56 532
-56 528
-60 524
-64 524
-168 524 c
+392 496 m
+420 496
+424 496
+428 500
+428 504
+428 792
+428 796
+432 800
+436 800
+448 800 c
 </path>
 </page>
 <page>
@@ -797,91 +864,219 @@ h
 52 808 l
 h
 </path>
-<path matrix="1 0 0 1.66672 64 -518.712" stroke="black" fill="lightyellow" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<path matrix="0.714286 0 0 0.666667 288.571 253.333" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<path matrix="1 0 0 1 460 -8" stroke="black" fill="black" pen="fat">
+<path matrix="1 0 0 1 396 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
 52 808 l
 h
 </path>
-<path matrix="1 0 0 1 220 76" stroke="black" fill="lightyellow" pen="heavier">
+<path matrix="0.785714 0 0 1 15.4286 7.998" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<path matrix="0.785714 0 0 1 263.429 7.998" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 -11.888 12.965" transformations="translations" pos="128 768" stroke="black" type="label" width="14.514" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{\#}$^\text{\textit{n}}$\texttt{\{}</text>
+<text matrix="1 0 0 1 -11.888 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="79.011" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">\textit{n} hashes followed by a left brace</text>
+<text matrix="1 0 0 1 236.112 12.965" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{\}\#}$^\text{\textit{n}}$</text>
+<text matrix="1 0 0 1 236.112 4.965" transformations="translations" pos="128 768" stroke="black" type="label" width="82.174" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">a right brace followed by \textit{n} hashes</text>
+<path stroke="black" pen="fat">
+32 800 m
+44 800
+48 800
+52 796
+52 792
+52 788
+52 784
+56 780
+60 780
+72 780 c
+</path>
+<path matrix="1 0 0 1 -64 0" stroke="black" pen="fat">
+472 780 m
+484 780
+488 780
+492 784
+492 788
+492 792
+492 796
+496 800
+500 800
+512 800 c
+</path>
+<path matrix="1 0 0 1.33335 44 -321.347" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<path matrix="0.714286 0 0 0.666667 268.571 193.333" stroke="black" fill="lightgreen" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<path matrix="1 0 0 1 200 16" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 188 0" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="6.273" depth="0.81" halign="center" valign="center">\texttt{@}</text>
-<text matrix="1 0 0 1 64.1124 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="61.469" height="6.439" depth="1.99" halign="center" valign="baseline">non-empty \textbf{text}</text>
-<text matrix="1 0 0 1 252.112 -3.035" transformations="translations" pos="128 768" stroke="black" type="label" width="54.181" height="7.276" depth="1.85" halign="center" valign="baseline">\textbf{At{\hrsp}Expression}</text>
-<text matrix="1 0 0 1 64.1124 0.965" transformations="translations" pos="128 768" stroke="black" type="label" width="90.112" height="4.568" depth="1.26" halign="center" valign="baseline" size="6">not containing \texttt{\textquotedbl@\textquotedbl} symbol (additional</text>
-<path matrix="2.14286 0 0 1 -36.5715 48" stroke="black" fill="lightyellow" pen="fat">
-32 752 m
-256 752 l
-</path>
-<path matrix="1 0 0 1 72 44" stroke="black" pen="fat">
+<text matrix="1 0 0 1 168 -60" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="6.273" depth="0.81" halign="center" valign="center">\texttt{@}</text>
+<text matrix="1 0 0 1 44.112 -55.035" transformations="translations" pos="128 768" stroke="black" type="label" width="68.872" height="7.275" depth="2.01" halign="center" valign="baseline">non-empty \textbf{string}</text>
+<text matrix="1 0 0 1 232.112 -63.035" transformations="translations" pos="128 768" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" halign="center" valign="baseline">\textbf{Command}</text>
+<text matrix="1 0 0 1 44.112 -63.035" transformations="translations" pos="128 768" stroke="black" type="label" width="72.789" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">containing neither \texttt{\textquotedbl@\textquotedbl} symbol</text>
+<path matrix="1 0 0 1 52 -16" stroke="black" pen="fat">
 252 724 m
 268 724 l
 </path>
-<text matrix="1 0 0 1 64.1124 -7.035" transformations="translations" pos="128 768" stroke="black" type="label" width="99.257" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">restriction may be enforced while parsing</text>
-<text matrix="1 0 0 1 64.1124 -15.035" transformations="translations" pos="128 768" stroke="black" type="label" width="92.084" height="4.568" depth="1.2" halign="center" valign="baseline" size="6">for \textbf{FragmentList} inside \textbf{AtExpression})</text>
-<path matrix="1 0 0 1 8 0" stroke="black" pen="fat">
-240 768 m
-252 768
-256 768
-260 772
-260 776
-260 792
-260 796
-264 800
-268 800
-272 800
-276 800
-280 796
-280 792
-280 776
-280 772
-284 768
-288 768
-300 768 c
+<text matrix="1 0 0 1 44.112 -71.035" transformations="translations" pos="128 768" stroke="black" type="label" width="95.856" height="4.634" depth="1.26" halign="center" valign="baseline" size="6">nor [a right brace followed by \textit{n} hashes]</text>
+<path matrix="1 0 0 1 4 -64" stroke="black" pen="fat">
+224 772 m
+236 772
+240 772
+244 776
+244 780
+244 792
+244 796
+248 800
+252 800
+256 800
+260 800
+264 796
+264 792
+264 780
+264 776
+268 772
+272 772
+284 772 c
 </path>
-<path matrix="1 0 0 1 8 0" stroke="black" pen="fat">
-412 768 m
-424 768
-428 768
-432 764
-432 760
-432 744
-432 740
-428 736
-424 736
-96 736
+<path stroke="black" pen="fat">
+160 780 m
+172 780
+176 780
+180 776
+180 772
+180 764
+180 760
+176 756
+172 756
+68 756
+64 756
+60 752
+60 748
+60 744
+60 740
+64 736
+68 736
+292 736
+296 736
+300 740
+300 744
+300 776
+300 780
+304 784
+308 784
+320 784 c
+</path>
+<text matrix="1 0 0 1 96.112 -83.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.602" height="4.252" depth="0.04" halign="right" valign="baseline" size="6">one element of children</text>
+<text matrix="1 0 0 1 268.112 -75.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.602" height="4.252" depth="0.04" halign="right" valign="baseline" size="6">one element of children</text>
+<path stroke="black" pen="fat">
+400 708 m
+412 708
+416 708
+420 704
+420 700
+420 684
+420 680
+416 676
+412 676
+84 676
+80 676
+76 680
+76 684
+76 728
+76 732
+80 736
+84 736
+88 736
 92 736
-88 740
-88 744
-88 792
-88 796
-92 800
-96 800
-100 800
-104 800
-108 796
-108 792
-108 776
-108 772
-112 768
-116 768
-128 768 c
+96 732
+96 728
+96 716
+96 712
+100 708
+104 708
+116 708 c
 </path>
+</page>
+<page>
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<text layer="alpha" matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="17.455" height="6.984" depth="0.07" valign="baseline">\textbf{Text}</text>
+<path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<path matrix="1 0 0 1 396 -8" stroke="black" fill="black" pen="fat">
+48 812 m
+48 804 l
+52 808 l
+h
+</path>
+<path matrix="0.714285 0 0 1 20.5715 27.998" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<path matrix="0.714285 0 0 1 276.572 27.998" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<path matrix="0.125 0 0 1 148 48" stroke="black" fill="lightyellow" pen="fat">
+32 752 m
+256 752 l
+</path>
+<path matrix="1.07143 0 0 1.00001 102.857 27.9945" stroke="black" fill="lightyellow" pen="heavier">
+72 784 m
+72 760 l
+184 760 l
+184 784 l
+h
+</path>
+<text matrix="1 0 0 1 112.112 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="23.681" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{string}</text>
+<text matrix="1 0 0 1 112.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="109.45" height="4.634" depth="1.26" halign="center" valign="baseline" size="6">not containing [a quote followed by \textit{n} hashes]</text>
+<text matrix="1 0 0 1 -15.888 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="14.514" height="7.388" depth="0" halign="center" valign="baseline">\texttt{\#}$^\text{\textit{n}}$\texttt{&quot;}</text>
+<text matrix="1 0 0 1 -15.888 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="69.441" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">\textit{n} hashes followed by a quote</text>
+<text matrix="1 0 0 1 240.112 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.388" depth="0" halign="center" valign="baseline">\texttt{&quot;\#}$^\text{\textit{n}}$</text>
+<text matrix="1 0 0 1 240.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="69.442" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">a quote followed by \textit{n} hashes</text>
+<path matrix="0.125 0 0 1.05 296 10.4" stroke="black" fill="lightyellow" pen="fat">
+32 752 m
+256 752 l
+</path>
+<path matrix="0.178571 0 0 1 26.2857 48" stroke="black" fill="lightyellow" pen="fat">
+32 752 m
+256 752 l
+</path>
+<path matrix="0.178571 0 0 1 402.286 48" stroke="black" fill="lightyellow" pen="fat">
+32 752 m
+256 752 l
+</path>
+<text matrix="1 0 0 1 168.112 12.965" transformations="translations" pos="128 768" stroke="black" type="label" width="52.214" height="4.371" depth="1.2" halign="right" valign="baseline" size="6">inner := parsed \textbf{string}</text>
 </page>
 <page>
 <layer name="alpha"/>
@@ -892,36 +1087,36 @@ h
 52 808 l
 h
 </path>
-<path matrix="1.21429 0 0 1 8.57137 27.998" stroke="black" fill="lightyellow" pen="heavier">
+<path matrix="1.14286 0 0 1 -2.28577 27.998" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<path matrix="1 0 0 1 460 -8" stroke="black" fill="black" pen="fat">
+<path matrix="1 0 0 1 396 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
 52 808 l
 h
 </path>
-<text matrix="1 0 0 1 36.1124 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="78.525" height="7.083" depth="0.07" halign="center" valign="baseline">identifier start \textbf{char}</text>
-<text matrix="1 0 0 1 36.1124 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="112.307" height="4.567" depth="0.97" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Nl} and \texttt{&quot;\_&quot;})</text>
-<path matrix="1.21429 0 0 1 204.571 3.998" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 16.1124 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="78.526" height="7.083" depth="0.07" halign="center" valign="baseline">identifier start \textbf{char}</text>
+<text matrix="1 0 0 1 16.1124 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="112.307" height="4.567" depth="0.97" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Nl} and \texttt{&quot;\_&quot;})</text>
+<path matrix="1.21429 0 0 1 180.571 3.998" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 232.112 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="79.671" height="7.083" depth="0.07" halign="center" valign="baseline">identifier cont.\ \textbf{char}</text>
-<text matrix="1 0 0 1 232.112 0.965" transformations="translations" pos="128 768" stroke="black" type="label" width="127.663" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Mn}, \textit{Mc}, \textit{Nl}, \textit{Nd}, \textit{Pc})</text>
-<path matrix="1.6 0 0 1 -19.2 480" stroke="black" pen="fat">
+<text matrix="1 0 0 1 208.112 8.965" transformations="translations" pos="128 768" stroke="black" type="label" width="79.671" height="7.083" depth="0.07" halign="center" valign="baseline">identifier cont.\ \textbf{char}</text>
+<text matrix="1 0 0 1 208.112 0.965" transformations="translations" pos="128 768" stroke="black" type="label" width="127.664" height="4.563" depth="0.62" halign="center" valign="baseline" size="6">(Unicode classes \textit{Lu}, \textit{Ll}, \textit{Lt}, \textit{Lm}, \textit{Lo}, \textit{Mn}, \textit{Mc}, \textit{Nl}, \textit{Nd}, \textit{Pc})</text>
+<path matrix="1.2 0 0 1 -6.4 480" stroke="black" pen="fat">
 32 320 m
 72 320 l
 </path>
-<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" valign="baseline">\textbf{Identifier}</text>
-<path matrix="1 0 0 1 16 0" stroke="black" pen="fat">
+<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="37.22" height="7.283" depth="0.07" valign="baseline">\textbf{Identifier}</text>
+<path matrix="1 0 0 1 -8 0" stroke="black" pen="fat">
 412 776 m
 424 776
 428 776
@@ -948,7 +1143,7 @@ h
 264 776
 276 776 c
 </path>
-<path stroke="black" pen="fat">
+<path matrix="0.857143 0 0 1 9.14286 0" stroke="black" pen="fat">
 232 800 m
 512 800 l
 </path>
@@ -956,7 +1151,14 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="42.291" height="7.283" depth="0.07" valign="baseline">\textbf{TokenList}
+<path layer="alpha" matrix="0.309524 0 0 4.6 228.762 -2836.8" fill="0.827 0.843 0.812">
+88 788 m
+88 748 l
+424 748 l
+424 788 l
+h
+</path>
+<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="42.292" height="7.283" depth="0.07" valign="baseline">\textbf{TokenList}
         </text>
 <path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
 48 812 m
@@ -964,65 +1166,65 @@ h
 52 808 l
 h
 </path>
-<path matrix="1 0 0 1 460 -8" stroke="black" fill="black" pen="fat">
+<path matrix="1 0 0 1 396 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
 52 808 l
 h
 </path>
-<path matrix="1.07143 0 0 0.666667 158.857 229.333" stroke="black" fill="lightgreen" pen="heavier">
+<path matrix="0.785716 0 0 0.666667 207.428 257.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 168.112 -27.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.559" height="7.276" depth="1.85" halign="center" valign="baseline">\textbf{AtExpression}</text>
-<path matrix="1.07143 0 0 0.666667 158.857 205.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 180.112 0.965" transformations="translations" pos="128 768" stroke="black" type="label" width="40.189" height="7.064" depth="0.07" halign="center" valign="baseline">\textbf{Command}</text>
+<path matrix="0.785716 0 0 0.666667 207.428 233.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 168.112 -51.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.22" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
-<path matrix="1.07143 0 0 0.666667 158.857 181.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 180.112 -23.035" transformations="translations" pos="128 768" stroke="black" type="label" width="37.221" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{Identifier}</text>
+<path matrix="0.785716 0 0 0.666667 207.428 209.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 168.112 -75.035" transformations="translations" pos="128 768" stroke="black" type="label" width="35.517" height="7.057" depth="1.85" halign="center" valign="baseline">\textbf{Operator}</text>
-<path matrix="1.07143 0 0 0.666667 158.857 157.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 180.112 -47.035" transformations="translations" pos="128 768" stroke="black" type="label" width="35.517" height="7.057" depth="1.85" halign="center" valign="baseline">\textbf{Operator}</text>
+<path matrix="0.785715 0 0 0.666667 207.428 185.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 168.112 -99.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.648" height="7.064" depth="0.08" halign="center" valign="baseline">\textbf{JSON Number}</text>
-<path matrix="1.07143 0 0 0.666667 158.857 17.333" stroke="black" fill="lightgreen" pen="heavier">
+<text matrix="1 0 0 1 180.112 -71.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.648" height="7.064" depth="0.08" halign="center" valign="baseline">\textbf{JSON Number}</text>
+<path matrix="0.785716 0 0 0.666667 207.428 113.333" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 168.112 -239.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
-<path matrix="1 0 0 1 116 -160" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 180.112 -143.035" transformations="translations" pos="128 768" stroke="black" type="label" width="39.103" height="7.283" depth="0.07" halign="center" valign="baseline">\textbf{TokenList}</text>
+<path matrix="1 0 0 1 144 -64" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 84 -236" transformations="translations" pos="128 768" stroke="black" type="label" width="5.379" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
-<path matrix="1 0 0 1 284 -160" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 112 -140" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{[}</text>
+<path matrix="1 0 0 1 280 -64" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 252 -236" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{]}</text>
-<path matrix="1 0 0 1 64 392" stroke="black" pen="fat">
+<text matrix="1 0 0 1 248 -140" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="7.318" depth="1.03" halign="center" valign="center">\texttt{]}</text>
+<path matrix="1 0 0 1 92 488" stroke="black" pen="fat">
 156 140 m
 172 140 l
 </path>
-<path matrix="1 0 0 1 64 392" stroke="black" pen="fat">
+<path matrix="1 0 0 1 60 488" stroke="black" pen="fat">
 292 140 m
 308 140 l
 </path>
@@ -1034,273 +1236,211 @@ h
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 8 32" transformations="translations" pos="128 768" stroke="black" type="label" width="48.379" height="7.076" depth="1.93" halign="center" valign="center">whitespaces</text>
+<text matrix="1 0 0 1 8 32" transformations="translations" pos="128 768" stroke="black" type="label" width="48.378" height="7.076" depth="1.93" halign="center" valign="center">whitespaces</text>
 <path matrix="1.28572 0 0 1 -9.14283 0" stroke="black" pen="fat">
 32 800 m
 88 800 l
 </path>
-<path matrix="1.24638 0 0 1 -26.4347 0" stroke="black" pen="fat">
+<path matrix="1.01449 0 0 1 9.73937 0" stroke="black" pen="fat">
 156 800 m
 432 800 l
 </path>
-<path matrix="0.97619 0 0 1.2 46.0952 -349.6" fill="0.827 0.843 0.812">
-88 788 m
-88 748 l
-424 748 l
-424 788 l
-h
-</path>
-<path matrix="1.07143 0 0 1 158.857 -196.002" stroke="black" fill="lightyellow" pen="heavier">
+<path matrix="0.785716 0 0 0.666622 207.428 161.365" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 168.112 -191.035" transformations="translations" pos="128 768" stroke="black" type="label" width="16.279" height="6.446" depth="0.07" halign="center" valign="baseline">\textbf{text}</text>
-<text matrix="1 0 0 1 168.112 -199.035" transformations="translations" pos="128 768" stroke="black" type="label" width="109.886" height="4.634" depth="1.26" halign="center" valign="baseline" size="6">not containing [a quote followed by \texttt{n} hashes]</text>
-<path matrix="0.785714 0 0 1 83.4286 -196.002" stroke="black" fill="lightcyan" pen="heavier">
+<text matrix="1 0 0 1 180.112 -95.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.768" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
+<path matrix="0.785716 0 0 0.666622 207.428 137.365" stroke="black" fill="lightgreen" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 56.112 -191.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.514" height="7.388" depth="0" halign="center" valign="baseline">\texttt{\#}$^\text{\textit{n}}$\texttt{&quot;}</text>
-<text matrix="1 0 0 1 56.112 -199.035" transformations="translations" pos="128 768" stroke="black" type="label" width="69.441" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">\textit{n} hashes followed by a quote</text>
-<path matrix="0.785714 0 0 1 307.429 -196.002" stroke="black" fill="lightcyan" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
+<text matrix="1 0 0 1 180.112 -119.035" transformations="translations" pos="128 768" stroke="black" type="label" width="17.455" height="6.984" depth="0.07" halign="center" valign="baseline">\textbf{Text}</text>
+<path matrix="1 0 0 1 144 80" stroke="black" fill="lightyellow" pen="heavier">
+8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 280.112 -191.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.388" depth="0" halign="center" valign="baseline">\texttt{&quot;\#}$^\text{\textit{n}}$</text>
-<text matrix="1 0 0 1 280.112 -199.035" transformations="translations" pos="128 768" stroke="black" type="label" width="69.442" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">a quote followed by \textit{n} hashes</text>
-<text matrix="1 0 0 1 12.112 -215.035" transformations="translations" pos="128 768" stroke="black" type="label" width="80.327" height="4.251" depth="1.26" valign="baseline" size="6">where \textit{n} is a non-negative integer</text>
-<path matrix="1 0 0 1 60 -188" stroke="black" pen="fat">
-168 764 m
-176 764 l
+<text matrix="1 0 0 1 112 4" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="6.273" depth="0.81" halign="center" valign="center">\texttt{@}</text>
+<path matrix="1 0 0 1 92 632" stroke="black" pen="fat">
+156 140 m
+172 140 l
 </path>
-<path matrix="1 0 0 1 20 -188" stroke="black" pen="fat">
-336 764 m
-344 764 l
-</path>
-<path matrix="0.97619 0 0 1.3 46.0952 -368.4" fill="0.827 0.843 0.812">
-88 788 m
-88 748 l
-424 748 l
-424 788 l
-h
-</path>
-<path matrix="1.07143 0 0 1.33336 158.857 -397.357" stroke="black" fill="lightgreen" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 168.112 -131.035" transformations="translations" pos="128 768" stroke="black" type="label" width="53.768" height="7.275" depth="2.01" halign="center" valign="baseline">\textbf{FragmentList}</text>
-<text matrix="1 0 0 1 168.112 -139.035" transformations="translations" pos="128 768" stroke="black" type="label" width="78.384" height="4.252" depth="0.04" halign="center" valign="baseline" size="6">each \textbf{text} child must not contain</text>
-<path matrix="0.785714 0 0 1 83.4286 -140.002" stroke="black" fill="lightcyan" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 56.112 -135.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{\#}$^\text{\textit{n}}$\texttt{\{}</text>
-<text matrix="1 0 0 1 56.112 -143.035" transformations="translations" pos="128 768" stroke="black" type="label" width="79.012" height="4.207" depth="1.19" halign="center" valign="baseline" size="6">\textit{n} hashes followed by a left brace</text>
-<path matrix="0.785714 0 0 1 307.429 -140.002" stroke="black" fill="lightcyan" pen="heavier">
-72 784 m
-72 760 l
-184 760 l
-184 784 l
-h
-</path>
-<text matrix="1 0 0 1 280.112 -135.035" transformations="translations" pos="128 768" stroke="black" type="label" width="14.515" height="7.496" depth="1.21" halign="center" valign="baseline">\texttt{\}\#}$^\text{\textit{n}}$</text>
-<text matrix="1 0 0 1 280.112 -143.035" transformations="translations" pos="128 768" stroke="black" type="label" width="82.174" height="4.251" depth="1.26" halign="center" valign="baseline" size="6">a right brace followed by \textit{n} hashes</text>
-<text matrix="1 0 0 1 12.112 -159.035" transformations="translations" pos="128 768" stroke="black" type="label" width="80.326" height="4.251" depth="1.26" valign="baseline" size="6">where \textit{n} is a non-negative integer</text>
-<path matrix="1 0 0 1 60 -132" stroke="black" pen="fat">
-168 764 m
-176 764 l
-</path>
-<path matrix="1 0 0 1 20 -132" stroke="black" pen="fat">
-336 764 m
-344 764 l
-</path>
-<text matrix="1 0 0 1 168.112 -147.035" transformations="translations" pos="128 768" stroke="black" type="label" width="86.687" height="4.634" depth="1.26" halign="center" valign="baseline" size="6">[a right brace followed by \texttt{n} hashes]</text>
-<path matrix="1 0 0 1 12 0" stroke="black" pen="fat">
-104 756 m
-104 752
-104 748
-108 744
-112 744
-224 744 c
-</path>
-<path matrix="1 0 0 1 12 -24" stroke="black" pen="fat">
-104 756 m
-104 752
-104 748
-108 744
-112 744
-224 744 c
-</path>
-<path matrix="1 0 0 1 12 -48" stroke="black" pen="fat">
-104 756 m
-104 752
-104 748
-108 744
-112 744
-224 744 c
-</path>
-<path matrix="1 0 0 1 12 -72" stroke="black" pen="fat">
-104 756 m
-104 752
-104 748
-108 744
-112 744
-224 744 c
-</path>
-<path matrix="1 0 0 1 12 0" stroke="black" pen="fat">
-344 720 m
-456 720
-460 720
-464 716
-464 712
-464 708 c
-</path>
-<path matrix="1 0 0 1 12 -24" stroke="black" pen="fat">
-344 720 m
-456 720
-460 720
-464 716
-464 712
-464 708 c
-</path>
-<path matrix="1 0 0 1 12 -48" stroke="black" pen="fat">
-344 720 m
-456 720
-460 720
-464 716
-464 712
-464 708 c
-</path>
-<path matrix="1 0 0 1 12 0" stroke="black" pen="fat">
-376 532 m
-456 532
-460 532
-464 528
-464 524
-464 520 c
-</path>
-<path stroke="black" pen="fat">
-356 744 m
-468 744
-472 744
-476 740
-476 736
-476 520
-476 516
-472 512
-468 512
-76 512
-72 512
-68 516
-68 520
-68 792
-68 796
+<path matrix="1 0 0 1 8 0" stroke="black" pen="fat">
+32 800 m
+68 800
 72 800
-76 800
-80 800
-84 800
-88 796
-88 792
-88 788
-88 784
-92 780
-96 780
+76 796
+76 792
+76 788
+76 784
+80 780
+84 780
+172 780
 176 780
-180 780
-184 784
-184 788
-184 792
-184 796
+180 784
+180 788
+180 792
+180 796
+184 800
 188 800
-192 800
-196 800
-200 800
-204 796
-204 792
-204 772
-204 768
-200 764
-196 764
-124 764
-120 764
-116 760
-116 756
-116 540
-116 536
-120 532
-124 532
-204 532 c
+256 800 c
 </path>
 <path stroke="black" pen="fat">
-116 644 m
-116 640
-116 636
-120 632
-124 632
-140 632 c
+168 800 m
+204 800
+208 800
+212 796
+212 792
+212 636
+212 632
+216 628
+220 628
+232 628 c
 </path>
 <path stroke="black" pen="fat">
-452 576 m
-468 576
-472 576
-476 572
-476 568
-476 564 c
+212 788 m
+212 780
+212 776
+216 772
+220 772
+232 772 c
 </path>
-<path matrix="1 0 0 1 0 56" stroke="black" pen="fat">
-452 576 m
-468 576
-472 576
-476 572
-476 568
-476 564 c
+<path stroke="black" pen="fat">
+212 788 m
+212 756
+212 752
+216 748
+220 748
+264 748 c
 </path>
-<path matrix="1 0 0 1 0 -56" stroke="black" pen="fat">
-116 644 m
-116 640
-116 636
-120 632
-124 632
-140 632 c
+<path matrix="1 0 0 1 0 -24" stroke="black" pen="fat">
+212 788 m
+212 756
+212 752
+216 748
+220 748
+264 748 c
+</path>
+<path matrix="1 0 0 1 0 -48" stroke="black" pen="fat">
+212 788 m
+212 756
+212 752
+216 748
+220 748
+264 748 c
+</path>
+<path matrix="1 0 0 1 0 -72" stroke="black" pen="fat">
+212 788 m
+212 756
+212 752
+216 748
+220 748
+264 748 c
+</path>
+<path matrix="1 0 0 1 0 -96" stroke="black" pen="fat">
+212 788 m
+212 756
+212 752
+216 748
+220 748
+264 748 c
+</path>
+<path stroke="black" pen="fat">
+352 772 m
+396 772
+400 772
+404 768
+404 764
+404 608 c
+</path>
+<path stroke="black" pen="fat">
+352 748 m
+396 748
+400 748
+404 744
+404 740
+404 732 c
+</path>
+<path matrix="1 0 0 1 0 -24" stroke="black" pen="fat">
+352 748 m
+396 748
+400 748
+404 744
+404 740
+404 732 c
+</path>
+<path matrix="1 0 0 1 0 -48" stroke="black" pen="fat">
+352 748 m
+396 748
+400 748
+404 744
+404 740
+404 732 c
+</path>
+<path matrix="1 0 0 1 0 -72" stroke="black" pen="fat">
+352 748 m
+396 748
+400 748
+404 744
+404 740
+404 732 c
+</path>
+<path matrix="1 0 0 1 0 -96" stroke="black" pen="fat">
+352 748 m
+396 748
+400 748
+404 744
+404 740
+404 732 c
+</path>
+<text matrix="1 0 0 1 228.112 -159.035" transformations="translations" pos="128 768" stroke="black" type="label" width="56.602" height="4.252" depth="0.04" halign="right" valign="baseline" size="6">one element of children</text>
+<path stroke="black" pen="fat">
+384 628 m
+396 628
+400 628
+404 624
+404 620
+404 604
+404 600
+400 596
+396 596
+72 596
+68 596
+64 600
+64 604
+64 792
+64 796
+68 800
+72 800
+104 800 c
 </path>
 </page>
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<path layer="alpha" matrix="1 0 0 1 28 92" stroke="black" fill="lightyellow" pen="heavier">
+<path layer="alpha" matrix="1 0 0 1 12 92" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 -4 12" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="1.474" depth="1.61" halign="center" valign="baseline">\texttt{,}</text>
-<path matrix="1 0 0 1 28 72" stroke="black" fill="lightyellow" pen="heavier">
+<text matrix="1 0 0 1 -20 12" transformations="translations" pos="128 768" stroke="black" type="label" width="5.379" height="1.474" depth="1.61" halign="center" valign="baseline">\texttt{,}</text>
+<path matrix="1 0 0 1 12 72" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 -4 -8" transformations="translations" pos="128 768" stroke="black" type="label" width="8.568" height="4.586" depth="1.61" halign="center" valign="baseline">\texttt{;}
+<text matrix="1 0 0 1 -20 -8" transformations="translations" pos="128 768" stroke="black" type="label" width="8.568" height="4.586" depth="1.61" halign="center" valign="baseline">\texttt{;}
         </text>
-<path matrix="1.35715 0 0 1 126.285 27.998" stroke="black" fill="lightyellow" pen="heavier">
+<path matrix="1.35715 0 0 1 98.285 27.998" stroke="black" fill="lightyellow" pen="heavier">
 72 784 m
 72 760 l
 184 760 l
 184 784 l
 h
 </path>
-<text matrix="1 0 0 1 172.112 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="54.635" height="6.977" depth="1.93" halign="center" valign="baseline">operator \textbf{char}</text>
-<text matrix="1 0 0 1 172.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="141.794" height="4.569" depth="0.96" halign="center" valign="baseline" size="6">(Unicode classes \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So}, excl.\ \texttt{&quot;,&quot;} and \texttt{&quot;;&quot;})</text>
-<path matrix="1 0 0 1 460 -8" stroke="black" fill="black" pen="fat">
+<text matrix="1 0 0 1 144.112 32.965" transformations="translations" pos="128 768" stroke="black" type="label" width="54.635" height="6.977" depth="1.93" halign="center" valign="baseline">operator \textbf{char}</text>
+<text matrix="1 0 0 1 144.112 24.965" transformations="translations" pos="128 768" stroke="black" type="label" width="141.794" height="4.569" depth="0.96" halign="center" valign="baseline" size="6">(Unicode classes \textit{Pd}, \textit{Po}, \textit{Sc}, \textit{Sk}, \textit{Sm}, \textit{So}, excl.\ \texttt{&quot;,&quot;} and \texttt{&quot;;&quot;})</text>
+<path matrix="1 0 0 1 396 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l
 52 808 l
@@ -1313,22 +1453,22 @@ h
 h
 </path>
 <text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="35.517" height="7.057" depth="1.85" valign="baseline">\textbf{Operator}</text>
-<path matrix="0.90566 0 0 1 3.01887 648" stroke="black" pen="fat">
+<path matrix="0.773585 0 0 1 7.24528 648" stroke="black" pen="fat">
 32 152 m
 244 152 l
 </path>
-<path matrix="1 0 0 1 -8 632" stroke="black" pen="fat">
+<path matrix="1 0 0 1 -24 632" stroke="black" pen="fat">
 104 160 m
 104 156
 108 152
 112 152
 124 152 c
 </path>
-<path matrix="1 0 0 1 28 72" stroke="black" fill="lightyellow" pen="heavier">
+<path matrix="1 0 0 1 12 72" stroke="black" fill="lightyellow" pen="heavier">
 8 0 0 8 96 692 e
 </path>
-<text matrix="1 0 0 1 -4 -8" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="4.586" depth="1.61" halign="center" valign="baseline">\texttt{;}</text>
-<path matrix="1 0 0 1 16 632" stroke="black" pen="fat">
+<text matrix="1 0 0 1 -20 -8" transformations="translations" pos="128 768" stroke="black" type="label" width="5.38" height="4.586" depth="1.61" halign="center" valign="baseline">\texttt{;}</text>
+<path matrix="1 0 0 1 0 632" stroke="black" pen="fat">
 32 168 m
 72 168
 76 168
@@ -1340,7 +1480,7 @@ h
 88 132
 100 132 c
 </path>
-<path matrix="1 0 0 1 16 632" stroke="black" pen="fat">
+<path matrix="1 0 0 1 0 632" stroke="black" pen="fat">
 116 152 m
 128 152
 132 152
@@ -1352,7 +1492,7 @@ h
 144 132
 160 132 c
 </path>
-<path matrix="1 0 0 1 40 0" stroke="black" pen="fat">
+<path matrix="1 0 0 1 12 0" stroke="black" pen="fat">
 336 800 m
 348 800
 352 800
@@ -1372,21 +1512,21 @@ h
 172 800
 184 800 c
 </path>
-<path stroke="black" pen="fat">
-132 764 m
-440 764
-444 764
-448 768
-448 772
-448 792
-448 796
-452 800
-456 800
-512 800 c
-</path>
-<path stroke="black" pen="fat">
+<path matrix="0.735294 0 0 1 71.5294 0" stroke="black" pen="fat">
 376 800 m
 512 800 l
+</path>
+<path stroke="black" pen="fat">
+116 764 m
+392 764
+396 764
+400 768
+400 772
+400 792
+400 796
+404 800
+408 800
+448 800 c
 </path>
 </page>
 </ipe>
