@@ -21,6 +21,8 @@ def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
     2. Looks up the value from ``env`` dict using phrase as key
     3. Invokes the built-in function :func:`eval`.
     """
+    if not phrase:
+        return None
     extras = env.get('_extras_', {})
     if phrase in extras:
         return extras[phrase]
