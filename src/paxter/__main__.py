@@ -29,9 +29,12 @@ def input_output_options(func):
 @input_output_options
 def parse(input_file, output_file):
     """
-    Runs only the parser on the input.
+    Parses the input text into Paxter parsed tree.
+
     It reads input text from INPUT_FILE
     and writes the parsed tree to OUTPUT_FILE.
+
+    Transform: input text -> parsed tree
     """
     from paxter.parser import ParseContext
 
@@ -47,12 +50,46 @@ def parse(input_file, output_file):
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
               help="Path to pyauthor file to extract the environment.")
+def document(input_file, output_file, env_file):
+    """
+    Evaluates the input text into the document object.
+
+    It reads input text from INPUT_FILE and pass it through the parser.
+    Then the parsed tree is evaluated into document object
+    using the environment provided by the
+    paxter.authoring supplementary subpackage.
+    Finally, the document object structure is written to OUTPUT_FILE.
+
+    Transform: input text -> parsed tree -> document object
+    """
+    import runpy
+    from paxter.authoring import run_document_paxter, create_document_env
+
+    input_text = input_file.read()
+    env = create_document_env(runpy.run_path(env_file) if env_file else {})
+    document = run_document_paxter(input_text, env)
+
+    output_file.write(repr(document))
+    output_file.write("\n")
+
+
+@program.command()
+@input_output_options
+@click.option('-e', '--env-file',
+              type=click.Path(exists=True, dir_okay=False, readable=True),
+              help="Path to pyauthor file to extract the environment.")
 def html(input_file, output_file, env_file):
     """
-    Parses and evaluates the input text as HTML document.
+    Parses, evaluates, and renders the final HTML output.
+
     It reads input text from INPUT_FILE and pass it through the parser.
-    Then the parsed tree is transformed into the final HTML result
-    using the string Python renderer, and output to OUTPUT_FILE.
+    Then the parsed tree is evaluated into document object
+    using the environment provided by the
+    paxter.authoring supplementary subpackage.
+    Finally, the document object is rendered to HTML output
+    which gets written to OUTPUT_FILE.
+
+    Transform: input text -> parsed tree -> document object -> html string
     """
     import runpy
     from paxter.authoring import run_document_paxter, create_document_env
