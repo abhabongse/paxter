@@ -1,9 +1,10 @@
 ##################
-One Giant Tutorial
+Beginner Tutorials
 ##################
 
 Start here to learn more about Paxter language and ecosystems.
-Follow the contents below in the given ordering.
+The contents below were written with the assumption
+that they will be followed in the given order.
 
 .. toctree::
    :maxdepth: 1
