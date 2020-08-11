@@ -37,23 +37,26 @@ So we will add another one.
    ])
 
 The resulting ``document`` (shown above)
-is a :class:`Fragments <paxter.evaluator.Fragments>` of
+is a :class:`Fragments <paxter.evaluator.data.Fragments>` list of
 :class:`str` or :class:`Element <paxter.authoring.document.Element>` instances
 (from which :class:`Paragraph <paxter.authoring.document.Paragraph>` is derived).
-Unfortunately, the :class:`Fragments <paxter.evaluator.Fragments>` class
+Unfortunately, the :class:`Fragments <paxter.evaluator.data.Fragments>` class
 does not provide a method to render itself into a final output *by design*
 as it is merely part of the result of parsing and evaluate
 input text in Paxter language.
-We need another utility from the :mod:`paxter.authoring`
-domain to help us render it.
+We need another utility from the :mod:`paxter.authoring` domain
+to help us render it.
 
 
 Document Helper Class
 =====================
 
-Subpackage :mod:`paxter.authoring.document` provides a convenient data class called
+Paxter’s authoring subpackage provides a data class called
 :class:`Document <paxter.authoring.document.Document>`
-to wrap over the list returned by :func:`run_simple_paxter <paxter.authoring.preset.run_simple_paxter>`.
+to wrap over the object returned by
+:func:`run_simple_paxter <paxter.authoring.preset.run_simple_paxter>`.
+Then we call the :meth:`html() <paxter.authoring.document.Element>` method
+to render the HTML output.
 
 .. code-block:: python
 

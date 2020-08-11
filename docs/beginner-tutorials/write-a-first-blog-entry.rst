@@ -2,16 +2,17 @@
 Write a First Blog Entry
 ########################
 
-While not required, Paxter package provides a set of data classes
-that users can use to construct a rich document.
-Here suppose that we are going to write a simple blog entry
-using a few data classes from :mod:`paxter.authoring` subpackage.
-Please ignore :class:`Fragments <paxter.evaluator.Fragments>` for now.
+Let us write a simple blog entry.
+Consider the following python code in which
+``paragraph`` object is constructed using data classes
+from :mod:`paxter.authoring.document` subpackage
+(please ignore the usage of
+:class:`Fragments <paxter.evaluator.data.Fragments>` class for now).
 
 .. code-block:: python
 
    from paxter.authoring.document import Bold, Link, Paragraph, line_break
-   from paxter.evaluator import Fragments
+   from paxter.evaluator.data import Fragments
 
    paragraph = Paragraph(
        Fragments([
@@ -24,21 +25,27 @@ Please ignore :class:`Fragments <paxter.evaluator.Fragments>` for now.
        ])
    )
 
-.. code-block:: pycon
-
-   >>> print(paragraph.html())
-   <p>Hi, my name is <b>Ashley</b><br />
-   and my blog is located <a href="https://example.com">here</a>.</p>
-
 .. important::
 
    Everything located under the subpackage :mod:`paxter.authoring`
    are supplementary to but independent of the core Paxter library package.
    They are provided only for convenience.
 
-Of course, this approach to writing documents
-right inside python code space would be very cumbersome.
-So Paxter library provides an alternative way to construct the exact same document.
+Then we call the method :meth:`html() <paxter.authoring.document.Element.html>`
+on the ``paragraph`` object in order to render
+its content into the final HTML string.
+
+.. code-block:: pycon
+
+   >>> print(paragraph.html())
+   <p>Hi, my name is <b>Ashley</b><br />
+   and my blog is located <a href="https://example.com">here</a>.</p>
+
+Of course, this way of authoring a document
+right inside the python code space is extremely inconvenient.
+Therefore, we are going to approach this differently,
+using another tool provided by Paxter library
+to construct the exact same document.
 
 .. code-block:: python
 
@@ -74,15 +81,16 @@ So Paxter library provides an alternative way to construct the exact same docume
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p>
 
-An important point demonstrated in the above example is that
-we write a document through an intuitive language
-and then use Paxter library package to help us and parse and transform
-the input text we wrote into the final document object.
-Paxter library is designed to be flexible and customizable
+The above example demonstrates an important point,
+which is that we can author a document through
+an intuitive language (called the Paxter language)
+and then we use Paxter library package to help us
+parse and transform the input text into the final document object.
+Paxter is designed to be flexible and very customizable
 to help us achieve the desired output document.
 
 Next we are going to walk though a few concepts
-we have seen in the input text from the above example.
+that we have seen in the input text from the example above.
 
 
 Understanding Commands
@@ -95,9 +103,10 @@ Commands can either be in the standalone form (like how ``@break`` appears)
 or, when followed by at least one of ``[options]`` or ``{main argument}``,
 it simulates a function call over such object.
 
-For example, ``@bold{Ashley}`` in Paxter input text
+For example, the Paxter input text ``@bold{Ashley}``
 is roughly equivalent to the python code ``bold(Fragments(["Ashley"]))``
-which would be evaluated into ``Bold(blob=Fragments(["Ashley"]))`` in the final result.
+which would be evaluated into ``Bold(blob=Fragments(["Ashley"]))``
+in the final result.
 Similarly,
 
 .. code-block:: paxter
@@ -110,7 +119,7 @@ would roughly be parsed into the following python code
 
    link(Fragments(["here"]), "https://example.com")
 
-which would then be evaluated into
+which in turn, would be evaluated into
 
 .. code-block:: python
 
@@ -119,7 +128,7 @@ which would then be evaluated into
 Notice that the textual content
 that is surrounded by *a matching pair of curly braces*
 is always parsed into an instance of
-:class:`Fragments <paxter.evaluator.Fragments>`,
+:class:`Fragments <paxter.evaluator.data.Fragments>`,
 containing a list of values.
 Moreover, it would always be positioned
 as the very first argument of translated function calls.
@@ -128,7 +137,7 @@ We call this part the **main argument** of a command.
 Moreover, if we look at how the outermost ``@paragraph`` command is constructed,
 we would see that the content of main argument
 would always be *recursively parsed* into
-a :class:`Fragments <paxter.evaluator.Fragments>` instance with nested values.
+a :class:`Fragments <paxter.evaluator.data.Fragments>` instance with nested values.
 Hence, the above particular ``@paragraph`` command is in fact
 roughly parsed into an equivalent python code as follows.
 
@@ -191,7 +200,7 @@ simply write a pair of square brackets without anything inside it
    only try to mimic function call patterns in python;
    it actually does *not* fully support python syntax inside it.
    The full description of what is supported by Paxter language
-   is discussed in :doc:`Paxter Language Tutorial <../paxter_language_tutorial>` page.
+   :doc:`will be discussed later <inside-options>`.
 
 
 Understanding Environments
@@ -204,27 +213,28 @@ are merely aliases to the constructors of actual data classes
 and :class:`Link <paxter.authoring.document.Link>` respectively.
 These relationships are evident once we inspect
 the content of the environment dictionary ``env`` (shown below).
-Additionally, ``@break`` simply maps to the value
+Additionally, note that ``@break`` simply maps to the value
 ``RawElement(children='<br />')``.
 
 .. code-block:: pycon
 
    >>> env
    {'_phrase_eval_': <function paxter.authoring.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
-    'for': DirectApply(wrapped=<function for_statement at 0x7fdfe8f15dc0>),
-    'if': DirectApply(wrapped=<function if_statement at 0x7fdfe8f15ee0>),
-    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7fdfe86d0f70>),
+    '_extras_': {},
+    '@': '@',
+    'for': DirectApply(wrapped=<function for_statement at 0x7f34d0660e50>),
+    'if': DirectApply(wrapped=<function if_statement at 0x7f34d0660c10>),
+    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f34c1b2a1f0>),
     'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
-    '_others_': {'@': '@',
-     '.': RawElement(blob='&hairsp;'),
-     ',': RawElement(blob='&thinsp;'),
-     '%': RawElement(blob='&nbsp;')},
     'raw': paxter.authoring.document.RawElement,
     'break': RawElement(blob='<br />'),
     'hrule': RawElement(blob='<hr />'),
     'nbsp': RawElement(blob='&nbsp;'),
+    '%': RawElement(blob='&nbsp;'),
     'hairsp': RawElement(blob='&hairsp;'),
+    '.': RawElement(blob='&hairsp;'),
     'thinsp': RawElement(blob='&thinsp;'),
+    ',': RawElement(blob='&thinsp;'),
     'paragraph': paxter.authoring.document.Paragraph,
     'h1': paxter.authoring.document.Heading1,
     'h2': paxter.authoring.document.Heading2,
@@ -241,6 +251,7 @@ Additionally, ``@break`` simply maps to the value
     'image': paxter.authoring.document.Image,
     'numbered_list': paxter.authoring.document.NumberedList,
     'bulleted_list': paxter.authoring.document.BulletedList}
+
 
 There is nothing preventing library users
 from creating different environment mapping like so.

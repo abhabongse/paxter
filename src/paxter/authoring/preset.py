@@ -5,11 +5,12 @@ from typing import Any, Optional
 
 from paxter.authoring.document import Document
 from paxter.authoring.environ import create_document_env, create_simple_env
+from paxter.evaluator import Fragments
 from paxter.evaluator.context import EvaluateContext
 from paxter.parser import ParseContext
 
 
-def run_simple_paxter(input_text: str, env: Optional[dict] = None) -> Any:
+def run_simple_paxter(input_text: str, env: Optional[dict] = None) -> Fragments:
     """
     Parses the input source text written in Paxter language
     and evaluates it using standard python environment.
