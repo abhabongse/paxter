@@ -39,7 +39,7 @@ Next, we dive into each kind of @-expressions.
 ```eval_rst
 .. note::
 
-   Consult :doc:`Syntax Reference <syntax>` for 
+   Consult :doc:`Syntax Reference <../syntax>` for 
    a more detailed Paxter language grammar specification.
 ```
 

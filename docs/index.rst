@@ -32,12 +32,10 @@ Paxter python package can be installed from PyPI via the fullowing ``pip`` comma
 
    beginner-tutorials/index
    intermediate-tutorials/index
-   getting_started
-   paxter_language_tutorial
-   python_authoring_mode_tutorial
    core-api
    authoring-api
    syntax
+   legacy/index
 
 
 Indices and tables
