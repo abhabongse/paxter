@@ -41,7 +41,8 @@ def create_document_env(data: Optional[dict] = None):
     data = data or {}
     return create_simple_env({
         'raw': RawElement,
-        'break': line_break,
+        '\\': line_break,
+        'line_break': line_break,
         'hrule': horizontal_rule,
         'nbsp': non_breaking_space,
         '%': non_breaking_space,

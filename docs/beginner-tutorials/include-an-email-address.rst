@@ -7,33 +7,45 @@ it acts as a switch which turns the subsequent piece of input into a command.
 Therefore, if library users wish to include ‘**@**’ string literal as-is
 in the final output, an escape of some sort is required.
 
-Except that Paxter language actually does *not* provide a way
-to *escape* ‘**@**’ symbols per se.
+Except that Paxter language actually does *not* provide
+a way to *escape* ‘**@**’ symbols per se.
 However, there is a way around this.
 
-But first, let us revisit the content of the environment dictionary once again.
+But first we are going to introduce *another form* of the command syntax:
+it begins with an ‘**@**’ character then followed by another symbol character.
+This another character will assume the role of the phrase of a command.
+On the downside, this form of the command syntax
+*neither* accepts the options (i.e. the ``[...]`` pattern)
+*nor* accepts the main argument (i.e. the ``{...}`` pattern).
+
+For example, ``@\`` is the command with the single backslash as its phrase part.
+Alternatively, ``@@`` is a valid command and it assumes ``@`` as its phrase.
+
+Before we continue on with this new command syntax,
+let us revisit the environment dictionary once again.
 
 .. code-block:: pycon
 
    >>> from paxter.authoring import create_document_env
    >>> env = create_document_env()
    >>> env
-   {'_starter_eval_': <function paxter.authoring.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
-    'for': DirectApply(wrapped=<function for_statement at 0x7f7d6ecb0700>),
-    'if': DirectApply(wrapped=<function if_statement at 0x7f7d6ecb0820>),
-    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f7d5fa3e040>),
+   {'_phrase_eval_': <function paxter.authoring.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
+    '_extras_': {},
+    '@': '@',
+    'for': DirectApply(wrapped=<function for_statement at 0x7f8f7c0e5ca0>),
+    'if': DirectApply(wrapped=<function if_statement at 0x7f8f7c0e5dc0>),
+    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f8f6ec20160>),
     'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
-    '_symbols_': {'!': '',
-     '@': '@',
-     '.': RawElement(children='&hairsp;'),
-     ',': RawElement(children='&thinsp;'),
-     '%': RawElement(children='&nbsp;')},
     'raw': paxter.authoring.document.RawElement,
-    'break': RawElement(children='<br />'),
-    'hrule': RawElement(children='<hr />'),
-    'nbsp': RawElement(children='&nbsp;'),
-    'hairsp': RawElement(children='&hairsp;'),
-    'thinsp': RawElement(children='&thinsp;'),
+    '\\': RawElement(blob='<br />'),
+    'line_break': RawElement(blob='<br />'),
+    'hrule': RawElement(blob='<hr />'),
+    'nbsp': RawElement(blob='&nbsp;'),
+    '%': RawElement(blob='&nbsp;'),
+    'hairsp': RawElement(blob='&hairsp;'),
+    '.': RawElement(blob='&hairsp;'),
+    'thinsp': RawElement(blob='&thinsp;'),
+    ',': RawElement(blob='&thinsp;'),
     'paragraph': paxter.authoring.document.Paragraph,
     'h1': paxter.authoring.document.Heading1,
     'h2': paxter.authoring.document.Heading2,
@@ -51,24 +63,21 @@ But first, let us revisit the content of the environment dictionary once again.
     'numbered_list': paxter.authoring.document.NumberedList,
     'bulleted_list': paxter.authoring.document.BulletedList}
 
-Let us focus on ``env['_symbols_']`` which seems to be
-a mapping from single symbol characters to some values.
-Paxter uses this information to perform what is called **symbolic replacements**.
-That is, whenever an ‘**@**’ character
-is immediately followed by *another symbol character*,
-then this symbolic replacement occurs.
+Recall that Paxter uses this environment dictionary
+as a mapping from aliases to the actual python object.
+Amazingly, this also works with phrases like ``\`` and ``@`` as well.
+According to this particular environment data,
+the command ``@@`` is mapped to the string ``"@"``
+whereas the command ``@\`` is mapped to the same content as ``@line_break``.
 
-For example, ``@!`` inside the input text will be replaced by ``env['_symbols_']['!']``
-whereas ``@@`` will be replaced by ``env['_symbols_']['@']``, etc.
-Therefore, Paxter lets users use ``@@`` to mimic the escaping of ‘**@**’ symbol
-though the mechanisms of symbolic replacements.
+Let us see this in action.
 
 .. code-block:: python
 
    from paxter.authoring import create_document_env, run_simple_paxter
    from paxter.authoring.document import Document
 
-   input_text = '''Hi, my name is @bold{Ashley}@break
+   input_text = r'''Hi, my name is @bold{Ashley}@\
    and my blog is located @link["https://example.com"]{here}.
 
    To reach me directly, send email to ashley@@example.com'''
@@ -81,8 +90,12 @@ though the mechanisms of symbolic replacements.
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p><p>To reach me directly, send email to ashley@example.com</p>
 
-Of course, the behavior of symbolic replacements can be fully customized
-by modifying the content of ``env['_symbols_']`` dictionary to suit your needs.
+In summary, the ``@@`` commands effectively *simulates*
+the escaping of the ‘**@**’ character.
+Actually, there is nothing preventing us from mapping
+a different phrase to the same ``"@"`` character output
+(such as having ``@at`` map to ``"@"`` string in the environment).
+*But isn’t this approach kinda neat?*
 
 
 Don’t Repeat Yourself: Document Shortcut

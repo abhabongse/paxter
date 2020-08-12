@@ -55,7 +55,7 @@ to construct the exact same document.
    # However in reality, input text may be read from other sources
    # such as text files, some databases, or even fetched via some API.
 
-   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
+   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@line_break
    and my blog is located @link["https://example.com"]{here}.}'''
    env = create_document_env()
    document = run_simple_paxter(input_text, env)
@@ -81,7 +81,7 @@ to construct the exact same document.
    <p>Hi, my name is <b>Ashley</b><br />
    and my blog is located <a href="https://example.com">here</a>.</p>
 
-The above example demonstrates an important point,
+The above example demonstrates one important point about Paxter library,
 which is that we can author a document through
 an intuitive language (called the Paxter language)
 and then we use Paxter library package to help us
@@ -96,23 +96,41 @@ that we have seen in the input text from the example above.
 Understanding Commands
 ======================
 
-Parts that begin with an ‘**@**’ symbol in Paxter input text
-(e.g. ``@paragraph``, ``@bold``, ``@break``, and ``@link``)
-are known as **commands** in Paxter language.
-Commands can either be in the standalone form (like how ``@break`` appears)
-or, when followed by at least one of ``[options]`` or ``{main argument}``,
-it simulates a function call over such object.
-
-For example, the Paxter input text ``@bold{Ashley}``
-is roughly equivalent to the python code ``bold(Fragments(["Ashley"]))``
-which would be evaluated into ``Bold(blob=Fragments(["Ashley"]))``
-in the final result.
-Similarly,
-
 .. code-block:: paxter
 
-   @link["https://example.com"]{here}
+   @paragraph{Hi, my name is @bold{Ashley}@line_break
+   and my blog is located @link["https://example.com"]{here}.}
 
+Let us look inside the content of ``input_text`` from the previous example.
+Notice the common pattern among
+``@line_break``, ``@paragraph{...}``, ``@bold{..}``, and ``@link[...]{...}``.
+They are known as **commands** in Paxter language.
+
+Each command always begins with an ‘**@**’ symbol
+and is immediately followed by what is called a **phrase**
+(e.g. the ``line_break``, ``paragraph``, ``bold``, and ``link`` part)
+Then it may be *optionally* be followed by the ``[...]`` pattern
+or the ``{...}`` pattern (or both, in this order).
+When at least one of the optional part is present,
+the command would simulate a function call.
+
+For example, ``@line_break`` simply refers to an object
+which is stored within the identifier ``line_break``.
+On the other hand, ``@bold{Ashley}`` from the Paxter input text
+resembles a function call to ``bold`` with a parameter ``Ashley``.
+In particular, it is roughly equivalent to this python code:
+
+.. code-block:: python
+
+   bold(Fragments(["Ashley"]))
+
+which would be evaluated into the following.
+
+.. code-block:: python
+
+   Bold(blob=Fragments(["Ashley"]))
+
+Similarly, ``@link["https://example.com"]{here}`` from inside the input text
 would roughly be parsed into the following python code
 
 .. code-block:: python
@@ -125,20 +143,22 @@ which in turn, would be evaluated into
 
    Link(blob=Fragments(['here']), href='https://example.com')
 
-Notice that the textual content
+Pay attention of how the ``{...}`` part of the command
+is parsed into the python code.
+Firstly, notice that the textual content
 that is surrounded by *a matching pair of curly braces*
-is always parsed into an instance of
+are always parsed into an instance of
 :class:`Fragments <paxter.evaluator.data.Fragments>`,
 containing a list of values.
-Moreover, it would always be positioned
-as the very first argument of translated function calls.
+And secondly, it would always be positioned
+as the very first argument of the translated function call.
 We call this part the **main argument** of a command.
 
-Moreover, if we look at how the outermost ``@paragraph`` command is constructed,
+Moreover, if we look at how the outermost ``@paragraph{...}`` command is constructed,
 we would see that the content of main argument
 would always be *recursively parsed* into
 a :class:`Fragments <paxter.evaluator.data.Fragments>` instance with nested values.
-Hence, the above particular ``@paragraph`` command is in fact
+Hence, the ``@paragraph`` command from above is in fact
 roughly parsed into an equivalent python code as follows.
 
 .. code-block:: python
@@ -194,6 +214,10 @@ As a special case, to make a function call with zero arguments from a command,
 simply write a pair of square brackets without anything inside it
 (e.g. ``@foo[]``).
 
+To recap, a Paxter command consists of three parts:
+the phrase, the options, and the main argument,
+the last two of which are *optional*.
+
 .. important::
 
    Finally, do take note that the main argument and the options of a command
@@ -227,7 +251,8 @@ Additionally, note that ``@break`` simply maps to the value
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f34c1b2a1f0>),
     'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
     'raw': paxter.authoring.document.RawElement,
-    'break': RawElement(blob='<br />'),
+    '\\': RawElement(blob='<br />'),
+    'line_break': RawElement(blob='<br />'),
     'hrule': RawElement(blob='<hr />'),
     'nbsp': RawElement(blob='&nbsp;'),
     '%': RawElement(blob='&nbsp;'),

@@ -11,7 +11,7 @@ So we will add another one.
 
    from paxter.authoring import create_document_env, run_simple_paxter
 
-   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
+   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@line_break
    and my blog is located @link["https://example.com"]{here}.}
 
    @paragraph{This is another paragraph.}'''
@@ -63,7 +63,7 @@ to render the HTML output.
    from paxter.authoring import create_document_env, run_simple_paxter
    from paxter.authoring.document import Document
 
-   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@break
+   input_text = '''@paragraph{Hi, my name is @bold{Ashley}@line_break
    and my blog is located @link["https://example.com"]{here}.}
 
    @paragraph{This is another paragraph.}'''
@@ -87,7 +87,7 @@ unless its entirely is a single :class:`Element <paxter.authoring.document.Eleme
 
 .. code-block:: python
 
-   input_text = '''Hi, my name is @bold{Ashley}@break
+   input_text = '''Hi, my name is @bold{Ashley}@line_break
    and my blog is located @link["https://example.com"]{here}.
 
    This is another paragraph.
@@ -126,7 +126,7 @@ In this case, the explicit ``@paragraph`` marking is required.
 
 .. code-block:: python
 
-   input_text = '''Hi, my name is @bold{Ashley}@break
+   input_text = '''Hi, my name is @bold{Ashley}@line_break
    and my blog is located @link["https://example.com"]{here}.
 
    This is another paragraph.
