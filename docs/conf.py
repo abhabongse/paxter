@@ -43,6 +43,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.autosectionlabel',
     'recommonmark',
 ]
 
@@ -75,6 +76,7 @@ html_static_path = ['_static']
 
 # -- Extension configuration -------------------------------------------------
 
+autosectionlabel_prefix_document = True
 autodoc_member_order = 'bysource'
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 lexers['paxter'] = TextLexer()  # TODO: implement lexer and replace this

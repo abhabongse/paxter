@@ -309,4 +309,4 @@ will be parsed roughly to the following python code.
 
 .. code-block:: python
 
-   foo(["Natural numbers are {0, 1, 2, ...}."])
+   foo(Fragments(["Natural numbers are {0, 1, 2, ...}."]))

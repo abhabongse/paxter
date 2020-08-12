@@ -40,7 +40,7 @@ Anonymous Expressions
 What if we wish to evaluate some python expressions
 and write their results directly into the document?
 Of course, one way to achieve this is to
-wrap the expression under a new function
+wrap the expression under a new python function
 and make a call to it through the command syntax.
 However, a better way to achieve this is through **anonymous expressions**.
 
@@ -67,27 +67,74 @@ Consider then following example.
    >>> print(document.html())
    <p>The computed result of 7×11×13 is 1001.</p><p>Adding one to 99 yields 100.</p>
 
-Rest assured.
-The syntax ``@|...|`` is *not* a new syntax in Paxter.
-So far, all commands we have encountered in this tutorial
-are in the form of ``@identifier``
-(consisting of an ‘**@**’ symbol
-followed by a valid python identifier name).
-In fact, ``@identifier`` is a concise form of ``@|identifier|``,
-the full-form version of the command syntax.
+Rest assured; the syntax of the form ``@|...|``
+is *not* a whole new syntax we have not yet introduced.
+Previously, we have already seen the other two patterns of a command,
+which are:
 
-The textual content between the pair of bars ``@|...|``, however,
-are not limited to just python identifiers;
-any valid python expressions
-(including ``7 * 11 * 13`` and ``add_one(99)``)
-are allowed.
-Incidentally, a python identifier by itself is a valid python expression.
+- **First form:** a command of the form ``@identifier``
+  (including ``@identifier[...]``, ``@identifier{...}``,
+  and ``@identifier[...]{...}``).
+  It begins with an ‘**@**’ symbol followed by a phrase
+  in the valid python identifier form.
+
+- **Second form:** a command which consists of an ‘**@**’ symbol
+  followed by another symbol character.
+
+In fact, this new form of the command syntax ``@|...|``
+is actually the *expanded* version (or the *full-form* version)
+of the first form described above.
+Specifically, the phrase ``@identifier``
+is just the concise version of ``@|identifier|``
+(and the command ``@identifier[...]{...}`` is also
+the concise version of ``@|identifier|[...]{...}``
+respectively, etc.).
+
+The textual content between a pair of bars in ``@|...|``
+is indeed the phrase of the command,
+but it does not necessarily have to be a valid a python identifier;
+it can be just anything,
+including ``@|7 * 11 * 13|`` and ``@|add_one(99)|``
+that we have seen in the above example.
+Note that one can also say that ``@|%|`` and ``@|@|``
+are the full-form version of ``@%`` and ``@@`` commands as well.
+
+Recall that the phrase part of a command has been used
+as a dictionary lookup key for the mapped values
+inside the pre-defined environment.
+What we have not yet discussed is that,
+if the dictionary lookup was failed,
+then the fallback step is to evaluate the entire phrase of the command
+using python built-in function :func:`eval`
+with the environment dictionary as the global namespace
+to obtain the final result.
+Therefore, ``@|7 * 11 * 13|`` is evaluated to ``1001`` in python
+and this result is then transferred to the final document output.
+The same principle applies to ``@|add_one(99)|`` as well.
+
+.. important::
+
+   The specific evaluation behavior of the phrase of a command
+   is actually *not* part of the core Paxter library package.
+   It is controlled by the function
+   :func:`phrase_unsafe_eval <paxter.authoring.standards.phrase_unsafe_eval>`
+   which is stored under the item ``_phrase_eval_`` of the environment dictionary.
+
+   This explains why we need to provide this mapping information
+   when we customize the environment dictionary ``alternative_env`` in
+   :ref:`an earlier tutorial <beginner-tutorials/write-a-first-blog-entry:Understanding Environments>`?
+
+   Users of Paxter library package can fully customize the phrase evaluation behavior
+   by providing their own function to the ``_phrase_eval_`` item of the environment.
+   They are encouraged to read the source code of
+   :func:`phrase_unsafe_eval <paxter.authoring.standards.phrase_unsafe_eval>`
+   to obtain some inspirations.
 
 
 Escaping bars
 -------------
 
-Similarly to a pair of curly braces or quotation marks,
+Similarly to a pair of curly braces or quotation marks for the main argument,
 a pair of bars can be escaped in a similar way:
 with enclosing hash characters.
 For example,
@@ -160,3 +207,4 @@ Let us elaborate on how each command from above is parsed.
    we need to refer to it using command syntax.
    Hence, an ‘**@**’ symbol in front of the identifier ``d6_faces``
    from the command ``@|statistics.mean|[@d6_faces]`` is required, etc.
+   The next page will discuss this in further details.
