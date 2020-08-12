@@ -1,7 +1,7 @@
 """
 A collection of Paxter common functions.
 """
-from typing import Any, Optional
+from typing import Optional
 
 from paxter.authoring.document import Document
 from paxter.authoring.environ import create_document_env, create_simple_env
