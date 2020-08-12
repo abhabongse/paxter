@@ -2,24 +2,35 @@
 Define Common Constants
 #######################
 
-Have you ever found yourself repeat yourself *over and over again*?
-Writing the same phrase *over and over again* will be a thing of the past.
-Imagine a world where you can define a constant once
-and reuse it *over and over again*.
-You can do so in Paxter in a few different ways.
+Have you ever found yourself having to keep referring
+to the same content in writing *over and over again*?
+Some of you reader might see that by reiterating on the same content
+*over and over again* can be a good reinforcement technique.
+Well for most people, that kind of sentiment only applies as readers.
+But as an author who wish to communicate consistently,
+for us to keep writing and seeing the exact same stuff *over and over again*
+would obviously be a very nauseating experience.
+
+Imaging a world where you can just define a piece of information once
+and then conveniently refer to it again in an effortless manner.
+Well, you can do just that in Paxter in a few different ways.
+Introducing, Programming 101.
 
 
 First Method: Prepare In Advance
 ================================
 
-You can prepare the initial python evaluation environment
-to also include information about additional aliases.
+Recall that in Paxter ecosystem,
+users can prepare the environment dictionary to be used
+when input text is parsed and transformed ino the final document object.
 Remember the dictionary created by
-:func:`create_document_env <paxter.authoring.environ.create_document_env>`?
+:func:`create_document_env <paxter.authoring.environ.create_document_env>`
+in earlier tutorial?
 In fact, the content of this dictionary can be customized
 by providing additional mapping data through its input arguments.
-Then supply the prepared dictionary as the second optional argument
-of the function :func:`run_document_paxter <paxter.authoring.preset.run_document_paxter>`.
+Then we supply the just prepared dictionary
+as the second optional argument of the function
+:func:`run_document_paxter <paxter.authoring.preset.run_document_paxter>`.
 
 .. code-block:: python
 
@@ -35,21 +46,24 @@ of the function :func:`run_document_paxter <paxter.authoring.preset.run_document
 
 .. code-block:: pycon
 
-   >>> print(document.html())
-   <p>YAA is Yet Another Acronym and it stands for Yet Another Acronym.</p>
-   >>> env
-   {'_starter_eval_': <function paxter.authoring.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
-    'for': DirectApply(wrapped=<function for_statement at 0x7f6a4e396ca0>),
-    'if': DirectApply(wrapped=<function if_statement at 0x7f6a4e396dc0>),
-    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f6a4e361550>),
+   >>> customized_env
+   {'_phrase_eval_': <function paxter.authoring.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
+    '_extras_': {},
+    '@': '@',
+    'for': DirectApply(wrapped=<function for_statement at 0x7f7c60e39ca0>),
+    'if': DirectApply(wrapped=<function if_statement at 0x7f7c60e39dc0>),
+    'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f7c5245e160>),
     'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
-    'flatten': <function paxter.authoring.standards.flatten(data, join: bool = False) -> Union[List[str], str]>,
     'raw': paxter.authoring.document.RawElement,
-    'break': RawElement(children='<br />'),
-    'hrule': RawElement(children='<hr />'),
-    'nbsp': RawElement(children='&nbsp;'),
-    'hairsp': RawElement(children='&hairsp;'),
-    'thinsp': RawElement(children='&thinsp;'),
+    '\\': RawElement(blob='<br />'),
+    'line_break': RawElement(blob='<br />'),
+    'hrule': RawElement(blob='<hr />'),
+    'nbsp': RawElement(blob='&nbsp;'),
+    '%': RawElement(blob='&nbsp;'),
+    'hairsp': RawElement(blob='&hairsp;'),
+    '.': RawElement(blob='&hairsp;'),
+    'thinsp': RawElement(blob='&thinsp;'),
+    ',': RawElement(blob='&thinsp;'),
     'paragraph': paxter.authoring.document.Paragraph,
     'h1': paxter.authoring.document.Heading1,
     'h2': paxter.authoring.document.Heading2,
@@ -67,10 +81,13 @@ of the function :func:`run_document_paxter <paxter.authoring.preset.run_document
     'numbered_list': paxter.authoring.document.NumberedList,
     'bulleted_list': paxter.authoring.document.BulletedList,
     'yaa': 'Yet Another Acronym'}
+   >>> print(document.html())
+   <p>YAA is Yet Another Acronym and it stands for Yet Another Acronym.</p>
 
-Observe that the command ``@yaa`` could be referred to inside input text
-because the alias ``yaa`` maps to the string ``"Yet Another Acronym"``
-inside the evaluation environment (as shown above).
+Observe that since there exists a mapping from ``yaa``
+to the string ``"Yet Another Acronym"`` inside the environment data
+(as shown in the last entry above),
+we can refer to such string inside input text through the command ``@yaa``.
 
 
 Second Method: Inject Python Code
@@ -89,7 +106,7 @@ Here is an example.
 
 .. code-block:: python
 
-   from paxter.preset import run_document_paxter
+   from paxter.authoring import run_document_paxter
 
    input_text = '''
    @python"yaa = 'Yet Another Acronym'"
@@ -175,7 +192,7 @@ like what we have done to email addresses previously).
 Another way to escape ‘@’
 -------------------------
 
-Previously we have learned to used symbolic replacements ``@@``
+Previously we have learned to used the command ``@@``
 to escape ‘**@**’ symbol characters in email address.
 Here we present another way to achieve similar results.
 
@@ -226,13 +243,14 @@ For example,
    >>> print(document.html())
    <p>YAA is Yet Another Acronym and it stands for Yet Another Acronym.</p>
 
-In the above example, we appended two hash characters
-against each end of the quoted main argument.
+In the above example, we prepended and appended two hash characters
+against each corresponding end of the quoted main argument.
 Using other numbers of hash characters might also work
 as long as that number is at least one.
 If hash characters were not used,
 it would have resulted in an error since the source code
-for python would have been ``yaa =`` which is incomplete.
+for python would have been ``yaa =``
+which is an incomplete python statement in itself.
 
 .. code-block:: pycon
 
