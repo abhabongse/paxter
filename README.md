@@ -56,11 +56,11 @@ Suppose that we have written a document using Paxter language as shown below.
 @python##"
     import statistics
     from datetime import datetime
+    from paxter.authoring.document import RawElement
 
     _extras_ = {
         '@': '@',
-        '.': '&hairsp;',
-        ',': '&thinsp;',
+        ':': RawElement('&ensp;'),
     }
     name = "Ashley"
     birth_year = 1987
@@ -68,7 +68,7 @@ Suppose that we have written a document using Paxter language as shown below.
 "##\
 My name is @name and I am @age years old.
 My email is ashley@@example.com.
-My shop opens Monday@,-@,Friday.
+My shop opens Monday@:-@:Friday.
 
 @python##"
     from itertools import count
@@ -519,7 +519,11 @@ Document(
             blob=Fragments([
                 "My name is Ashley and I am ",
                 33,
-                " years old.\nMy email is ashley@example.com.\nMy shop opens Monday\u2009-\u2009Friday.",
+                " years old.\nMy email is ashley@example.com.\nMy shop opens Monday",
+                RawElement(blob="&ensp;"),
+                "-",
+                RawElement(blob="&ensp;"),
+                "Friday.",
             ])
         ),
         Paragraph(
@@ -577,7 +581,7 @@ we will get the final output as shown below.
 ```html
 <p>My name is Ashley and I am 33 years old.
    My email is ashley@example.com.
-   My shop opens Monday - Friday.
+   My shop opens Monday&ensp;-&ensp;Friday.
 </p>
 <p>Counting is as easy as 1, 2, 3.
    Arithmetic? Not a problem: 7 * 11 * 13 = 1001.
