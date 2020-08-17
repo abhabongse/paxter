@@ -1,6 +1,6 @@
-########################
-Include an Email Address
-########################
+##########################
+Including an Email Address
+##########################
 
 As readers have already noticed that ‘**@**’ symbol has special meaning in Paxter language:
 it acts as a switch which turns the subsequent piece of input into a command.

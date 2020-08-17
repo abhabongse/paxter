@@ -1,6 +1,6 @@
-#############################
-More Python Code In Documents
-#############################
+###############################
+Coding More Python In Documents
+###############################
 
 Custom Functions
 ================
@@ -122,7 +122,7 @@ The same principle applies to ``@|add_one(99)|`` as well.
 
    This explains why we need to provide this mapping information
    when we customize the environment dictionary ``alternative_env`` in
-   :ref:`an earlier tutorial <beginner-tutorials/write-a-first-blog-entry:Understanding Environments>`?
+   :ref:`an earlier tutorial <beginner-tutorials/writing-a-first-blog-entry:Understanding Environments>`?
 
    Users of Paxter library package can fully customize the phrase evaluation behavior
    by providing their own function to the ``_phrase_eval_`` item of the environment.

@@ -1,6 +1,6 @@
-########################
-Write a First Blog Entry
-########################
+##########################
+Writing a First Blog Entry
+##########################
 
 Let us write a simple blog entry.
 Consider the following python code in which
@@ -224,7 +224,7 @@ the last two of which are *optional*.
    only try to mimic function call patterns in python;
    it actually does *not* fully support python syntax inside it.
    The full description of what is supported by Paxter language
-   :doc:`will be discussed later <inside-options>`.
+   :doc:`will be discussed later <making-a-list-of-items>`.
 
 
 Understanding Environments

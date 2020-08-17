@@ -9,9 +9,9 @@ that they will be followed in this order.
 .. toctree::
    :maxdepth: 1
 
-   write-a-first-blog-entry
-   add-a-second-paragraph
-   include-an-email-address
-   define-common-constants
-   more-python-code-in-documents
-   inside-options
+   writing-a-first-blog-entry
+   adding-a-second-paragraph
+   including-an-email-address
+   defining-common-constants
+   coding-more-python-in-documents
+   making-a-list-of-items

@@ -1,6 +1,6 @@
-######################
-Add a Second Paragraph
-######################
+#########################
+Adding a Second Paragraph
+#########################
 
 In the previous section,
 we have written a blog entry with a single paragraph,

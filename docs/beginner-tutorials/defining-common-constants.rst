@@ -1,6 +1,6 @@
-#######################
-Define Common Constants
-#######################
+#########################
+Defining Common Constants
+#########################
 
 Have you ever found yourself having to keep referring
 to the same content in writing *over and over again*?
