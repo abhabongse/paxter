@@ -1,0 +1,24 @@
+@h1{Table}
+
+@table[
+    @table_header[
+        {Name},
+        {Age},
+    ],
+    @table_row[
+        {@italic{PersonA} SurnameA},
+        {25},
+    ],
+    @table_row[
+        {@italic{PersonB} SurnameB},
+        {48},
+    ],
+    @table_row[
+        {
+            First paragraph.
+
+            Second paragraph.
+        },
+        {64},
+    ],
+]

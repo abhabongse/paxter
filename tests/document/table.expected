@@ -1,0 +1,1 @@
+<h1>Table</h1><table><tr><th>Name</th><th>Age</th></tr><tr><td><i>PersonA</i> SurnameA</td><td>25</td></tr><tr><td><i>PersonB</i> SurnameB</td><td>48</td></tr><tr><td><p>First paragraph.</p><p>Second paragraph.</p></td><td>64</td></tr></table>

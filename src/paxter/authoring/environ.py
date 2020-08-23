@@ -7,8 +7,8 @@ from paxter.authoring.controls import for_statement, if_statement
 from paxter.authoring.document import (
     Blockquote, Bold, BulletedList, Code,
     Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
-    Image, Italic, Link, NumberedList,
-    Paragraph, RawElement, Underline,
+    Image, Italic, Link, NumberedList, Paragraph, RawElement,
+    Table, TableHeader, TableRow, Underline,
     hair_space, horizontal_rule, line_break,
     non_breaking_space, thin_space,
 )
@@ -66,5 +66,8 @@ def create_document_env(data: Optional[dict] = None):
         'image': Image,
         'numbered_list': NumberedList,
         'bulleted_list': BulletedList,
+        'table': Table,
+        'table_header': TableHeader,
+        'table_row': TableRow,
         **data,
     })

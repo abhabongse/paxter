@@ -22,6 +22,7 @@ def get_test_files(stem: str) -> Tuple[str, str]:
 
 TESTS = [
     get_test_files("blog"),
+    get_test_files("table"),
 ]
 
 

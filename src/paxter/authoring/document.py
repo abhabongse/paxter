@@ -174,6 +174,7 @@ class Element:
 class Document(Element):
     """
     Topmost-level element for the entire document itself.
+    It may split the provided body into multiple paragraphs.
     """
     body: List
 
@@ -188,7 +189,7 @@ class Document(Element):
 @dataclass
 class RawElement(Element):
     """
-    Renders stored string without escaping.
+    Wraps over a raw string and rendered to output unescaped.
     """
     body: str
 
@@ -211,7 +212,7 @@ thin_space = RawElement(body='&thinsp;')
 @dataclass
 class SimpleElement(Element):
     """
-    Simple element node type in the form of
+    Simple element node type which renders output in the form of
     ``{HTML_OPENING}{rendered content}{HTML_CLOSING}``.
     """
     body: List
@@ -315,7 +316,8 @@ class Link(SimpleElement):
 @dataclass
 class Blockquote(Element):
     """
-    Renders the blockquote which may contain multiple paragraphs.
+    Renders the blockquote which may split the provided body
+    into multiple paragraphs.
     """
     body: List
     forced_paragraph: InitVar[bool] = False
@@ -333,7 +335,7 @@ class Blockquote(Element):
 @dataclass
 class Image(Element):
     """
-    Image embedding element., is_joined=False
+    Image embedding element.
     """
     src: str
     alt: str = ""
@@ -349,14 +351,17 @@ class Image(Element):
 
 
 @dataclass(init=False)
-class BareList(Element):
+class SequenceElement(Element):
     """
-    Element containing a list of items without encapsulation.
+    Special element containing a sequence of items
+    where each item is a fragment list.
     """
     items: List[List]
 
-    HTML_OPENING = ''
-    HTML_CLOSING = ''
+    HTML_GLOBAL_OPENING = ''
+    HTML_GLOBAL_CLOSING = ''
+    HTML_ITEM_OPENING = ''
+    HTML_ITEM_CLOSING = ''
 
     def __init__(self, *items, forced_paragraph: bool = False):
         self.items = []
@@ -366,27 +371,82 @@ class BareList(Element):
             self.items.append(item)
 
     def html_token_stream(self) -> Iterator[str]:
-        yield self.HTML_OPENING
+        yield self.HTML_GLOBAL_OPENING
         for item in self.items:
-            yield '<li>'
+            yield self.HTML_ITEM_OPENING
             yield from self.html_rec_token_stream(item)
-            yield '</li>'
+            yield self.HTML_ITEM_CLOSING
+        yield self.HTML_GLOBAL_CLOSING
+
+
+@dataclass(init=False)
+class HigherSequenceElement(Element):
+    """
+    Special element containing a sequence of items
+    where each item is an instance of :class:`SequenceElement`.
+    """
+    items: List
+
+    HTML_OPENING = ''
+    HTML_CLOSING = ''
+
+    def __init__(self, *items):
+        self.items = list(items)
+
+    def html_token_stream(self) -> Iterator[str]:
+        yield self.HTML_OPENING
+        yield from self.html_rec_token_stream(self.items)
         yield self.HTML_CLOSING
 
 
 @dataclass(init=False)
-class NumberedList(BareList):
+class NumberedList(SequenceElement):
     """
     Element containing an ordered (numbered) list.
     """
-    HTML_OPENING = '<ol>'
-    HTML_CLOSING = '</ol>'
+    HTML_GLOBAL_OPENING = '<ol>'
+    HTML_GLOBAL_CLOSING = '</ol>'
+    HTML_ITEM_OPENING = '<li>'
+    HTML_ITEM_CLOSING = '</li>'
 
 
 @dataclass(init=False)
-class BulletedList(BareList):
+class BulletedList(SequenceElement):
     """
     Element containing an unordered (bulleted) list.
     """
-    HTML_OPENING = '<ul>'
-    HTML_CLOSING = '</ul>'
+    HTML_GLOBAL_OPENING = '<ul>'
+    HTML_GLOBAL_CLOSING = '</ul>'
+    HTML_ITEM_OPENING = '<li>'
+    HTML_ITEM_CLOSING = '</li>'
+
+
+@dataclass(init=False)
+class Table(HigherSequenceElement):
+    """
+    Element containing an entire table as a sequence of rows.
+    """
+    HTML_OPENING = '<table>'
+    HTML_CLOSING = '</table>'
+
+
+@dataclass(init=False)
+class TableHeader(SequenceElement):
+    """
+    Element containing a table header row as a sequence of cells.
+    """
+    HTML_GLOBAL_OPENING = '<tr>'
+    HTML_GLOBAL_CLOSING = '</tr>'
+    HTML_ITEM_OPENING = '<th>'
+    HTML_ITEM_CLOSING = '</th>'
+
+
+@dataclass(init=False)
+class TableRow(SequenceElement):
+    """
+    Element containing a table row as a sequence of cells.
+    """
+    HTML_GLOBAL_OPENING = '<tr>'
+    HTML_GLOBAL_CLOSING = '</tr>'
+    HTML_ITEM_OPENING = '<td>'
+    HTML_ITEM_CLOSING = '</td>'
