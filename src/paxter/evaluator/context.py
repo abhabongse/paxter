@@ -5,7 +5,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Union
 
-from paxter.evaluator.data import Fragments
+from paxter.evaluator.data import FragmentList
 from paxter.evaluator.wrappers import BaseApply, NormalApply
 from paxter.exceptions import PaxterRenderError
 from paxter.parser import (
@@ -32,7 +32,7 @@ class EvaluateContext:
     tree: FragmentSeq
 
     #: Result of the rendering
-    rendered: Fragments = field(init=False)
+    rendered: FragmentList = field(init=False)
 
     BACKSLASH_NEWLINE_RE = re.compile(r'\\[ \t\r\f\v]*\n[ \t\r\f\v]*')
 
@@ -109,7 +109,7 @@ class EvaluateContext:
         """
         return token.value
 
-    def transform_fragment_list(self, seq: FragmentSeq) -> Fragments:
+    def transform_fragment_list(self, seq: FragmentSeq) -> FragmentList:
         """
         Transforms a given parsed fragment list.
         """
@@ -121,7 +121,7 @@ class EvaluateContext:
             fragment for fragment in transformed_fragments
             if fragment is not None
         ]
-        return Fragments(result)
+        return FragmentList(result)
 
     def transform_text(self, token: Text) -> str:
         """
