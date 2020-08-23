@@ -5,14 +5,14 @@ Writing a First Blog Entry
 Let us write a simple blog entry.
 Consider the following python code in which
 ``paragraph`` object is constructed using data classes
-from :mod:`paxter.authoring.document` subpackage
+from :mod:`paxter.author.document` subpackage
 (please ignore the usage of
-:class:`Fragments <paxter.evaluator.data.Fragments>` class for now).
+:class:`Fragments <paxter.evaluate.data.Fragments>` class for now).
 
 .. code-block:: python
 
-   from paxter.authoring.document import Bold, Link, Paragraph, line_break
-   from paxter.evaluator.data import Fragments
+   from paxter.author.document import Bold, Link, Paragraph, line_break
+   from paxter.evaluate.data import Fragments
 
    paragraph = Paragraph(
        Fragments([
@@ -27,11 +27,11 @@ from :mod:`paxter.authoring.document` subpackage
 
 .. important::
 
-   Everything located under the subpackage :mod:`paxter.authoring`
+   Everything located under the subpackage :mod:`paxter.author`
    are supplementary to but independent of the core Paxter library package.
    They are provided only for convenience.
 
-Then we call the method :meth:`html() <paxter.authoring.document.Element.html>`
+Then we call the method :meth:`html() <paxter.author.document.Element.html>`
 on the ``paragraph`` object in order to render
 its content into the final HTML string.
 
@@ -49,7 +49,7 @@ to construct the exact same document.
 
 .. code-block:: python
 
-   from paxter.authoring import create_document_env, run_simple_paxter
+   from paxter.author import create_document_env, run_simple_paxter
 
    # The following input text is written in-code for a simpler example.
    # However in reality, input text may be read from other sources
@@ -148,7 +148,7 @@ is parsed into the python code.
 Firstly, notice that the textual content
 that is surrounded by *a matching pair of curly braces*
 are always parsed into an instance of
-:class:`Fragments <paxter.evaluator.data.Fragments>`,
+:class:`Fragments <paxter.evaluate.data.Fragments>`,
 containing a list of values.
 And secondly, it would always be positioned
 as the very first argument of the translated function call.
@@ -157,7 +157,7 @@ We call this part the **main argument** of a command.
 Moreover, if we look at how the outermost ``@paragraph{...}`` command is constructed,
 we would see that the content of main argument
 would always be *recursively parsed* into
-a :class:`Fragments <paxter.evaluator.data.Fragments>` instance with nested values.
+a :class:`Fragments <paxter.evaluate.data.Fragments>` instance with nested values.
 Hence, the ``@paragraph`` command from above is in fact
 roughly parsed into an equivalent python code as follows.
 
@@ -232,9 +232,9 @@ Understanding Environments
 
 At this point, please note that ``@paragraph``, ``@bold``, and ``@link``
 are merely aliases to the constructors of actual data classes
-:class:`Paragraph <paxter.authoring.document.Paragraph>`,
-:class:`Bold <paxter.authoring.document.Bold>`,
-and :class:`Link <paxter.authoring.document.Link>` respectively.
+:class:`Paragraph <paxter.author.document.Paragraph>`,
+:class:`Bold <paxter.author.document.Bold>`,
+and :class:`Link <paxter.author.document.Link>` respectively.
 These relationships are evident once we inspect
 the content of the environment dictionary ``env`` (shown below).
 Additionally, note that ``@break`` simply maps to the value
@@ -243,14 +243,14 @@ Additionally, note that ``@break`` simply maps to the value
 .. code-block:: pycon
 
    >>> env
-   {'_phrase_eval_': <function paxter.authoring.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
+   {'_phrase_eval_': <function paxter.author.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
     '_extras_': {},
     '@': '@',
     'for': DirectApply(wrapped=<function for_statement at 0x7f34d0660e50>),
     'if': DirectApply(wrapped=<function if_statement at 0x7f34d0660c10>),
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f34c1b2a1f0>),
-    'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
-    'raw': paxter.authoring.document.RawElement,
+    'verb': <function paxter.author.standards.verbatim(text: Any) -> str>,
+    'raw': paxter.author.document.RawElement,
     '\\': RawElement(blob='<br />'),
     'line_break': RawElement(blob='<br />'),
     'hrule': RawElement(blob='<hr />'),
@@ -260,22 +260,22 @@ Additionally, note that ``@break`` simply maps to the value
     '.': RawElement(blob='&hairsp;'),
     'thinsp': RawElement(blob='&thinsp;'),
     ',': RawElement(blob='&thinsp;'),
-    'paragraph': paxter.authoring.document.Paragraph,
-    'h1': paxter.authoring.document.Heading1,
-    'h2': paxter.authoring.document.Heading2,
-    'h3': paxter.authoring.document.Heading3,
-    'h4': paxter.authoring.document.Heading4,
-    'h5': paxter.authoring.document.Heading5,
-    'h6': paxter.authoring.document.Heading6,
-    'bold': paxter.authoring.document.Bold,
-    'italic': paxter.authoring.document.Italic,
-    'uline': paxter.authoring.document.Underline,
-    'code': paxter.authoring.document.Code,
-    'blockquote': paxter.authoring.document.Blockquote,
-    'link': paxter.authoring.document.Link,
-    'image': paxter.authoring.document.Image,
-    'numbered_list': paxter.authoring.document.NumberedList,
-    'bulleted_list': paxter.authoring.document.BulletedList}
+    'paragraph': paxter.author.document.Paragraph,
+    'h1': paxter.author.document.Heading1,
+    'h2': paxter.author.document.Heading2,
+    'h3': paxter.author.document.Heading3,
+    'h4': paxter.author.document.Heading4,
+    'h5': paxter.author.document.Heading5,
+    'h6': paxter.author.document.Heading6,
+    'bold': paxter.author.document.Bold,
+    'italic': paxter.author.document.Italic,
+    'uline': paxter.author.document.Underline,
+    'code': paxter.author.document.Code,
+    'blockquote': paxter.author.document.Blockquote,
+    'link': paxter.author.document.Link,
+    'image': paxter.author.document.Image,
+    'numbered_list': paxter.author.document.NumberedList,
+    'bulleted_list': paxter.author.document.BulletedList}
 
 
 There is nothing preventing library users
@@ -283,7 +283,7 @@ from creating different environment mapping like so.
 
 .. code-block:: python
 
-   from paxter.authoring import document, run_simple_paxter, standards
+   from paxter.author import document, run_simple_paxter, standards
 
    alternative_env = {
        # _phrase_eval_ is required, but ignore this part for now

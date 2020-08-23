@@ -6,7 +6,7 @@ from abc import ABCMeta
 from dataclasses import dataclass, field
 from typing import Any, List, Match, Optional, Type, TypeVar, Union
 
-from paxter.parser.enclosing import EnclosingPattern
+from paxter.parse.enclosing import EnclosingPattern
 
 __all__ = [
     'Token', 'Fragment',

@@ -1,14 +1,14 @@
 """
-Collection of control flow functions for Python authoring mode.
+Collection of control flow functions for Python author mode.
 """
 from typing import TYPE_CHECKING
 
-from paxter.evaluator import DirectApply, FragmentList
+from paxter.evaluate import DirectApply, FragmentList
 from paxter.exceptions import PaxterRenderError
-from paxter.parser import CharLoc, Command, Identifier
+from paxter.parse import CharLoc, Command, Identifier
 
 if TYPE_CHECKING:
-    from paxter.evaluator.context import EvaluateContext
+    from paxter.evaluate.context import EvaluateContext
 
 
 @DirectApply

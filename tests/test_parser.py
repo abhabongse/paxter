@@ -1,6 +1,6 @@
 import pytest
 
-from paxter.parser import (
+from paxter.parse import (
     Command, EnclosingPattern, FragmentSeq, GlobalEnclosingPattern, Identifier,
     Number, Operator, ParseContext, Text, Token, TokenSeq,
 )

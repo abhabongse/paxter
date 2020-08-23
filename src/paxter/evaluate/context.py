@@ -5,10 +5,10 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Union
 
-from paxter.evaluator.data import FragmentList
-from paxter.evaluator.wrappers import BaseApply, NormalApply
+from paxter.evaluate.data import FragmentList
+from paxter.evaluate.wrappers import BaseApply, NormalApply
 from paxter.exceptions import PaxterRenderError
-from paxter.parser import (
+from paxter.parse import (
     CharLoc, Command, Fragment, FragmentSeq, Identifier, Number,
     Operator, Text, Token, TokenSeq,
 )
@@ -137,7 +137,7 @@ class EvaluateContext:
         Transforms a given parsed command.
         """
         # Try to evaluate the phrase section
-        # using the evaluator function from _phrase_eval_
+        # using the evaluate function from _phrase_eval_
         try:
             phrase_eval = self.env['_phrase_eval_']
         except KeyError as exc:

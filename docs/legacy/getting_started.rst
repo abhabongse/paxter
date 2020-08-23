@@ -148,7 +148,7 @@ It is important to remember that
 **the semantics of the documents depends on which renderer we are choosing**.
 
 We will adopt the **Python authoring mode** whose renderer
-(implemented by :class:`EvaluateContext <paxter.evaluator.EvaluateContext>`)
+(implemented by :class:`EvaluateContext <paxter.evaluate.EvaluateContext>`)
 is already pre-defined by the Paxter library package
 to transform the parsed tree into the desired final form.
 One of its very useful features is that it will execute python code
@@ -156,8 +156,8 @@ under the ``@python`` command.
 
 .. code-block:: python
 
-   from paxter.authoring import create_simple_env
-   from paxter.evaluator import EvaluateContext
+   from paxter.author import create_simple_env
+   from paxter.evaluate import EvaluateContext
 
    # This dictionary data represents the initial global dict state
    # for the interpretation the document tree in python authoring mode.

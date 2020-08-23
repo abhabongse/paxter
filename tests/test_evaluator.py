@@ -4,10 +4,10 @@ from typing import Tuple
 import pytest
 from click.testing import CliRunner
 
-from paxter.authoring import create_document_env
-from paxter.authoring.document import Document
-from paxter.evaluator import EvaluateContext
-from paxter.parser import (
+from paxter.author import create_document_env
+from paxter.author.document import Document
+from paxter.evaluate import EvaluateContext
+from paxter.parse import (
     ParseContext,
 )
 

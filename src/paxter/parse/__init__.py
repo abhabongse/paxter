@@ -1,13 +1,13 @@
 """
-This subpackage implements parser functionality for Paxter language.
+This subpackage implements parse functionality for Paxter language.
 """
-from paxter.parser.charloc import CharLoc
-from paxter.parser.context import ParseContext
-from paxter.parser.data import (
+from paxter.parse.charloc import CharLoc
+from paxter.parse.context import ParseContext
+from paxter.parse.data import (
     Command, Fragment, FragmentSeq, Identifier,
     Number, Operator, Text, Token, TokenSeq,
 )
-from paxter.parser.enclosing import EnclosingPattern, GlobalEnclosingPattern
+from paxter.parse.enclosing import EnclosingPattern, GlobalEnclosingPattern
 
 __all__ = [
     'CharLoc',

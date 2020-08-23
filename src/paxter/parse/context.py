@@ -1,16 +1,16 @@
 """
-Recursive descent parser of Paxter language.
+Recursive descent parse of Paxter language.
 """
 from dataclasses import dataclass, field
 from typing import List, Match, Tuple
 
 from paxter.exceptions import PaxterSyntaxError
-from paxter.parser.charloc import CharLoc
-from paxter.parser.data import (
+from paxter.parse.charloc import CharLoc
+from paxter.parse.data import (
     Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, TokenSeq,
 )
-from paxter.parser.enclosing import EnclosingPattern, GlobalEnclosingPattern
-from paxter.parser.lexers import LEXER
+from paxter.parse.enclosing import EnclosingPattern, GlobalEnclosingPattern
+from paxter.parse.lexers import LEXER
 
 __all__ = ['ParseContext']
 
@@ -20,7 +20,7 @@ OPENED_TO_CLOSED_SCOPE_TRANS = str.maketrans('([{', ')]}')
 @dataclass
 class ParseContext:
     """
-    Implements a recursive descent parser for Paxter language text input.
+    Implements a recursive descent parse for Paxter language text input.
 
     To utilize this class, provide the input text to the constructor,
     and the resulting parsed tree node will be generated upon instantiation.
@@ -278,7 +278,7 @@ class ParseContext:
                 children.append(at_expr_node)
                 continue
 
-            # Attempts to parser a sub-level sequence of tokens
+            # Attempts to parse a sub-level sequence of tokens
             lbracket_matchobj = LEXER.lbracket_re.match(self.input_text, next_pos)
             if lbracket_matchobj:
                 next_pos = lbracket_matchobj.end()
@@ -286,7 +286,7 @@ class ParseContext:
                 children.append(token_seq_node)
                 continue
 
-            # Attempts to parser the end of token sequence
+            # Attempts to parse the end of token sequence
             # Return the token sequence if this is the case
             rbracket_matchobj = LEXER.rbracket_re.match(self.input_text, next_pos)
             if rbracket_matchobj:
@@ -321,7 +321,7 @@ class ParseContext:
 
     def _invalid_cmd(self, pos: int):
         """
-        Raises syntax error for failing to parser @-command.
+        Raises syntax error for failing to parse @-command.
         """
         raise PaxterSyntaxError(
             "invalid expression after @-command at %(pos)s",

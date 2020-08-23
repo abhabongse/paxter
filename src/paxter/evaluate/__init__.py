@@ -1,9 +1,9 @@
 """
-Implements python evaluator for Paxter language.
+Implements python evaluate for Paxter language.
 """
-from paxter.evaluator.context import EvaluateContext
-from paxter.evaluator.data import FragmentList
-from paxter.evaluator.wrappers import (
+from paxter.evaluate.context import EvaluateContext
+from paxter.evaluate.data import FragmentList
+from paxter.evaluate.wrappers import (
     BaseApply, DirectApply, NormalApply, NormalApplyWithEnv,
 )
 

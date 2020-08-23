@@ -3,11 +3,11 @@ A collection of Paxter common functions.
 """
 from typing import Optional
 
-from paxter.authoring.document import Document
-from paxter.authoring.environ import create_document_env, create_simple_env
-from paxter.evaluator import FragmentList
-from paxter.evaluator.context import EvaluateContext
-from paxter.parser import ParseContext
+from paxter.author.document import Document
+from paxter.author.environ import create_document_env, create_simple_env
+from paxter.evaluate import FragmentList
+from paxter.evaluate.context import EvaluateContext
+from paxter.parse import ParseContext
 
 
 def run_simple_paxter(input_text: str, env: Optional[dict] = None) -> FragmentList:

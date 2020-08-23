@@ -14,4 +14,4 @@ that they will be followed in this order.
    including-an-email-address
    defining-common-constants
    coding-more-python-in-documents
-   making-a-list-of-items
+   making-a-list-or-a-table

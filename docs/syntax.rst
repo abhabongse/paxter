@@ -11,8 +11,8 @@ Document Rule
 The **starting rule** of Paxter language grammar
 which is a special case of `FragmentSeq rule`_.
 The result of parsing this rule is always
-a :class:`FragmentSeq <paxter.parser.data.FragmentSeq>` node
-whose children includes non-empty strings (as :class:`Text <paxter.parser.data.Text>`)
+a :class:`FragmentSeq <paxter.parse.data.FragmentSeq>` node
+whose children includes non-empty strings (as :class:`Text <paxter.parse.data.Text>`)
 interleaving with the result produced by `Command rule`_.
 
 .. image:: _static/Document.png
@@ -37,7 +37,7 @@ There are a few possible scenarios.
 
 1. The first token is an identifier.
    The parsed identifier becomes the phrase part of the
-   :class:`Command <paxter.parser.Command>`.
+   :class:`Command <paxter.parse.Command>`.
    Then the parser would attempt to parse the options section
    and the main argument section if they exist.
 2. The first token is :math:`n` hash characters followed by a bar character.
@@ -62,9 +62,9 @@ This rule always begins with :math:`n` hash characters followed by a left brace
 and ends with a right brace followed by :math:`n` hash characters,
 for some non-negative integer :math:`n`.
 Between this pair of curly braces is an interleaving of strings
-(as :class:`Text <paxter.parser.data.Text>`)
-and :class:`Command <paxter.parser.data.Command>`,
-all of which are children of :class:`FragmentSeq <paxter.parser.data.FragmentSeq>` instance.
+(as :class:`Text <paxter.parse.data.Text>`)
+and :class:`Command <paxter.parse.data.Command>`,
+all of which are children of :class:`FragmentSeq <paxter.parse.data.FragmentSeq>` instance.
 
 One important point to note is that each string is parsed non-greedily;
 each resulting string would never contain a right brace
@@ -79,7 +79,7 @@ Text Rule
 =========
 
 This rule is similar to `FragmentSeq rule` except for two main reasons.
-The first reason is that nested :class:`Command <paxter.parser.data.Command>`
+The first reason is that nested :class:`Command <paxter.parse.data.Command>`
 will not be parsed (i.e. ``@`` is not a special character in this scope).
 Another reason is that, instead of having a matching pair of curly braces
 indicate the beginning and the ending of the rule,
@@ -95,15 +95,15 @@ TokenSeq Rule
 
 Following this parsing rule results in a sequence of zero or more tokens,
 possibly separated by whitespaces.
-Each token may be a :class:`Command <paxter.parser.data.Command>`,
-an :class:`Identifier <paxter.parser.data.Identifier>`,
-an :class:`Operator <paxter.parser.data.Operator>`,
-a :class:`Number <paxter.parser.data.Number>`,
-a :class:`FragmentSeq <paxter.parser.data.FragmentSeq>`,
-a :class:`Text <paxter.parser.data.Text>`,
-or a nested :class:`TokenSeq <paxter.parser.data.TokenSeq>`.
+Each token may be a :class:`Command <paxter.parse.data.Command>`,
+an :class:`Identifier <paxter.parse.data.Identifier>`,
+an :class:`Operator <paxter.parse.data.Operator>`,
+a :class:`Number <paxter.parse.data.Number>`,
+a :class:`FragmentSeq <paxter.parse.data.FragmentSeq>`,
+a :class:`Text <paxter.parse.data.Text>`,
+or a nested :class:`TokenSeq <paxter.parse.data.TokenSeq>`.
 This resulting sequence of tokens are children of
-:class:`TokenSeq <paxter.parser.data.TokenSeq>` node type.
+:class:`TokenSeq <paxter.parse.data.TokenSeq>` node type.
 
 .. image:: _static/TokenSeq.png
 
@@ -118,7 +118,7 @@ Identifier Rule
 
 This rule generally follows python rules for greedily parsing
 an identifier token (with some extreme exceptions).
-The result is an :class:`Identifier <paxter.parser.data.Identifier>` node type.
+The result is an :class:`Identifier <paxter.parse.data.Identifier>` node type.
 
 .. image:: _static/Identifier.png
 
@@ -133,7 +133,7 @@ Greedily consumes as many operator characters as possible
 each of which has to appear on its own).
 Whitespace characters may be needed to separate two consecutive,
 multi-character operator tokens.
-The result is an :class:`Operator <paxter.parser.data.Operator>` node type.
+The result is an :class:`Operator <paxter.parse.data.Operator>` node type.
 
 .. image:: _static/Operator.png
 

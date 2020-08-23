@@ -7,7 +7,7 @@ import re
 from dataclasses import InitVar, dataclass
 from typing import Iterator, List, Sequence, Union
 
-from paxter.evaluator import FragmentList
+from paxter.evaluate import FragmentList
 from paxter.exceptions import PaxterRenderError
 
 

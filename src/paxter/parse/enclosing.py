@@ -3,15 +3,15 @@ Utility class for textual enclosing (left and right) patterns
 which surrounds a particular scope of string data.
 It is used in the following scenarios:
 
-- Brace pattern for :class:`FragmentSeq <paxter.parser.data.FragmentSeq>` nodes
-- Quoted pattern for :class:`Text <paxter.parser.data.Text>` nodes
-- Bar pattern for the phrase of :class:`Command <paxter.parser.data.Command>` nodes
+- Brace pattern for :class:`FragmentSeq <paxter.parse.data.FragmentSeq>` nodes
+- Quoted pattern for :class:`Text <paxter.parse.data.Text>` nodes
+- Bar pattern for the phrase of :class:`Command <paxter.parse.data.Command>` nodes
 """
 import re
 from dataclasses import dataclass, field
 from typing import Pattern
 
-from paxter.parser.lexers import LEXER
+from paxter.parse.lexers import LEXER
 
 __all__ = ['EnclosingPattern', 'GlobalEnclosingPattern']
 

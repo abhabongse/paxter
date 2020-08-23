@@ -14,7 +14,7 @@ the main argument a few times.
 
 .. code-block:: python
 
-   from paxter.authoring import run_document_paxter
+   from paxter.author import run_document_paxter
 
    input_text = '''
    @python##"
@@ -48,7 +48,7 @@ Consider then following example.
 
 .. code-block:: python
 
-   from paxter.authoring import run_document_paxter
+   from paxter.author import run_document_paxter
 
    input_text = '''
    @python##"
@@ -117,7 +117,7 @@ The same principle applies to ``@|add_one(99)|`` as well.
    The specific evaluation behavior of the phrase of a command
    is actually *not* part of the core Paxter library package.
    It is controlled by the function
-   :func:`phrase_unsafe_eval <paxter.authoring.standards.phrase_unsafe_eval>`
+   :func:`phrase_unsafe_eval <paxter.author.standards.phrase_unsafe_eval>`
    which is stored under the item ``_phrase_eval_`` of the environment dictionary.
 
    This explains why we need to provide this mapping information
@@ -127,7 +127,7 @@ The same principle applies to ``@|add_one(99)|`` as well.
    Users of Paxter library package can fully customize the phrase evaluation behavior
    by providing their own function to the ``_phrase_eval_`` item of the environment.
    They are encouraged to read the source code of
-   :func:`phrase_unsafe_eval <paxter.authoring.standards.phrase_unsafe_eval>`
+   :func:`phrase_unsafe_eval <paxter.author.standards.phrase_unsafe_eval>`
    to obtain some inspirations.
 
 
@@ -141,7 +141,7 @@ For example,
 
 .. code-block:: python
 
-   from paxter.authoring import run_document_paxter
+   from paxter.author import run_document_paxter
 
    input_text = '''
    The union of odd digits and prime digits is
@@ -166,7 +166,7 @@ For example,
 
 .. code-block:: python
 
-   from paxter.authoring import run_document_paxter
+   from paxter.author import run_document_paxter
 
    input_text = '''
    @python##"

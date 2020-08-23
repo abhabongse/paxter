@@ -4,7 +4,7 @@ Error classes specific to Paxter language ecosystem.
 from typing import Dict, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from paxter.parser.charloc import CharLoc
+    from paxter.parse.charloc import CharLoc
 
 __all__ = [
     'PaxterBaseException',

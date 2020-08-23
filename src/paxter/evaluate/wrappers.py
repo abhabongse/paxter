@@ -1,15 +1,15 @@
 """
-Collection of function wrappers in Python authoring mode.
+Collection of function wrappers in Python author mode.
 """
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple
 
 from paxter.exceptions import PaxterRenderError
-from paxter.parser import CharLoc, Command, Identifier, Operator, Token, TokenSeq
+from paxter.parse import CharLoc, Command, Identifier, Operator, Token, TokenSeq
 
 if TYPE_CHECKING:
-    from paxter.evaluator.context import EvaluateContext
+    from paxter.evaluate.context import EvaluateContext
 
 
 @dataclass
@@ -34,8 +34,8 @@ class DirectApply(BaseApply):
     Special function call where the wrapped function handles
     the environment and the :class:`Command` token directly.
     See the implementation of
-    :func:`if_statement <paxter.authoring.controls.if_statement>` and
-    :func:`for_statement <paxter.authoring.controls.for_statement>` and
+    :func:`if_statement <paxter.author.controls.if_statement>` and
+    :func:`for_statement <paxter.author.controls.for_statement>` and
     to see how this decorator is used.
     """
     wrapped: Callable[['EvaluateContext', Command], Any]

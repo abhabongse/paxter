@@ -24,17 +24,17 @@ Recall that in Paxter ecosystem,
 users can prepare the environment dictionary to be used
 when input text is parsed and transformed ino the final document object.
 Remember the dictionary created by
-:func:`create_document_env <paxter.authoring.environ.create_document_env>`
+:func:`create_document_env <paxter.author.environ.create_document_env>`
 in earlier tutorial?
 In fact, the content of this dictionary can be customized
 by providing additional mapping data through its input arguments.
 Then we supply the just prepared dictionary
 as the second optional argument of the function
-:func:`run_document_paxter <paxter.authoring.preset.run_document_paxter>`.
+:func:`run_document_paxter <paxter.author.preset.run_document_paxter>`.
 
 .. code-block:: python
 
-   from paxter.authoring import create_document_env, run_document_paxter
+   from paxter.author import create_document_env, run_document_paxter
 
    customized_env = create_document_env({
        'yaa': "Yet Another Acronym",
@@ -47,14 +47,14 @@ as the second optional argument of the function
 .. code-block:: pycon
 
    >>> customized_env
-   {'_phrase_eval_': <function paxter.authoring.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
+   {'_phrase_eval_': <function paxter.author.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
     '_extras_': {},
     '@': '@',
     'for': DirectApply(wrapped=<function for_statement at 0x7f7c60e39ca0>),
     'if': DirectApply(wrapped=<function if_statement at 0x7f7c60e39dc0>),
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f7c5245e160>),
-    'verb': <function paxter.authoring.standards.verbatim(text: Any) -> str>,
-    'raw': paxter.authoring.document.RawElement,
+    'verb': <function paxter.author.standards.verbatim(text: Any) -> str>,
+    'raw': paxter.author.document.RawElement,
     '\\': RawElement(blob='<br />'),
     'line_break': RawElement(blob='<br />'),
     'hrule': RawElement(blob='<hr />'),
@@ -64,22 +64,22 @@ as the second optional argument of the function
     '.': RawElement(blob='&hairsp;'),
     'thinsp': RawElement(blob='&thinsp;'),
     ',': RawElement(blob='&thinsp;'),
-    'paragraph': paxter.authoring.document.Paragraph,
-    'h1': paxter.authoring.document.Heading1,
-    'h2': paxter.authoring.document.Heading2,
-    'h3': paxter.authoring.document.Heading3,
-    'h4': paxter.authoring.document.Heading4,
-    'h5': paxter.authoring.document.Heading5,
-    'h6': paxter.authoring.document.Heading6,
-    'bold': paxter.authoring.document.Bold,
-    'italic': paxter.authoring.document.Italic,
-    'uline': paxter.authoring.document.Underline,
-    'code': paxter.authoring.document.Code,
-    'blockquote': paxter.authoring.document.Blockquote,
-    'link': paxter.authoring.document.Link,
-    'image': paxter.authoring.document.Image,
-    'numbered_list': paxter.authoring.document.NumberedList,
-    'bulleted_list': paxter.authoring.document.BulletedList,
+    'paragraph': paxter.author.document.Paragraph,
+    'h1': paxter.author.document.Heading1,
+    'h2': paxter.author.document.Heading2,
+    'h3': paxter.author.document.Heading3,
+    'h4': paxter.author.document.Heading4,
+    'h5': paxter.author.document.Heading5,
+    'h6': paxter.author.document.Heading6,
+    'bold': paxter.author.document.Bold,
+    'italic': paxter.author.document.Italic,
+    'uline': paxter.author.document.Underline,
+    'code': paxter.author.document.Code,
+    'blockquote': paxter.author.document.Blockquote,
+    'link': paxter.author.document.Link,
+    'image': paxter.author.document.Image,
+    'numbered_list': paxter.author.document.NumberedList,
+    'bulleted_list': paxter.author.document.BulletedList,
     'yaa': 'Yet Another Acronym'}
    >>> print(document.html())
    <p>YAA is Yet Another Acronym and it stands for Yet Another Acronym.</p>
@@ -106,7 +106,7 @@ Here is an example.
 
 .. code-block:: python
 
-   from paxter.authoring import run_document_paxter
+   from paxter.author import run_document_paxter
 
    input_text = '''
    @python"yaa = 'Yet Another Acronym'"
@@ -127,11 +127,11 @@ dictionary during the parsing and transformation of the document.
 
 Let us look at the same input text again,
 but now we will explicitly create a new environment dictionary
-for use in :func:`run_document_paxter <paxter.authoring.preset.run_document_paxter>`.
+for use in :func:`run_document_paxter <paxter.author.preset.run_document_paxter>`.
 
 .. code-block:: python
 
-   from paxter.authoring import create_document_env, run_document_paxter
+   from paxter.author import create_document_env, run_document_paxter
 
    input_text = '''
    @python"yaa = 'Yet Another Acronym'"
@@ -143,7 +143,7 @@ for use in :func:`run_document_paxter <paxter.authoring.preset.run_document_paxt
 .. code-block:: pycon
 
    >>> env
-   {'_starter_eval_': <function paxter.authoring.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
+   {'_starter_eval_': <function paxter.author.standards.starter_unsafe_eval(starter: str, env: dict) -> Any>,
     'for': DirectApply(wrapped=<function for_statement at 0x7f53f0bffd30>),
     'if': DirectApply(wrapped=<function if_statement at 0x7f53f0bffe50>),
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f53f03a75e0>),
@@ -155,7 +155,7 @@ for use in :func:`run_document_paxter <paxter.authoring.preset.run_document_paxt
 
 
 If we compare the contents of ``env`` before and after the call to
-:func:`run_document_paxter <paxter.authoring.preset.run_document_paxter>`,
+:func:`run_document_paxter <paxter.author.preset.run_document_paxter>`,
 we will find that a lot of stuff get added into ``env`` during the function call,
 including the mapping from ``"yaa"`` to ``"Yet Another Acronym"``.
 This happened because the command ``@python`` internally called
@@ -198,13 +198,13 @@ Here we present another way to achieve similar results.
 
 We are going to use ``@verb`` command
 (linked to an identity function called
-:func:`verbatim <paxter.authoring.standards.verbatim>`
+:func:`verbatim <paxter.author.standards.verbatim>`
 which will output whatever is given as input as-is)
 in conjunction with quoted main argument.
 
 .. code-block:: python
 
-   from paxter.authoring import run_document_paxter
+   from paxter.author import run_document_paxter
 
    input_text = '''My email is @verb"ashley@example.com".'''
    document = run_document_paxter(input_text)
@@ -230,7 +230,7 @@ For example,
 
 .. code-block:: python
 
-   from paxter.authoring import run_document_paxter
+   from paxter.author import run_document_paxter
 
    input_text = '''
    @python##"yaa = "Yet Another Acronym""##
@@ -254,7 +254,7 @@ which is an incomplete python statement in itself.
 
 .. code-block:: pycon
 
-   >>> from paxter.authoring import run_document_paxter
+   >>> from paxter.author import run_document_paxter
    >>> input_text = '''
    ... @python"yaa = "Yet Another Acronym""
    ... YAA is @yaa and it stands for @yaa.
@@ -264,11 +264,11 @@ which is an incomplete python statement in itself.
 .. code-block:: pytb
 
    Traceback (most recent call last):
-     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 171, in transform_command
+     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 171, in transform_command
        return starter_value.call(self, token)
-     File ".../site-packages/paxter/src/paxter/evaluator/wrappers.py", line 47, in call
+     File ".../site-packages/paxter/src/paxter.evaluate/wrappers.py", line 47, in call
        return self.wrapped(context, node)
-     File ".../site-packages/paxter/src/paxter/authoring/standards.py", line 25, in python_unsafe_exec
+     File ".../site-packages/paxter/src/paxter.author/standards.py", line 25, in python_unsafe_exec
        exec(code, context.env)
      File "<string>", line 1
        yaa =
@@ -279,22 +279,22 @@ which is an incomplete python statement in itself.
 
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
-     File ".../site-packages/paxter/src/paxter/authoring/preset.py", line 33, in run_document_paxter
+     File ".../site-packages/paxter/src/paxter.author/preset.py", line 33, in run_document_paxter
        evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
      File "<string>", line 6, in __init__
-     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 40, in __post_init__
+     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 40, in __post_init__
        self.rendered = self.render()
-     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 43, in render
+     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 43, in render
        return self.transform_fragment_list(self.tree)
-     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 122, in transform_fragment_list
+     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 122, in transform_fragment_list
        result = [
-     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 122, in <listcomp>
+     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 122, in <listcomp>
        result = [
-     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 119, in <genexpr>
+     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 119, in <genexpr>
        self.transform_fragment(fragment)
-     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 73, in transform_fragment
+     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 73, in transform_fragment
        return self.transform_command(fragment)
-     File ".../site-packages/paxter/src/paxter/evaluator/context.py", line 175, in transform_command
+     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 175, in transform_command
        raise PaxterRenderError(
    paxter.exceptions.PaxterRenderError: paxter apply evaluation error at line 2 col 2
 

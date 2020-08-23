@@ -36,7 +36,7 @@ def run_parse(input_file, output_file):
 
     Transform: input text -> parsed tree
     """
-    from paxter.parser import ParseContext
+    from paxter.parse import ParseContext
 
     input_text = input_file.read()
     parse_context = ParseContext(input_text)
@@ -54,16 +54,16 @@ def run_document(input_file, output_file, env_file):
     """
     Evaluates the input text into the document object.
 
-    It reads input text from INPUT_FILE and pass it through the parser.
+    It reads input text from INPUT_FILE and pass it through the parse.
     Then the parsed tree is evaluated into document object
     using the environment provided by the
-    paxter.authoring supplementary subpackage.
+    paxter.author supplementary subpackage.
     Finally, the document object structure is written to OUTPUT_FILE.
 
     Transform: input text -> parsed tree -> document object
     """
     import runpy
-    from paxter.authoring import run_document_paxter, create_document_env
+    from paxter.author import run_document_paxter, create_document_env
 
     input_text = input_file.read()
     env = create_document_env(runpy.run_path(env_file) if env_file else {})
@@ -82,17 +82,17 @@ def run_html(input_file, output_file, env_file):
     """
     Parses, evaluates, and renders the final HTML output.
 
-    It reads input text from INPUT_FILE and pass it through the parser.
+    It reads input text from INPUT_FILE and pass it through the parse.
     Then the parsed tree is evaluated into document object
     using the environment provided by the
-    paxter.authoring supplementary subpackage.
+    paxter.author supplementary subpackage.
     Finally, the document object is rendered to HTML output
     which gets written to OUTPUT_FILE.
 
     Transform: input text -> parsed tree -> document object -> html string
     """
     import runpy
-    from paxter.authoring import run_document_paxter, create_document_env
+    from paxter.author import run_document_paxter, create_document_env
 
     input_text = input_file.read()
     env = create_document_env(runpy.run_path(env_file) if env_file else {})

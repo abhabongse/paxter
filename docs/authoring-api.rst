@@ -16,9 +16,9 @@ Preset Functions
 The following function combines Paxter language parsing
 together with parsed tree evaluation.
 
-.. autofunction:: paxter.authoring.preset.run_simple_paxter
+.. autofunction:: paxter.author.preset.run_simple_paxter
 
-.. autofunction:: paxter.authoring.preset.run_document_paxter
+.. autofunction:: paxter.author.preset.run_document_paxter
 
 ----
 
@@ -29,9 +29,9 @@ Environment Creations
 The following function creates a pre-defined unsafe Python environment dictionary
 to be used with the evaluation context class.
 
-.. autofunction:: paxter.authoring.environ.create_simple_env
+.. autofunction:: paxter.author.environ.create_simple_env
 
-.. autofunction:: paxter.authoring.environ.create_document_env
+.. autofunction:: paxter.author.environ.create_document_env
 
 ----
 
@@ -54,107 +54,107 @@ The following instances are available in preset environments.
      - ‘**@**’
      - Yes
      - Yes
-   * - :func:`python_unsafe_exec <paxter.authoring.standards.python_unsafe_exec>`
+   * - :func:`python_unsafe_exec <paxter.author.standards.python_unsafe_exec>`
      - **python**
      - Yes
      - Yes
-   * - :func:`verbatim <paxter.authoring.standards.verbatim>`
+   * - :func:`verbatim <paxter.author.standards.verbatim>`
      - **verbatim**
      - Yes
      - Yes
-   * - :func:`if_statement <paxter.authoring.controls.if_statement>`
+   * - :func:`if_statement <paxter.author.controls.if_statement>`
      - **if**
      - Yes
      - Yes
-   * - :func:`for_statement <paxter.authoring.controls.for_statement>`
+   * - :func:`for_statement <paxter.author.controls.for_statement>`
      - **for**
      - Yes
      - Yes
-   * - :class:`RawElement <paxter.authoring.document.RawElement>`
+   * - :class:`RawElement <paxter.author.document.RawElement>`
      - **raw**
      - \-
      - Yes
-   * - :data:`line_break <paxter.authoring.document.line_break>`
+   * - :data:`line_break <paxter.author.document.line_break>`
      - **break**
      - \-
      - Yes
-   * - :data:`horizontal_rule <paxter.authoring.document.horizontal_rule>`
+   * - :data:`horizontal_rule <paxter.author.document.horizontal_rule>`
      - **hrule**
      - \-
      - Yes
-   * - :data:`non_breaking_space <paxter.authoring.document.non_breaking_space>`
+   * - :data:`non_breaking_space <paxter.author.document.non_breaking_space>`
      - **nbsp**, ‘**%**’
      - \-
      - Yes
-   * - :data:`hair_space <paxter.authoring.document.hair_space>`
+   * - :data:`hair_space <paxter.author.document.hair_space>`
      - **hairsp**, ‘**.**’
      - \-
      - Yes
-   * - :data:`thin_space <paxter.authoring.document.thin_space>`
+   * - :data:`thin_space <paxter.author.document.thin_space>`
      - **thinsp**, ‘**,**’
      - \-
      - Yes
-   * - :class:`Paragraph <paxter.authoring.document.Paragraph>`
+   * - :class:`Paragraph <paxter.author.document.Paragraph>`
      - **paragraph**
      - \-
      - Yes
-   * - :class:`Heading1 <paxter.authoring.document.Heading1>`
+   * - :class:`Heading1 <paxter.author.document.Heading1>`
      - **h1**
      - \-
      - Yes
-   * - :class:`Heading2 <paxter.authoring.document.Heading2>`
+   * - :class:`Heading2 <paxter.author.document.Heading2>`
      - **h2**
      - \-
      - Yes
-   * - :class:`Heading3 <paxter.authoring.document.Heading3>`
+   * - :class:`Heading3 <paxter.author.document.Heading3>`
      - **h3**
      - \-
      - Yes
-   * - :class:`Heading4 <paxter.authoring.document.Heading4>`
+   * - :class:`Heading4 <paxter.author.document.Heading4>`
      - **h4**
      - \-
      - Yes
-   * - :class:`Heading5 <paxter.authoring.document.Heading5>`
+   * - :class:`Heading5 <paxter.author.document.Heading5>`
      - **h5**
      - \-
      - Yes
-   * - :class:`Heading6 <paxter.authoring.document.Heading6>`
+   * - :class:`Heading6 <paxter.author.document.Heading6>`
      - **h6**
      - \-
      - Yes
-   * - :class:`Bold <paxter.authoring.document.Bold>`
+   * - :class:`Bold <paxter.author.document.Bold>`
      - **bold**
      - \-
      - Yes
-   * - :class:`Heading6 <paxter.authoring.document.Italic>`
+   * - :class:`Heading6 <paxter.author.document.Italic>`
      - **italic**
      - \-
      - Yes
-   * - :class:`Underline <paxter.authoring.document.Underline>`
+   * - :class:`Underline <paxter.author.document.Underline>`
      - **uline**
      - \-
      - Yes
-   * - :class:`Code <paxter.authoring.document.Code>`
+   * - :class:`Code <paxter.author.document.Code>`
      - **code**
      - \-
      - Yes
-   * - :class:`Blockquote <paxter.authoring.document.Blockquote>`
+   * - :class:`Blockquote <paxter.author.document.Blockquote>`
      - **blockquote**
      - \-
      - Yes
-   * - :class:`Link <paxter.authoring.document.Link>`
+   * - :class:`Link <paxter.author.document.Link>`
      - **link**
      - \-
      - Yes
-   * - :class:`Image <paxter.authoring.document.Image>`
+   * - :class:`Image <paxter.author.document.Image>`
      - **image**
      - \-
      - Yes
-   * - :class:`NumberedList <paxter.authoring.document.NumberedList>`
+   * - :class:`NumberedList <paxter.author.document.NumberedList>`
      - **numbered_list**
      - \-
      - Yes
-   * - :class:`BulletedList <paxter.authoring.document.BulletedList>`
+   * - :class:`BulletedList <paxter.author.document.BulletedList>`
      - **bulleted_list**
      - \-
      - Yes
@@ -163,94 +163,106 @@ The following instances are available in preset environments.
 Standard Functions
 ------------------
 
-.. autofunction:: paxter.authoring.standards.phrase_unsafe_eval
+.. autofunction:: paxter.author.standards.phrase_unsafe_eval
 
-.. autofunction:: paxter.authoring.standards.python_unsafe_exec
+.. autofunction:: paxter.author.standards.python_unsafe_exec
 
-.. autofunction:: paxter.authoring.standards.verbatim
+.. autofunction:: paxter.author.standards.verbatim
 
 
 Control Functions
 -----------------
 
-.. autofunction:: paxter.authoring.controls.if_statement
+.. autofunction:: paxter.author.controls.if_statement
 
-.. autofunction:: paxter.authoring.controls.for_statement
+.. autofunction:: paxter.author.controls.for_statement
 
 
 Document Data Classes
 ---------------------
 
-.. autoclass:: paxter.authoring.document.Element
+.. autoclass:: paxter.author.document.Element
    :members:
 
-.. autoclass:: paxter.authoring.document.Document
+.. autoclass:: paxter.author.document.Document
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.RawElement
+.. autoclass:: paxter.author.document.RawElement
    :show-inheritance:
 
-.. autodata:: paxter.authoring.document.line_break
+.. autodata:: paxter.author.document.line_break
 
-.. autodata:: paxter.authoring.document.horizontal_rule
+.. autodata:: paxter.author.document.horizontal_rule
 
-.. autodata:: paxter.authoring.document.non_breaking_space
+.. autodata:: paxter.author.document.non_breaking_space
 
-.. autodata:: paxter.authoring.document.hair_space
+.. autodata:: paxter.author.document.hair_space
 
-.. autodata:: paxter.authoring.document.thin_space
+.. autodata:: paxter.author.document.thin_space
 
-.. autoclass:: paxter.authoring.document.SimpleElement
+.. autoclass:: paxter.author.document.SimpleElement
    :members: HTML_OPENING, HTML_CLOSING
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Paragraph
+.. autoclass:: paxter.author.document.Paragraph
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Heading1
+.. autoclass:: paxter.author.document.Heading1
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Heading2
+.. autoclass:: paxter.author.document.Heading2
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Heading3
+.. autoclass:: paxter.author.document.Heading3
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Heading4
+.. autoclass:: paxter.author.document.Heading4
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Heading5
+.. autoclass:: paxter.author.document.Heading5
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Heading6
+.. autoclass:: paxter.author.document.Heading6
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Bold
+.. autoclass:: paxter.author.document.Bold
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Italic
+.. autoclass:: paxter.author.document.Italic
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Underline
+.. autoclass:: paxter.author.document.Underline
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Code
+.. autoclass:: paxter.author.document.Code
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Blockquote
+.. autoclass:: paxter.author.document.Blockquote
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Link
+.. autoclass:: paxter.author.document.Link
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.Image
+.. autoclass:: paxter.author.document.Image
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.BareList
+.. autoclass:: paxter.author.document.SequenceElement
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.NumberedList
+.. autoclass:: paxter.author.document.HigherSequenceElement
    :show-inheritance:
 
-.. autoclass:: paxter.authoring.document.BulletedList
+.. autoclass:: paxter.author.document.NumberedList
+   :show-inheritance:
+
+.. autoclass:: paxter.author.document.BulletedList
+   :show-inheritance:
+
+.. autoclass:: paxter.author.document.Table
+   :show-inheritance:
+
+.. autoclass:: paxter.author.document.TableHeader
+   :show-inheritance:
+
+.. autoclass:: paxter.author.document.TableRow
    :show-inheritance:
