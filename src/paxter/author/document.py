@@ -4,12 +4,16 @@ which may be used to construct a document for web, print, etc.
 """
 import html
 import re
-from dataclasses import InitVar, dataclass
+from dataclasses import dataclass
 from typing import Iterator, List, Sequence, Union
 
 from paxter.evaluate import FragmentList
 from paxter.exceptions import PaxterRenderError
 
+
+########################
+# Base element classes #
+########################
 
 @dataclass
 class Element:
@@ -171,25 +175,10 @@ class Element:
 
 
 @dataclass
-class Document(Element):
-    """
-    Topmost-level element for the entire document itself.
-    It may split the provided body into multiple paragraphs.
-    """
-    body: List
-
-    def __post_init__(self):
-        if isinstance(self.body, (str, FragmentList)):
-            self.body = self.split_fragments(self.body, forced_paragraph=True)
-
-    def html_token_stream(self) -> Iterator[str]:
-        yield from self.html_rec_token_stream(self.body)
-
-
-@dataclass
 class RawElement(Element):
     """
-    Wraps over a raw string and rendered to output unescaped.
+    Element which wraps over a raw string
+    which will not be escaped when rendered to output.
     """
     body: str
 
@@ -201,15 +190,7 @@ class RawElement(Element):
         yield self.body
 
 
-#: Line break raw element
-line_break = RawElement(body='<br />')
-horizontal_rule = RawElement(body='<hr />')
-non_breaking_space = RawElement(body='&nbsp;')
-hair_space = RawElement(body='&hairsp;')
-thin_space = RawElement(body='&thinsp;')
-
-
-@dataclass
+@dataclass(init=False)
 class SimpleElement(Element):
     """
     Simple element node type which renders output in the form of
@@ -223,131 +204,15 @@ class SimpleElement(Element):
     #: Closing part of the element
     HTML_CLOSING = '</div>'
 
-    def __post_init__(self):
-        if isinstance(self.body, (str, FragmentList)):
-            self.body = self.flatten_fragments(self.body)
+    def __init__(self, body: Union[str, FragmentList, List]):
+        if isinstance(body, (str, FragmentList)):
+            body = self.flatten_fragments(body)
+        self.body = body
 
     def html_token_stream(self) -> Iterator[str]:
         yield self.HTML_OPENING
         yield from self.html_rec_token_stream(self.body)
         yield self.HTML_CLOSING
-
-
-@dataclass
-class Paragraph(SimpleElement):
-    HTML_OPENING = '<p>'
-    HTML_CLOSING = '</p>'
-
-
-@dataclass
-class Heading1(SimpleElement):
-    HTML_OPENING = '<h1>'
-    HTML_CLOSING = '</h1>'
-
-
-@dataclass
-class Heading2(SimpleElement):
-    HTML_OPENING = '<h2>'
-    HTML_CLOSING = '</h2>'
-
-
-@dataclass
-class Heading3(SimpleElement):
-    HTML_OPENING = '<h3>'
-    HTML_CLOSING = '</h3>'
-
-
-@dataclass
-class Heading4(SimpleElement):
-    HTML_OPENING = '<h4>'
-    HTML_CLOSING = '</h4>'
-
-
-@dataclass
-class Heading5(SimpleElement):
-    HTML_OPENING = '<h5>'
-    HTML_CLOSING = '</h5>'
-
-
-@dataclass
-class Heading6(SimpleElement):
-    HTML_OPENING = '<h6>'
-    HTML_CLOSING = '</h6>'
-
-
-@dataclass
-class Bold(SimpleElement):
-    HTML_OPENING = '<b>'
-    HTML_CLOSING = '</b>'
-
-
-@dataclass
-class Italic(SimpleElement):
-    HTML_OPENING = '<i>'
-    HTML_CLOSING = '</i>'
-
-
-@dataclass
-class Underline(SimpleElement):
-    HTML_OPENING = '<u>'
-    HTML_CLOSING = '</u>'
-
-
-@dataclass
-class Code(SimpleElement):
-    HTML_OPENING = '<code>'
-    HTML_CLOSING = '</code>'
-
-
-@dataclass
-class Link(SimpleElement):
-    """
-    Hyperlink element.
-    """
-    body: List
-    href: str
-
-    def html_token_stream(self) -> str:
-        yield f'<a href="{html.escape(self.href)}">'
-        yield from self.html_rec_token_stream(self.body)
-        yield '</a>'
-
-
-@dataclass
-class Blockquote(Element):
-    """
-    Renders the blockquote which may split the provided body
-    into multiple paragraphs.
-    """
-    body: List
-    forced_paragraph: InitVar[bool] = False
-
-    def __post_init__(self, forced_paragraph: bool):
-        if isinstance(self.body, (str, FragmentList)):
-            self.body = self.split_fragments(self.body, forced_paragraph)
-
-    def html_token_stream(self) -> Iterator[str]:
-        yield '<blockquote>'
-        yield from self.html_rec_token_stream(self.body)
-        yield '</blockquote>'
-
-
-@dataclass
-class Image(Element):
-    """
-    Image embedding element.
-    """
-    src: str
-    alt: str = ""
-
-    def __post_init__(self):
-        if not isinstance(self.src, str):
-            raise PaxterRenderError(f'image source must be string: {self.src!r}')
-        if not isinstance(self.alt, str):
-            raise PaxterRenderError(f'image alt text must be string: {self.alt!r}')
-
-    def html_token_stream(self) -> Iterator[str]:
-        yield f'<img src="{html.escape(self.src)}" alt="{html.escape(self.alt)}" />'
 
 
 @dataclass(init=False)
@@ -363,7 +228,11 @@ class SequenceElement(Element):
     HTML_ITEM_OPENING = ''
     HTML_ITEM_CLOSING = ''
 
-    def __init__(self, *items, forced_paragraph: bool = False):
+    def __init__(
+            self,
+            *items: Union[str, FragmentList, List],
+            forced_paragraph: bool = False,
+    ):
         self.items = []
         for item in items:
             if isinstance(item, (str, FragmentList)):
@@ -397,6 +266,152 @@ class HigherSequenceElement(Element):
         yield self.HTML_OPENING
         yield from self.html_rec_token_stream(self.items)
         yield self.HTML_CLOSING
+
+
+############################
+# Concrete element classes #
+############################
+
+@dataclass(init=False)
+class Document(Element):
+    """
+    Topmost-level element for the entire document itself.
+    It may split the provided body into multiple paragraphs.
+    """
+    body: List
+
+    def __init__(self, body: Union[str, FragmentList, List]):
+        if isinstance(body, (str, FragmentList)):
+            body = self.split_fragments(body, forced_paragraph=True)
+        self.body = body
+
+    def html_token_stream(self) -> Iterator[str]:
+        yield from self.html_rec_token_stream(self.body)
+
+
+@dataclass(init=False)
+class Paragraph(SimpleElement):
+    HTML_OPENING = '<p>'
+    HTML_CLOSING = '</p>'
+
+
+@dataclass(init=False)
+class Heading1(SimpleElement):
+    HTML_OPENING = '<h1>'
+    HTML_CLOSING = '</h1>'
+
+
+@dataclass(init=False)
+class Heading2(SimpleElement):
+    HTML_OPENING = '<h2>'
+    HTML_CLOSING = '</h2>'
+
+
+@dataclass(init=False)
+class Heading3(SimpleElement):
+    HTML_OPENING = '<h3>'
+    HTML_CLOSING = '</h3>'
+
+
+@dataclass(init=False)
+class Heading4(SimpleElement):
+    HTML_OPENING = '<h4>'
+    HTML_CLOSING = '</h4>'
+
+
+@dataclass(init=False)
+class Heading5(SimpleElement):
+    HTML_OPENING = '<h5>'
+    HTML_CLOSING = '</h5>'
+
+
+@dataclass(init=False)
+class Heading6(SimpleElement):
+    HTML_OPENING = '<h6>'
+    HTML_CLOSING = '</h6>'
+
+
+@dataclass(init=False)
+class Bold(SimpleElement):
+    HTML_OPENING = '<b>'
+    HTML_CLOSING = '</b>'
+
+
+@dataclass(init=False)
+class Italic(SimpleElement):
+    HTML_OPENING = '<i>'
+    HTML_CLOSING = '</i>'
+
+
+@dataclass(init=False)
+class Underline(SimpleElement):
+    HTML_OPENING = '<u>'
+    HTML_CLOSING = '</u>'
+
+
+@dataclass(init=False)
+class Code(SimpleElement):
+    HTML_OPENING = '<code>'
+    HTML_CLOSING = '</code>'
+
+
+@dataclass(init=False)
+class Link(SimpleElement):
+    """
+    Hyperlink element.
+    """
+    body: List
+    href: str
+
+    def __init__(self, body: Union[str, FragmentList, List], href: str):
+        super().__init__(body)
+        self.href = href
+
+    def html_token_stream(self) -> str:
+        yield f'<a href="{html.escape(self.href)}">'
+        yield from self.html_rec_token_stream(self.body)
+        yield '</a>'
+
+
+@dataclass(init=False)
+class Blockquote(Element):
+    """
+    Renders the blockquote which may split the provided body
+    into multiple paragraphs.
+    """
+    body: List
+
+    def __init__(
+            self,
+            body: Union[str, FragmentList, List],
+            forced_paragraph: bool = False,
+    ):
+        if isinstance(body, (str, FragmentList)):
+            body = self.split_fragments(body, forced_paragraph)
+        self.body = body
+
+    def html_token_stream(self) -> Iterator[str]:
+        yield '<blockquote>'
+        yield from self.html_rec_token_stream(self.body)
+        yield '</blockquote>'
+
+
+@dataclass
+class Image(Element):
+    """
+    Image embedding element.
+    """
+    src: str
+    alt: str = ""
+
+    def __post_init__(self):
+        if not isinstance(self.src, str):
+            raise PaxterRenderError(f'image source must be string: {self.src!r}')
+        if not isinstance(self.alt, str):
+            raise PaxterRenderError(f'image alt text must be string: {self.alt!r}')
+
+    def html_token_stream(self) -> Iterator[str]:
+        yield f'<img src="{html.escape(self.src)}" alt="{html.escape(self.alt)}" />'
 
 
 @dataclass(init=False)
@@ -444,9 +459,20 @@ class TableHeader(SequenceElement):
 @dataclass(init=False)
 class TableRow(SequenceElement):
     """
-    Element containing a table row as a sequence of cells.
+    Element containing a table data row as a sequence of cells.
     """
     HTML_GLOBAL_OPENING = '<tr>'
     HTML_GLOBAL_CLOSING = '</tr>'
     HTML_ITEM_OPENING = '<td>'
     HTML_ITEM_CLOSING = '</td>'
+
+
+#################
+# Extra objects #
+#################
+
+line_break = RawElement(body='<br />')
+horizontal_rule = RawElement(body='<hr />')
+non_breaking_space = RawElement(body='&nbsp;')
+hair_space = RawElement(body='&hairsp;')
+thin_space = RawElement(body='&thinsp;')

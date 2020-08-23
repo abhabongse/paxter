@@ -1,6 +1,6 @@
 """
 Document-first text pre-processing mini-language
-loosely inspired by @-expressions in Racket
+loosely inspired by @-expressions in Racket.
 """
 import json
 import os

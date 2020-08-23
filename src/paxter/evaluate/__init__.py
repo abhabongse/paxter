@@ -1,5 +1,6 @@
 """
-Implements python evaluate for Paxter language.
+This paxter subpackage implements a variant of
+parsed tree evaluation for Paxter language.
 """
 from paxter.evaluate.context import EvaluateContext
 from paxter.evaluate.data import FragmentList
