@@ -15,7 +15,7 @@ class FragmentList(UserList, MutableSequence[T]):
 
     def __repr__(self):
         content = super().__repr__()
-        return f"Fragments({content})"
+        return f"FragmentList({content})"
 
     def flatten(self):
         """

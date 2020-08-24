@@ -418,6 +418,7 @@ class Image(Element):
 class NumberedList(SequenceElement):
     """
     Element containing an ordered (numbered) list.
+    Each item may be split into multiple paragraphs.
     """
     HTML_GLOBAL_OPENING = '<ol>'
     HTML_GLOBAL_CLOSING = '</ol>'
@@ -429,6 +430,7 @@ class NumberedList(SequenceElement):
 class BulletedList(SequenceElement):
     """
     Element containing an unordered (bulleted) list.
+    Each item may be split into multiple paragraphs.
     """
     HTML_GLOBAL_OPENING = '<ul>'
     HTML_GLOBAL_CLOSING = '</ul>'
@@ -449,6 +451,7 @@ class Table(HigherSequenceElement):
 class TableHeader(SequenceElement):
     """
     Element containing a table header row as a sequence of cells.
+    Each cell may be split into multiple paragraphs.
     """
     HTML_GLOBAL_OPENING = '<tr>'
     HTML_GLOBAL_CLOSING = '</tr>'
@@ -460,6 +463,7 @@ class TableHeader(SequenceElement):
 class TableRow(SequenceElement):
     """
     Element containing a table data row as a sequence of cells.
+    Each cell may be split into multiple paragraphs.
     """
     HTML_GLOBAL_OPENING = '<tr>'
     HTML_GLOBAL_CLOSING = '</tr>'

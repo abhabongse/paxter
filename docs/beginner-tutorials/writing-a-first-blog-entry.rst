@@ -5,25 +5,20 @@ Writing a First Blog Entry
 Let us write a simple blog entry.
 Consider the following python code in which
 ``paragraph`` object is constructed using data classes
-from :mod:`paxter.author.document` subpackage
-(please ignore the usage of
-:class:`Fragments <paxter.evaluate.data.Fragments>` class for now).
+from :mod:`paxter.author.document` subpackage.
 
 .. code-block:: python
 
    from paxter.author.document import Bold, Link, Paragraph, line_break
-   from paxter.evaluate.data import Fragments
 
-   paragraph = Paragraph(
-       Fragments([
-           "Hi, my name is ",
-           Bold(Fragments(["Ashley"])),
-           line_break,
-           "\nand my blog is located ",
-           Link(Fragments(["here"]), "https://example.com"),
-           ".",
-       ])
-   )
+   paragraph = Paragraph([
+       "Hi, my name is ",
+       Bold(["Ashley"]),
+       line_break,
+       "\nand my blog is located ",
+       Link(["here"], "https://example.com"),
+       ".",
+   ])
 
 .. important::
 
@@ -63,18 +58,17 @@ to construct the exact same document.
 .. code-block:: pycon
 
    >>> document
-   Fragments([
+   FragmentList([
        Paragraph(
-           blob=Fragments([
+           body=[
                "Hi, my name is ",
-               Bold(blob=Fragments(["Ashley"])),
-               RawElement(blob="<br />"),
+               Bold(body=["Ashley"]),
+               RawElement(body="<br />"),
                "\nand my blog is located ",
-               Link(blob=Fragments(["here"]), href="https://example.com"),
+               Link(body=["here"], href="https://example.com"),
                ".",
-           ])
-       )
-   ])
+           ],
+       ),
    >>> document[0] == paragraph  # paragraph from the previous example
    True
    >>> print(document[0].html())
@@ -122,26 +116,26 @@ In particular, it is roughly equivalent to this python code:
 
 .. code-block:: python
 
-   bold(Fragments(["Ashley"]))
+   bold(FragmentList(["Ashley"]))
 
 which would be evaluated into the following.
 
 .. code-block:: python
 
-   Bold(blob=Fragments(["Ashley"]))
+   Bold(body=["Ashley"])
 
 Similarly, ``@link["https://example.com"]{here}`` from inside the input text
 would roughly be parsed into the following python code
 
 .. code-block:: python
 
-   link(Fragments(["here"]), "https://example.com")
+   link(FragmentList(["here"]), "https://example.com")
 
 which in turn, would be evaluated into
 
 .. code-block:: python
 
-   Link(blob=Fragments(['here']), href='https://example.com')
+   Link(body=['here'], href='https://example.com')
 
 Pay attention of how the ``{...}`` part of the command
 is parsed into the python code.
@@ -164,12 +158,12 @@ roughly parsed into an equivalent python code as follows.
 .. code-block:: python
 
    paragraph(
-       Fragments([
+       FragmentList([
            "Hi, my name is ",
-           bold(Fragments(["Ashley"])),
+           bold(FragmentList(["Ashley"])),
            break_,
            "\nand my blog is located ",
-           link(Fragments(["here"]), "https://example.com"),
+           link(FragmentList(["here"]), "https://example.com"),
            ".",
        ]),
    )
@@ -192,14 +186,14 @@ would turn into the following equivalent python code.
 
 .. code-block:: python
 
-   foo(Fragments(["main argument"]), "bar", 3)
+   foo(FragmentList(["main argument"]), "bar", 3)
 
 Python-style keyword arguments are also supported within the options.
 For instance, the Paxter command ``@foo["bar", n=3]{main argument}`` gets turned into:
 
 .. code-block:: python
 
-   foo(Fragments(["main argument"]), "bar", n=3)
+   foo(FragmentList(["main argument"]), "bar", n=3)
 
 In addition, the main argument discussed earlier is actually *not* mandatory.
 When it is absent, all values within the options then
@@ -251,15 +245,15 @@ Additionally, note that ``@break`` simply maps to the value
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f34c1b2a1f0>),
     'verb': <function paxter.author.standards.verbatim(text: Any) -> str>,
     'raw': paxter.author.document.RawElement,
-    '\\': RawElement(blob='<br />'),
-    'line_break': RawElement(blob='<br />'),
-    'hrule': RawElement(blob='<hr />'),
-    'nbsp': RawElement(blob='&nbsp;'),
-    '%': RawElement(blob='&nbsp;'),
-    'hairsp': RawElement(blob='&hairsp;'),
-    '.': RawElement(blob='&hairsp;'),
-    'thinsp': RawElement(blob='&thinsp;'),
-    ',': RawElement(blob='&thinsp;'),
+    '\\': RawElement(body='<br />'),
+    'line_break': RawElement(body='<br />'),
+    'hrule': RawElement(body='<hr />'),
+    'nbsp': RawElement(body='&nbsp;'),
+    '%': RawElement(body='&nbsp;'),
+    'hairsp': RawElement(body='&hairsp;'),
+    '.': RawElement(body='&hairsp;'),
+    'thinsp': RawElement(body='&thinsp;'),
+    ',': RawElement(body='&thinsp;'),
     'paragraph': paxter.author.document.Paragraph,
     'h1': paxter.author.document.Heading1,
     'h2': paxter.author.document.Heading2,
