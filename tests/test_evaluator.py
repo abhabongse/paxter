@@ -5,7 +5,7 @@ import pytest
 from click.testing import CliRunner
 
 from paxter.author import create_document_env
-from paxter.author.document import Document
+from paxter.author.elements import Document
 from paxter.evaluate import EvaluateContext
 from paxter.parse import (
     ParseContext,
@@ -39,7 +39,7 @@ def test_evaluator_document(input_file, expected_file):
     # Render into output HTML
     env = create_document_env()
     evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
-    document = Document(evaluate_context.rendered)
+    document = Document.from_fragments(evaluate_context.rendered)
 
     assert document.html() == expected_text
 

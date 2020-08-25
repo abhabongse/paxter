@@ -36,7 +36,7 @@ let us revisit the environment dictionary once again.
     'if': DirectApply(wrapped=<function if_statement at 0x7f8f7c0e5dc0>),
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f8f6ec20160>),
     'verb': <function paxter.author.standards.verbatim(text: Any) -> str>,
-    'raw': paxter.author.document.RawElement,
+    'raw': paxter.author.elements.RawElement,
     '\\': RawElement(blob='<br />'),
     'line_break': RawElement(blob='<br />'),
     'hrule': RawElement(blob='<hr />'),
@@ -46,22 +46,22 @@ let us revisit the environment dictionary once again.
     '.': RawElement(blob='&hairsp;'),
     'thinsp': RawElement(blob='&thinsp;'),
     ',': RawElement(blob='&thinsp;'),
-    'paragraph': paxter.author.document.Paragraph,
-    'h1': paxter.author.document.Heading1,
-    'h2': paxter.author.document.Heading2,
-    'h3': paxter.author.document.Heading3,
-    'h4': paxter.author.document.Heading4,
-    'h5': paxter.author.document.Heading5,
-    'h6': paxter.author.document.Heading6,
-    'bold': paxter.author.document.Bold,
-    'italic': paxter.author.document.Italic,
-    'uline': paxter.author.document.Underline,
-    'code': paxter.author.document.Code,
-    'blockquote': paxter.author.document.Blockquote,
-    'link': paxter.author.document.Link,
-    'image': paxter.author.document.Image,
-    'numbered_list': paxter.author.document.NumberedList,
-    'bulleted_list': paxter.author.document.BulletedList}
+    'paragraph': paxter.author.elements.Paragraph,
+    'h1': paxter.author.elements.Heading1,
+    'h2': paxter.author.elements.Heading2,
+    'h3': paxter.author.elements.Heading3,
+    'h4': paxter.author.elements.Heading4,
+    'h5': paxter.author.elements.Heading5,
+    'h6': paxter.author.elements.Heading6,
+    'bold': paxter.author.elements.Bold,
+    'italic': paxter.author.elements.Italic,
+    'uline': paxter.author.elements.Underline,
+    'code': paxter.author.elements.Code,
+    'blockquote': paxter.author.elements.Blockquote,
+    'link': paxter.author.elements.Link,
+    'image': paxter.author.elements.Image,
+    'numbered_list': paxter.author.elements.NumberedList,
+    'bulleted_list': paxter.author.elements.BulletedList}
 
 Recall that Paxter uses this environment dictionary
 as a mapping from aliases to the actual python object.
@@ -75,7 +75,7 @@ Let us see this in action.
 .. code-block:: python
 
    from paxter.author import create_document_env, run_simple_paxter
-   from paxter.author.document import Document
+   from paxter.author.elements import Document
 
    input_text = r'''Hi, my name is @bold{Ashley}@\
    and my blog is located @link["https://example.com"]{here}.
@@ -106,7 +106,7 @@ By the way, the following python code seems to be a recurring pattern.
 .. code-block:: python
 
    from paxter.author import create_document_env, run_simple_paxter
-   from paxter.author.document import Document
+   from paxter.author.elements import Document
 
    input_text = ...
    env = create_document_env()

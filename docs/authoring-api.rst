@@ -70,91 +70,91 @@ The following instances are available in preset environments.
      - **for**
      - Yes
      - Yes
-   * - :class:`RawElement <paxter.author.document.RawElement>`
+   * - :class:`RawElement <paxter.author.elements.RawElement>`
      - **raw**
      - \-
      - Yes
-   * - :data:`line_break <paxter.author.document.line_break>`
+   * - :data:`line_break <paxter.author.elements.line_break>`
      - **break**
      - \-
      - Yes
-   * - :data:`horizontal_rule <paxter.author.document.horizontal_rule>`
+   * - :data:`horizontal_rule <paxter.author.elements.horizontal_rule>`
      - **hrule**
      - \-
      - Yes
-   * - :data:`non_breaking_space <paxter.author.document.non_breaking_space>`
+   * - :data:`non_breaking_space <paxter.author.elements.non_breaking_space>`
      - **nbsp**, ‘**%**’
      - \-
      - Yes
-   * - :data:`hair_space <paxter.author.document.hair_space>`
+   * - :data:`hair_space <paxter.author.elements.hair_space>`
      - **hairsp**, ‘**.**’
      - \-
      - Yes
-   * - :data:`thin_space <paxter.author.document.thin_space>`
+   * - :data:`thin_space <paxter.author.elements.thin_space>`
      - **thinsp**, ‘**,**’
      - \-
      - Yes
-   * - :class:`Paragraph <paxter.author.document.Paragraph>`
+   * - :class:`Paragraph <paxter.author.elements.Paragraph>`
      - **paragraph**
      - \-
      - Yes
-   * - :class:`Heading1 <paxter.author.document.Heading1>`
+   * - :class:`Heading1 <paxter.author.elements.Heading1>`
      - **h1**
      - \-
      - Yes
-   * - :class:`Heading2 <paxter.author.document.Heading2>`
+   * - :class:`Heading2 <paxter.author.elements.Heading2>`
      - **h2**
      - \-
      - Yes
-   * - :class:`Heading3 <paxter.author.document.Heading3>`
+   * - :class:`Heading3 <paxter.author.elements.Heading3>`
      - **h3**
      - \-
      - Yes
-   * - :class:`Heading4 <paxter.author.document.Heading4>`
+   * - :class:`Heading4 <paxter.author.elements.Heading4>`
      - **h4**
      - \-
      - Yes
-   * - :class:`Heading5 <paxter.author.document.Heading5>`
+   * - :class:`Heading5 <paxter.author.elements.Heading5>`
      - **h5**
      - \-
      - Yes
-   * - :class:`Heading6 <paxter.author.document.Heading6>`
+   * - :class:`Heading6 <paxter.author.elements.Heading6>`
      - **h6**
      - \-
      - Yes
-   * - :class:`Bold <paxter.author.document.Bold>`
+   * - :class:`Bold <paxter.author.elements.Bold>`
      - **bold**
      - \-
      - Yes
-   * - :class:`Heading6 <paxter.author.document.Italic>`
+   * - :class:`Heading6 <paxter.author.elements.Italic>`
      - **italic**
      - \-
      - Yes
-   * - :class:`Underline <paxter.author.document.Underline>`
+   * - :class:`Underline <paxter.author.elements.Underline>`
      - **uline**
      - \-
      - Yes
-   * - :class:`Code <paxter.author.document.Code>`
+   * - :class:`Code <paxter.author.elements.Code>`
      - **code**
      - \-
      - Yes
-   * - :class:`Blockquote <paxter.author.document.Blockquote>`
+   * - :class:`Blockquote <paxter.author.elements.Blockquote>`
      - **blockquote**
      - \-
      - Yes
-   * - :class:`Link <paxter.author.document.Link>`
+   * - :class:`Link <paxter.author.elements.Link>`
      - **link**
      - \-
      - Yes
-   * - :class:`Image <paxter.author.document.Image>`
+   * - :class:`Image <paxter.author.elements.Image>`
      - **image**
      - \-
      - Yes
-   * - :class:`NumberedList <paxter.author.document.NumberedList>`
+   * - :class:`NumberedList <paxter.author.elements.NumberedList>`
      - **numbered_list**
      - \-
      - Yes
-   * - :class:`BulletedList <paxter.author.document.BulletedList>`
+   * - :class:`BulletedList <paxter.author.elements.BulletedList>`
      - **bulleted_list**
      - \-
      - Yes
@@ -181,88 +181,88 @@ Control Functions
 Document Data Classes
 ---------------------
 
-.. autoclass:: paxter.author.document.Element
+.. autoclass:: paxter.author.elements.Element
    :members:
 
-.. autoclass:: paxter.author.document.Document
+.. autoclass:: paxter.author.elements.Document
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.RawElement
+.. autoclass:: paxter.author.elements.RawElement
    :show-inheritance:
 
-.. autodata:: paxter.author.document.line_break
+.. autodata:: paxter.author.elements.line_break
 
-.. autodata:: paxter.author.document.horizontal_rule
+.. autodata:: paxter.author.elements.horizontal_rule
 
-.. autodata:: paxter.author.document.non_breaking_space
+.. autodata:: paxter.author.elements.non_breaking_space
 
-.. autodata:: paxter.author.document.hair_space
+.. autodata:: paxter.author.elements.hair_space
 
-.. autodata:: paxter.author.document.thin_space
+.. autodata:: paxter.author.elements.thin_space
 
-.. autoclass:: paxter.author.document.SimpleElement
+.. autoclass:: paxter.author.elements.SimpleElement
    :members: HTML_OPENING, HTML_CLOSING
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Paragraph
+.. autoclass:: paxter.author.elements.Paragraph
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Heading1
+.. autoclass:: paxter.author.elements.Heading1
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Heading2
+.. autoclass:: paxter.author.elements.Heading2
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Heading3
+.. autoclass:: paxter.author.elements.Heading3
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Heading4
+.. autoclass:: paxter.author.elements.Heading4
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Heading5
+.. autoclass:: paxter.author.elements.Heading5
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Heading6
+.. autoclass:: paxter.author.elements.Heading6
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Bold
+.. autoclass:: paxter.author.elements.Bold
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Italic
+.. autoclass:: paxter.author.elements.Italic
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Underline
+.. autoclass:: paxter.author.elements.Underline
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Code
+.. autoclass:: paxter.author.elements.Code
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Blockquote
+.. autoclass:: paxter.author.elements.Blockquote
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Link
+.. autoclass:: paxter.author.elements.Link
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Image
+.. autoclass:: paxter.author.elements.Image
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.SequenceElement
+.. autoclass:: paxter.author.elements.SequenceElement
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.HigherSequenceElement
+.. autoclass:: paxter.author.elements.HigherSequenceElement
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.NumberedList
+.. autoclass:: paxter.author.elements.NumberedList
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.BulletedList
+.. autoclass:: paxter.author.elements.BulletedList
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.Table
+.. autoclass:: paxter.author.elements.Table
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.TableHeader
+.. autoclass:: paxter.author.elements.TableHeader
    :show-inheritance:
 
-.. autoclass:: paxter.author.document.TableRow
+.. autoclass:: paxter.author.elements.TableRow
    :show-inheritance:

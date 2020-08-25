@@ -3,7 +3,7 @@ A collection of Paxter common functions.
 """
 from typing import Optional
 
-from paxter.author.document import Document
+from paxter.author.elements import Document
 from paxter.author.environ import create_document_env, create_simple_env
 from paxter.evaluate import FragmentList
 from paxter.evaluate.context import EvaluateContext
@@ -32,4 +32,4 @@ def run_document_paxter(input_text: str, env: Optional[dict] = None) -> Document
     parse_context = ParseContext(input_text)
     env = env or create_document_env()
     evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
-    return Document(evaluate_context.rendered)
+    return Document.from_fragments(evaluate_context.rendered)

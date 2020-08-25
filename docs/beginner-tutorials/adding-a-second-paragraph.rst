@@ -38,8 +38,8 @@ So we will add another one.
 
 The resulting ``document`` (shown above)
 is a :class:`Fragments <paxter.evaluate.data.Fragments>` list of
-:class:`str` or :class:`Element <paxter.author.document.Element>` instances
-(from which :class:`Paragraph <paxter.author.document.Paragraph>` is derived).
+:class:`str` or :class:`Element <paxter.author.elements.Element>` instances
+(from which :class:`Paragraph <paxter.author.elements.Paragraph>` is derived).
 Unfortunately, the :class:`Fragments <paxter.evaluate.data.Fragments>` class
 does not provide a method to render itself into a final output *by design*
 as it is merely part of the result of parsing and evaluate
@@ -52,16 +52,16 @@ Document Helper Class
 =====================
 
 Paxter’s authoring subpackage provides a data class called
-:class:`Document <paxter.author.document.Document>`
+:class:`Document <paxter.author.elements.Document>`
 to wrap over the object returned by
 :func:`run_simple_paxter <paxter.author.preset.run_simple_paxter>`.
-Then we call the :meth:`html() <paxter.author.document.Element>` method
+Then we call the :meth:`html() <paxter.author.elements.Element>` method
 to render the HTML output.
 
 .. code-block:: python
 
    from paxter.author import create_document_env, run_simple_paxter
-   from paxter.author.document import Document
+   from paxter.author.elements import Document
 
    input_text = '''@paragraph{Hi, my name is @bold{Ashley}@line_break
    and my blog is located @link["https://example.com"]{here}.}
@@ -78,12 +78,12 @@ to render the HTML output.
 
 Better yet, because writing multiple paragraphs in a single document is too common,
 we do *not* need to explicitly annotate each paragraph with ``@paragraph`` command;
-the :class:`Document <paxter.author.document.Document>` class
+the :class:`Document <paxter.author.elements.Document>` class
 will automatically split its content into paragraphs
 separated by two or more newline characters,
 and each resulting paragraph will receive a wrapping under
-:class:`Paragraph <paxter.author.document.Paragraph>` data class
-unless its entirely is a single :class:`Element <paxter.author.document.Element>` of other kinds.
+:class:`Paragraph <paxter.author.elements.Paragraph>` data class
+unless its entirely is a single :class:`Element <paxter.author.elements.Element>` of other kinds.
 
 .. code-block:: python
 

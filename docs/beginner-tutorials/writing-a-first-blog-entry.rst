@@ -5,11 +5,11 @@ Writing a First Blog Entry
 Let us write a simple blog entry.
 Consider the following python code in which
 ``paragraph`` object is constructed using data classes
-from :mod:`paxter.author.document` subpackage.
+from :mod:`paxter.author.elements` subpackage.
 
 .. code-block:: python
 
-   from paxter.author.document import Bold, Link, Paragraph, line_break
+   from paxter.author.elements import Bold, Link, Paragraph, line_break
 
    paragraph = Paragraph([
        "Hi, my name is ",
@@ -26,7 +26,7 @@ from :mod:`paxter.author.document` subpackage.
    are supplementary to but independent of the core Paxter library package.
    They are provided only for convenience.
 
-Then we call the method :meth:`html() <paxter.author.document.Element.html>`
+Then we call the method :meth:`html() <paxter.author.elements.Element.html>`
 on the ``paragraph`` object in order to render
 its content into the final HTML string.
 
@@ -226,9 +226,9 @@ Understanding Environments
 
 At this point, please note that ``@paragraph``, ``@bold``, and ``@link``
 are merely aliases to the constructors of actual data classes
-:class:`Paragraph <paxter.author.document.Paragraph>`,
-:class:`Bold <paxter.author.document.Bold>`,
-and :class:`Link <paxter.author.document.Link>` respectively.
+:class:`Paragraph <paxter.author.elements.Paragraph>`,
+:class:`Bold <paxter.author.elements.Bold>`,
+and :class:`Link <paxter.author.elements.Link>` respectively.
 These relationships are evident once we inspect
 the content of the environment dictionary ``env`` (shown below).
 Additionally, note that ``@break`` simply maps to the value
@@ -244,7 +244,7 @@ Additionally, note that ``@break`` simply maps to the value
     'if': DirectApply(wrapped=<function if_statement at 0x7f34d0660c10>),
     'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f34c1b2a1f0>),
     'verb': <function paxter.author.standards.verbatim(text: Any) -> str>,
-    'raw': paxter.author.document.RawElement,
+    'raw': paxter.author.elements.RawElement,
     '\\': RawElement(body='<br />'),
     'line_break': RawElement(body='<br />'),
     'hrule': RawElement(body='<hr />'),
@@ -254,22 +254,22 @@ Additionally, note that ``@break`` simply maps to the value
     '.': RawElement(body='&hairsp;'),
     'thinsp': RawElement(body='&thinsp;'),
     ',': RawElement(body='&thinsp;'),
-    'paragraph': paxter.author.document.Paragraph,
-    'h1': paxter.author.document.Heading1,
-    'h2': paxter.author.document.Heading2,
-    'h3': paxter.author.document.Heading3,
-    'h4': paxter.author.document.Heading4,
-    'h5': paxter.author.document.Heading5,
-    'h6': paxter.author.document.Heading6,
-    'bold': paxter.author.document.Bold,
-    'italic': paxter.author.document.Italic,
-    'uline': paxter.author.document.Underline,
-    'code': paxter.author.document.Code,
-    'blockquote': paxter.author.document.Blockquote,
-    'link': paxter.author.document.Link,
-    'image': paxter.author.document.Image,
-    'numbered_list': paxter.author.document.NumberedList,
-    'bulleted_list': paxter.author.document.BulletedList}
+    'paragraph': paxter.author.elements.Paragraph,
+    'h1': paxter.author.elements.Heading1,
+    'h2': paxter.author.elements.Heading2,
+    'h3': paxter.author.elements.Heading3,
+    'h4': paxter.author.elements.Heading4,
+    'h5': paxter.author.elements.Heading5,
+    'h6': paxter.author.elements.Heading6,
+    'bold': paxter.author.elements.Bold,
+    'italic': paxter.author.elements.Italic,
+    'uline': paxter.author.elements.Underline,
+    'code': paxter.author.elements.Code,
+    'blockquote': paxter.author.elements.Blockquote,
+    'link': paxter.author.elements.Link,
+    'image': paxter.author.elements.Image,
+    'numbered_list': paxter.author.elements.NumberedList,
+    'bulleted_list': paxter.author.elements.BulletedList}
 
 
 There is nothing preventing library users
