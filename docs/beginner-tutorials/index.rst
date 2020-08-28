@@ -9,7 +9,6 @@ that they will be followed in this order.
 .. toctree::
    :maxdepth: 1
 
-   quick-blogging
    writing-a-first-blog-entry
    adding-a-second-paragraph
    including-an-email-address

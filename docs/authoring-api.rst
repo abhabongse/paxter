@@ -184,24 +184,18 @@ Document Data Classes
 .. autoclass:: paxter.author.elements.Element
    :members:
 
-.. autoclass:: paxter.author.elements.Document
-   :show-inheritance:
-
 .. autoclass:: paxter.author.elements.RawElement
    :show-inheritance:
 
-.. autodata:: paxter.author.elements.line_break
-
-.. autodata:: paxter.author.elements.horizontal_rule
-
-.. autodata:: paxter.author.elements.non_breaking_space
-
-.. autodata:: paxter.author.elements.hair_space
-
-.. autodata:: paxter.author.elements.thin_space
-
 .. autoclass:: paxter.author.elements.SimpleElement
    :members: HTML_OPENING, HTML_CLOSING
+   :show-inheritance:
+
+.. autoclass:: paxter.author.elements.EnumeratingElement
+   :members: HTML_GLOBAL_OPENING, HTML_GLOBAL_CLOSING, HTML_ITEM_OPENING, HTML_ITEM_CLOSING
+   :show-inheritance:
+
+.. autoclass:: paxter.author.elements.Document
    :show-inheritance:
 
 .. autoclass:: paxter.author.elements.Paragraph
@@ -246,12 +240,6 @@ Document Data Classes
 .. autoclass:: paxter.author.elements.Image
    :show-inheritance:
 
-.. autoclass:: paxter.author.elements.SequenceElement
-   :show-inheritance:
-
-.. autoclass:: paxter.author.elements.HigherSequenceElement
-   :show-inheritance:
-
 .. autoclass:: paxter.author.elements.NumberedList
    :show-inheritance:
 
@@ -266,3 +254,13 @@ Document Data Classes
 
 .. autoclass:: paxter.author.elements.TableRow
    :show-inheritance:
+
+.. autodata:: paxter.author.elements.line_break
+
+.. autodata:: paxter.author.elements.horizontal_rule
+
+.. autodata:: paxter.author.elements.non_breaking_space
+
+.. autodata:: paxter.author.elements.hair_space
+
+.. autodata:: paxter.author.elements.thin_space

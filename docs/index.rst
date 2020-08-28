@@ -30,6 +30,7 @@ Paxter python package can be installed from PyPI via the fullowing ``pip`` comma
    :caption: Table of Contents
    :maxdepth: 1
 
+   quick-blogging
    beginner-tutorials/index
    intermediate-tutorials/index
    core-api

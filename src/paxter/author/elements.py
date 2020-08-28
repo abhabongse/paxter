@@ -142,13 +142,9 @@ class EnumeratingElement(Element):
     HTML_ITEM_CLOSING = ''
 
     @classmethod
-    def from_direct_args(
-            cls,
-            *items: Union[str, FragmentList],
-            forced_paragraph: bool = False,
-    ):
+    def from_direct_args(cls, *items: Union[str, FragmentList]):
         items = [
-            cls.split_fragments(fragments, forced_paragraph)
+            cls.split_fragments(fragments, forced_paragraph=False)
             for fragments in items
         ]
         return cls(items)
@@ -279,12 +275,8 @@ class Blockquote(Element):
     body: List
 
     @classmethod
-    def from_fragments(
-            cls,
-            fragments: Union[str, FragmentList],
-            forced_paragraph: bool = False,
-    ):
-        body = cls.split_fragments(fragments, forced_paragraph)
+    def from_fragments(cls, fragments: Union[str, FragmentList]):
+        body = cls.split_fragments(fragments, forced_paragraph=False)
         return cls(body)
 
     def html_token_stream(self) -> Iterator[str]:
