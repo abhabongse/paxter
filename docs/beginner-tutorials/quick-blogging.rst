@@ -190,10 +190,10 @@ with at least one blank line.
    <h2>Updates</h2>
    <p>There is no update.</p>
 
-Observe that if the ``@h1{...}`` and ``@h2{...}`` were *not* used
-to encapsulate the heading text,
+Observe that if the ``@h1{...}`` and ``@h2{...}``
+were removed from encapsulating the heading text,
 they would have been rendered as its own paragraph.
-Try that for yourself.
+Try that to see for yourself.
 
 Also, what happens if the command ``@h1{...}``
 accidentally did *not* surround the entire chunk of text?
@@ -240,7 +240,7 @@ would be transformed into the following HTML output.
 However, suppose that we want to include multiple paragraphs inside the blockquote.
 We can follow the similar rules
 as to how to write multiple paragraphs in general:
-by separating them with at least two newline characters.
+by separating them with at least one blank lines.
 This is demonstrated in the following example.
 
 .. code-block:: paxter
@@ -266,17 +266,17 @@ each paragraph within the blockquote will be surrounded by
 a paragraph tag ``<p>...</p>``
 as long as more than one chunk of text exists.
 
-.. todo::
+.. important::
 
-   Continue here.
+   This particular behavioral rule is enforced by
+   :mod:`paxter.author` mainly for convenience.
+   Again, it has nothing to do with the core Paxter language specification.
 
-The above behavioral rule is enforced mainly for convenience.
 However, if we wish to force wrap the only paragraph within the blockquote
 with a paragraph tag,
 we can manually wrap that part of text with the ``@paragraph{...}`` command.
-
-Considering the first example of this section again.
-If we wish to have a paragraph tag surround “I refuse.”
+Let us reconsider the first example of this section again.
+If we wish to have a paragraph tag surround the text “I refuse.”,
 then we can write as follows.
 
 .. code-block:: paxter
@@ -296,35 +296,59 @@ And we would get the following HTML output.
 Links and Images
 ================
 
-Now it is time to expand on the form of a command in Paxter language.
-To put a link on a piece of text, we use the command ``@link["target"]{...}``
-where we put the actual target URL between quotation marks
-and the actual displayed text still within the braces.
-For example,
+So far, all of the commands we have seen contains
+the phrase section and the main argument section.
+Now it is time to introduce different variations of a command syntax,
+which are ones that contains the options section.
+To put a link such as a URL on a piece of text,
+we use the command ``@link["target"]{text}``
+of which we put the actual target URL inside the string literal
+and the actual displaying text still in between the braces.
+
+Here is an example of the usage of the ``@link`` command.
 
 .. code-block:: paxter
 
    Click @link["http://example.com"]{here} to go to my website.
-
-The above text in Paxter language will be transformed into the following HTML.
 
 .. code-block:: html
 
    <p>Click <a href="http://example.com">here</a> to go to my website.</p>
 
 Next, to insert an image, we use the command ``@image["srcpath", "alt"]``
-where the first *argument* is the URL path to image wrapped between quotation marks,
-and the second *argument* is the alternative text for the image when it goes missing.
+which contains the options section but *not* the main argument section.
+The options section of this commands accepts two arguments:
+the first one being the string literal containing the URL path to the image
+and the second one is for the image alternative text.
+In fact, the second argument is actually *not* required
+and will be default to an empty string.
+For example,
 
 .. code-block:: paxter
 
    @image["http://example.com/hello.png", "hello"]
+
+   @image["http://example.com/bye.png"]
+
 
 The above Paxter text will be rendered into the following HTML.
 
 .. code-block:: html
 
    <img src="http://example.com/hello.png" alt="hello" />
+   <img src="http://example.com/bye.png" alt="" />
+
+.. note::
+
+   If you are thinking that the options section of a command syntax
+   looks eerily similar to function call syntax in python,
+   do take note that this happens by design.
+   We will dive into more details about the structure of command syntax
+   on later pages of this grand tutorial.
+
+.. todo::
+
+   Continue here.
 
 
 Lists
