@@ -1,6 +1,6 @@
 # Paxter Language Tutorial
 
-```eval_rst
+```{eval-rst}
 .. todo::
 
    This page requires revision.
@@ -36,7 +36,7 @@ and whatever follows the switch determines which kind of @-expression it is.
 
 Next, we dive into each kind of @-expressions.
 
-```eval_rst
+```{eval-rst}
 .. note::
 
    Consult :doc:`Syntax Reference <../syntax>` for 
@@ -228,7 +228,7 @@ one of the following:
 -   **A nested sequence of tokens** itself,
     surrounded by a matching pair of square brackets (U+005B and U+005D).
 
-```eval_rst
+```{eval-rst}
 .. warning::
 
    Please note that inside the option section of a command
@@ -283,7 +283,7 @@ For example,
 There is free food today between 3@,-@,5 PM.
 ```
 
-```eval_rst
+```{eval-rst}
 .. warning::
 
    If ``@#`` happens to be the prefix of a full-form @-expressions

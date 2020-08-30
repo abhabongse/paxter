@@ -1,6 +1,6 @@
 # Python Authoring Mode Tutorial
 
-```eval_rst
+```{eval-rst}
 .. todo::
 
    This page requires revision.

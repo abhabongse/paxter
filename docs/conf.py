@@ -13,8 +13,7 @@
 import os
 import sys
 
-from pygments.lexers.special import  TextLexer
-from recommonmark.transform import AutoStructify
+from pygments.lexers.special import TextLexer
 from sphinx.highlighting import lexers
 
 sys.path.insert(
@@ -29,7 +28,6 @@ import paxter
 project = 'Paxter'
 copyright = '2020, Abhabongse Janthong'
 author = 'Abhabongse Janthong'
-github_doc_root = 'https://github.com/abhabongse/paxter/tree/master/docs/'
 version = paxter.__version__
 
 # -- General configuration ---------------------------------------------------
@@ -44,7 +42,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.intersphinx',
     'sphinx.ext.autosectionlabel',
-    'recommonmark',
+    'myst_parser',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -67,7 +65,22 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_book_theme'
+html_theme_options = {
+    'repository_url': "https://github.com/abhabongse/paxter",
+    'use_repository_button': True,
+    'use_issues_button': True,
+    'use_edit_page_button': True,
+    'repository_branch': 'main',
+    'path_to_docs': 'docs/',
+    # 'expand_sections': [],
+    'home_page_in_toc': True,
+}
+
+myst_url_schemes = ("http", "https", "mailto")
+myst_html_img_enable = True
+myst_admonition_enable = True
+myst_dmath_enable = False
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -85,10 +98,3 @@ lexers['paxter'] = TextLexer()  # TODO: implement lexer and replace this
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
-
-
-def setup(app):
-    app.add_config_value('recommonmark_config', {
-        'auto_toc_tree_section': 'Contents',
-    }, True)
-    app.add_transform(AutoStructify)
