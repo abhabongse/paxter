@@ -40,6 +40,10 @@ class DirectApply(BaseApply):
     """
     wrapped: Callable[['EvaluateContext', Command], Any]
 
+    def __post_init__(self):
+        self.__wrapped__ = self.wrapped
+        self.__doc__ = getattr(self.wrapped, '__doc__', None)
+
     def __call__(self, *args, **kwargs):
         return self.wrapped(*args, **kwargs)
 
@@ -58,6 +62,10 @@ class NormalApply(BaseApply):
     before they are gathered and sent to the wrapped function.
     """
     wrapped: Callable
+
+    def __post_init__(self):
+        self.__wrapped__ = self.wrapped
+        self.__doc__ = getattr(self.wrapped, '__doc__', None)
 
     def __call__(self, *args, **kwargs):
         return self.wrapped(*args, **kwargs)

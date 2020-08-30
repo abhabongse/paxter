@@ -364,8 +364,17 @@ class TableRow(EnumeratingElement):
 # Extra objects #
 #################
 
+#: Line break raw element
 line_break = RawElement(body='<br />')
+
+#: Horizontal rule (thematic break) raw element
 horizontal_rule = RawElement(body='<hr />')
+
+#: Non-breaking space raw element
 non_breaking_space = RawElement(body='&nbsp;')
+
+#: Hair space raw element
 hair_space = RawElement(body='&hairsp;')
+
+#: Thin space raw element
 thin_space = RawElement(body='&thinsp;')

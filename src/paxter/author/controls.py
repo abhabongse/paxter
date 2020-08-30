@@ -14,7 +14,8 @@ if TYPE_CHECKING:
 @DirectApply
 def for_statement(context: 'EvaluateContext', node: Command):
     """
-    Simulates simple for loops.
+    Simulates a simple for loop.
+    Its command has the form of ``@for[ITEM in SEQUENCE]{...}``.
     """
 
     def raise_error(message):
@@ -54,6 +55,11 @@ def for_statement(context: 'EvaluateContext', node: Command):
 def if_statement(context: 'EvaluateContext', node: Command):  # noqa: C901
     """
     Simulates simple if statement.
+    Its command takes the form of one of the following possibilities:
+
+    - ``@if[COND]{...}``
+    - ``@if[not COND]{...}``
+    - ``@if[COND then {...} else {...}]``.
     """
 
     def raise_error(message):

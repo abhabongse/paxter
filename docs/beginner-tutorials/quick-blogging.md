@@ -351,7 +351,7 @@ We will dive into more details about the structure of command syntax
 on later pages of this grand tutorial.
 :::
 
-:::{admonition,info} TODO
+:::{admonition,caution} TODO
 Continue here.
 :::
 
@@ -363,9 +363,9 @@ Continue here.
 
 ## Escapes
 
-:::{admonition,info} TODO
+:::{admonition,caution} Under Construction
 - Escaping `@` symbols
 - Escaping `|...|`, `{...}`, and `"..."`
-- Understanding python evaluation
+- Understanding python phrase evaluation and python function call translation
 - Adding source code highlighting, etc.
 :::
