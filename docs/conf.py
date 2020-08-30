@@ -77,7 +77,7 @@ html_theme_options = {
 }
 
 html_title = ""
-html_logo = "_static/Logo.png"
+html_logo = "_static/PaxterLogoOneRectangle.png"
 myst_url_schemes = ("http", "https", "mailto")
 myst_html_img_enable = True
 myst_admonition_enable = True

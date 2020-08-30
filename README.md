@@ -1,4 +1,4 @@
-# Paxter
+![Paxter Logo](docs/_static/PaxterLogoOneRectangle.png)
 
 <table>
     <tbody>
