@@ -1,4 +1,4 @@
-# Paxter’s documentation!
+# Paxter Documentation
 
 **Paxter language** helps users write rich-formatting documents
 with simple and easy-to-understand syntax.

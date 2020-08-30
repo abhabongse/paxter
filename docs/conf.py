@@ -74,9 +74,10 @@ html_theme_options = {
     'repository_branch': 'main',
     'path_to_docs': 'docs/',
     # 'expand_sections': [],
-    'home_page_in_toc': True,
 }
 
+html_title = ""
+html_logo = "_static/Logo.png"
 myst_url_schemes = ("http", "https", "mailto")
 myst_html_img_enable = True
 myst_admonition_enable = True
