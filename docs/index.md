@@ -43,7 +43,7 @@ intermediate-tutorials/index
 ```{toctree}
 ---
 caption: API References
-maxdepth: 2
+maxdepth: 1
 ---
 references/core-api
 references/authoring-api
@@ -53,7 +53,7 @@ references/syntax
 ```{toctree}
 ---
 caption: Legacy Documentation
-maxdepth: 2
+maxdepth: 1
 ---
 legacy/getting_started
 legacy/paxter_language_tutorial
@@ -62,6 +62,5 @@ legacy/python_authoring_mode_tutorial
 
 ## Indices and tables
 
-- {ref}`modindex`
 - {ref}`genindex`
 - {ref}`search`

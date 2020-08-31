@@ -83,7 +83,7 @@ This source text will be transformed to the following HTML output.
 <p>This is a very <i>important part</i> of <u>the statement</u>.</p>
 ```
 
-## Nested commands
+### Aside: Nested commands
 
 One nice thing about Paxter command is that they are allowed
 to be nested inside the main argument between the pair of curly braces.
@@ -256,7 +256,7 @@ This particular behavioral rule is enforced by
 Again, it has nothing to do with the core Paxter language specification.
 :::
 
-### Manual Paragraph Annotation
+### Aside: Manual Paragraph Annotation
 
 However, if we wish to force wrap the only paragraph within the blockquote
 with a paragraph tag,
