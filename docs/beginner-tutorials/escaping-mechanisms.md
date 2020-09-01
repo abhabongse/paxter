@@ -111,4 +111,5 @@ paxter.exceptions.PaxterRenderError: paxter command phrase evaluation error at l
 - Escaping `|...|`, `{...}`, and `"..."`
 - Understanding python phrase evaluation and python function call translation
 - Adding source code highlighting, etc.
+- Other stuff which are allowed inside options of a command?
 :::

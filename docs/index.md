@@ -30,7 +30,6 @@ beginner-tutorials/adding-a-second-paragraph
 beginner-tutorials/including-an-email-address
 beginner-tutorials/defining-common-constants
 beginner-tutorials/coding-more-python-in-documents
-beginner-tutorials/making-a-list-or-a-table
 ```
 
 ```{toctree}
