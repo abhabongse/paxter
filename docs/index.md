@@ -24,6 +24,7 @@ maxdepth: 2
 ---
 beginner-tutorials/getting-started
 beginner-tutorials/quick-blogging
+beginner-tutorials/escaping-mechanisms
 beginner-tutorials/writing-a-first-blog-entry
 beginner-tutorials/adding-a-second-paragraph
 beginner-tutorials/including-an-email-address
@@ -59,6 +60,7 @@ legacy/getting_started
 legacy/paxter_language_tutorial
 legacy/python_authoring_mode_tutorial
 ```
+
 
 ## Indices and tables
 

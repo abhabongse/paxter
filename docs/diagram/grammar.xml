@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.20">
-<info created="D:20200504013612" modified="D:20200810013924" tex="xetex"/>
+<info created="D:20200504013612" modified="D:20200901210627" tex="xetex"/>
 <preamble>\usepackage[MnSymbol]{mathspec}
         \usepackage{xunicode}
         \usepackage{xltxtra}
@@ -1158,8 +1158,6 @@ h
 424 788 l
 h
 </path>
-<text matrix="1 0 0 1 -12 -8" transformations="translations" pos="48 816" stroke="black" type="label" width="42.291" height="7.283" depth="0.07" valign="baseline">\textbf{TokenList}
-        </text>
 <path matrix="1 0 0 1 -16 -8" stroke="black" fill="black" pen="fat">
 48 812 m
 48 804 l

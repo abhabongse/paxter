@@ -11,6 +11,7 @@ $ pip install paxter
 
 Next, let us write a basic blog entry.
 
+
 ## Writing The First Blog Entry
 
 Suppose that we are going to write a blog post
@@ -39,6 +40,7 @@ The above content is expected to be rendered into the following result.
 Here are a few ways that we can transform the original Paxter source code
 into the final HTML output.
 
+
 ### Method 1: Command Line
 
 Suppose that the Paxter source code (as shown above)
@@ -57,6 +59,7 @@ $ paxter html -i new-blog.paxter
 <h1>New Blog!</h1><p>Welcome to our new blog website.
 <i>Please keep watching this space for content.</i></p>
 ```
+
 
 ### Method 2: Programmatic Usage
 
