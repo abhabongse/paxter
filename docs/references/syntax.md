@@ -7,12 +7,12 @@ Below are syntax descriptions of Paxter language.
 ## Document Rule
 
 The **starting rule** of Paxter language grammar
-which is a special case of [](fragmentseq-rule).
+which is a special case of {ref}`fragmentseq-rule`.
 The result of parsing this rule is always
 a {class}`FragmentSeq <paxter.parse.data.FragmentSeq>` node
 whose children includes non-empty strings
 (as {class}`Text <paxter.parse.data.Text>` nodes),
-interleaving with the result produced by [](command-rule).
+interleaving with the result produced by {ref}`command-rule`.
 
 ![](../_static/Document.png)
 
@@ -73,7 +73,7 @@ followed by {math}`n` or more hash characters.
 (text-rule)=
 ## Text Rule
 
-This rule is similar to [](fragmentseq-rule) except for two main reasons.
+This rule is similar to {ref}`fragmentseq-rule` except for two main reasons.
 The first reason is that nested {class}`Command <paxter.parse.data.Command>`
 will not be parsed (i.e. `"@"` is not a special character in this scope).
 Another reason is that, instead of having a matching pair of curly braces

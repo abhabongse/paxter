@@ -22,6 +22,7 @@ as being demonstrated in the
 :::
 
 
+(command-a-basic-building-block)=
 ## Command: A Basic Building Block
 
 **A command** is the core building block in Paxter language.
@@ -38,7 +39,7 @@ It has various syntactical forms, but all of them have the same basic principles
 
 This may sound confusing right now.
 Hopefully things will get clearer as we discuss
-the specific syntax in the upcoming sections.
+the specific syntax [in the upcoming sections](evaluation-cycle-explained.md).
 
 :::{admonition,info} Rule of Thumb
 A rule of thumb to remember about the core Paxter language
@@ -542,6 +543,7 @@ a few of common raw HTML strings for use, as shown below.
 :::{admonition,caution} Notes about commands in the above table
 - Every command shown in the table expects
   _neither_ the options part _nor_ the main argument part.
+  This is one valid form of a command in Paxter language.
 - Observe that there is a rather unusual form of a command,
   which consists of the `"@"` symbol immediately followed by another symbol character
   (namely `@\`, `@%`, `@.`, and `@,`).
@@ -554,7 +556,7 @@ a few of common raw HTML strings for use, as shown below.
 Here is some usage example.
 
 ```paxter
-The store opens Monday@,-@,Friday @line_break 9@%AM@,-@,5@%PM.
+The store opens Monday@,-@,Friday @line_break 9@%AM@,-@,5@%PM.evaluate-and-execute-python-code
 
 @hrule
 ```

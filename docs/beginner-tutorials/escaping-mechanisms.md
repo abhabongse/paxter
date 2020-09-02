@@ -22,7 +22,7 @@ However, there are a few ways around this.
 
 ### Method 1: Using Symbol-Only Command
 
-Recall the [](predefined-raw-html) section from previous page.
+Recall the {ref}`predefined-raw-html` section from previous page.
 We have the commands `@\`, `@%`, `@.`, and `@,`
 as shortcuts for some raw HTML strings.
 In fact, commands under the symbol-only form 
