@@ -7,7 +7,7 @@ Paxter language package provides the following core functionality.
 The following class is where the main Paxter language parsing logic happens.
 
 ```{eval-rst}
-.. autoclass:: paxter.parse.ParseContext
+.. autoclass:: paxter.parse.ParserContext
    :members: input_text, tree
 ```
 
@@ -76,14 +76,14 @@ The following class implements the basic tree evaluation in Paxter language.
 Users may want to extend this class to override the tree evaluation.
 
 ```{eval-rst}
-.. autoclass:: paxter.evaluate.context.EvaluateContext
+.. autoclass:: paxter.interpret.context.InterpreterContext
    :members:
 ```
 
 The evaluated list of fragments will be of the following type
 
 ```{eval-rst}
-.. autoclass:: paxter.evaluate.data.FragmentList
+.. autoclass:: paxter.interpret.data.FragmentList
    :members:
    :show-inheritance:
 ```
@@ -94,15 +94,15 @@ Wrappers for functions in python environments
 to be used as function decorators.
 
 ```{eval-rst}
-.. autoclass:: paxter.evaluate.wrappers.BaseApply
+.. autoclass:: paxter.interpret.wrappers.BaseApply
 
-.. autoclass:: paxter.evaluate.wrappers.DirectApply
+.. autoclass:: paxter.interpret.wrappers.DirectApply
    :show-inheritance:
 
-.. autoclass:: paxter.evaluate.wrappers.NormalApply
+.. autoclass:: paxter.interpret.wrappers.NormalApply
    :show-inheritance:
 
-.. autoclass:: paxter.evaluate.wrappers.NormalApplyWithEnv
+.. autoclass:: paxter.interpret.wrappers.NormalApplyWithEnv
    :show-inheritance:
 ```
 

@@ -12,13 +12,13 @@ from paxter.parse.data import (
 from paxter.parse.enclosing import EnclosingPattern, GlobalEnclosingPattern
 from paxter.parse.lexers import LEXER
 
-__all__ = ['ParseContext']
+__all__ = ['ParserContext']
 
 OPENED_TO_CLOSED_SCOPE_TRANS = str.maketrans('([{', ')]}')
 
 
 @dataclass
-class ParseContext:
+class ParserContext:
     """
     Implements a recursive descent parse for Paxter language text input.
 

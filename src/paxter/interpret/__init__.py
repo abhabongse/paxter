@@ -2,13 +2,13 @@
 This paxter subpackage implements a variant of
 parsed tree evaluation for Paxter language.
 """
-from paxter.evaluate.context import EvaluateContext
-from paxter.evaluate.data import FragmentList
-from paxter.evaluate.wrappers import (
+from paxter.interpret.context import InterpreterContext
+from paxter.interpret.data import FragmentList
+from paxter.interpret.wrappers import (
     BaseApply, DirectApply, NormalApply, NormalApplyWithEnv,
 )
 
 __all__ = [
-    'EvaluateContext', 'FragmentList',
+    'InterpreterContext', 'FragmentList',
     'BaseApply', 'DirectApply', 'NormalApply', 'NormalApplyWithEnv',
 ]

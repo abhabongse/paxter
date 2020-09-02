@@ -7,8 +7,8 @@ from dataclasses import dataclass
 from typing import Iterator, List, Union
 
 from paxter.author.fragmentutils import split_into_paragraphs
-from paxter.evaluate import FragmentList
 from paxter.exceptions import PaxterRenderError
+from paxter.interpret import FragmentList
 
 
 ########################

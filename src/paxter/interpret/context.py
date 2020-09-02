@@ -5,9 +5,9 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Union
 
-from paxter.evaluate.data import FragmentList
-from paxter.evaluate.wrappers import BaseApply, NormalApply
 from paxter.exceptions import PaxterRenderError
+from paxter.interpret.data import FragmentList
+from paxter.interpret.wrappers import BaseApply, NormalApply
 from paxter.parse import (
     CharLoc, Command, Fragment, FragmentSeq, Identifier, Number,
     Operator, Text, Token, TokenSeq,
@@ -15,7 +15,7 @@ from paxter.parse import (
 
 
 @dataclass
-class EvaluateContext:
+class InterpreterContext:
     """
     Base rendering class for Paxter parsed document tree.
 
@@ -136,8 +136,8 @@ class EvaluateContext:
         """
         Transforms a given parsed command.
         """
-        # Try to evaluate the phrase section
-        # using the evaluate function from _phrase_eval_
+        # Try to interpret the phrase section
+        # using the interpret function from _phrase_eval_
         try:
             phrase_eval = self.env['_phrase_eval_']
         except KeyError as exc:

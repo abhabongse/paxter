@@ -26,10 +26,10 @@ which parses a source text (written in Paxter language) into the parsed tree for
 Here is how to use python API to run this step.
    
 ```python
-from paxter.parse import ParseContext
+from paxter.parse import ParserContext
 
 source_text = 'Please visit @link["https://example.com"]{@italic{this} website}.'
-parsed_tree = ParseContext(source_text).tree
+parsed_tree = ParserContext(source_text).tree
 ```
 
 We can also see the content of the `parsed_tree` if we print them out.
@@ -121,12 +121,12 @@ Data definitions for parsed tree nodes
 ## Step 2: Evaluating Parsed Tree Into Document Object
    
 The `parsed_tree` from the previous step is evaluated
-by a tree transformer from the {mod}`paxter.evaluate` subpackage.
+by a tree transformer from the {mod}`paxter.interpret` subpackage.
 In general, what a parsed tree would be evaluated into
 depends on each individual (meaning you, dear reader).
 
 Paxter library decides to implement _one possible version_ of a tree transformer
-called {class}`EvaluateContext <paxter.evaluate.EvaluateContext>`.
+called {class}`EvaluateContext <paxter.interpret.EvaluateContext>`.
 This particular transformer tries to 
 **mimic the behavior of calling python functions** as closest possible.
 In addition, this transformer expects what is called 

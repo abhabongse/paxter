@@ -142,7 +142,7 @@ is parsed into the python code.
 Firstly, notice that the textual content
 that is surrounded by *a matching pair of curly braces*
 are always parsed into an instance of
-:class:`Fragments <paxter.evaluate.data.Fragments>`,
+:class:`Fragments <paxter.interpret.data.Fragments>`,
 containing a list of values.
 And secondly, it would always be positioned
 as the very first argument of the translated function call.
@@ -151,7 +151,7 @@ We call this part the **main argument** of a command.
 Moreover, if we look at how the outermost ``@paragraph{...}`` command is constructed,
 we would see that the content of main argument
 would always be *recursively parsed* into
-a :class:`Fragments <paxter.evaluate.data.Fragments>` instance with nested values.
+a :class:`Fragments <paxter.interpret.data.Fragments>` instance with nested values.
 Hence, the ``@paragraph`` command from above is in fact
 roughly parsed into an equivalent python code as follows.
 

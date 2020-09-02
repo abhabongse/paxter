@@ -4,12 +4,12 @@ Collection of standard functions for Python author mode.
 import inspect
 from typing import Any, TYPE_CHECKING
 
-from paxter.evaluate import DirectApply
 from paxter.exceptions import PaxterRenderError
+from paxter.interpret import DirectApply
 from paxter.parse import Command, Text
 
 if TYPE_CHECKING:
-    from paxter.evaluate.context import EvaluateContext
+    from paxter.interpret.context import InterpreterContext
 
 
 def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
@@ -32,7 +32,7 @@ def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
 
 
 @DirectApply
-def python_unsafe_exec(context: 'EvaluateContext', node: Command):
+def python_unsafe_exec(context: 'InterpreterContext', node: Command):
     """
     Unsafely executes the given python code
     using env dict as the namespace.

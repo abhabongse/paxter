@@ -264,9 +264,9 @@ which is an incomplete python statement in itself.
 .. code-block:: pytb
 
    Traceback (most recent call last):
-     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 171, in transform_command
+     File ".../site-packages/paxter/src/paxter/interpret/context.py", line 171, in transform_command
        return starter_value.call(self, token)
-     File ".../site-packages/paxter/src/paxter.evaluate/wrappers.py", line 47, in call
+     File ".../site-packages/paxter/src/paxter/interpret/wrappers.py", line 47, in call
        return self.wrapped(context, node)
      File ".../site-packages/paxter/src/paxter.author/standards.py", line 25, in python_unsafe_exec
        exec(code, context.env)
@@ -282,19 +282,19 @@ which is an incomplete python statement in itself.
      File ".../site-packages/paxter/src/paxter.author/preset.py", line 33, in run_document_paxter
        evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
      File "<string>", line 6, in __init__
-     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 40, in __post_init__
+     File ".../site-packages/paxter/src/paxter/interpret/context.py", line 40, in __post_init__
        self.rendered = self.render()
-     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 43, in render
+     File ".../site-packages/paxter/src/paxter/interpret/context.py", line 43, in render
        return self.transform_fragment_list(self.tree)
-     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 122, in transform_fragment_list
+     File ".../site-packages/paxter/src/paxter/interpret/context.py", line 122, in transform_fragment_list
        result = [
-     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 122, in <listcomp>
+     File ".../site-packages/paxter/src/paxter/interpret/context.py", line 122, in <listcomp>
        result = [
-     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 119, in <genexpr>
+     File ".../site-packages/paxter/src/paxter/interpret/context.py", line 119, in <genexpr>
        self.transform_fragment(fragment)
-     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 73, in transform_fragment
+     File ".../site-packages/paxter/src/paxter/interpret/context.py", line 73, in transform_fragment
        return self.transform_command(fragment)
-     File ".../site-packages/paxter/src/paxter.evaluate/context.py", line 175, in transform_command
+     File ".../site-packages/paxter/src/paxter/interpret/context.py", line 175, in transform_command
        raise PaxterRenderError(
    paxter.exceptions.PaxterRenderError: paxter apply evaluation error at line 2 col 2
 

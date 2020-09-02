@@ -3,16 +3,16 @@ Collection of control flow functions for Python author mode.
 """
 from typing import TYPE_CHECKING
 
-from paxter.evaluate import DirectApply, FragmentList
 from paxter.exceptions import PaxterRenderError
+from paxter.interpret import DirectApply, FragmentList
 from paxter.parse import CharLoc, Command, Identifier
 
 if TYPE_CHECKING:
-    from paxter.evaluate.context import EvaluateContext
+    from paxter.interpret.context import InterpreterContext
 
 
 @DirectApply
-def for_statement(context: 'EvaluateContext', node: Command):
+def for_statement(context: 'InterpreterContext', node: Command):
     """
     Simulates a simple for loop.
     Its command has the form of ``@for[ITEM in SEQUENCE]{...}``.
@@ -52,7 +52,7 @@ def for_statement(context: 'EvaluateContext', node: Command):
 
 
 @DirectApply
-def if_statement(context: 'EvaluateContext', node: Command):  # noqa: C901
+def if_statement(context: 'InterpreterContext', node: Command):  # noqa: C901
     """
     Simulates simple if statement.
     Its command takes the form of one of the following possibilities:
@@ -106,7 +106,7 @@ def if_statement(context: 'EvaluateContext', node: Command):  # noqa: C901
     if callable(cond):
         cond = cond()
 
-    # Choose and evaluate result clause
+    # Choose and interpret result clause
     result_node = then_node if bool(cond) is target_bool else else_node
     if result_node is None:
         return

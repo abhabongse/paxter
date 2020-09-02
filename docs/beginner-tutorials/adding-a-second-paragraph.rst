@@ -37,10 +37,10 @@ So we will add another one.
    ])
 
 The resulting ``document`` (shown above)
-is a :class:`Fragments <paxter.evaluate.data.Fragments>` list of
+is a :class:`Fragments <paxter.interpret.data.Fragments>` list of
 :class:`str` or :class:`Element <paxter.author.elements.Element>` instances
 (from which :class:`Paragraph <paxter.author.elements.Paragraph>` is derived).
-Unfortunately, the :class:`Fragments <paxter.evaluate.data.Fragments>` class
+Unfortunately, the :class:`Fragments <paxter.interpret.data.Fragments>` class
 does not provide a method to render itself into a final output *by design*
 as it is merely part of the result of parsing and evaluate
 input text in Paxter language.

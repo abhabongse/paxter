@@ -4,8 +4,8 @@ Collections of utility functions to process fragment lists.
 import re
 from typing import List, Sequence, Union
 
-from paxter.evaluate.data import FragmentList
 from paxter.exceptions import PaxterRenderError
+from paxter.interpret.data import FragmentList
 
 PARAGRAPH_SPLIT_RE = re.compile(r'\n(?:[ \t\r\f\v]*\n)+')
 

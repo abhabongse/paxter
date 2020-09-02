@@ -36,10 +36,10 @@ def run_parse(input_file, output_file):
 
     Transform: input text -> parsed tree
     """
-    from paxter.parse import ParseContext
+    from paxter.parse import ParserContext
 
     input_text = input_file.read()
-    parse_context = ParseContext(input_text)
+    parse_context = ParserContext(input_text)
 
     output_file.write(repr(parse_context.tree))
     output_file.write("\n")

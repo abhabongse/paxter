@@ -6,9 +6,9 @@ from click.testing import CliRunner
 
 from paxter.author import create_document_env
 from paxter.author.elements import Document
-from paxter.evaluate import EvaluateContext
+from paxter.interpret import InterpreterContext
 from paxter.parse import (
-    ParseContext,
+    ParserContext,
 )
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "document")
@@ -34,11 +34,11 @@ def test_evaluator_document(input_file, expected_file):
         expected_text = fobj.read()
 
     # Parse input
-    parse_context = ParseContext(input_text)
+    parse_context = ParserContext(input_text)
 
     # Render into output HTML
     env = create_document_env()
-    evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
+    evaluate_context = InterpreterContext(input_text, env, parse_context.tree)
     document = Document.from_fragments(evaluate_context.rendered)
 
     assert document.html() == expected_text
