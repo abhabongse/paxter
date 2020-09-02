@@ -187,6 +187,12 @@ env = create_document_env()
  ',': RawElement(body='&thinsp;')}
 ```
 
+It is crucial to point out that all of the commands that
+[appeared on the previous page](quick-blogging.md)
+(e.g. `bold`, `h1`, `blockquote`, `numbered_list`, `table`, and many others)
+are some keys of `env` dictionary object as listed above.
+Surely this is _not_ a coincidence.
+
 :::{admonition,caution} Under Construction
 Continue here.
 :::
