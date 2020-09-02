@@ -114,11 +114,17 @@ class SimpleElement(Element):
 
     @classmethod
     def from_fragments(cls, fragments: Union[str, FragmentList]):
+        """
+        Constructs an element from fragment list.
+        """
         body = cls.flatten_fragments(fragments)
         return cls(body)
 
     @classmethod
     def from_direct_args(cls, *items):
+        """
+        Constructs an element directly from arguments.
+        """
         body = list(items)
         return cls(body)
 
@@ -136,13 +142,23 @@ class EnumeratingElement(Element):
     """
     items: List[List]
 
+    #: Opening part of the entire element
     HTML_GLOBAL_OPENING = ''
+
+    #: Closing part of the entire element
     HTML_GLOBAL_CLOSING = ''
+
+    #: Opening part of each item element
     HTML_ITEM_OPENING = ''
+
+    #: Closing part of each item element
     HTML_ITEM_CLOSING = ''
 
     @classmethod
     def from_direct_args(cls, *items: Union[str, FragmentList]):
+        """
+        Constructs an element directly from arguments.
+        """
         items = [
             cls.split_fragments(fragments, forced_paragraph=False)
             for fragments in items
@@ -255,6 +271,9 @@ class Link(SimpleElement):
 
     @classmethod
     def from_fragments(cls, fragments: Union[str, FragmentList], href: str):
+        """
+        Constructs an element from fragment list.
+        """
         body = cls.flatten_fragments(fragments)
         if not isinstance(href, str):
             raise PaxterRenderError("href must be a string")
@@ -276,6 +295,9 @@ class Blockquote(Element):
 
     @classmethod
     def from_fragments(cls, fragments: Union[str, FragmentList]):
+        """
+        Constructs an element from fragment list.
+        """
         body = cls.split_fragments(fragments, forced_paragraph=False)
         return cls(body)
 
@@ -290,7 +312,10 @@ class Image(Element):
     """
     Image embedding element.
     """
+    #: Image source
     src: str
+
+    #: Image alternative text
     alt: str = ""
 
     def __post_init__(self):

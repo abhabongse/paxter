@@ -113,14 +113,15 @@ FragmentSeq(
 :::{admonition,tip} Dear Advanced Users
 For those who are familiar with the study of Programming Languages,
 this maybe enough to get you run wild!
-Data definitions for parsed tree nodes
-{ref}`can be seen here <parsing-data-definitions>`. 
+See the [syntax reference](../references/syntax.md)
+and the {ref}`data definitions for parsed tree nodes <parsing-data-definitions>`
+to help get started right away.
 :::   
 
 
 ## Step 2: Evaluating Parsed Tree Into Document Object
    
-The `parsed_tree` from the previous step is evaluated
+The `parsed_tree` from the previous step is then interpreted
 by a tree transformer from the {mod}`paxter.interpret` subpackage.
 In general, what a parsed tree would be evaluated into
 depends on each individual (meaning you, dear reader).
@@ -139,7 +140,8 @@ function aliases to the actual python functions and object
 and it is where the magic happens.
 
 Let us look at the contents of the environment dictionary
-created by the above function by default.
+created by the above function
+{func}`create_document_env <paxter.author.environ.create_document_env>`.
 
 ```python
 from paxter.author.environ import create_document_env
@@ -191,11 +193,63 @@ It is crucial to point out that all of the commands that
 [appeared on the previous page](quick-blogging.md)
 (e.g. `bold`, `h1`, `blockquote`, `numbered_list`, `table`, and many others)
 are some keys of `env` dictionary object as listed above.
-Surely this is _not_ a coincidence.
+Surely this is _not_ a coincidence. Keep on reading.
 
-:::{admonition,caution} Under Construction
-Continue here.
-:::
+
+### Interpreting a Command
+
+Here is the summary of what happened when a command is interpreted,
+assuming that `env` is the initial environment dictionary.
+
+1.  **Resolve the phrase part.**
+    By default, the phrase part is used as the key for looking up
+    a python value from the environment dictionary `env`.
+    For example, resolving the phrase `italic` from the `@italic{...}` command
+    would yield the value of `env["italic"]`
+    which refers to 
+    {meth}`Italic.from_fragments <paxter.author.elements.SimpleElement.from_fragments>`
+    class method.
+    Likewise, the phrase `link` from the `@link["target"]{text}`
+    maps to 
+    {meth}`Link.from_fragments <paxter.author.elements.Link.from_fragments>`
+    under the dictionary `env`.
+    
+    However, if the key made of the phrase of the command does not exist, 
+    then the backup plan is to use python built-in function {func}`eval`
+    to _evaluate_ the entire phrase string with `env` as the global namespace.
+    This fallback behavior enables a myriad of features in Paxter ecosystem
+    including evaluating a python expression embedded as the phrase of a command.
+    In order to encode any string as the phrase of a command,
+    we need to introduce a slightly different syntactical form of a command,
+    which we would cover {ref}`in a later tutorial <evaluating-python-expressions>`,
+    but here is a little taste of that:
+    
+    ```paxter
+    The result of 7 * 11 * 13 is @|7 * 11 * 13|.
+    ```
+    
+    ```html
+    <p>The result of 7 * 11 * 13 is 1001.</p>
+    ```
+    
+    :::{admonition,caution} Noteworthy
+    The resolution of the phrase part of the command into a python value
+    can be fully customized by replacing `env["_phrase_eval_"]`
+    with another function of the identical signature.
+    This default behavior described above is merely of the default function
+    located at `env["_phrase_eval_"]`.
+    :::
+
+2.  **Invoke a function call.**
+    First of all, if the command contains _neither_ the options part
+    _nor_ the main argument part, 
+    then the python object yielded from step 1 is inserted in the final output.
+    On the other hand, if at least one of those parts exists,
+    then the object returned by the previous step must be callable.
+
+    :::{admonition,caution} Under Construction
+    Continue here.
+    :::
 
 ## Step 3: Rendering Document Object
 

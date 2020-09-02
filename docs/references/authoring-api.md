@@ -99,11 +99,11 @@ The following instances are available in preset environments.
    :show-inheritance:
 
 .. autoclass:: paxter.author.elements.SimpleElement
-   :members: HTML_OPENING, HTML_CLOSING
+   :members: HTML_OPENING, HTML_CLOSING, from_fragments, from_direct_args
    :show-inheritance:
 
 .. autoclass:: paxter.author.elements.EnumeratingElement
-   :members: HTML_GLOBAL_OPENING, HTML_GLOBAL_CLOSING, HTML_ITEM_OPENING, HTML_ITEM_CLOSING
+   :members: HTML_GLOBAL_OPENING, HTML_GLOBAL_CLOSING, HTML_ITEM_OPENING, HTML_ITEM_CLOSING, from_direct_args
    :show-inheritance:
 
 .. autoclass:: paxter.author.elements.Document
@@ -143,9 +143,11 @@ The following instances are available in preset environments.
    :show-inheritance:
 
 .. autoclass:: paxter.author.elements.Blockquote
+   :members: from_fragments
    :show-inheritance:
 
 .. autoclass:: paxter.author.elements.Link
+   :members: from_fragments
    :show-inheritance:
 
 .. autoclass:: paxter.author.elements.Image
