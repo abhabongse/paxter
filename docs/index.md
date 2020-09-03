@@ -25,7 +25,10 @@ maxdepth: 2
 beginner-tutorials/getting-started
 beginner-tutorials/quick-blogging
 beginner-tutorials/evaluation-cycle-explained
+beginner-tutorials/interpreting-python-code
 beginner-tutorials/escaping-mechanisms
+beginner-tutorials/dive-into-command-options
+beginner-tutorials/customization-demo-codeblock-syntax-highlight
 beginner-tutorials/writing-a-first-blog-entry
 beginner-tutorials/adding-a-second-paragraph
 beginner-tutorials/including-an-email-address

@@ -107,9 +107,13 @@ paxter.exceptions.PaxterRenderError: paxter command phrase evaluation error at l
 ### Method 2: Using `@verbatim` Command
 
 :::{admonition,caution} Under Construction
-- Escaping `@` symbols
-- Escaping `|...|`, `{...}`, and `"..."`
-- Understanding python phrase evaluation and python function call translation
-- Adding source code highlighting, etc.
+This section is under construction.
 - Other stuff which are allowed inside options of a command?
+:::
+
+
+## Escaping Delimiters: Curly Braces, Quotes, and Bars
+
+:::{admonition,caution} Under Construction
+This section is under construction.
 :::

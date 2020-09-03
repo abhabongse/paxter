@@ -248,16 +248,12 @@ assuming that `env` is the initial environment dictionary.
     then the object returned by the previous step must be callable.
 
     :::{admonition,caution} Under Construction
-    Continue here.
+    This section is under construction.
+    - Understanding python phrase evaluation and python function call translation
     :::
 
 ## Step 3: Rendering Document Object
 
-Recall the [basic principles](command-a-basic-building-block)
-mentioned on the previous page:
-every command, regardless of the assumed syntactical form,
-_always_ consists of the following components.
-
-1. The onset `"@"` symbol
-2. The phrase part (such as )
-
+:::{admonition,caution} Under Construction
+This section is under construction.
+:::
