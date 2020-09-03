@@ -5,7 +5,8 @@ when a source text in Paxter language got parsed and interpreted.
 Let us consider evaluating the following source text as our motivating example:
 
 ```paxter
-Please visit @link["https://example.com"]{@italic{this} website}.
+Please visit @link["https://example.com"]{@italic{this} website}. @line_break
+@image["https://example.com/hello.jpg", "hello"]
 ```
 
 We are going to assume that we use the function
@@ -28,7 +29,8 @@ Here is how to use python API to run this step.
 ```python
 from paxter.parse import ParserContext
 
-source_text = 'Please visit @link["https://example.com"]{@italic{this} website}.'
+source_text = '''Please visit @link["https://example.com"]{@italic{this} website}. @line_break
+@image["https://example.com/hello.jpg", "hello"]'''
 parsed_tree = ParserContext(source_text).tree
 ```
 
@@ -40,14 +42,9 @@ as they are not relevant to what we are discussing right now.
 >>> print(parsed_tree)
 FragmentSeq(
     start_pos=0,
-    end_pos=65,
+    end_pos=126,
     children=[
-        Text(
-            start_pos=0,
-            end_pos=13,
-            inner="Please visit ",
-            enclosing=EnclosingPattern(left="", right=""),
-        ),
+        Text(start_pos=0, end_pos=13, inner="Please visit ", enclosing=EnclosingPattern(left="", right="")),
         Command(
             start_pos=14,
             end_pos=64,
@@ -89,21 +86,41 @@ FragmentSeq(
                             enclosing=EnclosingPattern(left="{", right="}"),
                         ),
                     ),
-                    Text(
-                        start_pos=55,
-                        end_pos=63,
-                        inner=" website",
-                        enclosing=EnclosingPattern(left="", right=""),
-                    ),
+                    Text(start_pos=55, end_pos=63, inner=" website", enclosing=EnclosingPattern(left="", right="")),
                 ],
                 enclosing=EnclosingPattern(left="{", right="}"),
             ),
         ),
-        Text(
-            start_pos=64,
-            end_pos=65,
-            inner=".",
-            enclosing=EnclosingPattern(left="", right=""),
+        Text(start_pos=64, end_pos=66, inner=". ", enclosing=EnclosingPattern(left="", right="")),
+        Command(
+            start_pos=67,
+            end_pos=77,
+            phrase="line_break",
+            phrase_enclosing=EnclosingPattern(left="", right=""),
+            options=None,
+            main_arg=None,
+        ),
+        Text(start_pos=77, end_pos=78, inner="\n", enclosing=EnclosingPattern(left="", right="")),
+        Command(
+            start_pos=79,
+            end_pos=126,
+            phrase="image",
+            phrase_enclosing=EnclosingPattern(left="", right=""),
+            options=TokenSeq(
+                start_pos=85,
+                end_pos=125,
+                children=[
+                    Text(
+                        start_pos=86,
+                        end_pos=115,
+                        inner="https://example.com/hello.jpg",
+                        enclosing=EnclosingPattern(left='"', right='"'),
+                    ),
+                    Operator(start_pos=116, end_pos=117, symbols=","),
+                    Text(start_pos=119, end_pos=124, inner="hello", enclosing=EnclosingPattern(left='"', right='"')),
+                ],
+            ),
+            main_arg=None,
         ),
     ],
     enclosing=GlobalEnclosingPattern(),
@@ -111,7 +128,7 @@ FragmentSeq(
 ```
 
 :::{admonition,tip} Dear Advanced Users
-For those who are familiar with the study of Programming Languages,
+For those who are familiar with the field of Programming Languages,
 this maybe enough to get you run wild!
 See the [syntax reference](../references/syntax.md)
 and the {ref}`data definitions for parsed tree nodes <parsing-data-definitions>`
@@ -127,7 +144,7 @@ In general, what a parsed tree would be evaluated into
 depends on each individual (meaning you, dear reader).
 
 Paxter library decides to implement _one possible version_ of a tree transformer
-called {class}`EvaluateContext <paxter.interpret.EvaluateContext>`.
+called {class}`InterpreterContext <paxter.interpret.context.InterpreterContext>`.
 This particular transformer tries to 
 **mimic the behavior of calling python functions** as closest possible.
 In addition, this transformer expects what is called 
@@ -151,33 +168,33 @@ env = create_document_env()
 
 ```pycon
 >>> env
-{'_phrase_eval_': <function paxter.author.standards.phrase_unsafe_eval(phrase: str, env: dict) -> Any>,
+{'_phrase_eval_': <function paxter.author.standards.phrase_unsafe_eval>,
  '_extras_': {},
  '@': '@',
- 'for': DirectApply(wrapped=<function for_statement at 0x7f80e279a280>),
- 'if': DirectApply(wrapped=<function if_statement at 0x7f80e279a550>),
- 'python': DirectApply(wrapped=<function python_unsafe_exec at 0x7f80f88fd790>),
- 'verb': <function paxter.author.standards.verbatim(text: Any) -> str>,
- 'raw': paxter.author.elements.RawElement,
- 'paragraph': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Paragraph'>>,
- 'h1': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Heading1'>>,
- 'h2': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Heading2'>>,
- 'h3': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Heading3'>>,
- 'h4': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Heading4'>>,
- 'h5': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Heading5'>>,
- 'h6': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Heading6'>>,
- 'bold': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Bold'>>,
- 'italic': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Italic'>>,
- 'uline': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Underline'>>,
- 'code': <bound method SimpleElement.from_fragments of <class 'paxter.author.elements.Code'>>,
- 'blockquote': <bound method Blockquote.from_fragments of <class 'paxter.author.elements.Blockquote'>>,
- 'link': <bound method Link.from_fragments of <class 'paxter.author.elements.Link'>>,
- 'image': paxter.author.elements.Image,
- 'numbered_list': <bound method EnumeratingElement.from_direct_args of <class 'paxter.author.elements.NumberedList'>>,
- 'bulleted_list': <bound method EnumeratingElement.from_direct_args of <class 'paxter.author.elements.BulletedList'>>,
- 'table': <bound method SimpleElement.from_direct_args of <class 'paxter.author.elements.Table'>>,
- 'table_header': <bound method EnumeratingElement.from_direct_args of <class 'paxter.author.elements.TableHeader'>>,
- 'table_row': <bound method EnumeratingElement.from_direct_args of <class 'paxter.author.elements.TableRow'>>,
+ 'for': <function paxter.author.controls.for_statement>,
+ 'if': <function paxter.author.controls.if_statement>,
+ 'python': <function paxter.author.standards.python_unsafe_exec>,
+ 'verb': <function paxter.author.standards.verbatim>,
+ 'raw': <class paxter.author.elements.RawElement>,
+ 'paragraph': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'h1': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'h2': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'h3': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'h4': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'h5': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'h6': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'bold': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'italic': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'uline': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'code': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
+ 'blockquote': <classmethod paxter.author.elements.Blockquote.from_fragments>,
+ 'link': <classmethod paxter.author.elements.Link.from_fragments>,
+ 'image': <class paxter.author.elements.Image>,
+ 'numbered_list': <classmethod paxter.author.elements.EnumeratingElement.from_direct_args>,
+ 'bulleted_list': <classmethod paxter.author.elements.EnumeratingElement.from_direct_args>,
+ 'table': <classmethod paxter.author.elements.SimpleElement.from_direct_args>,
+ 'table_header': <classmethod paxter.author.elements.EnumeratingElement.from_direct_args>,
+ 'table_row': <classmethod paxter.author.elements.EnumeratingElement.from_direct_args>,
  'hrule': RawElement(body='<hr />'),
  'line_break': RawElement(body='<br />'),
  '\\': RawElement(body='<br />'),
@@ -190,7 +207,7 @@ env = create_document_env()
 ```
 
 It is crucial to point out that all of the commands that
-[appeared on the previous page](quick-blogging.md)
+appeared on the page [](quick-blogging.md)
 (e.g. `bold`, `h1`, `blockquote`, `numbered_list`, `table`, and many others)
 are some keys of `env` dictionary object as listed above.
 Surely this is _not_ a coincidence. Keep on reading.
@@ -204,13 +221,12 @@ assuming that `env` is the initial environment dictionary.
 1.  **Resolve the phrase part.**
     By default, the phrase part is used as the key for looking up
     a python value from the environment dictionary `env`.
-    For example, resolving the phrase `italic` from the `@italic{...}` command
+    For example, resolving the phrase `italic` from the command `@italic{...}`
     would yield the value of `env["italic"]`
     which refers to 
     {meth}`Italic.from_fragments <paxter.author.elements.SimpleElement.from_fragments>`
     class method.
-    Likewise, the phrase `link` from the `@link["target"]{text}`
-    maps to 
+    Likewise, the phrase `link` from the command `@link["target"]{text}` maps to 
     {meth}`Link.from_fragments <paxter.author.elements.Link.from_fragments>`
     under the dictionary `env`.
     
@@ -240,17 +256,104 @@ assuming that `env` is the initial environment dictionary.
     located at `env["_phrase_eval_"]`.
     :::
 
-2.  **Invoke a function call.**
-    First of all, if the command contains _neither_ the options part
-    _nor_ the main argument part, 
-    then the python object yielded from step 1 is inserted in the final output.
-    On the other hand, if at least one of those parts exists,
-    then the object returned by the previous step must be callable.
+2.  **Invoke a function call.** 
+    First of all, if the original command contains
+    _neither_ the options part _nor_ the main argument part,
+    then the python object returned from step 1
+    would be immediately inserted in the final output of interpretation.
+    Otherwise, those options part or the main argument part of the command
+    will become input arguments of a function call
+    to the object returned by the previous step.
+    Of course, that python object is expected to be callable in order to work.
+    Particularly,
+    
+    - If the main argument part exists,
+      its value will always be the very first input argument of the function call.
+      If the options part also exists,
+      then each argument item (separated by commas)
+      will be subsequent arguments of the function call.
+    - If the main argument part does not exist,
+      then all argument items from the options part
+      will be sole input arguments of the function call.
 
-    :::{admonition,caution} Under Construction
-    This section is under construction.
-    - Understanding python phrase evaluation and python function call translation
-    :::
+#### Example 1: Non-Callable Command
+
+Let us begin with a basic example.
+The command `@line_break` on its own would get translated roughly
+into the following python code equivalent:
+
+```python
+line_break_obj = env['line_break']  # paxter.author.elements.line_break
+return line_break_obj
+```
+
+#### Example 2: Command With Main Argument
+
+Consider the command `@italic{this}`.
+It gets translated into the following python equivalent:
+
+```python
+italic_obj = env['italic']  # paxter.author.elements.Italic.from_fragments
+return italic_obj(FragmentList(["this"]))
+```
+
+Notice that the main argument part `{this}` of the command `@italic{this}`
+gets translated to `FragmentList(["this"])` in python representation.
+In Paxter’s terminology, any component of the command syntax
+which is enclosed by a pair of matching curly braces
+would be known as **a fragment list**,
+and it would be represented as a list of subtype
+{class}`FragmentList <paxter.interpret.data.FragmentList>`.
+
+#### Example 3: Command With Both Options and Main Argument
+
+Let us look at the the following command.
+
+```paxter
+@link["https://example.com"]{@italic{this} website}
+```
+
+Internally, the above Paxter source text
+would get approximately translated into the following python code equivalent.
+
+```python
+italic_obj = env['italic']  # paxter.author.elements.Italic.from_fragments
+link_obj = env['link']  # paxter.author.elements.Link.from_fragments
+
+return link_obj(
+    FragmentList([
+        italic_obj(FragmentList(["this"])),  # just like previous example
+        " website",
+    ]),
+    "https://example.com",
+)
+```
+
+Notice the following points:
+- The first input argument of the function call to `link_obj`
+  comes from the main argument fragment list
+  containing the nested function call to `italic_obj`.
+- The target URL `"https://example.com"` appeared in the options part of the `@link` command
+  becomes the second argument in the function call to `link_obj`.
+  
+To provide further clarification of how a command in Paxter source text gets translated,
+consider the following example where a command contains two arguments within its options part.
+
+```paxter
+@foo["bar", 3]{text}
+```
+
+```python
+foo_obj = env['foo']
+return foo_obj(FragmentList(["text"]), "bar", 3)
+```
+
+#### Example 4: 
+
+:::{admonition,caution} Under Construction
+This section is under construction.
+- Understanding python phrase evaluation and python function call translation
+:::
 
 ## Step 3: Rendering Document Object
 

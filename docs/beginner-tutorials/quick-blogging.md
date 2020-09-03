@@ -39,9 +39,9 @@ It has various syntactical forms, but all of them have the same basic principles
 
 This may sound confusing right now.
 Hopefully things will get clearer as we discuss
-the specific syntax [in the upcoming sections](evaluation-cycle-explained.md).
+the specific syntax on the page [](evaluation-cycle-explained.md).
 
-:::{admonition,info} Rule of Thumb
+:::{admonition,important} Rule of Thumb
 A rule of thumb to remember about the core Paxter language
 is that it dictates only how a command in the source text should be parsed.
 It has no bearing on how each parsed command and any other raw text
@@ -152,7 +152,7 @@ into the following HTML.
 <p>This is the <u>final</u> paragraph.</p>
 ```
 
-:::{admonition,info} Reminder
+:::{admonition,tip} Reminder
 The implicit paragraph splitting behavior of the source text
 is preconfigured by the supplementary {mod}`paxter.author` subpackage
 and has nothing to do with the core Paxter language specification.
@@ -258,7 +258,7 @@ each paragraph within the blockquote will be surrounded by
 a paragraph tag `<p>...</p>`
 as long as more than one chunk of text exists.
 
-:::{admonition,info} Reminder
+:::{admonition,tip} Reminder
 This particular behavioral rule is enforced by
 {mod}`paxter.author` mainly for convenience.
 Again, it has nothing to do with the core Paxter language specification.
@@ -353,16 +353,12 @@ The above Paxter text will be rendered into the following HTML.
 <img src="http://example.com/bye.png" alt="" />
 ```
 
-:::{note}
+:::{admonition,note} Notice
 If you are thinking that the options part of a command syntax
 looks eerily similar to function call syntax in python,
 do take note that this happens by design.
 We will dive into more details about the structure of command syntax
-on later pages of this grand tutorial.
-:::
-
-:::{admonition,caution} TODO
-Continue here.
+on the page [](evaluation-cycle-explained.md).
 :::
 
 

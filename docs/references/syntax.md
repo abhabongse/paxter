@@ -100,7 +100,7 @@ This resulting sequence of tokens are children of
 
 ![](../_static/TokenSeq.png)
 
-:::{note}
+:::{admonition,important} Good To Know
 The option section (or the token list) is the only place where whitespaces
 are ignored when they appear between tokens.
 :::
