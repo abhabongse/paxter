@@ -206,17 +206,22 @@ env = create_document_env()
  ',': RawElement(body='&thinsp;')}
 ```
 
-It is crucial to point out that all of the commands that
-appeared on the page [](quick-blogging.md)
+It is crucial to point out that,
+all of the commands we have seen so far
+on the page [](quick-blogging.md)
 (e.g. `bold`, `h1`, `blockquote`, `numbered_list`, `table`, and many others)
-are some keys of `env` dictionary object as listed above.
-Surely this is _not_ a coincidence. Keep on reading.
+are some keys of the `env` dictionary object as listed above.
+This is _not_ a coincidence.
+Essentially, Paxter library utilizes the data from this dictionary
+in order to properly interpret each command in the source text.
 
-
+(interpreting-a-command)=
 ### Interpreting a Command
 
-Here is the summary of what happened when a command is interpreted,
-assuming that `env` is the initial environment dictionary.
+The process of interpreting a command is divided into two steps:
+resolving the phrase and invoking a function call.
+Let us explore each step assuming the initial environment dictionary `env`
+(borrowed from above). 
 
 1.  **Resolve the phrase part.**
     By default, the phrase part is used as the key for looking up
@@ -230,11 +235,14 @@ assuming that `env` is the initial environment dictionary.
     {meth}`Link.from_fragments <paxter.author.elements.Link.from_fragments>`
     under the dictionary `env`.
     
-    However, if the key made of the phrase of the command does not exist, 
+    :::{admonition,important} Backup Plan
+    However, if the key which is made of the phrase part
+    does not appear in `env` dictionary,
     then the backup plan is to use python built-in function {func}`eval`
-    to _evaluate_ the entire phrase string with `env` as the global namespace.
+    to **evaluate the entire phrase string** with `env` as the global namespace.
     This fallback behavior enables a myriad of features in Paxter ecosystem
-    including evaluating a python expression embedded as the phrase of a command.
+    including evaluating an anonymous python expression
+    from right within the source text.
     In order to encode any string as the phrase of a command,
     we need to introduce a slightly different syntactical form of a command,
     which we would cover {ref}`in a later tutorial <evaluating-python-expressions>`,
@@ -247,22 +255,26 @@ assuming that `env` is the initial environment dictionary.
     ```html
     <p>The result of 7 * 11 * 13 is 1001.</p>
     ```
+    :::
     
     :::{admonition,caution} Noteworthy
-    The resolution of the phrase part of the command into a python value
+    The resolution of the phrase part of a command into a python value
     can be fully customized by replacing `env["_phrase_eval_"]`
     with another function of the identical signature.
     This default behavior described above is merely of the default function
     located at `env["_phrase_eval_"]`.
     :::
 
-2.  **Invoke a function call.** 
-    First of all, if the original command contains
-    _neither_ the options part _nor_ the main argument part,
+2.  **Invoke a function call.**
+    Before we continue, if the original command contains
+    _neither_ the options _nor_ the main argument parts,
     then the python object returned from step 1
-    would be immediately inserted in the final output of interpretation.
-    Otherwise, those options part or the main argument part of the command
-    will become input arguments of a function call
+    will not be further process
+    and will immediately become the final output 
+    of the command interpretation.
+
+    Otherwise, the available options part and the main argument part
+    will all become input arguments of a function call
     to the object returned by the previous step.
     Of course, that python object is expected to be callable in order to work.
     Particularly,
@@ -270,31 +282,38 @@ assuming that `env` is the initial environment dictionary.
     - If the main argument part exists,
       its value will always be the very first input argument of the function call.
       If the options part also exists,
-      then each argument item (separated by commas)
+      then each of its items (separated by commas)
       will be subsequent arguments of the function call.
     - If the main argument part does not exist,
-      then all argument items from the options part
+      then all of the items from the options part
       will be sole input arguments of the function call.
+      
+Let us walkthrough these two-step process with a few examples.
 
 #### Example 1: Non-Callable Command
 
 Let us begin with a basic example.
 The command `@line_break` on its own would get translated roughly
-into the following python code equivalent:
+into the following python code equivalent.
+The final result is stored inside the variable `result`.
 
 ```python
+# Step 1: resolving the phrase
 line_break_obj = env['line_break']  # paxter.author.elements.line_break
-return line_break_obj
+# Step 2 is skipped since there is no function call
+result = line_break_obj
 ```
 
 #### Example 2: Command With Main Argument
 
 Consider the command `@italic{this}`.
-It gets translated into the following python equivalent:
+It would be transformed into the following python equivalent:
 
 ```python
+# Step 1: resolving the phrase
 italic_obj = env['italic']  # paxter.author.elements.Italic.from_fragments
-return italic_obj(FragmentList(["this"]))
+# Step 2: function call
+result = italic_obj(FragmentList(["this"]))
 ```
 
 Notice that the main argument part `{this}` of the command `@italic{this}`
@@ -307,20 +326,20 @@ and it would be represented as a list of subtype
 
 #### Example 3: Command With Both Options and Main Argument
 
-Let us look at the the following command.
+Let us look at this rather complicated command
+and its python code equivalent.
 
 ```paxter
 @link["https://example.com"]{@italic{this} website}
 ```
 
-Internally, the above Paxter source text
-would get approximately translated into the following python code equivalent.
-
 ```python
+# Step 1: resolving the phrases
 italic_obj = env['italic']  # paxter.author.elements.Italic.from_fragments
 link_obj = env['link']  # paxter.author.elements.Link.from_fragments
 
-return link_obj(
+# Step 2: function call
+result = link_obj(
     FragmentList([
         italic_obj(FragmentList(["this"])),  # just like previous example
         " website",
@@ -329,31 +348,144 @@ return link_obj(
 )
 ```
 
-Notice the following points:
+There are a few notes to point out:
 - The first input argument of the function call to `link_obj`
-  comes from the main argument fragment list
-  containing the nested function call to `italic_obj`.
+  derives from the main argument fragment list,
+  which contains the nested function call to `italic_obj`.
 - The target URL `"https://example.com"` appeared in the options part of the `@link` command
   becomes the second argument in the function call to `link_obj`.
   
 To provide further clarification of how a command in Paxter source text gets translated,
-consider the following example where a command contains two arguments within its options part.
+consider the following example where a command 
+contains two argument items within its options part.
 
 ```paxter
 @foo["bar", 3]{text}
 ```
 
 ```python
+# Step 1: resolving the phrases
 foo_obj = env['foo']
-return foo_obj(FragmentList(["text"]), "bar", 3)
+# Step 2: function call
+result = foo_obj(FragmentList(["text"]), "bar", 3)
 ```
 
-#### Example 4: 
+Python-style keyword arguments are also supported within the options part,
+and it works in the way we expect.
+
+```paxter
+@foo["bar", n=3]{text}
+```
+
+```python
+# Step 1: resolving the phrase
+foo_obj = env['foo']
+# Step 2: function call
+result = foo_obj(FragmentList(["text"]), "bar", n=3)
+```
+
+#### Example 4: Commands With Options Only
+
+In the master example at the beginning of this page,
+we can see the following `@image` command:
+
+```paxter
+@image["https://example.com/hello.jpg", "hello"]
+```
+
+Because the main argument part is not present inside the `@image` command,
+the above source text would be interpreted similarly to the following python code.
+
+```python
+# Step 1: resolving the phrase
+image_obj = env['image']  # paxter.author.elements.Image
+# Step 2: function call
+result = image_obj("https://example.com/hello.jpg", "hello")
+```
+
+Is there a way to make a function call to the object with zero arguments?
+Of course. It can be done by writing square brackets containing nothing inside it.
+
+```paxter
+@foo[]
+```
+
+```python
+# Step 1: resolving the phrase
+foo_obj = env['foo']
+# Step 2: function call
+result = foo_obj()
+```
+
+### Motivating Example Revisited
 
 :::{admonition,caution} Under Construction
-This section is under construction.
-- Understanding python phrase evaluation and python function call translation
+Continue here.
 :::
+
+At the beginner of this page,
+we have introduced an example of Paxter source text as our motivating example.
+
+```paxter
+Please visit @link["https://example.com"]{@italic{this} website}. @line_break
+@image["https://example.com/hello.jpg", "hello"]
+```
+
+Combining all of the knowledge from the previous section {ref}`intepreting-a-command`,
+we can deduce that the above source text is equivalent to the following python code.
+
+```python
+# Step 1: resolving the phrases
+italic_obj = env['italic']  # paxter.author.elements.Italic.from_fragments
+link_obj = env['link']  # paxter.author.elements.Link.from_fragments
+line_break_obj = env['line_break']  # paxter.author.elements.line_break
+image_obj = env['image']  # paxter.author.elements.Image
+
+# Step 2: function call
+components = FragmentList([
+    "Please visit ",
+    link_obj(
+        FragmentList([
+            italic_obj(FragmentList(["this"])),
+            " website",
+        ]),
+        "https://example.com",
+    ),
+    ". ",
+    line_break_obj,
+    "\n",
+    image_obj("https://example.com/hello.jpg", "hello"),
+])
+```
+
+The result of interpreting the entire source text
+using {class}`InterpreterContext <paxter.interpret.context.InterpreterContext>`
+is always going to be a fragment list of each smaller components.
+
+
+The entire source text by itself is a fragment list of each smaller component
+as seen in the 
+
+
+
+
+The result from interpreting the code mentioned here
+yields the following data class instance. 
+
+```pycon
+>>> result
+FragmentList([
+    "Please visit ",
+    Link(body=[Italic(body=["this"]), " website"], href="https://example.com"),
+    ". ",
+    RawElement(body="<br />"),
+    "\n",
+    Image(src="https://example.com/hello.jpg", alt="hello"),
+])
+```
+
+
+
 
 ## Step 3: Rendering Document Object
 
