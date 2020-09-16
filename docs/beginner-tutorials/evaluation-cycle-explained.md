@@ -435,7 +435,8 @@ result = foo_obj(FragmentList([]))
 ### Motivating Example Revisited
 
 By combining all of the above examples,
-we can describe the semantics of the motivating example as in the following
+we can describe the semantics of the motivating example
+as shown in the following python code 
 (the original source text is reproduced below for convenience):
 
 ```paxter
@@ -451,7 +452,7 @@ line_break_obj = env['line_break']  # paxter.author.elements.line_break
 image_obj = env['image']  # paxter.author.elements.Image
 
 # Step 2: function call
-result = FragmentList([
+document_result = FragmentList([
     "Please visit ",
     link_obj(
         FragmentList([
@@ -467,15 +468,26 @@ result = FragmentList([
 ])
 ```
 
+However, the actual python API to replicate the above result is as follows
+(where `parsed_tree` is the result borrowed from step 1).
+
+```python
+from paxter.author.environ import create_document_env
+from paxter.interpret.context import InterpreterContext
+
+env = create_document_env()
+document_result = InterpreterContext(source_text, env, parsed_tree).rendered
+```
+
 The result of interpreting the entire source text
 using {class}`InterpreterContext <paxter.interpret.context.InterpreterContext>`
 is always going to be a fragment list of each smaller pieces of content
-(which is why the `result` in the above code is an instance of
+(which is why the `document_result` in the above code is an instance of
 {class}`FragmentList <paxter.interpret.data.FragmentList>` class).
-Displaying the content of `result` gives us the following evaluated result.
+Displaying the content of `document_result` gives us the following evaluated result.
 
 ```pycon
->>> result
+>>> document_result
 FragmentList([
     "Please visit ",
     Link(body=[Italic(body=["this"]), " website"], href="https://example.com"),
@@ -487,10 +499,40 @@ FragmentList([
 ```
 
 
-
-
 ## Step 3: Rendering Document Object
 
-:::{admonition,caution} Under Construction
-This section is under construction.
+:::{admonition,important} Reminder Again
+In all truthfulness, rendering the `final_result` into HTML string output
+has _nothing_ to do with the core Paxter language specification.
+In fact, if library users implement their own version of parsed tree evaluator,
+this particular step would be non-existent.
+:::
+
+Rendering the entire `document_result` into HTML string output is simple.
+Two small steps are required:
+
+1. Wrap the `document_result` with {class}`Document <paxter.author.elements.Document>`
+2. Invoke the {meth}`html <paxter.author.elements.Element.html>` method.
+
+And here is the python code to do exactly as just said:
+
+```python
+from paxter.author.elements import Document
+
+document = Document.from_fragments(document_result)
+html_output = document.html()
+```
+
+This yields the following final HTML output:
+
+```pycon
+>>> print(html_output)
+<p>Please visit <a href="https://example.com"><i>this</i> website</a>. <br />
+<img src="https://example.com/hello.jpg" alt="hello" /></p>
+```
+
+:::{admonition,info} Preset Function
+The preset function {func}`run_document_paxter <paxter.author.preset.run_document_paxter>`
+introduced in the section {ref}`Programmatic Usage <method-2-programmatic-usage>`
+(from Getting Started page) simply performs all three steps as mentioned above in order.
 :::

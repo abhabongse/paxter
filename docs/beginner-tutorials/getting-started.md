@@ -60,7 +60,7 @@ $ paxter html -i new-blog.paxter
 <i>Please keep watching this space for content.</i></p>
 ```
 
-
+(method-2-programmatic-usage)=
 ### Method 2: Programmatic Usage
 
 A more flexible way to transform Paxter source text into HTML output
