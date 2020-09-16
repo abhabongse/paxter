@@ -417,22 +417,31 @@ foo_obj = env['foo']
 result = foo_obj()
 ```
 
+Beware _not_ to use curly braces in place of square brackets
+as it would have resulted in slightly different interpretation,
+like in the following.
+
+```paxter
+@foo{}
+```
+
+```python
+# Step 1: resolving the phrase
+foo_obj = env['foo']
+# Step 2: function call
+result = foo_obj(FragmentList([]))
+```
+
 ### Motivating Example Revisited
 
-:::{admonition,caution} Under Construction
-Continue here.
-:::
-
-At the beginner of this page,
-we have introduced an example of Paxter source text as our motivating example.
+By combining all of the above examples,
+we can describe the semantics of the motivating example as in the following
+(the original source text is reproduced below for convenience):
 
 ```paxter
 Please visit @link["https://example.com"]{@italic{this} website}. @line_break
 @image["https://example.com/hello.jpg", "hello"]
 ```
-
-Combining all of the knowledge from the previous section {ref}`intepreting-a-command`,
-we can deduce that the above source text is equivalent to the following python code.
 
 ```python
 # Step 1: resolving the phrases
@@ -442,7 +451,7 @@ line_break_obj = env['line_break']  # paxter.author.elements.line_break
 image_obj = env['image']  # paxter.author.elements.Image
 
 # Step 2: function call
-components = FragmentList([
+result = FragmentList([
     "Please visit ",
     link_obj(
         FragmentList([
@@ -460,17 +469,10 @@ components = FragmentList([
 
 The result of interpreting the entire source text
 using {class}`InterpreterContext <paxter.interpret.context.InterpreterContext>`
-is always going to be a fragment list of each smaller components.
-
-
-The entire source text by itself is a fragment list of each smaller component
-as seen in the 
-
-
-
-
-The result from interpreting the code mentioned here
-yields the following data class instance. 
+is always going to be a fragment list of each smaller pieces of content
+(which is why the `result` in the above code is an instance of
+{class}`FragmentList <paxter.interpret.data.FragmentList>` class).
+Displaying the content of `result` gives us the following evaluated result.
 
 ```pycon
 >>> result
