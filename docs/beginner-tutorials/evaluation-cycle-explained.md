@@ -10,7 +10,7 @@ Please visit @link["https://example.com"]{@italic{this} website}. @line_break
 ```
 
 We are going to assume that we use the function
-{func}`run_document_paxter <paxter.author.preset.run_document_paxter>`
+{func}`run_document_paxter() <paxter.author.preset.run_document_paxter>`
 in order to evaluate the above source text into the final HTML output.
 This transformation can be divided into three logical steps.
 
@@ -150,7 +150,7 @@ This particular transformer tries to
 In addition, this transformer expects what is called 
 the **initial environment dictionary**  under which python executions are performed.
 For this particular scenario, this dictionary is created by the function
-{func}`create_document_env <paxter.author.environ.create_document_env>`
+{func}`create_document_env() <paxter.author.environ.create_document_env>`
 from the {mod}`paxter.author` subpackage.
 This environment dictionary contains the mapping of
 function aliases to the actual python functions and object
@@ -158,7 +158,7 @@ and it is where the magic happens.
 
 Let us look at the contents of the environment dictionary
 created by the above function
-{func}`create_document_env <paxter.author.environ.create_document_env>`.
+{func}`create_document_env() <paxter.author.environ.create_document_env>`.
 
 ```python
 from paxter.author.environ import create_document_env
@@ -229,10 +229,10 @@ Let us explore each step assuming the initial environment dictionary `env`
     For example, resolving the phrase `italic` from the command `@italic{...}`
     would yield the value of `env["italic"]`
     which refers to 
-    {meth}`Italic.from_fragments <paxter.author.elements.SimpleElement.from_fragments>`
+    {meth}`Italic.from_fragments() <paxter.author.elements.SimpleElement.from_fragments>`
     class method.
     Likewise, the phrase `link` from the command `@link["target"]{text}` maps to 
-    {meth}`Link.from_fragments <paxter.author.elements.Link.from_fragments>`
+    {meth}`Link.from_fragments() <paxter.author.elements.Link.from_fragments>`
     under the dictionary `env`.
     
     :::{admonition,important} Backup Plan
@@ -512,7 +512,7 @@ Rendering the entire `document_result` into HTML string output is simple.
 Two small steps are required:
 
 1. Wrap the `document_result` with {class}`Document <paxter.author.elements.Document>`
-2. Invoke the {meth}`html <paxter.author.elements.Element.html>` method.
+2. Invoke the {meth}`Document.html() <paxter.author.elements.Element.html>` method.
 
 And here is the python code to do exactly as just said:
 
@@ -532,7 +532,7 @@ This yields the following final HTML output:
 ```
 
 :::{admonition,info} Preset Function
-The preset function {func}`run_document_paxter <paxter.author.preset.run_document_paxter>`
+The preset function {func}`run_document_paxter() <paxter.author.preset.run_document_paxter>`
 introduced in the section {ref}`Programmatic Usage <method-2-programmatic-usage>`
 (from Getting Started page) simply performs all three steps as mentioned above in order.
 :::
