@@ -41,14 +41,59 @@ then the entry `env['yaa']` gets populated with the string `"Yet Another Acronym
 which is why the command `@yaa` can subsequently be referred to
 within the source text.
 
-Nevertheless, a burning question remains:
-what happens if our python source code itself contains a quotation mark?
+Yet, a burning question arises:
+what happens if the python source code itself has to contain quotation mark characters
+when we also use it to delimit the main argument part of the `@python` command itself?
+Let’s try that out!
+
+```paxter
+@python"yaa = "Yet Another Acronym""
+YAA is @yaa and it stands for @yaa.
+```
+
+Attempting to evaluate the above source text yields the following error (omitting traceback for clarity):
+
+```pytb
+Traceback (most recent call last):
+  ...
+  File "<string>", line 1
+    yaa = 
+         ^
+SyntaxError: invalid syntax
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  ...
+paxter.exceptions.PaxterRenderError: paxter apply evaluation error at line 1 col 2
+```
+
+The reason behind this error is that the main argument part of the command
+was prematurely terminated at the first (closing) quotation mark character it finds.
+Therefore, the incomplete python statement `yaa = ` was parsed,
+which yields the above error when executed.
+
+The solution around this problem is to additionally enclose the quoted main argument
+with **an equal number of hash characters** to both ends of the quoted argument.
+For example, in the source text below,
+the python source code begins at `#"` and ends at `"#`
+(though we can also use the `##"`, `"##` pair as well).
+
+```paxter
+@python#"yaa = "Yet Another Acronym""#
+YAA is @yaa and it stands for @yaa.
+```
+
+:::{admonition,tip} More Information
+Learn more on Paxter’s ways to escape special characters on the page [](escaping-mechanisms.md).
+:::
+
+
+### Define New Functions
 
 :::{admonition,caution} Under Construction
 This entire page is under construction.
 :::
-
-### Define New Functions
 
 (evaluating-python-expressions)=
 ## Evaluating Python Expressions
