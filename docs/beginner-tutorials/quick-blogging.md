@@ -53,7 +53,7 @@ this interpretation is done by the supplementary {mod}`paxter.author` subpackage
 
 ## Bolds, Italics, and Underline
 
-Let us begin with “bolding” part of a source text.
+Let’s begin with “bolding” part of a source text.
 We use the command `@bold{...}`,
 replacing `...` with the actual text to be emphasized.
 In this particular command, `bold` is the phrase part
@@ -190,7 +190,7 @@ Try that to see for yourself.
 
 Also, what happens if the command `@h1{...}`
 accidentally did _not_ surround the entire chunk of text?
-Let us look at this example in which
+Let’s look at this example in which
 the exclamation mark is located _outside_ of the command:
 
 ```paxter
@@ -270,7 +270,7 @@ Again, it has nothing to do with the core Paxter language specification.
 However, if we wish to force wrap the only paragraph within the blockquote
 with a paragraph tag,
 we can manually wrap that part of text with the `@paragraph{...}` command.
-Let us reconsider the first example of this section again.
+Let’s reconsider the first example of this section again.
 If we wish to have a paragraph tag surround the text “I refuse.”,
 then we can write as follows.
 

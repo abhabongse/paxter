@@ -2,7 +2,7 @@
 
 On this page, we are going to see what happens under the hood
 when a source text in Paxter language got parsed and interpreted.
-Let us consider evaluating the following source text as our motivating example:
+Let’s consider evaluating the following source text as our motivating example:
 
 ```paxter
 Please visit @link["https://example.com"]{@italic{this} website}. @line_break
@@ -156,7 +156,7 @@ This environment dictionary contains the mapping of
 function aliases to the actual python functions and object
 and it is where the magic happens.
 
-Let us look at the contents of the environment dictionary
+Let’s look at the contents of the environment dictionary
 created by the above function
 {func}`create_document_env() <paxter.author.environ.create_document_env>`.
 
@@ -220,7 +220,7 @@ in order to properly interpret each command in the source text.
 
 The process of interpreting a command is divided into two steps:
 resolving the phrase and invoking a function call.
-Let us explore each step assuming the initial environment dictionary `env`
+Let’s explore each step assuming the initial environment dictionary `env`
 (borrowed from above). 
 
 1.  **Resolve the phrase part.**
@@ -235,10 +235,12 @@ Let us explore each step assuming the initial environment dictionary `env`
     {meth}`Link.from_fragments() <paxter.author.elements.Link.from_fragments>`
     under the dictionary `env`.
     
-    :::{admonition,important} Backup Plan
+    (phrase-part-fallback-plan)=
+    
+    :::{admonition,important} Fallback Plan
     However, if the key which is made of the phrase part
     does not appear in `env` dictionary,
-    then the backup plan is to use python built-in function {func}`eval`
+    then the fallback plan is to use python built-in function {func}`eval`
     to **evaluate the entire phrase string** with `env` as the global namespace.
     This fallback behavior enables a myriad of features in Paxter ecosystem
     including evaluating an anonymous python expression
@@ -258,11 +260,13 @@ Let us explore each step assuming the initial environment dictionary `env`
     :::
     
     :::{admonition,caution} Noteworthy
-    The resolution of the phrase part of a command into a python value
-    can be fully customized by replacing `env["_phrase_eval_"]`
-    with another function of the identical signature.
-    This default behavior described above is merely of the default function
-    located at `env["_phrase_eval_"]`.
+    The phrase part resolution behavior (as described above)
+    is completely dictated by the default function located at `env["_phrase_eval_"]`.
+    This behavior can be fully customized by switching out the default function
+    and replacing it with another implementation with identical function signature.
+    See the section {ref}`disabling-python-code-interpretation`
+    to learn how to customize this behavior 
+    and see how it affects the entire cycle of command evaluation.
     :::
 
 2.  **Invoke a function call.**
@@ -288,11 +292,11 @@ Let us explore each step assuming the initial environment dictionary `env`
       then all of the items from the options part
       will be sole input arguments of the function call.
       
-Let us walkthrough these two-step process with a few examples.
+Let’s walkthrough these two-step process with a few examples.
 
 #### Example 1: Non-Callable Command
 
-Let us begin with a basic example.
+Let’s begin with a basic example.
 The command `@line_break` on its own would get translated roughly
 into the following python code equivalent.
 The final result is stored inside the variable `result`.
@@ -326,7 +330,7 @@ and it would be represented as a list of subtype
 
 #### Example 3: Command With Both Options and Main Argument
 
-Let us look at this rather complicated command
+Let’s look at this rather complicated command
 and its python code equivalent.
 
 ```paxter

@@ -9,14 +9,14 @@ Of course, we can also opt for other methods of python package managements.
 $ pip install paxter
 ```
 
-Next, let us write a basic blog entry.
+Next, let’s write a basic blog entry.
 
 
 ## Writing The First Blog Entry
 
 Suppose that we are going to write a blog post
 under Paxter language syntax as shown in the following.
-Let us ignore the specific details about the syntax for now
+Let’s ignore the specific details about the syntax for now
 as we will discuss them further on the next page.
 
 ```paxter

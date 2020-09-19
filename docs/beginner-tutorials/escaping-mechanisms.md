@@ -19,8 +19,13 @@ as-is in the final HTML output, an escape of some sort is required.
 does _not_ provide a way to escape ‘**@**’ symbols per se.
 However, there are a few ways around this.
 
+### Method 1: Define Constants For ‘@’
 
-### Method 1: Using Symbol-Only Command
+:::{admonition,caution} Under Construction
+This section is under construction.
+:::
+
+### Method 2: Using Symbol-Only Command
 
 Recall the {ref}`predefined-raw-html` section from a past page.
 We have the commands `@\`, `@%`, `@.`, and `@,`
@@ -104,7 +109,7 @@ paxter.exceptions.PaxterRenderError: paxter command phrase evaluation error at l
 ```
 
 
-### Method 2: Using `@verbatim` Command
+### Method 3: Using `@verbatim` Command
 
 :::{admonition,caution} Under Construction
 This section is under construction.

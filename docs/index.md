@@ -27,13 +27,8 @@ beginner-tutorials/quick-blogging
 beginner-tutorials/evaluation-cycle-explained
 beginner-tutorials/interpreting-python-code
 beginner-tutorials/escaping-mechanisms
-beginner-tutorials/dive-into-command-options
-beginner-tutorials/customization-demo-codeblock-syntax-highlight
-beginner-tutorials/writing-a-first-blog-entry
-beginner-tutorials/adding-a-second-paragraph
-beginner-tutorials/including-an-email-address
-beginner-tutorials/defining-common-constants
-beginner-tutorials/coding-more-python-in-documents
+beginner-tutorials/dive-into-command-syntax
+beginner-tutorials/codeblock-syntax-highlight-demo
 ```
 
 ```{toctree}
