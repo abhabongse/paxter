@@ -85,18 +85,71 @@ YAA is @yaa and it stands for @yaa.
 ```
 
 :::{admonition,tip} More Information
+The **hash-enclosing rule** is enforced by the core Paxter language specification,
+and it applies at other locations as well.
 Learn more on Paxter’s ways to escape special characters on the page [](escaping-mechanisms.md).
 :::
 
 
 ### Define New Functions
 
-:::{admonition,caution} Under Construction
-This entire page is under construction.
+Continuing on the same line of thinking from above,
+we could also define python functions using `@python` command
+and make calls to them using command syntax from within the source text.
+
+For example, we will create a new function that will repeat the main argument a few times.
+
+```paxter
+@python##"
+def repeat(main_arg, n=2):
+    return n * main_arg
+"##
+
+@repeat{woof}
+
+@repeat[3]{@bold{hi}}
+
+@repeat[n=4]{@repeat{?}!}
+```
+
+```html
+<p>woofwoof</p>
+<p><b>hi</b><b>hi</b><b>hi</b></p>
+<p>??!??!??!??!</p>
+```
+
+Using command syntax to call functions imported through import statement also works.
+
+```paxter
+@python##"
+from textwrap import shorten
+"##
+
+@shorten[15]#"Good morning world!"#
+
+@shorten["Good evening everyone.", width=20]
+```
+
+```html
+<p>Good [...]</p>
+<p>Good evening [...]</p>
+```
+
+:::{admonition,important} Did you spot something?
+Readers with a pair of eagle eyes will be able to spot that
+we are liberally using the hash-enclosing rule here at the first `@shorten` command as well,
+albeit totally unnecessary.
+This is to illustrate that this hash-enclosing rule
+works for _any_ command (not just `@python`).
 :::
+
 
 (evaluating-python-expressions)=
 ## Evaluating Python Expressions
 
 (disable-python-code-interpretation)=
 ## Disable Python Code Interpretation
+
+:::{admonition,caution} Under Construction
+This entire page is under construction.
+:::
