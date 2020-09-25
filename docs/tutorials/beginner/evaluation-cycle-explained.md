@@ -130,7 +130,7 @@ FragmentSeq(
 :::{admonition,tip} Dear Advanced Users
 For those who are familiar with the field of Programming Languages,
 this maybe enough to get you run wild!
-See the [syntax reference](../references/syntax.md)
+See the [syntax reference](../../references/syntax.md)
 and the {ref}`data definitions for parsed tree nodes <parsing-data-definitions>`
 to help get started right away.
 :::   
@@ -264,7 +264,7 @@ Let’s explore each step assuming the initial environment dictionary `env`
     is completely dictated by the default function located at `env["_phrase_eval_"]`.
     This behavior can be fully customized by switching out the default function
     and replacing it with another implementation with identical function signature.
-    See the section {ref}`disabling-python-code-interpretation`
+    See [](disable-python-environment-demo.md)
     to learn how to customize this behavior 
     and see how it affects the entire cycle of command evaluation.
     :::

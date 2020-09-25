@@ -22,13 +22,14 @@ if they so wish.
 caption: Beginner Tutorials
 maxdepth: 2
 ---
-beginner-tutorials/getting-started
-beginner-tutorials/quick-blogging
-beginner-tutorials/evaluation-cycle-explained
-beginner-tutorials/interpreting-python-code
-beginner-tutorials/escaping-mechanisms
-beginner-tutorials/dive-into-command-syntax
-beginner-tutorials/codeblock-syntax-highlight-demo
+tutorials/beginner/getting-started
+tutorials/beginner/quick-blogging
+tutorials/beginner/evaluation-cycle-explained
+tutorials/beginner/interpreting-python-code
+tutorials/beginner/disable-python-environment-demo
+tutorials/beginner/escaping-mechanisms
+tutorials/beginner/dive-into-command-syntax
+tutorials/beginner/codeblock-syntax-highlight-demo
 ```
 
 ```{toctree}
@@ -36,7 +37,7 @@ beginner-tutorials/codeblock-syntax-highlight-demo
 caption: Intermediate Tutorials
 maxdepth: 2
 ---
-intermediate-tutorials/index
+tutorials/intermediate/index
 ```
 
 ```{toctree}

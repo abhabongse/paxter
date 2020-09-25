@@ -287,11 +287,3 @@ The union of set {1, 2, 4, 8} and {2, 3, 5, 7} is @#|{1, 2, 4, 8} | {2, 3, 5, 7}
 <p>The bitwise OR between 5 and 9 is 13.</p>
 <p>The union of set {1, 2, 4, 8} and {2, 3, 5, 7} is {1, 2, 3, 4, 5, 7, 8}.</p>
 ```
-
-
-(disabling-python-code-interpretation)=
-## Disabling Python Code Interpretation
-
-:::{admonition,caution} Under Construction
-This section is under construction.
-:::

@@ -17,8 +17,7 @@ The {mod}`paxter.author` subpackage is merely
 supplementary provided by Paxter library for convenience.
 It is entirely possible to utilize Paxter library _without_ touching
 any of the {mod}`paxter.author` whatsoever,
-as being demonstrated in the
-{doc}`intermediate tutorials <../intermediate-tutorials/index>` section.
+as being demonstrated in the [](../intermediate/index.md).
 :::
 
 

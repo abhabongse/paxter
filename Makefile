@@ -201,7 +201,7 @@ git_show_tree:
 ipe:
 	@# Launch IPE program with environment variables
 	mkdir -p build/latex
-	cp docs/diagram/*.ttf build/latex
+	cp docs/drawings/*.ttf build/latex
 	IPELATEXDIR=build/latex ipe
 	rm -rf build/latex
 	-rmdir build
