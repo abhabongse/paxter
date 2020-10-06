@@ -1,6 +1,8 @@
 """
 Collection of standard functions for Python author mode.
 """
+from __future__ import annotations
+
 import inspect
 from typing import Any, TYPE_CHECKING
 
@@ -32,7 +34,7 @@ def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
 
 
 @DirectApply
-def python_unsafe_exec(context: 'InterpreterContext', node: Command):
+def python_unsafe_exec(context: InterpreterContext, node: Command):
     """
     Unsafely executes the given python code
     using env dict as the namespace.

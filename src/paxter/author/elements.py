@@ -2,9 +2,12 @@
 Collections of data classes representing document elements
 which may be used to construct a document for web, print, etc.
 """
+from __future__ import annotations
+
 import html
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Iterator, List, Union
+from typing import Union
 
 from paxter.author.fragmentutils import split_into_paragraphs
 from paxter.exceptions import PaxterRenderError
@@ -34,7 +37,7 @@ class Element:
         """
         raise NotImplementedError
 
-    def html_from_body(self, body: List) -> Iterator[str]:
+    def html_from_body(self, body: list) -> Iterator[str]:
         """
         Recursively produces a stream of HTML string tokens
         from the given body which is a list of elements.
@@ -49,7 +52,7 @@ class Element:
                 yield html.escape(str(elem))
 
     @classmethod
-    def flatten_fragments(cls, fragments: Union[str, FragmentList]) -> List:
+    def flatten_fragments(cls, fragments: Union[str, FragmentList]) -> list:
         """
         Flattens a given fragment list
         by unfolding nested fragment list.
@@ -64,7 +67,7 @@ class Element:
             cls,
             fragments: Union[str, FragmentList],
             forced_paragraph: bool,
-    ) -> List:
+    ) -> list:
         """
         Splits the given fragment list into a list of paragraphs
         where each paragraph is a fragment list of elements
@@ -104,7 +107,7 @@ class SimpleElement(Element):
     Simple element node type which renders output in the form of
     ``{OPENING}{rendered body}{CLOSING}``.
     """
-    body: List
+    body: list
 
     #: Opening part of the element
     HTML_OPENING = '<div>'
@@ -140,7 +143,7 @@ class EnumeratingElement(Element):
     Special element which contains an enumeration of items
     where each item is a body (i.e. a list of elements).
     """
-    items: List[List]
+    items: list[list]
 
     #: Opening part of the entire element
     HTML_GLOBAL_OPENING = ''
@@ -184,7 +187,7 @@ class Document(Element):
     Topmost-level element for the entire document itself.
     It may split the provided body into multiple paragraphs.
     """
-    body: List
+    body: list
 
     @classmethod
     def from_fragments(cls, fragments: Union[str, FragmentList]):
@@ -266,7 +269,7 @@ class Link(SimpleElement):
     """
     Hyperlink element.
     """
-    body: List
+    body: list
     href: str
 
     @classmethod
@@ -291,7 +294,7 @@ class Blockquote(Element):
     Renders the blockquote which may split the provided body
     into multiple paragraphs.
     """
-    body: List
+    body: list
 
     @classmethod
     def from_fragments(cls, fragments: Union[str, FragmentList]):

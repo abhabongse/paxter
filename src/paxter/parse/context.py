@@ -1,8 +1,10 @@
 """
 Recursive descent parse of Paxter language.
 """
+from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import List, Match, Tuple
+from typing import Match
 
 from paxter.exceptions import PaxterSyntaxError
 from paxter.parse.charloc import CharLoc
@@ -46,7 +48,7 @@ class ParserContext:
 
     def _inner_parse_fragment_seq(
             self, next_pos: int, enclosing: EnclosingPattern,
-    ) -> Tuple[int, FragmentSeq]:
+    ) -> tuple[int, FragmentSeq]:
         """
         Subroutinely parses the input expecting a sequence of fragment nodes
         starting from the given position indicated by ``next_pos``.
@@ -54,7 +56,7 @@ class ParserContext:
         or when parsing under a scope enclosed by braces pattern.
         """
         start_pos = next_pos
-        children: List[Fragment] = []
+        children: list[Fragment] = []
 
         while True:
             # Attempts to match the next break pattern
@@ -83,7 +85,7 @@ class ParserContext:
         fragment_seq_node = FragmentSeq(start_pos, end_pos, children, enclosing)
         return next_pos, fragment_seq_node
 
-    def _parse_cmd(self, next_pos: int) -> Tuple[int, Command]:
+    def _parse_cmd(self, next_pos: int) -> tuple[int, Command]:
         """
         Parses @-expressions starting from immediately after @-symbol
         by attempting to dispatch the next step through lookahead patterns.
@@ -102,7 +104,7 @@ class ParserContext:
 
         self._invalid_cmd(next_pos)
 
-    def _parse_id_phrase_cmd(self, id_matchobj: Match[str]) -> Tuple[int, Command]:
+    def _parse_id_phrase_cmd(self, id_matchobj: Match[str]) -> tuple[int, Command]:
         """
         Continues parsing the phrase section of the Command
         by using the identifier name content as the phrase section.
@@ -114,7 +116,7 @@ class ParserContext:
             next_pos, cmd_start_pos, phrase, phrase_enclosing,
         )
 
-    def _parse_bar_phrase_cmd(self, lbar_matchobj: Match[str]) -> Tuple[int, Command]:
+    def _parse_bar_phrase_cmd(self, lbar_matchobj: Match[str]) -> tuple[int, Command]:
         """
         Continues parsing the phrase section of the Command
         which is enclosed by the bar pattern.
@@ -137,7 +139,7 @@ class ParserContext:
     def _parse_cmd_after_phrase(
             self, next_pos: int, cmd_start_pos: int,
             phrase: str, phrase_enclosing: EnclosingPattern,
-    ) -> Tuple[int, Command]:
+    ) -> tuple[int, Command]:
         """
         Continues parsing the Command after the phrase section.
         """
@@ -174,7 +176,7 @@ class ParserContext:
 
     def _parse_fragment_seq(
             self, lbrace_matchobj: Match[str],
-    ) -> Tuple[int, FragmentSeq]:
+    ) -> tuple[int, FragmentSeq]:
         """
         Recursively parses the input until the enclosing right pattern
         corresponding to the enclosing left pattern
@@ -184,7 +186,7 @@ class ParserContext:
         enclosing = EnclosingPattern(left=lbrace_matchobj.group('left'))
         return self._inner_parse_fragment_seq(next_pos, enclosing)
 
-    def _parse_text(self, lquote_matchobj: Match[str]) -> Tuple[int, Text]:
+    def _parse_text(self, lquote_matchobj: Match[str]) -> tuple[int, Text]:
         """
         Continues parsing the input for raw :class:`Text` node
         until the enclosing right pattern corresponding to the
@@ -204,7 +206,7 @@ class ParserContext:
 
     def _parse_single_symbol(
             self, symbol_matchobj: Match[str],
-    ) -> Tuple[int, Command]:
+    ) -> tuple[int, Command]:
         """
         A special case of @-expression (called a "single symbol")
         where a single-character symbol follows the @-switch character.
@@ -218,7 +220,7 @@ class ParserContext:
         )
         return next_pos, command_node
 
-    def _parse_options(self, next_pos: int) -> Tuple[int, TokenSeq]:
+    def _parse_options(self, next_pos: int) -> tuple[int, TokenSeq]:
         """
         Parses the options section until reaching the right square brackets.
         """

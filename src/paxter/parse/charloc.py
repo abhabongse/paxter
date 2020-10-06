@@ -2,6 +2,8 @@
 Utility class which converts 0-indexed absolute positional value
 of the input text into 1-indexed line number and column number.
 """
+from __future__ import annotations
+
 from dataclasses import InitVar, dataclass, field
 
 __all__ = ['CharLoc']

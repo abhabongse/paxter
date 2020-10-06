@@ -1,9 +1,12 @@
 """
 Collection of function wrappers in Python author mode.
 """
+from __future__ import annotations
+
 from abc import ABCMeta, abstractmethod
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable, List, Optional, TYPE_CHECKING, Tuple
+from typing import Any, Optional, TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
 from paxter.parse import CharLoc, Command, Identifier, Operator, Token, TokenSeq
@@ -20,7 +23,7 @@ class BaseApply(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def call(self, context: 'InterpreterContext', node: Command) -> Any:
+    def call(self, context: InterpreterContext, node: Command) -> Any:
         """
         Performs the evaluation of the given :class:`Command` node
         in any way desired (including macro expansion before evaluation).
@@ -38,7 +41,7 @@ class DirectApply(BaseApply):
     :func:`for_statement <paxter.author.controls.for_statement>` and
     to see how this decorator is used.
     """
-    wrapped: Callable[['InterpreterContext', Command], Any]
+    wrapped: Callable[[InterpreterContext, Command], Any]
 
     def __post_init__(self):
         self.__wrapped__ = self.wrapped
@@ -47,7 +50,7 @@ class DirectApply(BaseApply):
     def __call__(self, *args, **kwargs):
         return self.wrapped(*args, **kwargs)
 
-    def call(self, context: 'InterpreterContext', node: Command) -> Any:
+    def call(self, context: InterpreterContext, node: Command) -> Any:
         return self.wrapped(context, node)
 
 
@@ -70,7 +73,7 @@ class NormalApply(BaseApply):
     def __call__(self, *args, **kwargs):
         return self.wrapped(*args, **kwargs)
 
-    def call(self, context: 'InterpreterContext', node: Command) -> Any:
+    def call(self, context: InterpreterContext, node: Command) -> Any:
         if node.options:
             args, kwargs = self.extract_args_and_kwargs(context, node.options)
         else:
@@ -81,9 +84,9 @@ class NormalApply(BaseApply):
         return self.wrapped(*args, **kwargs)
 
     def extract_args_and_kwargs(
-            self, context: 'InterpreterContext',
+            self, context: InterpreterContext,
             options: TokenSeq,
-    ) -> Tuple[list, dict]:
+    ) -> tuple[list, dict]:
         """
         Returns a pair of positional argument list and keyword argument dict.
         """
@@ -112,15 +115,15 @@ class NormalApply(BaseApply):
 
     @staticmethod
     def tokenize_args(
-            context: 'InterpreterContext',
+            context: InterpreterContext,
             options: TokenSeq,
-    ) -> Tuple[Optional[str], Token]:
+    ) -> tuple[Optional[str], Token]:
         """
         Generates a sequence of arguments, each of which
         is a tuple pair of (argument name, argument value token).
         The first component may be None which indicates positional arguments.
         """
-        remains: List[Token] = list(options.children)
+        remains: list[Token] = list(options.children)
 
         while remains:
             # Checks whether the second token is an '=' operator
@@ -167,7 +170,7 @@ class NormalApplyWithEnv(NormalApply):
     receive the environment dict as the very first argument.
     """
 
-    def call(self, context: 'InterpreterContext', node: Command) -> Any:
+    def call(self, context: InterpreterContext, node: Command) -> Any:
         if node.options:
             args, kwargs = self.extract_args_and_kwargs(context, node.options)
         else:

@@ -7,6 +7,8 @@ It is used in the following scenarios:
 - Quoted pattern for :class:`Text <paxter.parse.data.Text>` nodes
 - Bar pattern for the phrase of :class:`Command <paxter.parse.data.Command>` nodes
 """
+from __future__ import annotations
+
 import re
 from dataclasses import dataclass, field
 from typing import Pattern

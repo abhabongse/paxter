@@ -1,8 +1,11 @@
 """
 Collections of utility functions to process fragment lists.
 """
+from __future__ import annotations
+
 import re
-from typing import List, Sequence, Union
+from collections.abc import Sequence
+from typing import Union
 
 from paxter.exceptions import PaxterRenderError
 from paxter.interpret.data import FragmentList
@@ -10,7 +13,7 @@ from paxter.interpret.data import FragmentList
 PARAGRAPH_SPLIT_RE = re.compile(r'\n(?:[ \t\r\f\v]*\n)+')
 
 
-def split_into_paragraphs(fragments: Union[str, FragmentList]) -> List[FragmentList]:
+def split_into_paragraphs(fragments: Union[str, FragmentList]) -> list[FragmentList]:
     """
     Splits a given fragment list into a list of multiple paragraphs
     where each paragraph is a fragment list.
@@ -57,7 +60,7 @@ def split_into_paragraphs(fragments: Union[str, FragmentList]) -> List[FragmentL
     return paragraphs
 
 
-def _merge_strings(fragments: FragmentList) -> List:
+def _merge_strings(fragments: FragmentList) -> list:
     """
     Merge consecutive strings in fragment list into one string.
     """

@@ -2,6 +2,8 @@
 Document-first text pre-processing mini-language
 loosely inspired by @-expressions in Racket.
 """
+from __future__ import annotations
+
 import json
 import os
 

@@ -1,6 +1,8 @@
 """
 Collection of control flow functions for Python author mode.
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
@@ -12,7 +14,7 @@ if TYPE_CHECKING:
 
 
 @DirectApply
-def for_statement(context: 'InterpreterContext', node: Command):
+def for_statement(context: InterpreterContext, node: Command):
     """
     Simulates a simple for loop.
     Its command has the form of ``@for[ITEM in SEQUENCE]{...}``.
@@ -52,7 +54,7 @@ def for_statement(context: 'InterpreterContext', node: Command):
 
 
 @DirectApply
-def if_statement(context: 'InterpreterContext', node: Command):  # noqa: C901
+def if_statement(context: InterpreterContext, node: Command):  # noqa: C901
     """
     Simulates simple if statement.
     Its command takes the form of one of the following possibilities:

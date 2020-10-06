@@ -1,13 +1,15 @@
 """
 Data definitions for the result type of evaluation.
 """
+from __future__ import annotations
+
 from collections import UserList
-from typing import MutableSequence, TypeVar
+from typing import Generic, TypeVar
 
 T = TypeVar('T')
 
 
-class FragmentList(UserList, MutableSequence[T]):
+class FragmentList(UserList, Generic[T]):
     """
     Special subclass of built-in list class
     to store a list of fragments.

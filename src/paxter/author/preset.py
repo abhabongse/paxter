@@ -1,6 +1,8 @@
 """
 A collection of Paxter common functions.
 """
+from __future__ import annotations
+
 from typing import Optional
 
 from paxter.author.elements import Document

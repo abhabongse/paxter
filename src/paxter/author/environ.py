@@ -1,6 +1,8 @@
 """
 A collection of pre-defined execution environment.
 """
+from __future__ import annotations
+
 from typing import Optional
 
 from paxter.author.controls import for_statement, if_statement

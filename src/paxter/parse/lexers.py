@@ -1,8 +1,10 @@
 """
 Regular expression based lexers for Paxter language.
 """
+from __future__ import annotations
+
 import re
-from typing import Dict, Pattern
+from typing import Pattern
 
 from paxter.parse.charset import IDENTIFIER_PATTERN, OPERATOR_PATTERN, SYMBOL_PATTERN
 
@@ -13,8 +15,8 @@ class Lexer:
     """
     Collection of compiled regular expressions to parse Paxter language.
     """
-    _compiled_non_rec_breaks = Dict[str, Pattern[str]]
-    _compiled_rec_breaks = Dict[str, Pattern[str]]
+    _compiled_non_rec_breaks: dict[str, Pattern[str]]
+    _compiled_rec_breaks: dict[str, Pattern[str]]
 
     ws_re = re.compile(r'\s*')
     at_re = re.compile(r'@')

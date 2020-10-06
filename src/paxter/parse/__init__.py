@@ -2,6 +2,8 @@
 This paxter subpackage implements
 the parsing functionality for Paxter language.
 """
+from __future__ import annotations
+
 from paxter.parse.charloc import CharLoc
 from paxter.parse.context import ParserContext
 from paxter.parse.data import (

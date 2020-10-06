@@ -1,10 +1,12 @@
 """
 Data definitions for node types in Paxter parsed tree.
 """
+from __future__ import annotations
+
 import json
 from abc import ABCMeta
 from dataclasses import dataclass, field
-from typing import Any, List, Match, Optional, Type, TypeVar, Union
+from typing import Any, Match, Optional, TypeVar, Union
 
 from paxter.parse.enclosing import EnclosingPattern
 
@@ -30,9 +32,9 @@ class Token(metaclass=ABCMeta):
 
     @classmethod
     def from_matchobj(
-            cls: Type['T'], matchobj: Match[str], capture_name: str,
+            cls: type[T], matchobj: Match[str], capture_name: str,
             *args, **kwargs,
-    ) -> 'T':
+    ) -> T:
         """
         Creates a new node from the provided match object
         returned by regexp matching under the provided capture group name.
@@ -86,7 +88,7 @@ class TokenSeq(Token):
     of a :class:`Command`.
     """
     #: Sequence of :class:`Token` instances
-    children: List[Token]
+    children: list[Token]
 
     sanitize = None
 
@@ -142,7 +144,7 @@ class FragmentSeq(Token):
     or as a token within the options section of a :class:`Command` node.
     """
     #: Sequence of :class:`Fragment` instances
-    children: List[Fragment]
+    children: list[Fragment]
 
     #: Information of the enclosing braces pattern
     enclosing: EnclosingPattern

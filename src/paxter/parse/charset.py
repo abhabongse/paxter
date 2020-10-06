@@ -2,6 +2,8 @@
 Variable collection of character sets as defined by Paxter language.
 They are used to construct tokenizers for language parsing.
 """
+from __future__ import annotations
+
 import re
 import sys
 import unicodedata

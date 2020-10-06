@@ -17,6 +17,7 @@ matrix:
     - python: '3.8'
       env:
         - TOXENV=py38,codecov
+    # TODO: prepare to add 3.9 when travis supports it
 
 before_install:
   - python --version
