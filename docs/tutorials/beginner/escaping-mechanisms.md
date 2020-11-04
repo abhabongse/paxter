@@ -21,11 +21,55 @@ However, there are a few ways around this.
 
 ### Method 1: Define Constants For ‘@’
 
-:::{admonition,caution} Under Construction
-This section is under construction.
-:::
+We will take advantage of being able to run python code within the source text.
+Specifically, we will define a variable to store the `@` symbol character.
 
-### Method 2: Using Symbol-Only Command
+```paxter
+@python##"
+at = '@'
+"##
+This is the @bold{at} symbol: @at.
+```
+
+```html
+<p>This is the <b>at</b> symbol: @.</p>
+```
+
+But this method would not work when you wish to
+write an email address or a twitter handle.
+For this, additional bar-delimiters surrounding the phrase is needed
+([see the next section of this page for more information](#escaping-delimiters-curly-braces-quotes-and-bars)).
+
+```paxter
+@python##"
+at = '@'
+"##
+Email me at @link["mailto:person@example.com"]{person@|at|example.com}
+and my twitter handle is @|at|example. Don’t @at me.
+```
+
+```html
+<p>Email me at <a href="mailto:person@example.com">person@example.com</a>
+   and my twitter handle is @example. Don’t @ me.</p>
+```
+
+### Method 2: Using `@verb` Command
+
+The pre-defined `@verb` command (short for **verbatim**)
+accepts a string argument and returns it as-is.
+Here is an example of how to author the same document from the previous example.
+
+```paxter
+Email me at @link["mailto:person@example.com"]{@verb##"person@example.com"##}
+and my twitter handle is @verb"@"example. @verb"Don’t @ me".
+```
+
+```html
+<p>Email me at <a href="mailto:person@example.com">person@example.com</a>
+   and my twitter handle is @example. Don’t @ me.</p>
+```
+
+### Method 3: Using Symbol-Only Command
 
 Recall the {ref}`predefined-raw-html` section from a past page.
 We have the commands `@\`, `@%`, `@.`, and `@,`
@@ -108,15 +152,7 @@ Traceback (most recent call last):
 paxter.exceptions.PaxterRenderError: paxter command phrase evaluation error at line 2 col 27: 'example'
 ```
 
-
-### Method 3: Using `@verbatim` Command
-
-:::{admonition,caution} Under Construction
-This section is under construction.
-- Other stuff which are allowed inside options of a command?
-:::
-
-
+(escaping-delimiters-curly-braces-quotes-and-bars)=
 ## Escaping Delimiters: Curly Braces, Quotes, and Bars
 
 :::{admonition,caution} Under Construction
