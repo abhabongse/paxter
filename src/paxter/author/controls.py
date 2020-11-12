@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
 from paxter.interpret import DirectApply, FragmentList
-from paxter.parse import CharLoc, Command, Identifier
+from paxter.parsing import CharLoc, Command, Identifier
 
 if TYPE_CHECKING:
     from paxter.interpret.context import InterpreterContext

@@ -91,7 +91,7 @@ tox_python:
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
-	tox -e py37 -e py38 -e py39
+	tox -e py38 -e py39
 
 .PHONY: tox_sanity
 tox_sanity:

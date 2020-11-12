@@ -6,8 +6,6 @@ from __future__ import annotations
 
 from dataclasses import InitVar, dataclass, field
 
-__all__ = ['CharLoc']
-
 
 @dataclass
 class CharLoc:

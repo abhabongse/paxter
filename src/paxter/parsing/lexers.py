@@ -6,14 +6,12 @@ from __future__ import annotations
 import re
 from typing import Pattern
 
-from paxter.parse.charset import IDENTIFIER_PATTERN, OPERATOR_PATTERN, SYMBOL_PATTERN
-
-__all__ = ['LEXER']
+from paxter.parsing.charset import IDENTIFIER_PATTERN, OPERATOR_PATTERN, SYMBOL_PATTERN
 
 
 class Lexer:
     """
-    Collection of compiled regular expressions to parse Paxter language.
+    Collection of compiled regular expressions to parsing Paxter language.
     """
     _compiled_non_rec_breaks: dict[str, Pattern[str]]
     _compiled_rec_breaks: dict[str, Pattern[str]]
@@ -28,8 +26,7 @@ class Lexer:
     id_re = re.compile(rf'(?P<id>{IDENTIFIER_PATTERN})')
     symbol_re = re.compile(rf'(?P<symbol>{SYMBOL_PATTERN})')
     op_re = re.compile(rf'(?P<op>{OPERATOR_PATTERN})')
-    num_re = re.compile(r'(?P<num>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?'
-                        r'(?:[Ee][+-]?[0-9]+)?)')
+    num_re = re.compile(r'(?P<num>-?(?:[1-9][0-9]*|0)(?:\.[0-9]+)?(?:[Ee][+-]?[0-9]+)?)')
     global_break_re = re.compile(r'(?P<inner>(?s:.)*?)(?P<break>@|\Z)')
 
     def __init__(self):
@@ -44,8 +41,7 @@ class Lexer:
         right_pattern = re.escape(right_pattern)
         if right_pattern not in self._compiled_non_rec_breaks:
             self._compiled_non_rec_breaks[right_pattern] = re.compile(
-                r'(?P<inner>(?s:.)*?)'
-                rf'(?P<break>{right_pattern})',
+                rf'(?P<inner>(?s:.)*?)(?P<break>{right_pattern})',
             )
         return self._compiled_non_rec_breaks[right_pattern]
 
@@ -58,11 +54,9 @@ class Lexer:
         right_pattern = re.escape(right_pattern)
         if right_pattern not in self._compiled_rec_breaks:
             self._compiled_rec_breaks[right_pattern] = re.compile(
-                r'(?P<inner>(?s:.)*?)'
-                rf'(?P<break>@|{right_pattern})',
+                rf'(?P<inner>(?s:.)*?)(?P<break>@|{right_pattern})',
             )
         return self._compiled_rec_breaks[right_pattern]
 
 
-# Instance of lexer class
-LEXER = Lexer()
+_LEXER = Lexer()

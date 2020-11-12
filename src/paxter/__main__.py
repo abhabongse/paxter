@@ -27,7 +27,7 @@ def input_output_options(func):
     return func
 
 
-@program.command(name='parse')
+@program.command(name='parsing')
 @input_output_options
 def run_parse(input_file, output_file):
     """
@@ -38,10 +38,10 @@ def run_parse(input_file, output_file):
 
     Transform: input text -> parsed tree
     """
-    from paxter.parse import ParserContext
+    from paxter.parsing import _ParsingTask
 
     input_text = input_file.read()
-    parse_context = ParserContext(input_text)
+    parse_context = _ParsingTask(input_text)
 
     output_file.write(repr(parse_context.tree))
     output_file.write("\n")
@@ -56,7 +56,7 @@ def run_document(input_file, output_file, env_file):
     """
     Evaluates the input text into the document object.
 
-    It reads input text from INPUT_FILE and pass it through the parse.
+    It reads input text from INPUT_FILE and pass it through the parsing.
     Then the parsed tree is evaluated into document object
     using the environment provided by the
     paxter.author supplementary subpackage.
@@ -84,7 +84,7 @@ def run_html(input_file, output_file, env_file):
     """
     Parses, evaluates, and renders the final HTML output.
 
-    It reads input text from INPUT_FILE and pass it through the parse.
+    It reads input text from INPUT_FILE and pass it through the parsing.
     Then the parsed tree is evaluated into document object
     using the environment provided by the
     paxter.author supplementary subpackage.

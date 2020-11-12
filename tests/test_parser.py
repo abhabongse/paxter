@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import pytest
 
-from paxter.parse import (
+from paxter.parsing import (
     Command, EnclosingPattern, FragmentSeq, GlobalEnclosingPattern, Identifier,
-    Number, Operator, ParserContext, Text, Token, TokenSeq,
+    Number, Operator, Text, Token, TokenSeq, parse,
 )
 
 
 @pytest.mark.parametrize(
-    ("input_text", "expected"),
+    ("src_text", "expected"),
     [
         pytest.param(
             '',
@@ -1002,8 +1002,8 @@ from paxter.parse import (
         ),
     ],
 )
-def test_parser(input_text: str, expected: Token):
-    tree = ParserContext(input_text).tree
+def test_parser(src_text: str, expected: Token):
+    tree = parse(src_text)
     assert tree == expected
     assert tree.start_pos == expected.start_pos
     assert tree.end_pos == expected.end_pos

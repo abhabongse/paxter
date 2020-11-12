@@ -3,9 +3,9 @@ Utility class for textual enclosing (left and right) patterns
 which surrounds a particular scope of string data.
 It is used in the following scenarios:
 
-- Brace pattern for :class:`FragmentSeq <paxter.parse.data.FragmentSeq>` nodes
-- Quoted pattern for :class:`Text <paxter.parse.data.Text>` nodes
-- Bar pattern for the phrase of :class:`Command <paxter.parse.data.Command>` nodes
+- Brace pattern for :class:`FragmentSeq <paxter.parsing.data.FragmentSeq>` nodes
+- Quoted pattern for :class:`Text <paxter.parsing.data.Text>` nodes
+- Bar pattern for the phrase of :class:`Command <paxter.parsing.data.Command>` nodes
 """
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Pattern
 
-from paxter.parse.lexers import LEXER
+from paxter.parsing.lexers import _LEXER
 
 __all__ = ['EnclosingPattern', 'GlobalEnclosingPattern']
 
@@ -58,7 +58,7 @@ class EnclosingPattern:
         Compiles a regular expression lexer to non-greedily match some text
         which is then followed by the given enclosing right pattern.
         """
-        return LEXER.non_rec_break_re(self.right)
+        return _LEXER.non_rec_break_re(self.right)
 
     @property
     def rec_break_re(self) -> Pattern[str]:
@@ -67,7 +67,7 @@ class EnclosingPattern:
         which is then followed by either the @-command switch symbol
         or the given enclosing right pattern.
         """
-        return LEXER.rec_break_re(self.right)
+        return _LEXER.rec_break_re(self.right)
 
 
 @dataclass
@@ -87,4 +87,4 @@ class GlobalEnclosingPattern(EnclosingPattern):
 
     @property
     def rec_break_re(self) -> Pattern[str]:
-        return LEXER.global_break_re
+        return _LEXER.global_break_re

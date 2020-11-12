@@ -9,9 +9,7 @@ from click.testing import CliRunner
 from paxter.author import create_document_env
 from paxter.author.elements import Document
 from paxter.interpret import InterpreterContext
-from paxter.parse import (
-    ParserContext,
-)
+from paxter.parsing import parse
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "document")
 
@@ -28,31 +26,31 @@ TESTS = [
 ]
 
 
-@pytest.mark.parametrize(("input_file", "expected_file"), TESTS)
-def test_evaluator_document(input_file, expected_file):
-    with open(input_file) as fobj:
+@pytest.mark.parametrize(("src_file", "expected_file"), TESTS)
+def test_evaluator_document(src_file, expected_file):
+    with open(src_file) as fobj:
         input_text = fobj.read()
     with open(expected_file) as fobj:
         expected_text = fobj.read()
 
     # Parse input
-    parse_context = ParserContext(input_text)
+    parsed_tree = parse(input_text)
 
     # Render into output HTML
     env = create_document_env()
-    evaluate_context = InterpreterContext(input_text, env, parse_context.tree)
+    evaluate_context = InterpreterContext(input_text, env, parsed_tree)
     document = Document.from_fragments(evaluate_context.rendered)
 
     assert document.html() == expected_text
 
 
-@pytest.mark.parametrize(("input_file", "expected_file"), TESTS)
-def test_cli_document(input_file, expected_file):
+@pytest.mark.parametrize(("src_file", "expected_file"), TESTS)
+def test_cli_document(src_file, expected_file):
     from paxter.__main__ import program
 
     with open(expected_file) as fobj:
         expected_text = fobj.read()
 
     runner = CliRunner()
-    result = runner.invoke(program, ['html', '-i', input_file])
+    result = runner.invoke(program, ['html', '-i', src_file])
     assert result.output == expected_text + '\n'

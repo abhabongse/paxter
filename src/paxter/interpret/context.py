@@ -10,7 +10,7 @@ from typing import Any, Union
 from paxter.exceptions import PaxterRenderError
 from paxter.interpret.data import FragmentList
 from paxter.interpret.wrappers import BaseApply, NormalApply
-from paxter.parse import (
+from paxter.parsing import (
     CharLoc, Command, Fragment, FragmentSeq, Identifier, Number,
     Operator, Text, Token, TokenSeq,
 )

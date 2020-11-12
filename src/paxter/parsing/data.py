@@ -8,15 +8,7 @@ from abc import ABCMeta
 from dataclasses import dataclass, field
 from typing import Any, Match, Optional, TypeVar, Union
 
-from paxter.parse.enclosing import EnclosingPattern
-
-__all__ = [
-    'Token', 'Fragment',
-    'TokenSeq', 'Identifier', 'Operator', 'Number',
-    'FragmentSeq', 'Text', 'Command',
-]
-
-MainArgument = Union['FragmentSeq', 'Text']
+from paxter.parsing.enclosing import EnclosingPattern
 
 
 @dataclass
@@ -52,9 +44,8 @@ class Token(metaclass=ABCMeta):
     @classmethod
     def sanitize(cls, value: str) -> Any:
         """
-        Sanitizes string form of value (extracted from match object)
-        into proper type so that it can be saved to the first argument
-        of node construction.
+        Sanitizes string form of value (extracted from match object) into proper type
+        so that it can be saved to the first argument of node construction.
         """
         return value
 
@@ -84,8 +75,7 @@ class TokenSeq(Token):
     """
     Node type which represents a sequence of tokens
     wrapped under a matching pair of brackets ``[]``,
-    all of which appears only within the ``options`` section
-    of a :class:`Command`.
+    all of which appears only within the ``options`` section of a :class:`Command`.
     """
     #: Sequence of :class:`Token` instances
     children: list[Token]
@@ -97,8 +87,7 @@ class TokenSeq(Token):
 class Identifier(Token):
     """
     Node type which represents an identifier,
-    which can appear only within the ``options`` section
-    of a :class:`Command`.
+    which can appear only within the ``options`` section of a :class:`Command`.
     """
     #: Identifier string name
     name: str
@@ -108,8 +97,7 @@ class Identifier(Token):
 class Operator(Token):
     """
     Node type which represents an operator,
-    which can appear only within the ``options`` section
-    of a :class:`Command`.
+    which can appear only within the ``options`` section of a :class:`Command`.
     """
     #: Symbol as a string of characters
     symbols: str
@@ -119,8 +107,7 @@ class Operator(Token):
 class Number(Token):
     """
     Node type which represents a number recognized by JSON grammar,
-    which can appear only within the ``options`` section
-    of a :class:`Command`.
+    which can appear only within the ``options`` section of a :class:`Command`.
     """
     #: Numerical value deserialized from the number literal
     value: Union[int, float]
@@ -133,10 +120,8 @@ class Number(Token):
 @dataclass
 class FragmentSeq(Token):
     """
-    Special intermediate node maintaining
-    a sequence of children :class:`Fragment` nodes.
-    Nodes of this type usually correspond to
-    either the global-level fragments
+    Special intermediate node maintaining a sequence of children :class:`Fragment` nodes.
+    Nodes of this type usually correspond to either the global-level fragments
     or fragments nested within enclosing brace pattern.
 
     The enclosing brace pattern may appear
@@ -207,4 +192,4 @@ class Command(Fragment):
 
     #: The main argument section at the end of expression,
     #: or :const:`None` if this section is not present.
-    main_arg: Optional[MainArgument]
+    main_arg: Optional[Union[FragmentSeq, Text]]

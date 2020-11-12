@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from typing import Any, Optional, TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
-from paxter.parse import CharLoc, Command, Identifier, Operator, Token, TokenSeq
+from paxter.parsing import CharLoc, Command, Identifier, Operator, Token, TokenSeq
 
 if TYPE_CHECKING:
     from paxter.interpret.context import InterpreterContext

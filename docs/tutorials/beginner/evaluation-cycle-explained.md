@@ -27,11 +27,11 @@ which parses a source text (written in Paxter language) into the parsed tree for
 Here is how to use python API to run this step.
    
 ```python
-from paxter.parse import ParserContext
+from paxter.parsing import _ParsingTask
 
 source_text = '''Please visit @link["https://example.com"]{@italic{this} website}. @line_break
 @image["https://example.com/hello.jpg", "hello"]'''
-parsed_tree = ParserContext(source_text).tree
+parsed_tree = _ParsingTask(source_text).tree
 ```
 
 We can also see the content of the `parsed_tree` if we print them out.

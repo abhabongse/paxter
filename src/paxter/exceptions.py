@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from paxter.parse.charloc import CharLoc
+    from paxter.parsing.charloc import CharLoc
 
 __all__ = [
     'PaxterBaseException',

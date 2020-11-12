@@ -8,7 +8,7 @@ from typing import Any, TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
 from paxter.interpret import DirectApply
-from paxter.parse import Command, Text
+from paxter.parsing import Command, Text
 
 if TYPE_CHECKING:
     from paxter.interpret.context import InterpreterContext
