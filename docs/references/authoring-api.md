@@ -130,6 +130,7 @@ The following instances are available in preset environments.
 .. autoclass:: paxter.authoring.elements.Heading6
    :show-inheritance:
 
+
 .. autoclass:: paxter.authoring.elements.Bold
    :show-inheritance:
 

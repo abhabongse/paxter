@@ -22,7 +22,7 @@ setup(
     description=metadata['description'],
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
-    author=metadata['authoring'],
+    author=metadata['author'],
     author_email=metadata['email'],
     url='https://github.com/abhabongse/paxter',
     packages=find_packages('src'),

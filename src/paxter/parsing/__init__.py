@@ -9,12 +9,12 @@ from paxter.parsing.data import (
     Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, Token, TokenSeq,
 )
 from paxter.parsing.enclosing import EnclosingPattern, GlobalEnclosingPattern
-from paxter.parsing.task import parse
+from paxter.parsing.task import ParsingTask
 
 __all__ = [
     'CharLoc',
     'Command', 'Fragment', 'FragmentSeq', 'Identifier',
     'Number', 'Operator', 'Text', 'Token', 'TokenSeq',
     'EnclosingPattern', 'GlobalEnclosingPattern',
-    'parse',
+    'ParsingTask',
 ]

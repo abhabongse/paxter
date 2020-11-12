@@ -10,11 +10,11 @@ from paxter.interpreting import DirectApply, FragmentList
 from paxter.parsing import CharLoc, Command, Identifier
 
 if TYPE_CHECKING:
-    from paxter.interpreting.context import InterpreterContext
+    from paxter.interpreting.task import InterpretingTask
 
 
 @DirectApply
-def for_statement(context: InterpreterContext, node: Command):
+def for_statement(context: InterpretingTask, node: Command):
     """
     Simulates a simple for loop.
     Its command has the form of ``@for[ITEM in SEQUENCE]{...}``.
@@ -54,7 +54,7 @@ def for_statement(context: InterpreterContext, node: Command):
 
 
 @DirectApply
-def if_statement(context: InterpreterContext, node: Command):  # noqa: C901
+def if_statement(context: InterpretingTask, node: Command):  # noqa: C901
     """
     Simulates simple if statement.
     Its command takes the form of one of the following possibilities:

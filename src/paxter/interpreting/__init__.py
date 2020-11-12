@@ -4,13 +4,13 @@ parsed tree evaluation for Paxter language.
 """
 from __future__ import annotations
 
-from paxter.interpreting.context import InterpreterContext
 from paxter.interpreting.data import FragmentList
+from paxter.interpreting.task import InterpretingTask
 from paxter.interpreting.wrappers import (
     BaseApply, DirectApply, NormalApply, NormalApplyWithEnv,
 )
 
 __all__ = [
-    'InterpreterContext', 'FragmentList',
+    'InterpretingTask', 'FragmentList',
     'BaseApply', 'DirectApply', 'NormalApply', 'NormalApplyWithEnv',
 ]

@@ -4,25 +4,35 @@ Implementation of the renderer.
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Union
 
 from paxter.exceptions import PaxterRenderError
 from paxter.interpreting.data import FragmentList
 from paxter.interpreting.wrappers import BaseApply, NormalApply
 from paxter.parsing import (
-    CharLoc, Command, Fragment, FragmentSeq, Identifier, Number,
-    Operator, Text, Token, TokenSeq,
+    CharLoc, Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, Token, TokenSeq,
 )
 
 
 @dataclass
-class InterpreterContext:
+class InterpretingTask:
     """
     Base rendering class for Paxter parsed document tree.
 
-    Users of this renderer may embed and run pyauthor code
-    directly from within the Paxter document source file.
+    To use this class, initialize an instance with
+
+    - the original source text,
+    - the initial environment dictionary (such as those created by
+      :meth:`create_document_env() <paxter.authoring.create_document_env>`), and
+    - the parsed tree returned from :meth:`ParsingTask.parse() <paxter.parsing.ParsingTask.parse>`
+
+    Then call the instance method :meth:`interp() <InterpretingTask.interp>`
+    to obtain the final rendered output::
+
+        parsed_tree = ParsingTask(src_text).parse()
+        env = create_document_env()
+        rendered_output = InterpretingTask(src_text, env, parsed_tree).interp()
     """
     #: Document source text
     src_text: str
@@ -33,15 +43,16 @@ class InterpreterContext:
     #: Parsed document tree
     tree: FragmentSeq
 
-    #: Result of the rendering
-    rendered: FragmentList = field(init=False)
-
     BACKSLASH_NEWLINE_RE = re.compile(r'\\[ \t\r\f\v]*\n[ \t\r\f\v]*')
 
-    def __post_init__(self):
-        self.rendered = self.render()
+    def interp(self):
+        """
+        Interprets the given parsed tree into the final output (which is a fragment list)
+        using the given source text and the given interpreting environment dictionary.
 
-    def render(self):
+        This instance method is computationally expensive;
+        please avoid repeatedly calling this method.
+        """
         return self.transform_fragment_list(self.tree)
 
     def transform_token(self, token: Token) -> Any:

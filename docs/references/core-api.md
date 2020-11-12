@@ -7,7 +7,8 @@ Paxter language package provides the following core functionality.
 The following class is where the main Paxter language parsing logic happens.
 
 ```{eval-rst}
-.. autofunction:: paxter.parsing.parse
+.. autoclass:: paxter.parsing.ParsingTask
+   :members: parse
 ```
 
 (parsing-data-definitions)=
@@ -69,14 +70,14 @@ presented here for reference only.
    :show-inheritance:
 ```
 
-## Evaluation
+## Interpretation
 
 The following class implements the basic tree evaluation in Paxter language.
 Users may want to extend this class to override the tree evaluation.
 
 ```{eval-rst}
-.. autoclass:: paxter.interpreting.context.InterpreterContext
-   :members:
+.. autoclass:: paxter.interpreting.InterpretingTask
+   :members: interp
 ```
 
 The evaluated list of fragments will be of the following type

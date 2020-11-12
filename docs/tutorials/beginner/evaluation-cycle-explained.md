@@ -477,10 +477,10 @@ However, the actual python API to replicate the above result is as follows
 
 ```python
 from paxter.authoring.environ import create_document_env
-from paxter.interpreting.context import InterpreterContext
+from paxter.interpreting.task import InterpretingTask
 
 env = create_document_env()
-document_result = InterpreterContext(source_text, env, parsed_tree).rendered
+document_result = InterpretingTask(source_text, env, parsed_tree).rendered
 ```
 
 The result of interpreting the entire source text
