@@ -6,9 +6,9 @@ from typing import Tuple
 import pytest
 from click.testing import CliRunner
 
-from paxter.author import create_document_env
-from paxter.author.elements import Document
-from paxter.interpret import InterpreterContext
+from paxter.authoring import create_document_env
+from paxter.authoring.elements import Document
+from paxter.interpreting import InterpreterContext
 from paxter.parsing import parse
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "document")
@@ -29,16 +29,16 @@ TESTS = [
 @pytest.mark.parametrize(("src_file", "expected_file"), TESTS)
 def test_evaluator_document(src_file, expected_file):
     with open(src_file) as fobj:
-        input_text = fobj.read()
+        src_text = fobj.read()
     with open(expected_file) as fobj:
         expected_text = fobj.read()
 
     # Parse input
-    parsed_tree = parse(input_text)
+    parsed_tree = parse(src_text)
 
     # Render into output HTML
     env = create_document_env()
-    evaluate_context = InterpreterContext(input_text, env, parsed_tree)
+    evaluate_context = InterpreterContext(src_text, env, parsed_tree)
     document = Document.from_fragments(evaluate_context.rendered)
 
     assert document.html() == expected_text

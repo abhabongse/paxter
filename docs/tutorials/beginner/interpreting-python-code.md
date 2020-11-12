@@ -1,9 +1,9 @@
 # Interpreting Python Code
 
 Let’s assume that we are still using the environment dictionary created by
-{func}`create_document_env() <paxter.author.environ.create_document_env>`
+{func}`create_document_env() <paxter.authoring.environ.create_document_env>`
 _together_ with the default interpreter, which is implemented by
-{class}`InterpreterContext <paxter.interpret.context.InterpreterContext>`.
+{class}`InterpreterContext <paxter.interpreting.context.InterpreterContext>`.
 Under this particular setup,
 there are various ways to embed and run python code within the source text itself.
 We discuss each possibility below.
@@ -32,7 +32,7 @@ YAA is @yaa and it stands for @yaa.
 ```
 
 The command phrase `@python` maps to the callable object
-{func}`python_unsafe_exec() <paxter.author.standards.python_unsafe_exec>`.
+{func}`python_unsafe_exec() <paxter.authoring.standards.python_unsafe_exec>`.
 What this particular function does is executing the entire python source
 through the built-in {func}`exec` function,
 using the environment dictionary `env` as the global namespace.

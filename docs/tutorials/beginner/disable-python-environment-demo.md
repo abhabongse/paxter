@@ -6,13 +6,13 @@ Perhaps we as a programmer would like our users to write some content
 using Paxter language without any risk of arbitrary code execution.
 
 By default, the initial environment dictionary created by
-{func}`create_document_env() <paxter.author.environ.create_document_env>`
+{func}`create_document_env() <paxter.authoring.environ.create_document_env>`
 allows python code execution through two distinct endpoints:
 
-- the {func}`@python <paxter.author.standards.python_unsafe_exec>` command
+- the {func}`@python <paxter.authoring.standards.python_unsafe_exec>` command
 - the anonymous python expression evaluation of phrase part of a command
   (which is dictated by the function 
-  {func}`python_unsafe_eval() <paxter.author.standards.python_unsafe_eval>` 
+  {func}`python_unsafe_eval() <paxter.authoring.standards.python_unsafe_eval>` 
   located at `env["_phrase_eval_"]` of the environment `env`)
 
 For the first endpoint, we simply remove the command from the environment,
@@ -23,8 +23,8 @@ that does not make a call to {func}`eval` built-in function.
 ```python
 from typing import Optional
 
-from paxter.author.controls import for_statement, if_statement
-from paxter.author.elements import (
+from paxter.authoring.controls import for_statement, if_statement
+from paxter.authoring.elements import (
     Blockquote, Bold, BulletedList, Code,
     Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
     Image, Italic, Link, NumberedList, Paragraph, RawElement,
@@ -32,7 +32,7 @@ from paxter.author.elements import (
     hair_space, horizontal_rule, line_break,
     non_breaking_space, thin_space,
 )
-from paxter.author.standards import verbatim
+from paxter.authoring.standards import verbatim
 
 
 def phrase_safe_eval(phrase: str, env: dict) -> Any:
@@ -44,7 +44,7 @@ def phrase_safe_eval(phrase: str, env: dict) -> Any:
     2. Looks up the value from ``env`` dict using phrase as key.
 
     The implementation of this function is borrowed from inspecting
-    :func:`paxter.author.standards.phrase_unsafe_eval`.
+    :func:`paxter.authoring.standards.phrase_unsafe_eval`.
     """
     if not phrase:
         return None
@@ -59,10 +59,10 @@ def phrase_safe_eval(phrase: str, env: dict) -> Any:
 def create_safe_document_env(data: Optional[dict] = None):
     """
     Creates an string environment data for Paxter source code evaluation
-    in Python author mode, specializes in constructing documents.
+    in Python authoring mode, specializes in constructing documents.
 
     The implementation of this function is borrowed from inspecting
-    :func:`paxter.author.environ.create_document_env`.
+    :func:`paxter.authoring.environ.create_document_env`.
     """
     data = data or {}
     return {
@@ -112,7 +112,7 @@ by using the initial environment dictionary created by the function
 `create_safe_document_env()` from above.
 
 ```python
-from paxter.author import run_document_paxter
+from paxter.authoring import run_document_paxter
 
 # The following source text is read from a source file.
 # However, in reality, source text may be read from other sources

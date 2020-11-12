@@ -38,12 +38,12 @@ def run_parse(input_file, output_file):
 
     Transform: input text -> parsed tree
     """
-    from paxter.parsing import _ParsingTask
+    from paxter.parsing import parse
 
-    input_text = input_file.read()
-    parse_context = _ParsingTask(input_text)
+    src_text = input_file.read()
+    parsed_tree = parse(src_text)
 
-    output_file.write(repr(parse_context.tree))
+    output_file.write(repr(parsed_tree))
     output_file.write("\n")
 
 
@@ -59,17 +59,17 @@ def run_document(input_file, output_file, env_file):
     It reads input text from INPUT_FILE and pass it through the parsing.
     Then the parsed tree is evaluated into document object
     using the environment provided by the
-    paxter.author supplementary subpackage.
+    paxter.authoring supplementary subpackage.
     Finally, the document object structure is written to OUTPUT_FILE.
 
     Transform: input text -> parsed tree -> document object
     """
     import runpy
-    from paxter.author import run_document_paxter, create_document_env
+    from paxter.authoring import run_document_paxter, create_document_env
 
-    input_text = input_file.read()
+    src_text = input_file.read()
     env = create_document_env(runpy.run_path(env_file) if env_file else {})
-    document = run_document_paxter(input_text, env)
+    document = run_document_paxter(src_text, env)
 
     output_file.write(repr(document))
     output_file.write("\n")
@@ -87,18 +87,18 @@ def run_html(input_file, output_file, env_file):
     It reads input text from INPUT_FILE and pass it through the parsing.
     Then the parsed tree is evaluated into document object
     using the environment provided by the
-    paxter.author supplementary subpackage.
+    paxter.authoring supplementary subpackage.
     Finally, the document object is rendered to HTML output
     which gets written to OUTPUT_FILE.
 
     Transform: input text -> parsed tree -> document object -> html string
     """
     import runpy
-    from paxter.author import run_document_paxter, create_document_env
+    from paxter.authoring import run_document_paxter, create_document_env
 
-    input_text = input_file.read()
+    src_text = input_file.read()
     env = create_document_env(runpy.run_path(env_file) if env_file else {})
-    document = run_document_paxter(input_text, env)
+    document = run_document_paxter(src_text, env)
 
     output_file.write(document.html())
     output_file.write("\n")

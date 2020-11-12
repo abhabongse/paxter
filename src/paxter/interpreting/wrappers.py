@@ -1,5 +1,5 @@
 """
-Collection of function wrappers in Python author mode.
+Collection of function wrappers in Python authoring mode.
 """
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from paxter.exceptions import PaxterRenderError
 from paxter.parsing import CharLoc, Command, Identifier, Operator, Token, TokenSeq
 
 if TYPE_CHECKING:
-    from paxter.interpret.context import InterpreterContext
+    from paxter.interpreting.context import InterpreterContext
 
 
 @dataclass
@@ -37,8 +37,8 @@ class DirectApply(BaseApply):
     Special function call where the wrapped function handles
     the environment and the :class:`Command` token directly.
     See the implementation of
-    :func:`if_statement <paxter.author.controls.if_statement>` and
-    :func:`for_statement <paxter.author.controls.for_statement>` and
+    :func:`if_statement <paxter.authoring.controls.if_statement>` and
+    :func:`for_statement <paxter.authoring.controls.for_statement>` and
     to see how this decorator is used.
     """
     wrapped: Callable[[InterpreterContext, Command], Any]
@@ -100,13 +100,13 @@ class NormalApply(BaseApply):
                 if keyword_name in kwargs:
                     raise PaxterRenderError(
                         f"duplicated keyword {keyword_name} at %(pos)s",
-                        pos=CharLoc(context.input_text, options.start_pos),
+                        pos=CharLoc(context.src_text, options.start_pos),
                     )
                 kwargs[keyword_name] = context.transform_token(value_token)
             elif section_flipped:
                 raise PaxterRenderError(
                     "found positional argument after keyword argument at %(pos)s",
-                    pos=CharLoc(context.input_text, options.start_pos),
+                    pos=CharLoc(context.src_text, options.start_pos),
                 )
             else:
                 args.append(context.transform_token(value_token))
@@ -136,7 +136,7 @@ class NormalApply(BaseApply):
                     if not isinstance(first_token, Identifier):
                         raise PaxterRenderError(
                             "expected an identifier before the '=' sign at %(pos)s",
-                            pos=CharLoc(context.input_text, first_token.start_pos),
+                            pos=CharLoc(context.src_text, first_token.start_pos),
                         )
                     keyword_name = first_token.name
                     remains = remains[2:]
@@ -145,7 +145,7 @@ class NormalApply(BaseApply):
             if not remains:
                 raise PaxterRenderError(
                     "expected a value after the '=' sign at %(pos)s",
-                    pos=CharLoc(context.input_text, options.end_pos),
+                    pos=CharLoc(context.src_text, options.end_pos),
                 )
             value_token = remains[0]
             remains = remains[1:]
@@ -159,7 +159,7 @@ class NormalApply(BaseApply):
                 if end_token != Operator.without_pos(symbols=','):
                     raise PaxterRenderError(
                         "expected a comma token after the value token at %(pos)s",
-                        pos=CharLoc(context.input_text, end_token.start_pos),
+                        pos=CharLoc(context.src_text, end_token.start_pos),
                     )
                 remains = remains[1:]
 

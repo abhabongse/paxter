@@ -4,9 +4,9 @@ parsed tree evaluation for Paxter language.
 """
 from __future__ import annotations
 
-from paxter.interpret.context import InterpreterContext
-from paxter.interpret.data import FragmentList
-from paxter.interpret.wrappers import (
+from paxter.interpreting.context import InterpreterContext
+from paxter.interpreting.data import FragmentList
+from paxter.interpreting.wrappers import (
     BaseApply, DirectApply, NormalApply, NormalApplyWithEnv,
 )
 

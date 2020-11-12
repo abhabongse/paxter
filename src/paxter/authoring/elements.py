@@ -9,9 +9,9 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Union
 
-from paxter.author.fragmentutils import split_into_paragraphs
+from paxter.authoring.fragmentutils import split_into_paragraphs
 from paxter.exceptions import PaxterRenderError
-from paxter.interpret import FragmentList
+from paxter.interpreting import FragmentList
 
 
 ########################

@@ -10,7 +10,7 @@ Please visit @link["https://example.com"]{@italic{this} website}. @line_break
 ```
 
 We are going to assume that we use the function
-{func}`run_document_paxter() <paxter.author.preset.run_document_paxter>`
+{func}`run_document_paxter() <paxter.authoring.preset.run_document_paxter>`
 in order to evaluate the above source text into the final HTML output.
 This transformation can be divided into three logical steps.
 
@@ -22,7 +22,7 @@ This transformation can be divided into three logical steps.
 ## Step 1: Parsing Source Text
 
 Specifically, the core {mod}`paxter.parse` subpackage
-implements a parser, {class}`ParseContext <paxter.parse.ParseContext>`,
+implements a parser, {class}`ParseContext <paxter.parsing.ParseContext>`,
 which parses a source text (written in Paxter language) into the parsed tree form.
 Here is how to use python API to run this step.
    
@@ -144,13 +144,13 @@ In general, what a parsed tree would be evaluated into
 depends on each individual (meaning you, dear reader).
 
 Paxter library decides to implement _one possible version_ of a tree transformer
-called {class}`InterpreterContext <paxter.interpret.context.InterpreterContext>`.
+called {class}`InterpreterContext <paxter.interpreting.context.InterpreterContext>`.
 This particular transformer tries to 
 **mimic the behavior of calling python functions** as closest possible.
 In addition, this transformer expects what is called 
 the **initial environment dictionary**  under which python executions are performed.
 For this particular scenario, this dictionary is created by the function
-{func}`create_document_env() <paxter.author.environ.create_document_env>`
+{func}`create_document_env() <paxter.authoring.environ.create_document_env>`
 from the {mod}`paxter.author` subpackage.
 This environment dictionary contains the mapping of
 function aliases to the actual python functions and object
@@ -158,43 +158,43 @@ and it is where the magic happens.
 
 Let’s look at the contents of the environment dictionary
 created by the above function
-{func}`create_document_env() <paxter.author.environ.create_document_env>`.
+{func}`create_document_env() <paxter.authoring.environ.create_document_env>`.
 
 ```python
-from paxter.author.environ import create_document_env
+from paxter.authoring.environ import create_document_env
 
 env = create_document_env()
 ```
 
 ```pycon
 >>> env
-{'_phrase_eval_': <function paxter.author.standards.phrase_unsafe_eval>,
+{'_phrase_eval_': <function paxter.authoring.standards.phrase_unsafe_eval>,
  '_extras_': {},
  '@': '@',
- 'for': <function paxter.author.controls.for_statement>,
- 'if': <function paxter.author.controls.if_statement>,
- 'python': <function paxter.author.standards.python_unsafe_exec>,
- 'verb': <function paxter.author.standards.verbatim>,
- 'raw': <class paxter.author.elements.RawElement>,
- 'paragraph': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'h1': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'h2': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'h3': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'h4': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'h5': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'h6': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'bold': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'italic': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'uline': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'code': <classmethod paxter.author.elements.SimpleElement.from_fragments>,
- 'blockquote': <classmethod paxter.author.elements.Blockquote.from_fragments>,
- 'link': <classmethod paxter.author.elements.Link.from_fragments>,
- 'image': <class paxter.author.elements.Image>,
- 'numbered_list': <classmethod paxter.author.elements.EnumeratingElement.from_direct_args>,
- 'bulleted_list': <classmethod paxter.author.elements.EnumeratingElement.from_direct_args>,
- 'table': <classmethod paxter.author.elements.SimpleElement.from_direct_args>,
- 'table_header': <classmethod paxter.author.elements.EnumeratingElement.from_direct_args>,
- 'table_row': <classmethod paxter.author.elements.EnumeratingElement.from_direct_args>,
+ 'for': <function paxter.authoring.controls.for_statement>,
+ 'if': <function paxter.authoring.controls.if_statement>,
+ 'python': <function paxter.authoring.standards.python_unsafe_exec>,
+ 'verb': <function paxter.authoring.standards.verbatim>,
+ 'raw': <class paxter.authoring.elements.RawElement>,
+ 'paragraph': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'h1': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'h2': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'h3': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'h4': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'h5': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'h6': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'bold': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'italic': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'uline': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'code': <classmethod paxter.authoring.elements.SimpleElement.from_fragments>,
+ 'blockquote': <classmethod paxter.authoring.elements.Blockquote.from_fragments>,
+ 'link': <classmethod paxter.authoring.elements.Link.from_fragments>,
+ 'image': <class paxter.authoring.elements.Image>,
+ 'numbered_list': <classmethod paxter.authoring.elements.EnumeratingElement.from_direct_args>,
+ 'bulleted_list': <classmethod paxter.authoring.elements.EnumeratingElement.from_direct_args>,
+ 'table': <classmethod paxter.authoring.elements.SimpleElement.from_direct_args>,
+ 'table_header': <classmethod paxter.authoring.elements.EnumeratingElement.from_direct_args>,
+ 'table_row': <classmethod paxter.authoring.elements.EnumeratingElement.from_direct_args>,
  'hrule': RawElement(body='<hr />'),
  'line_break': RawElement(body='<br />'),
  '\\': RawElement(body='<br />'),
@@ -229,10 +229,10 @@ Let’s explore each step assuming the initial environment dictionary `env`
     For example, resolving the phrase `italic` from the command `@italic{...}`
     would yield the value of `env["italic"]`
     which refers to 
-    {meth}`Italic.from_fragments() <paxter.author.elements.SimpleElement.from_fragments>`
+    {meth}`Italic.from_fragments() <paxter.authoring.elements.SimpleElement.from_fragments>`
     class method.
     Likewise, the phrase `link` from the command `@link["target"]{text}` maps to 
-    {meth}`Link.from_fragments() <paxter.author.elements.Link.from_fragments>`
+    {meth}`Link.from_fragments() <paxter.authoring.elements.Link.from_fragments>`
     under the dictionary `env`.
     
     (phrase-part-fallback-plan)=
@@ -303,7 +303,7 @@ The final result is stored inside the variable `result`.
 
 ```python
 # Step 1: resolving the phrase
-line_break_obj = env['line_break']  # paxter.author.elements.line_break
+line_break_obj = env['line_break']  # paxter.authoring.elements.line_break
 # Step 2 is skipped since there is no function call
 result = line_break_obj
 ```
@@ -315,7 +315,7 @@ It would be transformed into the following python equivalent:
 
 ```python
 # Step 1: resolving the phrase
-italic_obj = env['italic']  # paxter.author.elements.Italic.from_fragments
+italic_obj = env['italic']  # paxter.authoring.elements.Italic.from_fragments
 # Step 2: function call
 result = italic_obj(FragmentList(["this"]))
 ```
@@ -326,7 +326,7 @@ In Paxter’s terminology, any component of the command syntax
 which is enclosed by a pair of matching curly braces
 would be known as **a fragment list**,
 and it would be represented as a list of subtype
-{class}`FragmentList <paxter.interpret.data.FragmentList>`.
+{class}`FragmentList <paxter.interpreting.data.FragmentList>`.
 
 #### Example 3: Command With Both Options and Main Argument
 
@@ -339,8 +339,8 @@ and its python code equivalent.
 
 ```python
 # Step 1: resolving the phrases
-italic_obj = env['italic']  # paxter.author.elements.Italic.from_fragments
-link_obj = env['link']  # paxter.author.elements.Link.from_fragments
+italic_obj = env['italic']  # paxter.authoring.elements.Italic.from_fragments
+link_obj = env['link']  # paxter.authoring.elements.Link.from_fragments
 
 # Step 2: function call
 result = link_obj(
@@ -402,7 +402,7 @@ the above source text would be interpreted similarly to the following python cod
 
 ```python
 # Step 1: resolving the phrase
-image_obj = env['image']  # paxter.author.elements.Image
+image_obj = env['image']  # paxter.authoring.elements.Image
 # Step 2: function call
 result = image_obj("https://example.com/hello.jpg", "hello")
 ```
@@ -450,10 +450,10 @@ Please visit @link["https://example.com"]{@italic{this} website}. @line_break
 
 ```python
 # Step 1: resolving the phrases
-italic_obj = env['italic']  # paxter.author.elements.Italic.from_fragments
-link_obj = env['link']  # paxter.author.elements.Link.from_fragments
-line_break_obj = env['line_break']  # paxter.author.elements.line_break
-image_obj = env['image']  # paxter.author.elements.Image
+italic_obj = env['italic']  # paxter.authoring.elements.Italic.from_fragments
+link_obj = env['link']  # paxter.authoring.elements.Link.from_fragments
+line_break_obj = env['line_break']  # paxter.authoring.elements.line_break
+image_obj = env['image']  # paxter.authoring.elements.Image
 
 # Step 2: function call
 document_result = FragmentList([
@@ -476,18 +476,18 @@ However, the actual python API to replicate the above result is as follows
 (where `parsed_tree` is the result borrowed from step 1).
 
 ```python
-from paxter.author.environ import create_document_env
-from paxter.interpret.context import InterpreterContext
+from paxter.authoring.environ import create_document_env
+from paxter.interpreting.context import InterpreterContext
 
 env = create_document_env()
 document_result = InterpreterContext(source_text, env, parsed_tree).rendered
 ```
 
 The result of interpreting the entire source text
-using {class}`InterpreterContext <paxter.interpret.context.InterpreterContext>`
+using {class}`InterpreterContext <paxter.interpreting.context.InterpreterContext>`
 is always going to be a fragment list of each smaller pieces of content
 (which is why the `document_result` in the above code is an instance of
-{class}`FragmentList <paxter.interpret.data.FragmentList>` class).
+{class}`FragmentList <paxter.interpreting.data.FragmentList>` class).
 Displaying the content of `document_result` gives us the following evaluated result.
 
 ```pycon
@@ -515,13 +515,13 @@ this particular step would be non-existent.
 Rendering the entire `document_result` into HTML string output is simple.
 Two small steps are required:
 
-1. Wrap the `document_result` with {class}`Document <paxter.author.elements.Document>`
-2. Invoke the {meth}`Document.html() <paxter.author.elements.Element.html>` method.
+1. Wrap the `document_result` with {class}`Document <paxter.authoring.elements.Document>`
+2. Invoke the {meth}`Document.html() <paxter.authoring.elements.Element.html>` method.
 
 And here is the python code to do exactly as just said:
 
 ```python
-from paxter.author.elements import Document
+from paxter.authoring.elements import Document
 
 document = Document.from_fragments(document_result)
 html_output = document.html()
@@ -536,7 +536,7 @@ This yields the following final HTML output:
 ```
 
 :::{admonition,info} Preset Function
-The preset function {func}`run_document_paxter() <paxter.author.preset.run_document_paxter>`
+The preset function {func}`run_document_paxter() <paxter.authoring.preset.run_document_paxter>`
 introduced in the section {ref}`Programmatic Usage <method-2-programmatic-usage>`
 (from Getting Started page) simply performs all three steps as mentioned above in order.
 :::

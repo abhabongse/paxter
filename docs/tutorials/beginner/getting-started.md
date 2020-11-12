@@ -68,7 +68,7 @@ is to make calls the API functions provided by Paxter library.
 The easiest way is to do the following.
 
 ```python
-from paxter.author import run_document_paxter
+from paxter.authoring import run_document_paxter
 
 # The following source text is read from a source file.
 # However, in reality, source text may be read from other sources

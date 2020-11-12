@@ -8,8 +8,8 @@ from dataclasses import dataclass, field
 from typing import Any, Union
 
 from paxter.exceptions import PaxterRenderError
-from paxter.interpret.data import FragmentList
-from paxter.interpret.wrappers import BaseApply, NormalApply
+from paxter.interpreting.data import FragmentList
+from paxter.interpreting.wrappers import BaseApply, NormalApply
 from paxter.parsing import (
     CharLoc, Command, Fragment, FragmentSeq, Identifier, Number,
     Operator, Text, Token, TokenSeq,
@@ -25,7 +25,7 @@ class InterpreterContext:
     directly from within the Paxter document source file.
     """
     #: Document source text
-    input_text: str
+    src_text: str
 
     #: Python execution environment data
     env: dict
@@ -62,7 +62,7 @@ class InterpreterContext:
             return self.transform_fragment_list(token)
         raise PaxterRenderError(
             "unrecognized token at %(pos)s",
-            pos=CharLoc(self.input_text, token.start_pos),
+            pos=CharLoc(self.src_text, token.start_pos),
         )
 
     def transform_fragment(self, fragment: Fragment) -> Any:
@@ -75,7 +75,7 @@ class InterpreterContext:
             return self.transform_command(fragment)
         raise PaxterRenderError(
             "unrecognized fragment at %(pos)s",
-            pos=CharLoc(self.input_text, fragment.start_pos),
+            pos=CharLoc(self.src_text, fragment.start_pos),
         )
 
     def transform_token_list(self, seq: TokenSeq):
@@ -84,7 +84,7 @@ class InterpreterContext:
         """
         raise PaxterRenderError(
             "token list not expected at %(pos)s",
-            pos=CharLoc(self.input_text, seq.start_pos),
+            pos=CharLoc(self.src_text, seq.start_pos),
         )
 
     def transform_identifier(self, token: Identifier):
@@ -93,7 +93,7 @@ class InterpreterContext:
         """
         raise PaxterRenderError(
             "identifier not expected at %(pos)",
-            pos=CharLoc(self.input_text, token.start_pos),
+            pos=CharLoc(self.src_text, token.start_pos),
         )
 
     def transform_operator(self, token: Operator):
@@ -102,7 +102,7 @@ class InterpreterContext:
         """
         raise PaxterRenderError(
             "operator not expected at %(pos)",
-            pos=CharLoc(self.input_text, token.start_pos),
+            pos=CharLoc(self.src_text, token.start_pos),
         )
 
     def transform_number(self, token: Number) -> Union[int, float]:
@@ -138,14 +138,14 @@ class InterpreterContext:
         """
         Transforms a given parsed command.
         """
-        # Try to interpret the phrase section
-        # using the interpret function from _phrase_eval_
+        # Try to interpreting the phrase section
+        # using the interpreting function from _phrase_eval_
         try:
             phrase_eval = self.env['_phrase_eval_']
         except KeyError as exc:
             raise PaxterRenderError(
                 "expected '_phrase_eval_' to be defined at %(pos)s",
-                pos=CharLoc(self.input_text, token.start_pos),
+                pos=CharLoc(self.src_text, token.start_pos),
             ) from exc
         try:
             phrase_value = phrase_eval(token.phrase, self.env)
@@ -155,7 +155,7 @@ class InterpreterContext:
             raise PaxterRenderError(
                 "paxter command phrase evaluation error at %(pos)s: "
                 f"{token.phrase!r}",
-                pos=CharLoc(self.input_text, token.start_pos),
+                pos=CharLoc(self.src_text, token.start_pos),
             ) from exc
 
         # Bail out if options section and main arg section are empty
@@ -174,5 +174,5 @@ class InterpreterContext:
         except Exception as exc:
             raise PaxterRenderError(
                 "paxter apply evaluation error at %(pos)s",
-                pos=CharLoc(self.input_text, token.start_pos),
+                pos=CharLoc(self.src_text, token.start_pos),
             ) from exc

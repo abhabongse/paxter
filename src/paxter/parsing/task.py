@@ -20,7 +20,7 @@ _SCOPE_TRANS = str.maketrans('([{', ')]}')
 def parse(src_text: str) -> FragmentSeq:
     """
     Parses source text written in Paxter language into the parsed tree
-    which is a node of type :cls:`paxter.parsing.FragmentSeq`.
+    which is a node of type :class:`paxter.parsing.FragmentSeq`.
     """
     return ParsingTask(src_text).parse()
 

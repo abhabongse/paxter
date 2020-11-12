@@ -9,9 +9,9 @@ Below are syntax descriptions of Paxter language.
 The **starting rule** of Paxter language grammar
 which is a special case of {ref}`fragmentseq-rule`.
 The result of parsing this rule is always
-a {class}`FragmentSeq <paxter.parse.data.FragmentSeq>` node
+a {class}`FragmentSeq <paxter.parsing.FragmentSeq>` node
 whose children includes non-empty strings
-(as {class}`Text <paxter.parse.data.Text>` nodes),
+(as {class}`Text <paxter.parsing.Text>` nodes),
 interleaving with the result produced by {ref}`command-rule`.
 
 ![](../_static/Document.png)
@@ -34,7 +34,7 @@ There are a few possible scenarios.
 
 1. The first token is an identifier.
    The parsed identifier becomes the phrase part of the
-   {class}`Command <paxter.parse.Command>`.
+   {class}`Command <paxter.parsing.Command>`.
    Then the parser would attempt to parse the options section
    and the main argument section if they exist.
 2. The first token is {math}`n` hash characters followed by a bar character.
@@ -59,9 +59,9 @@ This rule always begins with {math}`n` hash characters followed by a left brace
 and ends with a right brace followed by {math}`n` hash characters,
 for some non-negative integer {math}`n`.
 Between this pair of curly braces is an interleaving of strings
-(as {class}`Text <paxter.parse.data.Text>`)
-and {class}`Command <paxter.parse.data.Command>`,
-all of which are children of {class}`FragmentSeq <paxter.parse.data.FragmentSeq>` instance.
+(as {class}`Text <paxter.parsing.Text>`)
+and {class}`Command <paxter.parsing.Command>`,
+all of which are children of {class}`FragmentSeq <paxter.parsing.FragmentSeq>` instance.
 
 One important point to note is that each string is parsed non-greedily;
 each resulting string would never contain a right brace
@@ -74,7 +74,7 @@ followed by {math}`n` or more hash characters.
 ## Text Rule
 
 This rule is similar to {ref}`fragmentseq-rule` except for two main reasons.
-The first reason is that nested {class}`Command <paxter.parse.data.Command>`
+The first reason is that nested {class}`Command <paxter.parsing.Command>`
 will not be parsed (i.e. `"@"` is not a special character in this scope).
 Another reason is that, instead of having a matching pair of curly braces
 indicate the beginning and the ending of the rule,
@@ -88,15 +88,15 @@ quotation marks are used instead.
 
 Following this parsing rule results in a sequence of zero or more tokens,
 possibly separated by whitespaces.
-Each token may be a {class}`Command <paxter.parse.data.Command>`,
-an {class}`Identifier <paxter.parse.data.Identifier>`,
-an {class}`Operator <paxter.parse.data.Operator>`,
-a {class}`Number <paxter.parse.data.Number>`,
-a {class}`FragmentSeq <paxter.parse.data.FragmentSeq>`,
-a {class}`Text <paxter.parse.data.Text>`,
-or a nested {class}`TokenSeq <paxter.parse.data.TokenSeq>`.
+Each token may be a {class}`Command <paxter.parsing.Command>`,
+an {class}`Identifier <paxter.parsing.Identifier>`,
+an {class}`Operator <paxter.parsing.Operator>`,
+a {class}`Number <paxter.parsing.Number>`,
+a {class}`FragmentSeq <paxter.parsing.FragmentSeq>`,
+a {class}`Text <paxter.parsing.Text>`,
+or a nested {class}`TokenSeq <paxter.parsing.TokenSeq>`.
 This resulting sequence of tokens are children of
-{class}`TokenSeq <paxter.parse.data.TokenSeq>` node type.
+{class}`TokenSeq <paxter.parsing.TokenSeq>` node type.
 
 ![](../_static/TokenSeq.png)
 
@@ -111,7 +111,7 @@ are ignored when they appear between tokens.
 
 This rule generally follows python rules for greedily parsing
 an identifier token (with some extreme exceptions).
-The result is an {class}`Identifier <paxter.parse.data.Identifier>` node type.
+The result is an {class}`Identifier <paxter.parsing.Identifier>` node type.
 
 ![](../_static/Identifier.png)
 
@@ -124,6 +124,6 @@ Greedily consumes as many operator characters as possible
 each of which has to appear on its own).
 Whitespace characters may be needed to separate two consecutive,
 multi-character operator tokens.
-The result is an {class}`Operator <paxter.parse.data.Operator>` node type.
+The result is an {class}`Operator <paxter.parsing.Operator>` node type.
 
 ![](../_static/Operator.png)

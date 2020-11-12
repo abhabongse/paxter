@@ -1,16 +1,16 @@
 """
-Collection of control flow functions for Python author mode.
+Collection of control flow functions for Python authoring mode.
 """
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
-from paxter.interpret import DirectApply, FragmentList
+from paxter.interpreting import DirectApply, FragmentList
 from paxter.parsing import CharLoc, Command, Identifier
 
 if TYPE_CHECKING:
-    from paxter.interpret.context import InterpreterContext
+    from paxter.interpreting.context import InterpreterContext
 
 
 @DirectApply
@@ -23,7 +23,7 @@ def for_statement(context: InterpreterContext, node: Command):
     def raise_error(message):
         raise PaxterRenderError(
             f"{message} in for statement at %(pos)s",
-            pos=CharLoc(context.input_text, node.options.start_pos),
+            pos=CharLoc(context.src_text, node.options.start_pos),
         )
 
     if not (node.options
@@ -67,7 +67,7 @@ def if_statement(context: InterpreterContext, node: Command):  # noqa: C901
     def raise_error(message):
         raise PaxterRenderError(
             f"{message} in if statement at %(pos)s",
-            pos=CharLoc(context.input_text, node.options.start_pos),
+            pos=CharLoc(context.src_text, node.options.start_pos),
         )
 
     target_bool = True
@@ -108,7 +108,7 @@ def if_statement(context: InterpreterContext, node: Command):  # noqa: C901
     if callable(cond):
         cond = cond()
 
-    # Choose and interpret result clause
+    # Choose and interpreting result clause
     result_node = then_node if bool(cond) is target_bool else else_node
     if result_node is None:
         return

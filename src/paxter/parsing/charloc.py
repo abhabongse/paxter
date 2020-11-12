@@ -14,7 +14,7 @@ class CharLoc:
     within the input text as a 1-indexed line and column value
     which is useful in understanding where an error occurs.
     """
-    input_text: InitVar[str]
+    src_text: InitVar[str]
     pos: InitVar[int]
 
     #: 1-index line number
@@ -23,10 +23,10 @@ class CharLoc:
     #: 1-index column index value
     col: int = field(init=False)
 
-    def __post_init__(self, input_text: str, pos: int):
-        self.line = input_text.count('\n', 0, pos) + 1
+    def __post_init__(self, src_text: str, pos: int):
+        self.line = src_text.count('\n', 0, pos) + 1
         try:
-            self.col = pos - input_text.rindex('\n', 0, pos)
+            self.col = pos - src_text.rindex('\n', 0, pos)
         except ValueError:
             self.col = pos + 1
 

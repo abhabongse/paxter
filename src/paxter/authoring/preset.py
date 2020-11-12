@@ -5,10 +5,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-from paxter.author.elements import Document
-from paxter.author.environ import create_document_env, create_simple_env
-from paxter.interpret import FragmentList
-from paxter.interpret.context import InterpreterContext
+from paxter.authoring.elements import Document
+from paxter.authoring.environ import create_document_env, create_simple_env
+from paxter.interpreting import FragmentList
+from paxter.interpreting.context import InterpreterContext
 from paxter.parsing import parse
 
 

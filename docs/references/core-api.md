@@ -7,8 +7,7 @@ Paxter language package provides the following core functionality.
 The following class is where the main Paxter language parsing logic happens.
 
 ```{eval-rst}
-.. autoclass:: paxter.parse.ParserContext
-   :members: input_text, tree
+.. autofunction:: paxter.parsing.parse
 ```
 
 (parsing-data-definitions)=
@@ -18,37 +17,37 @@ Results of the Paxter language parsing yields parsed trees
 which consist of instances of the following data classes.
 
 ```{eval-rst}
-.. autoclass:: paxter.parse.data.Token
+.. autoclass:: paxter.parsing.Token
    :members: start_pos, end_pos
  
-.. autoclass:: paxter.parse.data.Fragment
+.. autoclass:: paxter.parsing.Fragment
    :show-inheritance:
 
-.. autoclass:: paxter.parse.data.TokenSeq
+.. autoclass:: paxter.parsing.TokenSeq
    :members: children
    :show-inheritance:
 
-.. autoclass:: paxter.parse.data.Identifier
+.. autoclass:: paxter.parsing.Identifier
    :members: name
    :show-inheritance:
 
-.. autoclass:: paxter.parse.data.Operator
+.. autoclass:: paxter.parsing.Operator
    :members: symbols
    :show-inheritance:
 
-.. autoclass:: paxter.parse.data.Number
+.. autoclass:: paxter.parsing.Number
    :members: value
    :show-inheritance:
 
-.. autoclass:: paxter.parse.data.FragmentSeq
+.. autoclass:: paxter.parsing.FragmentSeq
    :members: children, enclosing
    :show-inheritance:
 
-.. autoclass:: paxter.parse.data.Text
+.. autoclass:: paxter.parsing.Text
    :members: inner, enclosing
    :show-inheritance:
 
-.. autoclass:: paxter.parse.data.Command
+.. autoclass:: paxter.parsing.Command
    :members: phrase, phrase_enclosing, options, main_arg
    :show-inheritance:
 ```
@@ -59,13 +58,13 @@ Other classes related to parsing,
 presented here for reference only.
 
 ```{eval-rst}
-.. autoclass:: paxter.parse.CharLoc
+.. autoclass:: paxter.parsing.CharLoc
    :members: line, col
 
-.. autoclass:: paxter.parse.enclosing.EnclosingPattern
+.. autoclass:: paxter.parsing.enclosing.EnclosingPattern
    :members: left, right
 
-.. autoclass:: paxter.parse.enclosing.GlobalEnclosingPattern
+.. autoclass:: paxter.parsing.enclosing.GlobalEnclosingPattern
    :members: left, right
    :show-inheritance:
 ```
@@ -76,14 +75,14 @@ The following class implements the basic tree evaluation in Paxter language.
 Users may want to extend this class to override the tree evaluation.
 
 ```{eval-rst}
-.. autoclass:: paxter.interpret.context.InterpreterContext
+.. autoclass:: paxter.interpreting.context.InterpreterContext
    :members:
 ```
 
 The evaluated list of fragments will be of the following type
 
 ```{eval-rst}
-.. autoclass:: paxter.interpret.data.FragmentList
+.. autoclass:: paxter.interpreting.FragmentList
    :members:
    :show-inheritance:
 ```
@@ -94,15 +93,15 @@ Wrappers for functions in python environments
 to be used as function decorators.
 
 ```{eval-rst}
-.. autoclass:: paxter.interpret.wrappers.BaseApply
+.. autoclass:: paxter.interpreting.BaseApply
 
-.. autoclass:: paxter.interpret.wrappers.DirectApply
+.. autoclass:: paxter.interpreting.DirectApply
    :show-inheritance:
 
-.. autoclass:: paxter.interpret.wrappers.NormalApply
+.. autoclass:: paxter.interpreting.NormalApply
    :show-inheritance:
 
-.. autoclass:: paxter.interpret.wrappers.NormalApplyWithEnv
+.. autoclass:: paxter.interpreting.NormalApplyWithEnv
    :show-inheritance:
 ```
 

@@ -131,9 +131,9 @@ Traceback (most recent call last):
   File ".../paxter/venv/lib/python3.8/site-packages/click/core.py", line 610, in invoke
     return callback(*args, **kwargs)
   File ".../paxter/src/paxter/__main__.py", line 99, in run_html
-    document = run_document_paxter(input_text, env)
+    document = run_document_paxter(src_text, env)
   File ".../paxter/src/paxter/author/preset.py", line 34, in run_document_paxter
-    evaluate_context = EvaluateContext(input_text, env, parse_context.tree)
+    evaluate_context = EvaluateContext(src_text, env, parse_context.tree)
   File "<string>", line 6, in __init__
   File ".../paxter/src/paxter/evaluate/context.py", line 40, in __post_init__
     self.rendered = self.render()
