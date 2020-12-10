@@ -46,6 +46,18 @@ Users of the package also has the access to the Paxter language parser API
 which allows them to implement new interpreters on top of the Paxter language
 if they so wish.
 
+## Important Note
+
+-   This library supports `python3.8` or later only.
+-   Learn more about Paxter via the following links from
+    [ReadTheDocs documentation](https://paxter.readthedocs.io/) website.
+-   This project is still in active development stage.
+    Minor upgrades may break backward-compatibility.
+-   For bug reports or suggestions,
+    please use [issues page](https://github.com/abhabongse/paxter/issues) on GitHub.
+    Other questions about the project itself (e.g. if you are seeking help with the usage)
+    may be asked on [discussions page](https://github.com/abhabongse/paxter/discussions).
+
 
 ## Example
 
@@ -599,11 +611,6 @@ we will get the final output as shown below.
 ```
 
 
-## Documentation
-
-Learn more about Paxter via the following links from
-[ReadTheDocs documentation](https://paxter.readthedocs.io/) website.
-
 ## Future Plans
 
 -   Experiment with different kinds of transformers and use it in real life
@@ -612,7 +619,7 @@ Learn more about Paxter via the following links from
 -   And more!
 
 
-## Development
+## Developing Note
 
 `Makefile` contains a lot of utility scripts.  
 See help command by simply running `make` or `make help`.
