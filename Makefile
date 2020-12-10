@@ -65,54 +65,38 @@ endif
 ######################
 
 .PHONY: test
-test: flake8 pytest tox_python tox_sanity
+test: tox sanity
 	@# Run all code quality tools
 
-.PHONY: pytest
-pytest:
-	@# Run pyauthor unit tests (you may also specify ARGS='<pytest args>')
-ifndef VIRTUAL_ENV
-	$(error must run target inside python virtualenv)
-endif
-	python -m pytest -v $(ARGS)
-
-.PHONY: pytest_cov
-pytest_cov:
-	@# Run pyauthor unit tests with code coverage summary
-ifndef VIRTUAL_ENV
-	$(error must run target inside python virtualenv)
-endif
-	python -m pytest $(foreach pkg,$(PYTHON_PROJECT_PACKAGES),"--cov=$(pkg)") \
-		--cov-report=term-missing -v $(ARGS)
-
-.PHONY: tox_python
-tox_python:
-	@# Run pytest on various pyauthor versions
+.PHONY: tox
+tox:
+	@# Run both flake8 and pytest on multiple python version
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
 	tox -e py38 -e py39
 
-.PHONY: tox_sanity
-tox_sanity:
-	@# Perform other package sanity checks
-	tox -e check
-
 .PHONY: flake8
 flake8:
-	@# Run flake8 pyauthor code linter tool
+	@# Run code linter tool on python source files
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
-	flake8 src tests setup.py
+	flake8 .
 
-.PHONY: mypy
-mypy:
-	@# Run pyauthor type checker tool
+.PHONY: pytest
+pytest:
+	@# Run unit testing on python source files (may also specify ARGS='<pytest args>')
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
-	mypy .
+	python -m pytest -vv $(ARGS)
+
+.PHONY: sanity
+sanity:
+	@# Perform other package sanity checks
+	python setup.py check --strict --metadata
+	check-manifest
 
 .PHONY: test_clean
 test_clean:
