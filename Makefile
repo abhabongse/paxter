@@ -8,7 +8,7 @@
 ## USER CONFIGURABLE SECTIONS
 #############################
 
-# List of written pyauthor packages
+# List of written python packages
 PYTHON_PROJECT_PACKAGES := paxter
 
 # Locations to all requirement files that requires pinning down
@@ -39,7 +39,7 @@ help:
 
 .PHONY: install_python_packages
 install_python_packages: $(REQUIREMENTS_FILES)
-	@# Install pyauthor packages in current virtual environment
+	@# Install python packages in current virtual environment
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
@@ -49,7 +49,7 @@ endif
 
 .PHONY: lock_python_requirements
 lock_python_requirements: $(REQUIREMENTS_FILES)
-	@# Pin down pyauthor package dependencies as *-requirements.txt files
+	@# Pin down python package dependencies as *-requirements.txt files
 
 # NOTE: another second expansion prerequisites at the bottom of this Makefile
 $(REQUIREMENTS_FILES): %.txt: %.in

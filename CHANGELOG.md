@@ -58,10 +58,10 @@
 
 ## 0.6.1 (15 July 2020)
 
--   The function `paxter.pyauthor.create_unsafe_env` was renamed to
-    `paxter.pyauthor.create_unsafe_bare_env`.
+-   The function `paxter.python.create_unsafe_env` was renamed to
+    `paxter.python.create_unsafe_bare_env`.
 -   Introduced document python authoring mode
-    using `paxter.pyauthor.create_unsafe_document_env`.
+    using `paxter.python.create_unsafe_document_env`.
 
 ## 0.6.0 (6 July 2020)
 

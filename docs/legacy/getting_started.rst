@@ -190,7 +190,7 @@ This is the minimal example of a function to get you started.
 .. code-block:: python
 
    from paxter.core import ParseContext
-   from paxter.pyauthor import RenderContext, create_unsafe_env
+   from paxter.authoring import RenderContext, create_unsafe_env
 
    def interp(source_text: str) -> str:
        parsed_tree = ParseContext(source_text).tree

@@ -51,7 +51,7 @@ def run_parse(input_file, output_file):
 @input_output_options
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
-              help="Path to pyauthor file to extract the environment.")
+              help="Path to python file to extract the environment.")
 def run_document(input_file, output_file, env_file):
     """
     Evaluates the input text into the document object.
@@ -79,7 +79,7 @@ def run_document(input_file, output_file, env_file):
 @input_output_options
 @click.option('-e', '--env-file',
               type=click.Path(exists=True, dir_okay=False, readable=True),
-              help="Path to pyauthor file to extract the environment.")
+              help="Path to python file to extract the environment.")
 def run_html(input_file, output_file, env_file):
     """
     Parses, evaluates, and renders the final HTML output.

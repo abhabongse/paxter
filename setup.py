@@ -1,4 +1,4 @@
-#!/usr/bin/env pyauthor
+#!/usr/bin/env python3
 import io
 import json
 from glob import glob
