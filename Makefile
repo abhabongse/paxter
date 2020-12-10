@@ -139,6 +139,7 @@ pkg_upload:
 ifndef VIRTUAL_ENV
 	$(error must run target inside python virtualenv)
 endif
+	twine check dist/*
 	twine upload dist/*
 
 .PHONY: pkg_clean
