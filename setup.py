@@ -47,7 +47,7 @@ setup(
     project_urls={
         'Documentation': 'https://paxter.readthedocs.io/',
         'Changelog': 'https://github.com/abhabongse/paxter/blob/main/CHANGELOG.md',
-        'Issue Tracker': 'https://github.com/abhabongse/paxter/issues',
+        'Issues': 'https://github.com/abhabongse/paxter/issues',
     },
     keywords=[],
     python_requires='>=3.8',
