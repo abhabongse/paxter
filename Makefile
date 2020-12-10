@@ -45,7 +45,7 @@ ifndef VIRTUAL_ENV
 endif
 	@which pip-sync >/dev/null 2>&1 || pip install pip-tools
 	pip-sync $(REQUIREMENTS_FILES)
-	pip install -e .[extras]
+	pip install -e .
 
 .PHONY: lock_python_requirements
 lock_python_requirements: $(REQUIREMENTS_FILES)

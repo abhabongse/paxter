@@ -14,6 +14,7 @@
                 <div class="line-block">
                     <a href="https://travis-ci.com/abhabongse/paxter"><img src="https://api.travis-ci.com/abhabongse/paxter.svg?branch=main" alt="Travis-CI Build Status" /></a>
                     <a href="https://requires.io/github/abhabongse/paxter/requirements/?branch=main"><img src="https://requires.io/github/abhabongse/paxter/requirements.svg?branch=main" alt="Requirements Status" /></a>
+                    <a href="https://codecov.io/github/abhabongse/paxter"><img src="https://codecov.io/github/abhabongse/paxter/coverage.svg?branch=main" alt="Coverage Status" /></a>
                 </div>
             </td>
         </tr>
