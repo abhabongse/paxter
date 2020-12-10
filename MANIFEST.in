@@ -4,11 +4,10 @@ graft src
 graft ci
 graft tests
 
-include .coveragerc
 include *.md
 include LICENSE
 
-include tox.ini .travis.yml .appveyor.yml .readthedocs.yml
-exclude Makefile dev-requirements.in dev-requirements.txt
+include tox.ini
+exclude Makefile requirements.txt dev-requirements.in dev-requirements.txt
 
 global-exclude *.py[cod] __pycache__/* *.so *.dylib
