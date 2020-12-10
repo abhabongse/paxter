@@ -1,3 +1,4 @@
+-c requirements.txt
 -c docs/requirements.txt
 check-manifest>=0.45
 docutils>=0.16

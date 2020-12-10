@@ -51,6 +51,11 @@ endif
 lock_python_requirements: $(REQUIREMENTS_FILES)
 	@# Pin down python package dependencies as *-requirements.txt files
 
+requirements.txt: setup.py
+	@which pip-compile >/dev/null 2>&1 || pip install pip-tools
+	pip-compile -o $@ $< $(ARGS)
+	@echo "Generated $@ from $^"
+
 # NOTE: another second expansion prerequisites at the bottom of this Makefile
 $(REQUIREMENTS_FILES): %.txt: %.in
 ifndef VIRTUAL_ENV
