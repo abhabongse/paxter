@@ -37,7 +37,7 @@ class Token(metaclass=ABCMeta):
         if not callable(cls.sanitize):
             raise RuntimeError("something went horribly wrong")  # pragma: no cover
 
-        value = cls.sanitize(matchobj.group(capture_name))
+        value = cls.sanitize(matchobj[capture_name])
         start_pos, end_pos = matchobj.span(capture_name)
         return cls(start_pos, end_pos, value, *args, **kwargs)  # type: ignore
 

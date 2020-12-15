@@ -14,8 +14,6 @@ from paxter.parsing.data import (
 from paxter.parsing.enclosing import EnclosingPattern, GlobalEnclosingPattern
 from paxter.parsing.lexers import _LEXER
 
-_SCOPE_TRANS = str.maketrans('([{', ')]}')
-
 
 @dataclass
 class ParsingTask:
@@ -79,7 +77,7 @@ class ParsingTask:
             # Dispatch parsing between the @-expression switch
             # and the closing (i.e. right) pattern
             next_pos = matchobj.end()
-            break_char = matchobj.group('break')
+            break_char = matchobj['break']
             if break_char == '@':
                 next_pos, result_node = self._parse_cmd(next_pos)
                 children.append(result_node)
@@ -112,7 +110,7 @@ class ParsingTask:
         by using the identifier name content as the phrase section.
         """
         cmd_start_pos, next_pos = id_matchobj.span()
-        phrase = id_matchobj.group('id')
+        phrase = id_matchobj['id']
         phrase_enclosing = EnclosingPattern(left='')
         return self._parse_cmd_after_phrase(next_pos, cmd_start_pos, phrase, phrase_enclosing)
 
@@ -122,14 +120,14 @@ class ParsingTask:
         which is enclosed by the bar pattern.
         """
         cmd_start_pos, next_pos = lbar_matchobj.span()
-        phrase_enclosing = EnclosingPattern(left=lbar_matchobj.group('left'))
+        phrase_enclosing = EnclosingPattern(left=lbar_matchobj['left'])
 
         inner_matchobj = phrase_enclosing.non_rec_break_re.match(self.src_text, next_pos)
         if inner_matchobj is None:
             self._raise_cannot_match_enclosing(next_pos, phrase_enclosing)
 
         next_pos = inner_matchobj.end()
-        phrase = inner_matchobj.group('inner')
+        phrase = inner_matchobj['inner']
         return self._parse_cmd_after_phrase(next_pos, cmd_start_pos, phrase, phrase_enclosing)
 
     def _parse_cmd_after_phrase(
@@ -173,7 +171,7 @@ class ParsingTask:
         (captured by the provided match object) is discovered.
         """
         next_pos = lbrace_matchobj.end()
-        enclosing = EnclosingPattern(left=lbrace_matchobj.group('left'))
+        enclosing = EnclosingPattern(left=lbrace_matchobj['left'])
         return self._parse_inner_fragment_seq(next_pos, enclosing)
 
     def _parse_text(self, lquote_matchobj: Match[str]) -> tuple[int, Text]:
@@ -184,7 +182,7 @@ class ParsingTask:
         is discovered.
         """
         next_pos = lquote_matchobj.end()
-        enclosing = EnclosingPattern(left=lquote_matchobj.group('left'))
+        enclosing = EnclosingPattern(left=lquote_matchobj['left'])
 
         inner_matchobj = enclosing.non_rec_break_re.match(self.src_text, next_pos)
         if inner_matchobj is None:
@@ -200,7 +198,7 @@ class ParsingTask:
         where a single-character symbol follows the @-switch character.
         """
         cmd_start_pos, next_pos = symbol_matchobj.span()
-        phrase = symbol_matchobj.group('symbol')
+        phrase = symbol_matchobj['symbol']
         phrase_enclosing = EnclosingPattern(left='')
         command_node = Command(
             cmd_start_pos,
