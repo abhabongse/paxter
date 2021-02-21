@@ -1,5 +1,5 @@
 """
-Collection of function wrappers in Python authoring mode.
+Collection of function wrappers in Python quickauthor mode.
 """
 from __future__ import annotations
 
@@ -9,10 +9,10 @@ from dataclasses import dataclass
 from typing import Any, Optional, TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
-from paxter.parsing import CharLoc, Command, Identifier, Operator, Token, TokenSeq
+from paxter.syntax import CharLoc, Command, Identifier, Operator, Token, TokenSeq
 
 if TYPE_CHECKING:
-    from paxter.interpreting.task import InterpretingTask
+    from paxter.interp.task import InterpretingTask
 
 
 @dataclass
@@ -37,8 +37,8 @@ class DirectApply(BaseApply):
     Special function call where the wrapped function handles
     the environment and the :class:`Command` token directly.
     See the implementation of
-    :func:`if_statement <paxter.authoring.controls.if_statement>` and
-    :func:`for_statement <paxter.authoring.controls.for_statement>` and
+    :func:`if_statement <paxter.quickauthor.controls.if_statement>` and
+    :func:`for_statement <paxter.quickauthor.controls.for_statement>` and
     to see how this decorator is used.
     """
     wrapped: Callable[[InterpretingTask, Command], Any]

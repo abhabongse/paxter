@@ -68,13 +68,13 @@ is to make calls the API functions provided by Paxter library.
 The easiest way is to do the following.
 
 ```python
-from paxter.authoring import run_document_paxter
+from paxter.quickauthor import run_document_paxter
 
 # The following source text is read from a source file.
 # However, in reality, source text may be read from other sources
 # such as some databases or even fetched via some content management API.
 with open("new-blog.paxter") as fobj:
-   source_text = fobj.read()
+    source_text = fobj.read()
 
 document = run_document_paxter(source_text)
 html_output = document.html()

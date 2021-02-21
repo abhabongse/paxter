@@ -1,6 +1,6 @@
 """
 Variable collection of character sets as defined by Paxter language.
-They are used to construct tokenizers for language parsing.
+They are used to construct tokenizers for language syntax.
 """
 from __future__ import annotations
 

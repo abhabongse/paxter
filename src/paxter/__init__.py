@@ -18,7 +18,7 @@ try:
 except Exception:  # pragma: no cover
     metadata = {}
 
-__author__ = metadata.get('authoring')
+__author__ = metadata.get('quickauthor')
 __version__ = metadata.get('version')
 __status__ = metadata.get('status')
 __license__ = metadata.get('license')

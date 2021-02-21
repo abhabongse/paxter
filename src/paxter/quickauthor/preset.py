@@ -5,11 +5,11 @@ from __future__ import annotations
 
 from typing import Optional
 
-from paxter.authoring.elements import Document
-from paxter.authoring.environ import create_document_env, create_simple_env
-from paxter.interpreting import FragmentList
-from paxter.interpreting.task import InterpretingTask
-from paxter.parsing import ParsingTask
+from paxter.interp import FragmentList
+from paxter.interp.task import InterpretingTask
+from paxter.quickauthor.elements import Document
+from paxter.quickauthor.environ import create_document_env, create_simple_env
+from paxter.syntax import ParsingTask
 
 
 def run_simple_paxter(src_text: str, env: Optional[dict] = None) -> FragmentList:

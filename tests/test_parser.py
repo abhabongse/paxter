@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from paxter.parsing import (
+from paxter.syntax import (
     Command, EnclosingPattern, FragmentSeq, GlobalEnclosingPattern, Identifier,
     Number, Operator, ParsingTask, Text, Token, TokenSeq,
 )

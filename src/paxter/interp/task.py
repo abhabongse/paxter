@@ -8,9 +8,9 @@ from dataclasses import dataclass
 from typing import Any, Union
 
 from paxter.exceptions import PaxterRenderError
-from paxter.interpreting.data import FragmentList
-from paxter.interpreting.wrappers import BaseApply, NormalApply
-from paxter.parsing import (
+from paxter.interp.data import FragmentList
+from paxter.interp.wrappers import BaseApply, NormalApply
+from paxter.syntax import (
     CharLoc, Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, Token, TokenSeq,
 )
 
@@ -24,8 +24,8 @@ class InterpretingTask:
 
     - the original source text,
     - the initial environment dictionary (such as those created by
-      :meth:`create_document_env() <paxter.authoring.create_document_env>`), and
-    - the parsed tree returned from :meth:`ParsingTask.parse() <paxter.parsing.ParsingTask.parse>`
+      :meth:`create_document_env() <paxter.quickauthor.create_document_env>`), and
+    - the parsed tree returned from :meth:`ParsingTask.parse() <paxter.syntax.ParsingTask.parse>`
 
     Then call the instance method :meth:`interp() <InterpretingTask.interp>`
     to obtain the final rendered output::
@@ -48,7 +48,7 @@ class InterpretingTask:
     def interp(self):
         """
         Interprets the given parsed tree into the final output (which is a fragment list)
-        using the given source text and the given interpreting environment dictionary.
+        using the given source text and the given interp environment dictionary.
 
         This instance method is computationally expensive;
         please avoid repeatedly calling this method.
@@ -149,8 +149,8 @@ class InterpretingTask:
         """
         Transforms a given parsed command.
         """
-        # Try to interpreting the phrase section
-        # using the interpreting function from _phrase_eval_
+        # Try to interp the phrase section
+        # using the interp function from _phrase_eval_
         try:
             phrase_eval = self.env['_phrase_eval_']
         except KeyError as exc:

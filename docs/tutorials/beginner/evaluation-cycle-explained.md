@@ -25,9 +25,9 @@ Specifically, the core {mod}`paxter.parse` subpackage
 implements a parser, {class}`ParseContext <paxter.parsing.ParseContext>`,
 which parses a source text (written in Paxter language) into the parsed tree form.
 Here is how to use python API to run this step.
-   
+
 ```python
-from paxter.parsing import _ParsingTask
+from paxter.syntax import _ParsingTask
 
 source_text = '''Please visit @link["https://example.com"]{@italic{this} website}. @line_break
 @image["https://example.com/hello.jpg", "hello"]'''
@@ -161,7 +161,7 @@ created by the above function
 {func}`create_document_env() <paxter.authoring.environ.create_document_env>`.
 
 ```python
-from paxter.authoring.environ import create_document_env
+from paxter.quickauthor.environ import create_document_env
 
 env = create_document_env()
 ```
@@ -303,7 +303,7 @@ The final result is stored inside the variable `result`.
 
 ```python
 # Step 1: resolving the phrase
-line_break_obj = env['line_break']  # paxter.authoring.elements.line_break
+line_break_obj = env['line_break']  # paxter.quickauthor.elements.line_break
 # Step 2 is skipped since there is no function call
 result = line_break_obj
 ```
@@ -315,7 +315,7 @@ It would be transformed into the following python equivalent:
 
 ```python
 # Step 1: resolving the phrase
-italic_obj = env['italic']  # paxter.authoring.elements.Italic.from_fragments
+italic_obj = env['italic']  # paxter.quickauthor.elements.Italic.from_fragments
 # Step 2: function call
 result = italic_obj(FragmentList(["this"]))
 ```
@@ -339,8 +339,8 @@ and its python code equivalent.
 
 ```python
 # Step 1: resolving the phrases
-italic_obj = env['italic']  # paxter.authoring.elements.Italic.from_fragments
-link_obj = env['link']  # paxter.authoring.elements.Link.from_fragments
+italic_obj = env['italic']  # paxter.quickauthor.elements.Italic.from_fragments
+link_obj = env['link']  # paxter.quickauthor.elements.Link.from_fragments
 
 # Step 2: function call
 result = link_obj(
@@ -402,7 +402,7 @@ the above source text would be interpreted similarly to the following python cod
 
 ```python
 # Step 1: resolving the phrase
-image_obj = env['image']  # paxter.authoring.elements.Image
+image_obj = env['image']  # paxter.quickauthor.elements.Image
 # Step 2: function call
 result = image_obj("https://example.com/hello.jpg", "hello")
 ```
@@ -450,10 +450,10 @@ Please visit @link["https://example.com"]{@italic{this} website}. @line_break
 
 ```python
 # Step 1: resolving the phrases
-italic_obj = env['italic']  # paxter.authoring.elements.Italic.from_fragments
-link_obj = env['link']  # paxter.authoring.elements.Link.from_fragments
-line_break_obj = env['line_break']  # paxter.authoring.elements.line_break
-image_obj = env['image']  # paxter.authoring.elements.Image
+italic_obj = env['italic']  # paxter.quickauthor.elements.Italic.from_fragments
+link_obj = env['link']  # paxter.quickauthor.elements.Link.from_fragments
+line_break_obj = env['line_break']  # paxter.quickauthor.elements.line_break
+image_obj = env['image']  # paxter.quickauthor.elements.Image
 
 # Step 2: function call
 document_result = FragmentList([
@@ -476,8 +476,8 @@ However, the actual python API to replicate the above result is as follows
 (where `parsed_tree` is the result borrowed from step 1).
 
 ```python
-from paxter.authoring.environ import create_document_env
-from paxter.interpreting.task import InterpretingTask
+from paxter.quickauthor.environ import create_document_env
+from paxter.interp.task import InterpretingTask
 
 env = create_document_env()
 document_result = InterpretingTask(source_text, env, parsed_tree).rendered
@@ -521,7 +521,7 @@ Two small steps are required:
 And here is the python code to do exactly as just said:
 
 ```python
-from paxter.authoring.elements import Document
+from paxter.quickauthor.elements import Document
 
 document = Document.from_fragments(document_result)
 html_output = document.html()

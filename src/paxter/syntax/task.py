@@ -1,5 +1,5 @@
 """
-Recursive descent parsing of Paxter language.
+Recursive descent syntax of Paxter language.
 """
 from __future__ import annotations
 
@@ -7,18 +7,18 @@ from dataclasses import dataclass
 from typing import Match
 
 from paxter.exceptions import PaxterSyntaxError
-from paxter.parsing.charloc import CharLoc
-from paxter.parsing.data import (
+from paxter.syntax.charloc import CharLoc
+from paxter.syntax.data import (
     Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, TokenSeq,
 )
-from paxter.parsing.enclosing import EnclosingPattern, GlobalEnclosingPattern
-from paxter.parsing.lexers import _LEXER
+from paxter.syntax.enclosing import EnclosingPattern, GlobalEnclosingPattern
+from paxter.syntax.lexers import _LEXER
 
 
 @dataclass
 class ParsingTask:
     """
-    Implements a recursive descent parsing for Paxter language text input.
+    Implements a recursive descent syntax for Paxter language text input.
 
     To use this class, initialize an instance with the source text
     then call the instance method :meth:`parse() <ParsingTask.parse>`
@@ -32,7 +32,7 @@ class ParsingTask:
     def parse(self) -> FragmentSeq:
         """
         Parses source text written in Paxter language into the parsed tree
-        which is a node of type :class:`paxter.parsing.FragmentSeq`.
+        which is a node of type :class:`paxter.syntax.FragmentSeq`.
 
         This instance method is computationally expensive;
         please avoid repeatedly calling this method.
@@ -57,8 +57,8 @@ class ParsingTask:
         """
         Subroutinely parses the input expecting a sequence of fragment nodes
         starting from the given position indicated by ``next_pos``.
-        This method is called when parsing the global-level input
-        or when parsing under a scope enclosed by braces pattern.
+        This method is called when syntax the global-level input
+        or when syntax under a scope enclosed by braces pattern.
         """
         start_pos = next_pos
         children: list[Fragment] = []
@@ -74,7 +74,7 @@ class ParsingTask:
             if text_node.inner:
                 children.append(text_node)
 
-            # Dispatch parsing between the @-expression switch
+            # Dispatch syntax between the @-expression switch
             # and the closing (i.e. right) pattern
             next_pos = matchobj.end()
             break_char = matchobj['break']
@@ -106,7 +106,7 @@ class ParsingTask:
 
     def _parse_id_phrase_cmd(self, id_matchobj: Match[str]) -> tuple[int, Command]:
         """
-        Continues parsing the phrase section of the Command
+        Continues syntax the phrase section of the Command
         by using the identifier name content as the phrase section.
         """
         cmd_start_pos, next_pos = id_matchobj.span()
@@ -116,7 +116,7 @@ class ParsingTask:
 
     def _parse_bar_phrase_cmd(self, lbar_matchobj: Match[str]) -> tuple[int, Command]:
         """
-        Continues parsing the phrase section of the Command
+        Continues syntax the phrase section of the Command
         which is enclosed by the bar pattern.
         """
         cmd_start_pos, next_pos = lbar_matchobj.span()
@@ -138,9 +138,9 @@ class ParsingTask:
             phrase_enclosing: EnclosingPattern,
     ) -> tuple[int, Command]:
         """
-        Continues parsing the Command after the phrase section.
+        Continues syntax the Command after the phrase section.
         """
-        # If phrase is empty, stop parsing for options or main argument
+        # If phrase is empty, stop syntax for options or main argument
         if not phrase:
             options = None
             main_arg = None
@@ -176,7 +176,7 @@ class ParsingTask:
 
     def _parse_text(self, lquote_matchobj: Match[str]) -> tuple[int, Text]:
         """
-        Continues parsing the input for raw :class:`Text` node
+        Continues syntax the input for raw :class:`Text` node
         until the enclosing right pattern corresponding to the
         enclosing left pattern (captured by the provided match object)
         is discovered.
@@ -262,20 +262,20 @@ class ParsingTask:
                 children.append(at_expr_node)
                 continue
 
-            # Attempts to parsing a sub-level sequence of tokens
+            # Attempts to syntax a sub-level sequence of tokens
             if lbracket_matchobj := _LEXER.lbracket_re.match(self.src_text, next_pos):
                 next_pos = lbracket_matchobj.end()
                 next_pos, token_seq_node = self._parse_options(next_pos)
                 children.append(token_seq_node)
                 continue
 
-            # Attempts to parsing the end of token sequence
+            # Attempts to syntax the end of token sequence
             # Return the token sequence if this is the case
             if rbracket_matchobj := _LEXER.rbracket_re.match(self.src_text, next_pos):
                 end_pos, next_pos = rbracket_matchobj.span()
                 return next_pos, TokenSeq(start_pos, end_pos, children)
 
-            # Else, something was wrong at the parsing,
+            # Else, something was wrong at the syntax,
             # perhaps reaching the end of text or found unmatched parenthesis.
             self._raise_cannot_match_char(start_pos, '[', ']')
 
@@ -303,7 +303,7 @@ class ParsingTask:
 
     def _raise_invalid_cmd(self, pos: int):
         """
-        Raises syntax error for failing to parsing @-command.
+        Raises syntax error for failing to syntax @-command.
         """
         raise PaxterSyntaxError(
             "invalid expression after @-command at %(pos)s",

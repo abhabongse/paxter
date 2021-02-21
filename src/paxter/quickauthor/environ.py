@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from typing import Optional
 
-from paxter.authoring.controls import for_statement, if_statement
-from paxter.authoring.elements import (
+from paxter.quickauthor.controls import for_statement, if_statement
+from paxter.quickauthor.elements import (
     Blockquote, Bold, BulletedList, Code,
     Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
     Image, Italic, Link, NumberedList, Paragraph, RawElement,
@@ -14,13 +14,13 @@ from paxter.authoring.elements import (
     hair_space, horizontal_rule, line_break,
     non_breaking_space, thin_space,
 )
-from paxter.authoring.standards import phrase_unsafe_eval, python_unsafe_exec, verbatim
+from paxter.quickauthor.standards import phrase_unsafe_eval, python_unsafe_exec, verbatim
 
 
 def create_simple_env(data: Optional[dict] = None):
     """
     Creates an string environment data for Paxter source code evaluation
-    in Python authoring mode.
+    in Python quickauthor mode.
     """
     data = data or {}
     return {
@@ -38,7 +38,7 @@ def create_simple_env(data: Optional[dict] = None):
 def create_document_env(data: Optional[dict] = None):
     """
     Creates an string environment data for Paxter source code evaluation
-    in Python authoring mode, specializes in constructing documents.
+    in Python quickauthor mode, specializes in constructing documents.
     """
     data = data or {}
     return create_simple_env({

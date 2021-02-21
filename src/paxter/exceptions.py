@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from paxter.parsing.charloc import CharLoc
+    from paxter.syntax.charloc import CharLoc
 
 __all__ = [
     'PaxterBaseException',
@@ -51,7 +51,7 @@ class PaxterConfigError(PaxterBaseException):
 
 class PaxterSyntaxError(PaxterBaseException):
     """
-    Exception for syntax error raised while parsing input text in Paxter language.
+    Exception for syntax error raised while syntax input text in Paxter language.
     """
     pass
 

@@ -6,10 +6,10 @@ from typing import Tuple
 import pytest
 from click.testing import CliRunner
 
-from paxter.authoring import create_document_env
-from paxter.authoring.elements import Document
-from paxter.interpreting import InterpretingTask
-from paxter.parsing import ParsingTask
+from paxter.interp import InterpretingTask
+from paxter.quickauthor import create_document_env
+from paxter.quickauthor.elements import Document
+from paxter.syntax import ParsingTask
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "document")
 

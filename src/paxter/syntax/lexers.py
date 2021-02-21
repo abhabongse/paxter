@@ -6,12 +6,12 @@ from __future__ import annotations
 import re
 from typing import Pattern
 
-from paxter.parsing.charset import IDENTIFIER_PATTERN, OPERATOR_PATTERN, SYMBOL_PATTERN
+from paxter.syntax.charset import IDENTIFIER_PATTERN, OPERATOR_PATTERN, SYMBOL_PATTERN
 
 
 class Lexer:
     """
-    Collection of compiled regular expressions to parsing Paxter language.
+    Collection of compiled regular expressions to syntax Paxter language.
     """
     _compiled_non_rec_breaks: dict[str, Pattern[str]]
     _compiled_rec_breaks: dict[str, Pattern[str]]

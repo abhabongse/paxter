@@ -1,16 +1,16 @@
 """
-Collection of control flow functions for Python authoring mode.
+Collection of control flow functions for Python quickauthor mode.
 """
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
-from paxter.interpreting import DirectApply, FragmentList
-from paxter.parsing import CharLoc, Command, Identifier
+from paxter.interp import DirectApply, FragmentList
+from paxter.syntax import CharLoc, Command, Identifier
 
 if TYPE_CHECKING:
-    from paxter.interpreting.task import InterpretingTask
+    from paxter.interp.task import InterpretingTask
 
 
 @DirectApply
@@ -108,7 +108,7 @@ def if_statement(context: InterpretingTask, node: Command):  # noqa: C901
     if callable(cond):
         cond = cond()
 
-    # Choose and interpreting result clause
+    # Choose and interp result clause
     result_node = then_node if bool(cond) is target_bool else else_node
     if result_node is None:
         return

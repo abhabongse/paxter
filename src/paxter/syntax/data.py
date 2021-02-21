@@ -8,7 +8,7 @@ from abc import ABCMeta
 from dataclasses import dataclass, field
 from typing import Any, Match, Optional, TypeVar, Union
 
-from paxter.parsing.enclosing import EnclosingPattern
+from paxter.syntax.enclosing import EnclosingPattern
 
 
 @dataclass

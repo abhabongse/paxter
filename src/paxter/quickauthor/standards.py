@@ -1,5 +1,5 @@
 """
-Collection of standard functions for Python authoring mode.
+Collection of standard functions for Python quickauthor mode.
 """
 from __future__ import annotations
 
@@ -7,11 +7,11 @@ import inspect
 from typing import Any, TYPE_CHECKING
 
 from paxter.exceptions import PaxterRenderError
-from paxter.interpreting import DirectApply
-from paxter.parsing import Command, Text
+from paxter.interp import DirectApply
+from paxter.syntax import Command, Text
 
 if TYPE_CHECKING:
-    from paxter.interpreting.task import InterpretingTask
+    from paxter.interp.task import InterpretingTask
 
 
 def phrase_unsafe_eval(phrase: str, env: dict) -> Any:

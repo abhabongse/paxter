@@ -1,15 +1,15 @@
 """
 This paxter subpackage implements
-the parsing functionality for Paxter language.
+the syntax functionality for Paxter language.
 """
 from __future__ import annotations
 
-from paxter.parsing.charloc import CharLoc
-from paxter.parsing.data import (
+from paxter.syntax.charloc import CharLoc
+from paxter.syntax.data import (
     Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, Token, TokenSeq,
 )
-from paxter.parsing.enclosing import EnclosingPattern, GlobalEnclosingPattern
-from paxter.parsing.task import ParsingTask
+from paxter.syntax.enclosing import EnclosingPattern, GlobalEnclosingPattern
+from paxter.syntax.task import ParsingTask
 
 __all__ = [
     'CharLoc',
