@@ -8,15 +8,15 @@ from typing import Match
 
 from paxter.exceptions import PaxterSyntaxError
 from paxter.syntax.charloc import CharLoc
-from paxter.syntax.data import (
-    Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, TokenSeq,
-)
 from paxter.syntax.enclosing import EnclosingPattern, GlobalEnclosingPattern
 from paxter.syntax.lexers import _LEXER
+from paxter.syntax.nodetypes import (
+    Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, TokenSeq,
+)
 
 
 @dataclass
-class ParsingTask:
+class Parser:
     """
     Implements a recursive descent syntax for Paxter language text input.
 
@@ -29,7 +29,7 @@ class ParsingTask:
     #: Document source text
     src_text: str
 
-    def parse(self) -> FragmentSeq:
+    def run(self) -> FragmentSeq:
         """
         Parses source text written in Paxter language into the parsed tree
         which is a node of type :class:`paxter.syntax.FragmentSeq`.

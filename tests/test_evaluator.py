@@ -6,10 +6,10 @@ from typing import Tuple
 import pytest
 from click.testing import CliRunner
 
-from paxter.interp import InterpretingTask
+from paxter.interp import Interpreter
 from paxter.quickauthor import create_document_env
 from paxter.quickauthor.elements import Document
-from paxter.syntax import ParsingTask
+from paxter.syntax import Parser
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "document")
 
@@ -34,11 +34,11 @@ def test_evaluator_document(src_file, expected_file):
         expected_text = fobj.read()
 
     # Parse input
-    parsed_tree = ParsingTask(src_text).parse()
+    parsed_tree = Parser(src_text).run()
 
     # Render into output HTML
     env = create_document_env()
-    rendered = InterpretingTask(src_text, env, parsed_tree).interp()
+    rendered = Interpreter(src_text, env, parsed_tree).run()
     document = Document.from_fragments(rendered)
 
     assert document.html() == expected_text

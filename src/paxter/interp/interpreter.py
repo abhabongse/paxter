@@ -4,19 +4,21 @@ Implementation of the renderer.
 from __future__ import annotations
 
 import re
+from collections import UserList
 from dataclasses import dataclass
-from typing import Any, Union
+from typing import Any, Generic, TypeVar, Union
 
 from paxter.exceptions import PaxterRenderError
-from paxter.interp.data import FragmentList
 from paxter.interp.wrappers import BaseApply, NormalApply
 from paxter.syntax import (
     CharLoc, Command, Fragment, FragmentSeq, Identifier, Number, Operator, Text, Token, TokenSeq,
 )
 
+T = TypeVar('T')
+
 
 @dataclass
-class InterpretingTask:
+class Interpreter:
     """
     Base rendering class for Paxter parsed document tree.
 
@@ -45,7 +47,7 @@ class InterpretingTask:
 
     BACKSLASH_NEWLINE_RE = re.compile(r'\\[ \t\r\f\v]*\n[ \t\r\f\v]*')
 
-    def interp(self):
+    def run(self):
         """
         Interprets the given parsed tree into the final output (which is a fragment list)
         using the given source text and the given interp environment dictionary.
@@ -187,3 +189,25 @@ class InterpretingTask:
                 "paxter apply evaluation error at %(pos)s",
                 pos=CharLoc(self.src_text, token.start_pos),
             ) from exc
+
+
+class FragmentList(UserList, Generic[T]):
+    """
+    Special subclass of built-in list class
+    to store a list of fragments.
+    """
+
+    def __repr__(self):
+        content = super().__repr__()
+        return f"FragmentList({content})"
+
+    def flatten(self):
+        """
+        Flattens out the members of fragment list
+        but without nested fragment list.
+        """
+        if isinstance(self, FragmentList):
+            for element in self:
+                yield from FragmentList.flatten(element)
+        else:
+            yield self

@@ -4,7 +4,7 @@ import pytest
 
 from paxter.syntax import (
     Command, EnclosingPattern, FragmentSeq, GlobalEnclosingPattern, Identifier,
-    Number, Operator, ParsingTask, Text, Token, TokenSeq,
+    Number, Operator, Parser, Text, Token, TokenSeq,
 )
 
 
@@ -1003,7 +1003,7 @@ from paxter.syntax import (
     ],
 )
 def test_parser(src_text: str, expected: Token):
-    parsed_tree = ParsingTask(src_text).parse()
+    parsed_tree = Parser(src_text).run()
     assert parsed_tree == expected
     assert parsed_tree.start_pos == expected.start_pos
     assert parsed_tree.end_pos == expected.end_pos

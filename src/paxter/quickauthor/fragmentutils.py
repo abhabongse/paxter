@@ -8,7 +8,7 @@ from collections.abc import Sequence
 from typing import Union
 
 from paxter.exceptions import PaxterRenderError
-from paxter.interp.data import FragmentList
+from paxter.interp import FragmentList
 
 PARAGRAPH_SPLIT_RE = re.compile(r'\n(?:[ \t\r\f\v]*\n)+')
 

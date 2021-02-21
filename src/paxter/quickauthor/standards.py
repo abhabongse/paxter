@@ -11,7 +11,7 @@ from paxter.interp import DirectApply
 from paxter.syntax import Command, Text
 
 if TYPE_CHECKING:
-    from paxter.interp.task import InterpretingTask
+    from paxter.interp.interpreter import Interpreter
 
 
 def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
@@ -34,7 +34,7 @@ def phrase_unsafe_eval(phrase: str, env: dict) -> Any:
 
 
 @DirectApply
-def python_unsafe_exec(context: InterpretingTask, node: Command):
+def python_unsafe_exec(context: Interpreter, node: Command):
     """
     Unsafely executes the given python code
     using env dict as the namespace.
