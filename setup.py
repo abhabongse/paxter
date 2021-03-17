@@ -50,13 +50,5 @@ setup(
         'Issues': 'https://github.com/abhabongse/paxter/issues',
     },
     keywords=[],
-    python_requires='>=3.8',
-    install_requires=[
-        'click>=5.0',
-    ],
-    entry_points={
-        'console_scripts': [
-            'paxter = paxter.__main__:program',
-        ],
-    },
+    python_requires='>=3.7',
 )

@@ -26,8 +26,8 @@ class Interpreter:
 
     - the original source text,
     - the initial environment dictionary (such as those created by
-      :meth:`create_document_env() <paxter.quickauthor.create_document_env>`), and
-    - the parsed tree returned from :meth:`ParsingTask.parse() <paxter.syntax.ParsingTask.parse>`
+      :meth:`create_document_env() <paxter_legacy.quickauthor.create_document_env>`), and
+    - the parsed tree returned from :meth:`ParsingTask.parse() <paxter_legacy.syntax.ParsingTask.parse>`
 
     Then call the instance method :meth:`interp() <InterpretingTask.interp>`
     to obtain the final rendered output::
@@ -166,7 +166,7 @@ class Interpreter:
             raise
         except Exception as exc:
             raise PaxterRenderError(
-                "paxter command phrase evaluation error at %(pos)s: "
+                "paxter_legacy command phrase evaluation error at %(pos)s: "
                 f"{token.phrase!r}",
                 pos=CharLoc(self.src_text, token.start_pos),
             ) from exc
@@ -186,7 +186,7 @@ class Interpreter:
             raise
         except Exception as exc:
             raise PaxterRenderError(
-                "paxter apply evaluation error at %(pos)s",
+                "paxter_legacy apply evaluation error at %(pos)s",
                 pos=CharLoc(self.src_text, token.start_pos),
             ) from exc
 

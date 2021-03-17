@@ -32,7 +32,7 @@ class Parser:
     def run(self) -> FragmentSeq:
         """
         Parses source text written in Paxter language into the parsed tree
-        which is a node of type :class:`paxter.syntax.FragmentSeq`.
+        which is a node of type :class:`paxter_legacy.syntax.FragmentSeq`.
 
         This instance method is computationally expensive;
         please avoid repeatedly calling this method.

@@ -1,5 +1,5 @@
 """
-This paxter subpackage supplements a set of utilities
+This paxter_legacy subpackage supplements a set of utilities
 to be used to quickauthor a document via parsed tree evaluation.
 """
 from __future__ import annotations

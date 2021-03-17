@@ -37,8 +37,8 @@ class DirectApply(BaseApply):
     Special function call where the wrapped function handles
     the environment and the :class:`Command` token directly.
     See the implementation of
-    :func:`if_statement <paxter.quickauthor.controls.if_statement>` and
-    :func:`for_statement <paxter.quickauthor.controls.for_statement>` and
+    :func:`if_statement <paxter_legacy.quickauthor.controls.if_statement>` and
+    :func:`for_statement <paxter_legacy.quickauthor.controls.for_statement>` and
     to see how this decorator is used.
     """
     wrapped: Callable[[Interpreter, Command], Any]

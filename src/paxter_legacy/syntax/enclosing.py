@@ -3,9 +3,9 @@ Utility class for textual enclosing (left and right) patterns
 which surrounds a particular scope of string data.
 It is used in the following scenarios:
 
-- Brace pattern for :class:`FragmentSeq <paxter.syntax.data.FragmentSeq>` nodes
-- Quoted pattern for :class:`Text <paxter.syntax.data.Text>` nodes
-- Bar pattern for the phrase of :class:`Command <paxter.syntax.data.Command>` nodes
+- Brace pattern for :class:`FragmentSeq <paxter_legacy.syntax.data.FragmentSeq>` nodes
+- Quoted pattern for :class:`Text <paxter_legacy.syntax.data.Text>` nodes
+- Bar pattern for the phrase of :class:`Command <paxter_legacy.syntax.data.Command>` nodes
 """
 from __future__ import annotations
 

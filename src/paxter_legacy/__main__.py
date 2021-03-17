@@ -59,7 +59,7 @@ def run_document(input_file, output_file, env_file):
     It reads input text from INPUT_FILE and pass it through the syntax.
     Then the parsed tree is evaluated into document object
     using the environment provided by the
-    paxter.quickauthor supplementary subpackage.
+    paxter_legacy.quickauthor supplementary subpackage.
     Finally, the document object structure is written to OUTPUT_FILE.
 
     Transform: input text -> parsed tree -> document object
@@ -87,7 +87,7 @@ def run_html(input_file, output_file, env_file):
     It reads input text from INPUT_FILE and pass it through the syntax.
     Then the parsed tree is evaluated into document object
     using the environment provided by the
-    paxter.quickauthor supplementary subpackage.
+    paxter_legacy.quickauthor supplementary subpackage.
     Finally, the document object is rendered to HTML output
     which gets written to OUTPUT_FILE.
 

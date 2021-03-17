@@ -1,5 +1,5 @@
 """
-This paxter subpackage implements a variant of
+This paxter_legacy subpackage implements a variant of
 parsed tree evaluation for Paxter language.
 """
 from __future__ import annotations

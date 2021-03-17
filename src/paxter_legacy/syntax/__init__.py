@@ -1,5 +1,5 @@
 """
-This paxter subpackage implements
+This paxter_legacy subpackage implements
 the syntax functionality for Paxter language.
 """
 from __future__ import annotations
