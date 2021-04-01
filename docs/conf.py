@@ -78,10 +78,9 @@ html_theme_options = {
 
 html_title = ""
 html_logo = "_static/PaxterLogoOneRectangle.png"
-myst_url_schemes = ("http", "https", "mailto")
-myst_html_img_enable = True
-myst_admonition_enable = True
-myst_dmath_enable = False
+myst_enable_extensions = ['colon_fence', 'deflist', 'html_image', 'linkify']
+myst_heading_anchors = 4
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

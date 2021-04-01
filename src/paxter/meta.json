@@ -1,5 +1,5 @@
 {
-  "description": "Paxter is a document-first, text pre-processing mini-language toolchain, loosely inspired by @-expressions in Racket",
+  "description": "Paxter is a document-first, text pre-processing language toolchain, loosely inspired by @-expressions in Racket",
   "version": "0.7.0-a1",
   "license": "Apache-2.0",
   "status": "Beta",
