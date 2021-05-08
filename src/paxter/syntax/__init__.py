@@ -7,7 +7,11 @@ Here is the rough grammar for Paxter surface syntax.
 ```ebnf
 start: piece*
 piece: TEXT_WITHOUT_SWITCH | SWITCH command
-command: regular_command | NEGATIVE_COMMAND_START SYMBOLIC_COMMAND
+command: regular_command
+       | wrapped_pieces
+       | wrapped_text
+       | NUMBER
+       | NEGATIVE_COMMAND_START NEGATIVE_BODY_START SYMBOLIC_COMMAND
 regular_command: head extras? body
                | head extras NEGATIVE_BODY_START
                | head NEGATIVE_EXTRAS_START NEGATIVE_BODY_START
@@ -15,9 +19,9 @@ head: IDENTIFIER | wrapped_head
 extras: "[" token* "]"      // ignoring whitespaces between tokens
 token: SWITCH command
      | IDENTIFIER
-     | NUMBER
      | wrapped_pieces
      | wrapped_text
+     | NUMBER
      | extras
      | OPERATOR
 body: wrapped_pieces | wrapped_text
