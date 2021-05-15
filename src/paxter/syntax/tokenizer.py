@@ -23,32 +23,30 @@ class Tokenizer:
     Tokenizer utility class for Paxter surface syntax.
     All regexp tokenizers are compiled only when an instance of the Tokenizer
     class is initialized to prevent premature high-cost computation.
-
-    Attributes:
-        switch: Switch character which introduces a command
-        switch_re: Regexp for switch character
-        ws_re: Regexp for whitespaces to ignore between tokens in command's extras
-        lbrace_re: Regexp for #-prepended opening curly brace character
-        lquote_re: Regexp for #-prepended double quote character
-        lgrave_re: Regexp for #-prepended grave accent character
-        lbracket_re: Regexp for opening square bracket character
-        rbracket_re: Regexp for closing square bracket character
-        num_re: Regexp for a JSON-compatible number token
-        id_re: Regexp for an identifier token
-        op_re: Regexp for an operator token
-        cmd_symb_re: Regexp for a command symbol character
     """
+    #: Switch character which introduces a command
     switch: str
+    #: Regexp for switch character
     switch_re: re.Pattern[str]
+    #: Regexp for whitespaces to ignore between tokens in command's extras
     ws_re: re.Pattern[str]
+    #: Regexp for #-prepended opening curly brace character
     lbrace_re: re.Pattern[str]
+    #: Regexp for #-prepended double quote character
     lquote_re: re.Pattern[str]
+    #: Regexp for #-prepended grave accent character
     lgrave_re: re.Pattern[str]
+    #: Regexp for opening square bracket character
     lbracket_re: re.Pattern[str]
+    #: Regexp for closing square bracket character
     rbracket_re: re.Pattern[str]
+    #: Regexp for a JSON-compatible number token
     num_re: re.Pattern[str]
+    #: Regexp for an identifier token
     id_re: re.Pattern[str]
+    #: Regexp for an operator token
     op_re: re.Pattern[str]
+    #: Regexp for a command symbol character
     cmd_symb_re: re.Pattern[str]
 
     _compiled_non_rec_breaks: dict[str, re.Pattern[str]]
