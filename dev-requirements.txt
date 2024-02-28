@@ -4,114 +4,386 @@
 #
 #    pip-compile --output-file=dev-requirements.txt dev-requirements.in
 #
-alabaster==0.7.12         # via -c docs/requirements.txt, sphinx
-appdirs==1.4.4            # via virtualenv
-argon2-cffi==20.1.0       # via notebook
-async-generator==1.10     # via nbclient
-attrs==20.3.0             # via -c docs/requirements.txt, flake8-bugbear, jsonschema, pytest
-babel==2.9.0              # via -c docs/requirements.txt, sphinx
-backcall==0.2.0           # via ipython
-bleach==3.3.0             # via nbconvert, readme-renderer
-build==0.3.0              # via check-manifest
-certifi==2020.12.5        # via -c docs/requirements.txt, requests
-cffi==1.14.5              # via argon2-cffi, cryptography
-chardet==4.0.0            # via -c docs/requirements.txt, requests
-check-manifest==0.46      # via -r dev-requirements.in
-colorama==0.4.4           # via twine
-coverage==5.4             # via pytest-cov
-cryptography==3.4.6       # via secretstorage
-decorator==4.4.2          # via ipython
-defusedxml==0.6.0         # via nbconvert
-distlib==0.3.1            # via virtualenv
-docutils==0.16            # via -c docs/requirements.txt, -r dev-requirements.in, readme-renderer, sphinx
-entrypoints==0.3          # via nbconvert
-filelock==3.0.12          # via tox, virtualenv
-flake8-bugbear==20.11.1   # via -r dev-requirements.in
-flake8-commas==2.0.0      # via -r dev-requirements.in
-flake8-import-order==0.18.1  # via -r dev-requirements.in
-flake8==3.8.4             # via -r dev-requirements.in, flake8-bugbear, flake8-commas
-idna==2.10                # via -c docs/requirements.txt, requests
-imagesize==1.2.0          # via -c docs/requirements.txt, sphinx
-iniconfig==1.1.1          # via pytest
-ipykernel==5.5.0          # via ipywidgets, jupyter, jupyter-console, notebook, qtconsole
-ipython-genutils==0.2.0   # via nbformat, notebook, qtconsole, traitlets
-ipython==7.20.0           # via ipykernel, ipywidgets, jupyter-console
-ipywidgets==7.6.3         # via jupyter
-jedi==0.18.0              # via ipython
-jeepney==0.6.0            # via keyring, secretstorage
-jinja2==2.11.3            # via -c docs/requirements.txt, nbconvert, notebook, sphinx
-jsonschema==3.2.0         # via nbformat
-jupyter-client==6.1.11    # via ipykernel, jupyter-console, nbclient, notebook, qtconsole
-jupyter-console==6.2.0    # via jupyter
-jupyter-core==4.7.1       # via jupyter-client, nbconvert, nbformat, notebook, qtconsole
-jupyter==1.0.0            # via -r dev-requirements.in
-jupyterlab-pygments==0.1.2  # via nbconvert
-jupyterlab-widgets==1.0.0  # via ipywidgets
-keyring==22.0.1           # via twine
-livereload==2.6.3         # via sphinx-autobuild
-markupsafe==1.1.1         # via -c docs/requirements.txt, jinja2
-mccabe==0.6.1             # via flake8
-mistune==0.8.4            # via nbconvert
-nbclient==0.5.2           # via nbconvert
-nbconvert==6.0.7          # via jupyter, notebook
-nbformat==5.1.2           # via ipywidgets, nbclient, nbconvert, notebook
-nest-asyncio==1.5.1       # via nbclient
-notebook==6.2.0           # via jupyter, widgetsnbextension
-packaging==20.9           # via -c docs/requirements.txt, bleach, build, pytest, sphinx, tox
-pandocfilters==1.4.3      # via nbconvert
-parso==0.8.1              # via jedi
-pep517==0.9.1             # via build
-pexpect==4.8.0            # via ipython
-pickleshare==0.7.5        # via ipython
-pkginfo==1.7.0            # via twine
-pluggy==0.13.1            # via pytest, tox
-prometheus-client==0.9.0  # via notebook
-prompt-toolkit==3.0.16    # via ipython, jupyter-console
-ptyprocess==0.7.0         # via pexpect, terminado
-py==1.10.0                # via pytest, tox
-pycodestyle==2.6.0        # via flake8, flake8-import-order
-pycparser==2.20           # via cffi
-pyflakes==2.2.0           # via flake8
-pygments==2.8.0           # via -c docs/requirements.txt, ipython, jupyter-console, jupyterlab-pygments, nbconvert, qtconsole, readme-renderer, sphinx
-pyparsing==2.4.7          # via -c docs/requirements.txt, packaging
-pyrsistent==0.17.3        # via jsonschema
-pytest-cov==2.11.1        # via -r dev-requirements.in
-pytest==6.2.2             # via -r dev-requirements.in, pytest-cov
-python-dateutil==2.8.1    # via jupyter-client
-pytz==2021.1              # via -c docs/requirements.txt, babel
-pyzmq==22.0.3             # via jupyter-client, notebook, qtconsole
-qtconsole==5.0.2          # via jupyter
-qtpy==1.9.0               # via qtconsole
-readme-renderer==28.0     # via twine
-requests-toolbelt==0.9.1  # via twine
-requests==2.25.1          # via -c docs/requirements.txt, requests-toolbelt, sphinx, twine
-rfc3986==1.4.0            # via twine
-secretstorage==3.3.1      # via keyring
-send2trash==1.5.0         # via notebook
-six==1.15.0               # via argon2-cffi, bleach, jsonschema, livereload, python-dateutil, readme-renderer, tox, virtualenv
-snowballstemmer==2.1.0    # via -c docs/requirements.txt, sphinx
-sphinx-autobuild==2020.9.1  # via -r dev-requirements.in
-sphinx==3.5.1             # via -c docs/requirements.txt, sphinx-autobuild
-sphinxcontrib-applehelp==1.0.2  # via -c docs/requirements.txt, sphinx
-sphinxcontrib-devhelp==1.0.2  # via -c docs/requirements.txt, sphinx
-sphinxcontrib-htmlhelp==1.0.3  # via -c docs/requirements.txt, sphinx
-sphinxcontrib-jsmath==1.0.1  # via -c docs/requirements.txt, sphinx
-sphinxcontrib-qthelp==1.0.3  # via -c docs/requirements.txt, sphinx
-sphinxcontrib-serializinghtml==1.1.4  # via -c docs/requirements.txt, sphinx
-terminado==0.9.2          # via notebook
-testpath==0.4.4           # via nbconvert
-toml==0.10.2              # via build, check-manifest, pep517, pytest, tox
-tornado==6.1              # via ipykernel, jupyter-client, livereload, notebook, terminado
-tox==3.22.0               # via -r dev-requirements.in
-tqdm==4.57.0              # via twine
-traitlets==5.0.5          # via ipykernel, ipython, ipywidgets, jupyter-client, jupyter-core, nbclient, nbconvert, nbformat, notebook, qtconsole
-twine==3.3.0              # via -r dev-requirements.in
-urllib3==1.26.3           # via -c docs/requirements.txt, requests
-virtualenv==20.4.2        # via tox
-wcwidth==0.2.5            # via prompt-toolkit
-webencodings==0.5.1       # via bleach
-wheel==0.36.2             # via -r dev-requirements.in
-widgetsnbextension==3.5.1  # via ipywidgets
+alabaster==0.7.12
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+appdirs==1.4.4
+    # via virtualenv
+argon2-cffi==20.1.0
+    # via notebook
+asttokens==2.4.1
+    # via stack-data
+async-generator==1.10
+    # via nbclient
+attrs==20.3.0
+    # via
+    #   -c docs/requirements.txt
+    #   flake8-bugbear
+    #   jsonschema
+    #   pytest
+babel==2.9.0
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+backcall==0.2.0
+    # via ipython
+bleach==3.3.0
+    # via
+    #   nbconvert
+    #   readme-renderer
+build==0.3.0
+    # via check-manifest
+certifi==2020.12.5
+    # via
+    #   -c docs/requirements.txt
+    #   requests
+cffi==1.14.5
+    # via
+    #   argon2-cffi
+    #   cryptography
+chardet==4.0.0
+    # via
+    #   -c docs/requirements.txt
+    #   requests
+check-manifest==0.46
+    # via -r dev-requirements.in
+colorama==0.4.4
+    # via twine
+coverage==5.4
+    # via pytest-cov
+cryptography==42.0.4
+    # via secretstorage
+decorator==4.4.2
+    # via ipython
+defusedxml==0.6.0
+    # via nbconvert
+distlib==0.3.1
+    # via virtualenv
+docutils==0.16
+    # via
+    #   -c docs/requirements.txt
+    #   -r dev-requirements.in
+    #   readme-renderer
+    #   sphinx
+entrypoints==0.3
+    # via nbconvert
+executing==2.0.1
+    # via stack-data
+filelock==3.0.12
+    # via
+    #   tox
+    #   virtualenv
+flake8==3.8.4
+    # via
+    #   -r dev-requirements.in
+    #   flake8-bugbear
+    #   flake8-commas
+flake8-bugbear==20.11.1
+    # via -r dev-requirements.in
+flake8-commas==2.0.0
+    # via -r dev-requirements.in
+flake8-import-order==0.18.1
+    # via -r dev-requirements.in
+idna==2.10
+    # via
+    #   -c docs/requirements.txt
+    #   requests
+imagesize==1.2.0
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+iniconfig==1.1.1
+    # via pytest
+ipykernel==5.5.0
+    # via
+    #   ipywidgets
+    #   jupyter
+    #   jupyter-console
+    #   notebook
+    #   qtconsole
+ipython==8.10.0
+    # via
+    #   ipykernel
+    #   ipywidgets
+    #   jupyter-console
+ipython-genutils==0.2.0
+    # via
+    #   nbformat
+    #   notebook
+    #   qtconsole
+    #   traitlets
+ipywidgets==7.6.3
+    # via jupyter
+jedi==0.18.0
+    # via ipython
+jeepney==0.6.0
+    # via
+    #   keyring
+    #   secretstorage
+jinja2==2.11.3
+    # via
+    #   -c docs/requirements.txt
+    #   nbconvert
+    #   notebook
+    #   sphinx
+jsonschema==3.2.0
+    # via nbformat
+jupyter==1.0.0
+    # via -r dev-requirements.in
+jupyter-client==6.1.11
+    # via
+    #   ipykernel
+    #   jupyter-console
+    #   nbclient
+    #   notebook
+    #   qtconsole
+jupyter-console==6.2.0
+    # via jupyter
+jupyter-core==4.11.2
+    # via
+    #   jupyter-client
+    #   nbconvert
+    #   nbformat
+    #   notebook
+    #   qtconsole
+jupyterlab-pygments==0.1.2
+    # via nbconvert
+jupyterlab-widgets==1.0.0
+    # via ipywidgets
+keyring==22.0.1
+    # via twine
+livereload==2.6.3
+    # via sphinx-autobuild
+markupsafe==1.1.1
+    # via
+    #   -c docs/requirements.txt
+    #   jinja2
+matplotlib-inline==0.1.6
+    # via ipython
+mccabe==0.6.1
+    # via flake8
+mistune==0.8.4
+    # via nbconvert
+nbclient==0.5.2
+    # via nbconvert
+nbconvert==6.0.7
+    # via
+    #   jupyter
+    #   notebook
+nbformat==5.1.2
+    # via
+    #   ipywidgets
+    #   nbclient
+    #   nbconvert
+    #   notebook
+nest-asyncio==1.5.1
+    # via
+    #   nbclient
+    #   notebook
+notebook==6.4.12
+    # via
+    #   jupyter
+    #   widgetsnbextension
+packaging==20.9
+    # via
+    #   -c docs/requirements.txt
+    #   bleach
+    #   build
+    #   pytest
+    #   sphinx
+    #   tox
+pandocfilters==1.4.3
+    # via nbconvert
+parso==0.8.1
+    # via jedi
+pep517==0.9.1
+    # via build
+pexpect==4.8.0
+    # via ipython
+pickleshare==0.7.5
+    # via ipython
+pkginfo==1.7.0
+    # via twine
+pluggy==0.13.1
+    # via
+    #   pytest
+    #   tox
+prometheus-client==0.9.0
+    # via notebook
+prompt-toolkit==3.0.43
+    # via
+    #   ipython
+    #   jupyter-console
+ptyprocess==0.7.0
+    # via
+    #   pexpect
+    #   terminado
+pure-eval==0.2.2
+    # via stack-data
+py==1.11.0
+    # via
+    #   pytest
+    #   tox
+pycodestyle==2.6.0
+    # via
+    #   flake8
+    #   flake8-import-order
+pycparser==2.20
+    # via cffi
+pyflakes==2.2.0
+    # via flake8
+pygments==2.8.0
+    # via
+    #   -c docs/requirements.txt
+    #   ipython
+    #   jupyter-console
+    #   jupyterlab-pygments
+    #   nbconvert
+    #   qtconsole
+    #   readme-renderer
+    #   sphinx
+pyparsing==2.4.7
+    # via
+    #   -c docs/requirements.txt
+    #   packaging
+pyrsistent==0.17.3
+    # via jsonschema
+pytest==6.2.2
+    # via
+    #   -r dev-requirements.in
+    #   pytest-cov
+pytest-cov==2.11.1
+    # via -r dev-requirements.in
+python-dateutil==2.8.1
+    # via jupyter-client
+pytz==2021.1
+    # via
+    #   -c docs/requirements.txt
+    #   babel
+pyzmq==22.0.3
+    # via
+    #   jupyter-client
+    #   notebook
+    #   qtconsole
+qtconsole==5.0.2
+    # via jupyter
+qtpy==1.9.0
+    # via qtconsole
+readme-renderer==28.0
+    # via twine
+requests==2.25.1
+    # via
+    #   -c docs/requirements.txt
+    #   requests-toolbelt
+    #   sphinx
+    #   twine
+requests-toolbelt==0.9.1
+    # via twine
+rfc3986==1.4.0
+    # via twine
+secretstorage==3.3.1
+    # via keyring
+send2trash==1.8.2
+    # via notebook
+six==1.15.0
+    # via
+    #   argon2-cffi
+    #   asttokens
+    #   bleach
+    #   jsonschema
+    #   livereload
+    #   python-dateutil
+    #   readme-renderer
+    #   tox
+    #   virtualenv
+snowballstemmer==2.1.0
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+sphinx==3.5.1
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx-autobuild
+sphinx-autobuild==2020.9.1
+    # via -r dev-requirements.in
+sphinxcontrib-applehelp==1.0.2
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+sphinxcontrib-devhelp==1.0.2
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+sphinxcontrib-htmlhelp==1.0.3
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+sphinxcontrib-jsmath==1.0.1
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+sphinxcontrib-qthelp==1.0.3
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+sphinxcontrib-serializinghtml==1.1.4
+    # via
+    #   -c docs/requirements.txt
+    #   sphinx
+stack-data==0.6.3
+    # via ipython
+terminado==0.9.2
+    # via notebook
+testpath==0.4.4
+    # via nbconvert
+toml==0.10.2
+    # via
+    #   build
+    #   check-manifest
+    #   pep517
+    #   pytest
+    #   tox
+tornado==6.3.3
+    # via
+    #   ipykernel
+    #   jupyter-client
+    #   livereload
+    #   notebook
+    #   terminado
+tox==3.22.0
+    # via -r dev-requirements.in
+tqdm==4.57.0
+    # via twine
+traitlets==5.0.5
+    # via
+    #   ipykernel
+    #   ipython
+    #   ipywidgets
+    #   jupyter-client
+    #   jupyter-core
+    #   matplotlib-inline
+    #   nbclient
+    #   nbconvert
+    #   nbformat
+    #   notebook
+    #   qtconsole
+twine==3.3.0
+    # via -r dev-requirements.in
+urllib3==1.26.3
+    # via
+    #   -c docs/requirements.txt
+    #   requests
+virtualenv==20.4.2
+    # via tox
+wcwidth==0.2.5
+    # via prompt-toolkit
+webencodings==0.5.1
+    # via bleach
+wheel==0.38.1
+    # via -r dev-requirements.in
+widgetsnbextension==3.5.1
+    # via ipywidgets
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
